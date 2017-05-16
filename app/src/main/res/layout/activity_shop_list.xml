@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/bg"
+    android:orientation="horizontal"
+    android:visibility="visible">
+
+
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/list_sw"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="visible">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:visibility="visible">
+
+            <include layout="@layout/top_title"></include>
+
+            <com.handmark.pulltorefresh.library.PullToRefreshListView xmlns:ptr="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/shop_list"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="10px"
+                android:background="@color/white"
+                android:dividerHeight="6px"
+                android:paddingLeft="2px"
+                android:paddingRight="2px"
+                android:paddingTop="2px"
+                android:visibility="visible"
+                ptr:ptrDrawable="@drawable/small_add"
+                ptr:ptrHeaderTextColor="@color/green_fresh"
+                ptr:ptrMode="both"></com.handmark.pulltorefresh.library.PullToRefreshListView>
+        </LinearLayout>
+    </android.support.v4.widget.SwipeRefreshLayout>
+
+
+</LinearLayout>
+

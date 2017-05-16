@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--键盘高度-->
+    <dimen name="key_height">80px</dimen>
+
+    <!-- 定义圆角的弧度  。应用自定义圆角将统一使用这套定义   -->
+    <dimen name="corners_radio">3px</dimen>
+
+    <!-- 登录窗口 -->
+    <dimen name="NoticeGetcdkey_textSize_max">17px</dimen>
+    <dimen name="NoticeGetcdkey_textSize">15px</dimen>
+    <dimen name="FeedBack_textSize">12px</dimen>
+    <dimen name="FeedBack_padding">6px</dimen>
+    <!-- 进货管理 -->
+    <!-- 日期文字 -->
+    <!-- 默认单行、单个view的高度 -->
+    <dimen name="single_line_item_height">48px</dimen>
+    <!-- 设置view的默认padding -->
+    <dimen name="item_horizontal_padding">0px</dimen>
+    <dimen name="item_vertical_padding">0px</dimen>
+    <dimen name="item_horizontal_margin">0px</dimen>
+    <dimen name="item_vertical_margin">0px</dimen>
+    <!-- 设置border宽度等级 -->
+    <!-- ////////////////// 字体  . 应用程序将统一使用这套字体大小  ////////////////// -->
+    <dimen name="text_size_small">14px</dimen>
+    <dimen name="text_size_middle">16px</dimen>
+    <dimen name="text_size_medium">18px</dimen>
+    <dimen name="text_size_large">22px</dimen>
+    <dimen name="text_size_xlarge">28px</dimen>
+    <dimen name="text_size_xxlarge">34px</dimen>
+    <!-- 条件查询     字体大小 -->
+    <!-- 默认字体大小 -->
+    <dimen name="text_size">@dimen/text_size_large</dimen>
+    <!-- 默认窗口宽度 -->
+    <dimen name="ProductNew_width">1115px</dimen>
+    <dimen name="InventoryDetail_width">1115px</dimen>
+    <dimen name="WholeSaleNew_width">1115px</dimen>
+    <dimen name="WholeOrderDetail_width">1075px</dimen>
+    <dimen name="SalesBillDetail_width">1075px</dimen>
+    <dimen name="PurchaseHistoryDetails_width">1075px</dimen>
+    <dimen name="PendingOrder_width">1120px</dimen>
+    <dimen name="SelectProductAttrNew_width">1200px</dimen>
+    <dimen name="productMore_width">1150px</dimen>
+    <dimen name="common_list_item_height">77px</dimen>
+    <dimen name="font_12">12.0sp</dimen>
+    <dimen name="font_hight_title">45dp</dimen>
+
+    <dimen name="text_title">14dp</dimen>
+    <dimen name="text_content">13dp</dimen>
+    <dimen name="text_butotn">16dp</dimen>
+
+
+</resources>

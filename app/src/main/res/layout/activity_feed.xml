@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/bg"
+    android:orientation="vertical"
+    tools:context="cn.com.shequnew.pages.activity.FeedActivity">
+
+    <include layout="@layout/top_title">
+
+    </include>
+
+    <EditText
+        android:id="@+id/feed"
+        android:paddingTop="1dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:gravity="start"
+        android:hint="写下您宝贵的意见，我们会做的更好......"
+        android:lines="8"
+        android:padding="15dp"
+
+        />
+
+
+</LinearLayout>

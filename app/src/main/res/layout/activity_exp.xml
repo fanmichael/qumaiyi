@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/bg"
+    android:orientation="vertical"
+    tools:context="cn.com.shequnew.pages.activity.ExpActivity">
+
+
+    <include layout="@layout/top_title"></include>
+
+
+    <EditText
+        android:id="@+id/exp_num"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:hint="请输入物流单号"
+        android:padding="10dp"
+        android:textColor="@color/col_bg"
+        android:textSize="15dp" />
+
+    <LinearLayout
+        android:id="@+id/lin_exp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="1dp"
+        android:background="@color/white"
+        android:orientation="horizontal"
+        android:padding="10dp">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="物流公司"
+            android:textColor="@color/col_bg"
+            android:textSize="15dp" />
+
+        <ImageView
+            android:id="@+id/exp_image"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/down" />
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:id="@+id/lin_exp_it"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="1dp"
+        android:background="@color/white"
+        android:orientation="horizontal"
+        android:padding="10dp"
+        android:visibility="gone">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="物流公司"
+            android:textColor="@color/col_bg"
+            android:textSize="15dp" />
+
+        <ImageView
+            android:id="@+id/exp_image_it"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/up" />
+
+    </LinearLayout>
+
+
+    <ListView
+        android:id="@+id/list_exp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:divider="@color/bg"
+        android:dividerHeight="1dp"></ListView>
+
+
+</LinearLayout>

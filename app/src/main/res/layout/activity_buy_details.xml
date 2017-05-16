@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/bg"
+    android:orientation="vertical"
+    tools:context="cn.com.shequnew.pages.activity.BuyDetailsActivity">
+
+    <include layout="@layout/top_title"></include>
+
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/collect_swi_content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <Button
+                            android:id="@+id/buy_all"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@null"
+                            android:paddingBottom="10dp"
+                            android:paddingTop="10dp"
+                            android:text="全部"
+                            android:textColor="@color/bd_top" />
+
+                        <View
+                            android:id="@+id/buy_all_view"
+                            android:layout_width="match_parent"
+                            android:layout_height="2dp"
+                            android:background="@color/bd_top"></View>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <Button
+                            android:id="@+id/buy_payment"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@null"
+                            android:paddingBottom="10dp"
+                            android:paddingTop="10dp"
+                            android:text="待付款"
+                            android:textColor="@color/col_bg" />
+
+                        <View
+                            android:id="@+id/buy_payment_view"
+                            android:layout_width="match_parent"
+                            android:layout_height="2dp"
+                            android:background="@color/grays"></View>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <Button
+                            android:id="@+id/buy_shipments"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@null"
+                            android:paddingBottom="10dp"
+                            android:paddingTop="10dp"
+                            android:text="待发货"
+                            android:textColor="@color/col_bg" />
+
+                        <View
+                            android:id="@+id/buy_shipments_view"
+                            android:layout_width="match_parent"
+                            android:layout_height="2dp"
+                            android:background="@color/grays"></View>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <Button
+                            android:id="@+id/buy_deliveries"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@null"
+                            android:paddingBottom="10dp"
+                            android:paddingTop="10dp"
+                            android:text="待收货"
+                            android:textColor="@color/col_bg" />
+
+                        <View
+                            android:id="@+id/buy_deliveries_view"
+                            android:layout_width="match_parent"
+                            android:layout_height="2dp"
+                            android:background="@color/grays"></View>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <Button
+                            android:id="@+id/buy_evaluate"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@null"
+                            android:paddingBottom="10dp"
+                            android:paddingTop="10dp"
+                            android:text="待评价"
+                            android:textColor="@color/col_bg" />
+
+                        <View
+                            android:id="@+id/buy_evaluate_view"
+                            android:layout_width="match_parent"
+                            android:layout_height="2dp"
+                            android:background="@color/grays"></View>
+
+                    </LinearLayout>
+                </LinearLayout>
+
+
+            </LinearLayout>
+
+
+            <com.handmark.pulltorefresh.library.PullToRefreshListView xmlns:ptr="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/buy_list"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="10px"
+                android:layout_marginTop="1dp"
+                android:background="@color/white"
+                android:dividerHeight="6px"
+                android:paddingLeft="2px"
+                android:paddingRight="2px"
+                android:paddingTop="2px"
+                ptr:ptrDrawable="@drawable/small_add"
+                ptr:ptrHeaderTextColor="@color/green_fresh"
+                ptr:ptrMode="both"></com.handmark.pulltorefresh.library.PullToRefreshListView>
+
+        </LinearLayout>
+    </android.support.v4.widget.SwipeRefreshLayout>
+
+
+</LinearLayout>

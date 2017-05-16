@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal">
+
+    <TextView
+        android:id="@+id/call_text"
+        android:layout_width="45dp"
+        android:layout_height="45dp"
+        android:layout_margin="10dp"
+        android:background="@drawable/shape_allcate_textview"
+        android:ellipsize="end"
+        android:gravity="center"
+        android:maxEms="3"
+        android:singleLine="true"
+        android:textColor="@color/white"
+        android:textSize="14dp" />
+
+</LinearLayout>

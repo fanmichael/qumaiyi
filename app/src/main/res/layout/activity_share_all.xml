@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="#e0000000"
+    android:orientation="vertical">
+
+    <!-- android:background="@android:color/transparent" android:background="#e0000000"-->
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:orientation="vertical">
+
+        <RadioGroup
+            android:id="@+id/share_all_group"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:orientation="horizontal"
+            android:paddingBottom="10dp"
+            android:paddingTop="10dp">
+
+            <RadioButton
+                android:id="@+id/share_all_weixinp"
+                style="@style/text_blue_min"
+                android:layout_width="0dip"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:button="@null"
+                android:checked="false"
+                android:drawableTop="@drawable/weixinp"
+                android:text="微信好友"
+                android:textColor="@color/col_bg" />
+
+            <RadioButton
+                android:id="@+id/share_all_weixink"
+                style="@style/text_blue_min"
+                android:layout_width="0dip"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:button="@null"
+                android:checked="false"
+                android:drawableTop="@drawable/weixink"
+                android:text="朋友圈"
+                android:textColor="@color/col_bg" />
+
+            <RadioButton
+                android:id="@+id/share_all_qqf"
+                style="@style/text_blue_min"
+                android:layout_width="0dip"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:button="@null"
+                android:checked="false"
+                android:drawableTop="@drawable/qqf"
+                android:text="QQ好友"
+                android:textColor="@color/col_bg" />
+
+            <RadioButton
+                android:id="@+id/share_all_qqk"
+                style="@style/text_blue_min"
+                android:layout_width="0dip"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:button="@null"
+                android:checked="false"
+                android:drawableTop="@drawable/qqk"
+                android:text="QQ空间"
+                android:textColor="@color/col_bg" />
+
+            <RadioButton
+                android:id="@+id/share_all_weibok"
+                style="@style/text_blue_min"
+                android:layout_width="0dip"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:button="@null"
+                android:checked="false"
+                android:drawableTop="@drawable/weibok"
+                android:text="微博"
+                android:textColor="@color/col_bg" />
+        </RadioGroup>
+
+        <Button
+            android:id="@+id/share_all_cal"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/bd_top"
+            android:paddingBottom="10dp"
+            android:paddingTop="10dp"
+            android:text="取消"
+            android:textColor="@color/white"
+            android:textSize="@dimen/text_butotn" />
+
+
+    </LinearLayout>
+
+
+</RelativeLayout>

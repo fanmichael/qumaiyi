@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/bg"
+    android:orientation="vertical">
+
+    <include layout="@layout/top_title"></include>
+
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/shop__swi_content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <Button
+                        android:id="@+id/shop_buy_all"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@null"
+                        android:paddingBottom="10dp"
+                        android:paddingTop="10dp"
+                        android:text="未发货"
+                        android:textColor="@color/bd_top" />
+
+                    <View
+                        android:id="@+id/shop_buy_all_view"
+                        android:layout_width="match_parent"
+                        android:layout_height="2dp"
+                        android:background="@color/bd_top"></View>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <Button
+                        android:id="@+id/shop_buy_payment"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@null"
+                        android:paddingBottom="10dp"
+                        android:paddingTop="10dp"
+                        android:text="已发货"
+                        android:textColor="@color/col_bg" />
+
+                    <View
+                        android:id="@+id/shop_buy_payment_view"
+                        android:layout_width="match_parent"
+                        android:layout_height="2dp"
+                        android:background="@color/grays"></View>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <Button
+                        android:id="@+id/shop_buy_shipments"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@null"
+                        android:paddingBottom="10dp"
+                        android:paddingTop="10dp"
+                        android:text="已签收"
+                        android:textColor="@color/col_bg" />
+
+                    <View
+                        android:id="@+id/shop_buy_shipments_view"
+                        android:layout_width="match_parent"
+                        android:layout_height="2dp"
+                        android:background="@color/grays"></View>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <Button
+                        android:id="@+id/shop_buy_order"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@null"
+                        android:paddingBottom="10dp"
+                        android:paddingTop="10dp"
+                        android:text="已退款"
+                        android:textColor="@color/col_bg" />
+
+                    <View
+                        android:id="@+id/shop_buy_order_view"
+                        android:layout_width="match_parent"
+                        android:layout_height="2dp"
+                        android:background="@color/grays"></View>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <com.handmark.pulltorefresh.library.PullToRefreshListView xmlns:ptr="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/shop_buy_list"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="10px"
+                android:layout_marginTop="1dp"
+                android:background="@color/white"
+                android:dividerHeight="6px"
+                android:paddingLeft="2px"
+                android:paddingRight="2px"
+                android:paddingTop="2px"
+                ptr:ptrDrawable="@drawable/small_add"
+                ptr:ptrHeaderTextColor="@color/green_fresh"
+                ptr:ptrMode="both"></com.handmark.pulltorefresh.library.PullToRefreshListView>
+        </LinearLayout>
+    </android.support.v4.widget.SwipeRefreshLayout>
+
+
+</LinearLayout>

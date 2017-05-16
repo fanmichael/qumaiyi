@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/bg"
+    android:orientation="vertical"
+    tools:context="cn.com.shequnew.pages.activity.AppraiseActivity">
+
+
+    <include layout="@layout/top_title"></include>
+
+    <LinearLayout
+        android:id="@+id/lin_hig"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:orientation="horizontal"
+        android:padding="5dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="等级" />
+
+        <LinearLayout
+            android:id="@+id/add_lin"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:background="@color/white"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:id="@+id/item_grds1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/grds" />
+
+            <ImageView
+                android:id="@+id/item_grds2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/grds" />
+
+            <ImageView
+                android:id="@+id/item_grds3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/grds" />
+
+            <ImageView
+                android:id="@+id/item_grds4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/grds" />
+
+            <ImageView
+                android:id="@+id/item_grds5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/grds" />
+
+        </LinearLayout>
+    </LinearLayout>
+
+    <EditText
+        android:id="@+id/appraise"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:background="@color/white"
+        android:gravity="start"
+        android:hint="写下你对商品的评价吧"
+        android:lines="5" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="2dp"
+        android:background="@color/white"
+        android:orientation="vertical">
+
+        <GridView
+            android:id="@+id/adv_Board_gridView"
+            android:layout_width="match_parent"
+            android:layout_height="0px"
+            android:layout_marginTop="5px"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:horizontalSpacing="60px"
+            android:numColumns="4"
+            android:scrollbarSize="1px"
+            android:verticalSpacing="20px"></GridView>
+
+    </LinearLayout>
+
+
+</LinearLayout>

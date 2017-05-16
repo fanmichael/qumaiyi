@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="bgcolor_windowbg">#ffffff</color>
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorAccent">#FF4081</color>
+    <color name="gray">#808080</color>
+    <color name="white">#ffffff</color>
+    <color name="bg">#f0f0f0</color>
+    <color name="grays">#CEC9C3</color>
+    <!-- 紫色字体 -->
+    <color name="col_purple">#475aa6</color>
+    <!-- 粉色字体 -->
+    <color name="col_pink">#bb4c7c</color>
+    <!-- 绿色字体 -->
+    <color name="col_green">#2b8b80</color>
+    <!-- 天蓝色字体 -->
+    <color name="sky_blue">#335188</color>
+    <!-- 天蓝色字体 -->
+    <color name="sky_blues">#0e94ee</color>
+    <!-- 黑色字体 -->
+    <color name="col_bg">#252626</color>
+    <color name="col_red">#a3091b</color>
+    <!-- 淡黄色 -->
+    <color name="green_fresh">#25fd86</color>
+    <color name="blue">#0000FF</color>
+    <color name="bd_top">#4c968E</color>
+
+</resources>

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:padding="10dp"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/adv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="广告合作"
+        android:textColor="@color/col_bg"
+        android:textSize="16dp" />
+
+    <TextView
+        android:id="@+id/adv_s"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="广告合作"
+        android:layout_marginTop="10dp"
+        android:textSize="14dp" />
+
+    <TextView
+        android:id="@+id/adv_e"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="广告合作"
+        android:textColor="@color/bd_top"
+        android:layout_marginTop="5dp"
+        android:textSize="14dp" />
+
+
+</LinearLayout>

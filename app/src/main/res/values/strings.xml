@@ -1,0 +1,38 @@
+<resources>
+    <string name="app_name">去卖艺</string>
+    <string name="login">登录</string>
+    <string name="register">注册</string>
+    <string name="phone">请输入手机号</string>
+    <string name="password">请输入密码</string>
+    <string name="regs_paw">请再次输入密码</string>
+    <string name="verification_code">请输入验证码</string>
+    <string name="ver_code">获取验证码</string>
+    <string name="login_forget">忘记密码？</string>
+    <string name="interest_man">感兴趣的人</string>
+    <string name="interest_thing">感兴趣的事</string>
+    <string name="title_activity_base">BaseActivity</string>
+    <string name="frist_pages">首页</string>
+    <string name="dynamic_condition">动态</string>
+    <string name="issue">发布</string>
+    <string name="news">消息</string>
+    <string name="mine">我的</string>
+    <string name="trade">换一换</string>
+
+    <!-- 我的模块 -->
+    <string name="material">个人资料</string>
+    <string name="seller">申请卖主</string>
+    <string name="seller_detials">卖主资料</string>
+    <string name="shop_buy">发货管理</string>
+    <string name="buy">购买记录</string>
+    <string name="publish">我的发布</string>
+    <string name="collect">我的收藏</string>
+    <string name="site">我的地址</string>
+    <string name="install">设置</string>
+
+    <!--个人资料-->
+    <string name="material_icon">头像</string>
+    <string name="material_nick">昵称</string>
+    <string name="material_gender">性别</string>
+    <string name="material_location">地区</string>
+    <string name="material_personalized">个性签名</string>
+</resources>
