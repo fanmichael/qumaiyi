@@ -224,7 +224,7 @@ public class InstallDetailsActivity extends BaseActivity {
                 if (SharedPreferenceUtil.hasKey("mobile") && SharedPreferenceUtil.hasKey("password")) {
                     SharedPreferenceUtil.clear();
                 }
-                destroyActitity();
+               destroyActitity();
             }
         });
     }

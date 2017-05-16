@@ -5,8 +5,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.View;
+import android.widget.AbsListView;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -86,20 +88,21 @@ public class ShopBuyActivity extends BaseActivity implements SwipeRefreshLayout.
         context = this;
         ButterKnife.bind(this);
         initView();
-        collectSwiContent.setEnabled(false);
-        collectSwiContent.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                collectSwiContent.setRefreshing(true);
 
+        listView.setOnScrollListener(new AbsListView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(AbsListView view, int scrollState) {
 
             }
+
+            @Override
+            public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+                if (firstVisibleItem == 0)
+                    collectSwiContent.setEnabled(true);
+                else
+                    collectSwiContent.setEnabled(false);
+            }
         });
-
-
-
-
-
     }
 
     private void initView() {

@@ -55,8 +55,8 @@ public class AppraiesimgeAdapter extends BaseAdapter {
         ViewHolder holder;
         if (convertView == null) {
             holder = new ViewHolder();
-            convertView = mInflater.inflate(R.layout.shop_item_imagse, null);
-            holder.icon = (SimpleDraweeView) convertView.findViewById(R.id.shop_itme_image);
+            convertView = mInflater.inflate(R.layout.app_item_imagse, null);
+            holder.icon = (SimpleDraweeView) convertView.findViewById(R.id.app_image);
             convertView.setTag(holder);
         } else {
             holder = (ViewHolder) convertView.getTag();
@@ -66,13 +66,9 @@ public class AppraiesimgeAdapter extends BaseAdapter {
             return convertView;
         }
         if (position == 0) {
-            holder.icon.setMaxWidth(150);
-            holder.icon.setMaxHeight(150);
             holder.icon.setBackgroundDrawable(context.getResources().getDrawable(R.drawable.addimages));
         } else {
             ContentValues cv = contentValues.get(position);
-            holder.icon.setMaxWidth(150);
-            holder.icon.setMaxHeight(150);
             Uri imageIcon = Uri.parse(cv.getAsString("image"));
             ValidData.load(imageIcon, holder.icon, 150, 150);
         }
