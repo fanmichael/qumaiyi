@@ -13,8 +13,6 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.com.shequnew.R;
 import cn.com.shequnew.pages.fragment.ContentFragment;
-import cn.com.shequnew.pages.fragment.PublishDetailsContentFragment;
-import cn.com.shequnew.pages.fragment.PublishDetailsShopFragment;
 import cn.com.shequnew.pages.fragment.VideoContentFragment;
 
 /**

@@ -34,6 +34,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -113,56 +114,6 @@ public class SellerlDetailsActivity extends BaseActivity {
     void submit() {
         /**提交资料*/
         initData();
-    }
-
-
-    private boolean initData() {
-        boolean isIt = true;
-        String mesg = "";
-        if (sellName.getText().toString().trim().equals("")) {
-            mesg = "请输入真实姓名！";
-            isIt = false;
-        }
-        if (sellPhone.getText().toString().trim().equals("")) {
-            mesg = "请输入电话号码！";
-            isIt = false;
-        }
-        if (sellCard.getText().toString().trim().equals("")) {
-            mesg = "请输入身份证号码！";
-            isIt = false;
-        }
-        if (sellCardNum.getText().toString().trim().equals("")) {
-            mesg = "请输入收款账号！";
-            isIt = false;
-        }
-        if (sellContext.getText().toString().trim().equals("")) {
-            mesg = "请输入资质说明！";
-            isIt = false;
-        }
-        if (sellImagesFile == null) {
-            mesg = "请上传本人照片！";
-            isIt = false;
-        }
-        if (sellCardZFile == null) {
-            mesg = "请上传身份证正面！";
-            isIt = false;
-        }
-        if (sellCardFFile == null) {
-            mesg = "请上传身份证反面！";
-            isIt = false;
-        }
-        if (file == null) {
-            mesg = "请上传资质照片！";
-            isIt = false;
-        }
-
-        if (isIt) {
-            new asyncTask().execute(1);
-        } else {
-            Toast.makeText(context, mesg, Toast.LENGTH_SHORT).show();
-        }
-
-        return isIt;
     }
 
 
@@ -422,9 +373,7 @@ public class SellerlDetailsActivity extends BaseActivity {
             Bundle bundle = new Bundle();
             switch (params[0]) {
                 case 1:
-                    mLoading = new Loading(context, topRegitTitle);
-                    mLoading.setText("正在提交......");
-                    mLoading.show();
+                    httpApply();
                     bundle.putInt("what", 1);
                     break;
                 case 2:
@@ -449,29 +398,100 @@ public class SellerlDetailsActivity extends BaseActivity {
     }
 
 
+    private boolean initData() {
+        boolean isIt = true;
+        String mesg = "";
+        if (sellName.getText().toString().trim().equals("")) {
+            mesg = "请输入真实姓名！";
+            isIt = false;
+        }
+        if (sellPhone.getText().toString().trim().equals("")) {
+            mesg = "请输入电话号码！";
+            isIt = false;
+        }
+        if (sellCard.getText().toString().trim().equals("")) {
+            mesg = "请输入身份证号码！";
+            isIt = false;
+        }
+        if (sellCardNum.getText().toString().trim().equals("")) {
+            mesg = "请输入收款账号！";
+            isIt = false;
+        }
+        if (sellContext.getText().toString().trim().equals("")) {
+            mesg = "请输入资质说明！";
+            isIt = false;
+        }
+        if (sellImagesFile == null) {
+            mesg = "请上传本人照片！";
+            isIt = false;
+        }
+        if (sellCardZFile == null) {
+            mesg = "请上传身份证正面！";
+            isIt = false;
+        }
+        if (sellCardFFile == null) {
+            mesg = "请上传身份证反面！";
+            isIt = false;
+        }
+        if (file == null) {
+            mesg = "请上传资质照片！";
+            isIt = false;
+        }
+
+        if (isIt) {
+            mLoading = new Loading(context, topRegitTitle);
+            mLoading.setText("正在提交......");
+            mLoading.show();
+            new asyncTask().execute(1);
+        } else {
+            Toast.makeText(context, mesg, Toast.LENGTH_SHORT).show();
+        }
+
+        return isIt;
+    }
+
     /**
      * 申请卖主
      */
-    private void httpApply(int gender) {
-        HashMap<String, String> map = new HashMap<>();
-        map.put("action", "Merchant.apply");
-        map.put("uid", AppContext.cv.getAsInteger("id") + "");
-        map.put("gender", gender + "");
-        map.put("name", "gender");
-        String json = HttpConnectTool.post(map);
-        if (!json.equals("")) {
-//            xmlComm(json);
+    private void httpApply() {
+        try {
+            HashMap<String, String> map = new HashMap<>();
+            map.put("action", "Merchant.apply");
+            map.put("uid", AppContext.cv.getAsInteger("id") + "");
+            map.put("mobile", sellPhone.getText().toString().trim());
+            map.put("card", sellCard.getText().toString().trim());
+            map.put("number", sellCardNum.getText().toString().trim());
+            map.put("summary", sellContext.getText().toString().trim());
+            map.put("name", sellName.getText().toString().trim());
+            Map<String, File> file = new HashMap<String, File>();
+            file.put("icon", sellImagesFile);
+            for (int i = 0; i < files.size(); i++) {
+                file.put("mer", files.get(i));
+            }
+            List<File> fileList = new ArrayList<>();
+            fileList.add(sellCardZFile);
+            fileList.add(sellCardFFile);
+            for (int j = 0; j < fileList.size(); j++) {
+                file.put("photo", fileList.get(j));
+            }
+            String json = HttpConnectTool.post(map, file);
+            if (!json.equals("")) {
+                xmlApply(json);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
     private void xmlApply(String data) {
         try {
             JSONObject jsonObject = new JSONObject(data);
-
-
-            String img = jsonObject.getString("data");
-            if (!img.equals("") && img != null) {
-                Toast.makeText(context, "提交成功", Toast.LENGTH_SHORT).show();
+            int img = jsonObject.getInt("error");
+            if (img == 115) {
+                Toast.makeText(context, "成功", Toast.LENGTH_SHORT).show();
+            }
+            if (img == 108) {
+                Toast.makeText(context, "正在审核中", Toast.LENGTH_SHORT).show();
             }
         } catch (JSONException e) {
             e.printStackTrace();

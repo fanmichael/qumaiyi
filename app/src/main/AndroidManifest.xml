@@ -308,7 +308,8 @@
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.NoTitleBar" />
         <activity android:name=".pages.activity.VideoContentActivity" />
-        <activity android:name=".pages.activity.PublishShopActivity"></activity>
+        <activity android:name=".pages.activity.PublishShopActivity" />
+        <activity android:name=".pages.activity.ElevancyShopActivity"></activity>
     </application>
 
 </manifest>
