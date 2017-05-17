@@ -164,7 +164,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="10dp"
-                    android:text="商品名称"
+                    android:text="价格（元）"
                     android:textColor="@color/col_bg" />
 
                 <EditText
@@ -172,11 +172,66 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
                     android:background="@null"
-                    android:hint="请输入商品名称"
+                    android:hint="请输入商品价格"
                     android:maxLines="1"
                     android:textSize="14dp" />
             </LinearLayout>
 
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/grays"></View>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:text="运费（元）"
+                    android:textColor="@color/col_bg" />
+
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:background="@null"
+                    android:hint="请输入商品运费"
+                    android:maxLines="1"
+                    android:textSize="14dp" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/grays"></View>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:text="工期（天）"
+                    android:textColor="@color/col_bg" />
+
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:background="@null"
+                    android:hint="请输入商品工期"
+                    android:maxLines="1"
+                    android:textSize="14dp" />
+            </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -189,13 +244,27 @@
                     android:layout_height="wrap_content"
                     android:background="@null"
                     android:gravity="start"
-                    android:hint="请输入商品简介"
+                    android:hint="请输入商品参数描述"
                     android:lines="5"
                     android:padding="10dp"
                     android:textSize="14dp" />
 
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="展示图片"
+                    android:textColor="@color/col_bg"
+                    android:textSize="15dp" />
+
                 <GridView
-                    android:id="@+id/sell_card_gridView"
+                    android:id="@+id/ddd"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5px"
@@ -207,36 +276,8 @@
                     android:stretchMode="columnWidth"
                     android:verticalSpacing="10dp"></GridView>
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="10dp"
-                        android:text="添加标签..."
-                        android:textColor="@color/col_bg" />
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:gravity="right"
-                        android:text="dsds"
-                        android:textColor="@color/bd_top" />
-
-                    <ImageView
-                        android:layout_width="25dp"
-                        android:layout_height="25dp"
-                        android:background="@drawable/back_go" />
-
-                </LinearLayout>
-
             </LinearLayout>
+
 
             <View
                 android:layout_width="match_parent"
@@ -253,7 +294,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="10dp"
-                    android:text="选择关联的群..."
+                    android:text="是您本人原创作品对吗？"
                     android:textColor="@color/col_bg" />
 
                 <TextView
@@ -261,44 +302,16 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:gravity="right"
+                    android:text="是"
                     android:textColor="@color/col_bg" />
 
                 <ImageView
                     android:layout_width="25dp"
                     android:layout_height="25dp"
                     android:background="@drawable/back_go" />
+
             </LinearLayout>
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@color/grays"></View>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center_vertical"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="10dp"
-                    android:text="选择关联的商品..."
-                    android:textColor="@color/col_bg" />
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:gravity="right"
-                    android:textColor="@color/col_bg" />
-
-                <ImageView
-                    android:layout_width="25dp"
-                    android:layout_height="25dp"
-                    android:background="@drawable/back_go" />
-            </LinearLayout>
 
             <View
                 android:layout_width="match_parent"
@@ -345,7 +358,6 @@
                     android:textColor="@color/white"
                     android:textSize="16dp" />
             </LinearLayout>
-
 
         </LinearLayout>
 

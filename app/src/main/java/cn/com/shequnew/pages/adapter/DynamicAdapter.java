@@ -3,8 +3,10 @@ package cn.com.shequnew.pages.adapter;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.text.Layout;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,7 +23,9 @@ import java.util.List;
 
 import cn.com.shequnew.R;
 import cn.com.shequnew.pages.activity.ContentFileDetailsActivity;
+import cn.com.shequnew.pages.activity.LocalVideoActivity;
 import cn.com.shequnew.pages.activity.ShopDetailsActivity;
+import cn.com.shequnew.tools.Util;
 import cn.com.shequnew.tools.ValidData;
 
 /**
@@ -100,40 +104,59 @@ public class DynamicAdapter extends BaseAdapter {
             if (dy.getAsInteger("file_type") == 0) {
                 holder.dynamicF.setVisibility(View.VISIBLE);
                 holder.dynamicM.setVisibility(View.GONE);
+                Uri image = Uri.parse(dy.getAsString("subject"));
+                holder.dynamicImages.setImageURI(image);
             } else {
                 holder.dynamicF.setVisibility(View.GONE);
                 holder.dynamicM.setVisibility(View.VISIBLE);
+
+                (new Handler()).postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        Bitmap bitmap = Util.createVideoThumbnail("http://clips.vorwaerts-gmbh.de/big_buck_bunny.mp4", 200, 150);
+//                        holder.dynamicImages.setImageBitmap(bitmap);
+                    }
+                }, 100);
+
             }
             holder.dynamicSign.setText(dy.getAsString("title"));
             holder.dynamicTags.setText(dy.getAsString("tags"));
-            Uri image = Uri.parse(dy.getAsString("subject"));
-            holder.dynamicImages.setImageURI(image);
             holder.dynamicTime.setText(dy.getAsString("push_time"));
         } else if (dy.getAsInteger("status") == 1) {
             holder.dynamicLayout.setVisibility(View.GONE);
             holder.commodityLayout.setVisibility(View.VISIBLE);
             Uri image = Uri.parse(dy.getAsString("good_image"));
-            ValidData.load(image,holder.commodityImages,100,80);
+            ValidData.load(image, holder.commodityImages, 100, 80);
             holder.commodityName.setText(dy.getAsString("good_name"));
             holder.commodityDate.setText("工期：" + dy.getAsInteger("maf_time") + "天");
             holder.commodityTitle.setText(dy.getAsString("nick"));
             holder.commodityPrice.setText("￥" + dy.getAsString("price"));
             holder.commodityTime.setText(dy.getAsString("push_time"));
             Uri imageIcon = Uri.parse(dy.getAsString("icon"));
-            ValidData.load(imageIcon,holder.commodityIcon,30,30);
-//            holder.commodityIcon.setImageURI(imageIcon);
+            ValidData.load(imageIcon, holder.commodityIcon, 30, 30);
         }
 
         holder.dynamicLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent();
-                Bundle bundle = new Bundle();
-                bundle.putInt("id", dy.getAsInteger("id"));
-                bundle.putInt("uid", dy.getAsInteger("uid"));
-                intent.putExtras(bundle);
-                intent.setClass(mContext, ContentFileDetailsActivity.class);
-                mContext.startActivity(intent);
+                if (dy.getAsInteger("file_type") == 0) {
+                    Intent intent = new Intent();
+                    Bundle bundle = new Bundle();
+                    bundle.putInt("id", dy.getAsInteger("id"));
+                    bundle.putInt("uid", dy.getAsInteger("uid"));
+                    intent.putExtras(bundle);
+                    intent.setClass(mContext, ContentFileDetailsActivity.class);
+                    mContext.startActivity(intent);
+                } else {
+                    Intent intent = new Intent();
+                    Bundle bundle = new Bundle();
+                    bundle.putInt("id", dy.getAsInteger("id"));
+                    bundle.putInt("uid", dy.getAsInteger("uid"));
+                    intent.putExtras(bundle);
+                    intent.setClass(mContext, LocalVideoActivity.class);
+                    mContext.startActivity(intent);
+                }
+
 
             }
         });

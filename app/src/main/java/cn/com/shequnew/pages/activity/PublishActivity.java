@@ -57,6 +57,9 @@ public class PublishActivity extends BaseActivity {
             destroyActitity();
         } else {
             //发布商品
+            Intent intent = new Intent(context, PublishShopActivity.class);
+            context.startActivity(intent);
+            destroyActitity();
 
         }
 

@@ -2,7 +2,9 @@ package cn.com.shequnew.pages.adapter;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.net.Uri;
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +17,7 @@ import com.facebook.drawee.view.SimpleDraweeView;
 import java.util.List;
 
 import cn.com.shequnew.R;
+import cn.com.shequnew.tools.Util;
 import cn.com.shequnew.tools.ValidData;
 
 /**
@@ -26,17 +29,16 @@ public class MoreAdapter extends BaseAdapter {
     private Context mContext;
     private LayoutInflater mInflater;
 
-    public MoreAdapter(List<ContentValues> contentValues,Context mContext){
-        this.contentValues=contentValues;
-        this.mContext=mContext;
+    public MoreAdapter(List<ContentValues> contentValues, Context mContext) {
+        this.contentValues = contentValues;
+        this.mContext = mContext;
         mInflater = LayoutInflater.from(mContext);
     }
 
 
-
     @Override
     public int getCount() {
-     return contentValues != null ? contentValues.size() : 0;
+        return contentValues != null ? contentValues.size() : 0;
     }
 
     @Override
@@ -51,49 +53,53 @@ public class MoreAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        if(contentValues==null){
+        if (contentValues == null) {
             return convertView;
         }
-        ViewHolder holder=null;
-        if(convertView==null){
-            holder=new ViewHolder();
-            convertView=mInflater.inflate(R.layout.pages_item_chose,null);
-            holder.icon=(SimpleDraweeView)convertView.findViewById(R.id.pages_item_icon);
-            holder.title=(TextView)convertView.findViewById(R.id.pages_item_nick_text);
-            holder.imageF=(ImageView)convertView.findViewById(R.id.pages_file_f);
-            holder.imageM=(ImageView)convertView.findViewById(R.id.pages_file_m);
-            holder.tags=(TextView)convertView.findViewById(R.id.pages_title_text);
-            holder.content=(TextView)convertView.findViewById(R.id.pages_tags_item_text);
-            holder.image=(SimpleDraweeView)convertView.findViewById(R.id.pages_item_subject);
+        ViewHolder holder = null;
+        if (convertView == null) {
+            holder = new ViewHolder();
+            convertView = mInflater.inflate(R.layout.pages_item_chose, null);
+            holder.icon = (SimpleDraweeView) convertView.findViewById(R.id.pages_item_icon);
+            holder.title = (TextView) convertView.findViewById(R.id.pages_item_nick_text);
+            holder.imageF = (ImageView) convertView.findViewById(R.id.pages_file_f);
+            holder.imageM = (ImageView) convertView.findViewById(R.id.pages_file_m);
+            holder.tags = (TextView) convertView.findViewById(R.id.pages_title_text);
+            holder.content = (TextView) convertView.findViewById(R.id.pages_tags_item_text);
+            holder.image = (SimpleDraweeView) convertView.findViewById(R.id.pages_item_subject);
             convertView.setTag(holder);
-        }else{
+        } else {
             holder = (ViewHolder) convertView.getTag();
         }
         if (contentValues == null || contentValues.size() <= position) {
             return convertView;
         }
-        ContentValues cv=contentValues.get(position);
+        ContentValues cv = contentValues.get(position);
         Uri imageIcon = Uri.parse(cv.getAsString("icon"));
-        ValidData.load(imageIcon,holder.icon,30,30);
+        ValidData.load(imageIcon, holder.icon, 30, 30);
         holder.title.setText(cv.getAsString("nick"));
         holder.tags.setText(cv.getAsString("title"));
         holder.content.setText(cv.getAsString("tags"));
-        if(cv.getAsInteger("file_type")==1){
+        if (cv.getAsInteger("file_type") == 1) {
             holder.imageF.setVisibility(View.GONE);
             holder.imageM.setVisibility(View.VISIBLE);
-
-//            Uri image= Uri.parse(cv.getAsString("subject"));
-//            ValidData.load(image,holder.image,100,80);
-        }else{
+            (new Handler()).postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    Bitmap bitmap = Util.createVideoThumbnail("http://clips.vorwaerts-gmbh.de/big_buck_bunny.mp4", 200, 150);
+//                    holder.image.dynamicImages.setImageBitmap(bitmap);
+                }
+            }, 100);
+        } else {
             holder.imageF.setVisibility(View.VISIBLE);
             holder.imageM.setVisibility(View.GONE);
-            Uri image= Uri.parse(cv.getAsString("subject"));
-            ValidData.load(image,holder.image,100,80);
+            Uri image = Uri.parse(cv.getAsString("subject"));
+            ValidData.load(image, holder.image, 100, 80);
         }
         return convertView;
     }
 
-    public final class ViewHolder{
+    public final class ViewHolder {
         public SimpleDraweeView icon;
         public TextView title;
         public ImageView imageF;
@@ -103,10 +109,6 @@ public class MoreAdapter extends BaseAdapter {
         public SimpleDraweeView image;
 
     }
-
-
-
-
 
 
 }
