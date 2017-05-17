@@ -466,13 +466,13 @@ public class SellerlDetailsActivity extends BaseActivity {
             Map<String, File> file = new HashMap<String, File>();
             file.put("icon", sellImagesFile);
             for (int i = 0; i < files.size(); i++) {
-                file.put("mer", files.get(i));
+                file.put("mer[]", files.get(i));
             }
             List<File> fileList = new ArrayList<>();
             fileList.add(sellCardZFile);
             fileList.add(sellCardFFile);
             for (int j = 0; j < fileList.size(); j++) {
-                file.put("photo", fileList.get(j));
+                file.put("photo[]", fileList.get(j));
             }
             String json = HttpConnectTool.post(map, file);
             if (!json.equals("")) {
