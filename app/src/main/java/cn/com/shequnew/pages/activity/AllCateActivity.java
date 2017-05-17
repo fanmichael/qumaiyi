@@ -26,6 +26,9 @@ import cn.com.shequnew.R;
 import cn.com.shequnew.pages.adapter.AllCateAdapter;
 import cn.com.shequnew.pages.http.HttpConnectTool;
 
+/**
+ * 交易-专题详情
+ */
 public class AllCateActivity extends BaseActivity {
 
     @BindView(R.id.image_back)
@@ -36,39 +39,40 @@ public class AllCateActivity extends BaseActivity {
     android.widget.GridView GridView;
     private AllCateAdapter allCateAdapter;
     private Context context;
-    private int sid=1;
-    private List<ContentValues> contentValues=new ArrayList<>();
-    private List<ContentValues> contentCate=new ArrayList<>();
+    private int sid = 1;
+    private List<ContentValues> contentValues = new ArrayList<>();
+    private List<ContentValues> contentCate = new ArrayList<>();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_all_cate);
         ButterKnife.bind(this);
-        context=this;
+        context = this;
         init();
         new asyncTask().execute(1);
     }
 
     @OnClick(R.id.image_back)
-    void back(){
+    void back() {
         destroyActitity();
     }
 
 
-    private void init(){
+    private void init() {
         final Bundle bundle = this.getIntent().getExtras();
         sid = bundle.getInt("id");
-        String name=bundle.getString("name");
+        String name = bundle.getString("name");
         topTitle.setText(name);
-        allCateAdapter=new AllCateAdapter(contentCate,context);
+        allCateAdapter = new AllCateAdapter(contentCate, context);
         GridView.setAdapter(allCateAdapter);
         GridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent intent=new Intent(context,AllCateDetailsActivity.class);
-                Bundle bundleDetails=new Bundle();
-                bundleDetails.putString("name",contentCate.get(position).getAsString("name"));
-                bundleDetails.putInt("id",contentCate.get(position).getAsInteger("id"));
+                Intent intent = new Intent(context, AllCateDetailsActivity.class);
+                Bundle bundleDetails = new Bundle();
+                bundleDetails.putString("name", contentCate.get(position).getAsString("name"));
+                bundleDetails.putInt("id", contentCate.get(position).getAsInteger("id"));
                 intent.putExtras(bundleDetails);
                 context.startActivity(intent);
             }
@@ -94,11 +98,11 @@ public class AllCateActivity extends BaseActivity {
         @Override
         protected void onPostExecute(Bundle bundle) {
             int what = bundle.containsKey("what") ? bundle.getInt("what") : -1;
-           // removeLoading();
+            // removeLoading();
             switch (what) {
                 case 1:
-                    for(int i=0;i<contentValues.size();i++){
-                        if(contentValues.get(i).getAsInteger("parent")==sid){
+                    for (int i = 0; i < contentValues.size(); i++) {
+                        if (contentValues.get(i).getAsInteger("parent") == sid) {
                             contentCate.add(contentValues.get(i));
                         }
                     }
@@ -111,7 +115,7 @@ public class AllCateActivity extends BaseActivity {
         }
     }
 
-    private void httpAllCate(){
+    private void httpAllCate() {
         try {
             HashMap<String, String> map = new HashMap<>();
             map.put("action", "Trade.getAllCate");
@@ -124,28 +128,27 @@ public class AllCateActivity extends BaseActivity {
         }
     }
 
-    private void xmlAllcate(String data){
+    private void xmlAllcate(String data) {
         try {
             JSONObject obj = new JSONObject(data);
             JSONArray objData = new JSONArray(obj.getString("data"));
-            if(objData.length()>0){
-                for (int i=0;i<objData.length();i++){
+            if (objData.length() > 0) {
+                for (int i = 0; i < objData.length(); i++) {
                     JSONObject jsonObj = objData.getJSONObject(i);
                     ContentValues cv = new ContentValues();
-                    cv.put("id",jsonObj.getInt("id"));
-                    cv.put("name",jsonObj.getString("name"));
-                    cv.put("parent",jsonObj.getInt("parent"));
-                    cv.put("image",jsonObj.getString("image"));
+                    cv.put("id", jsonObj.getInt("id"));
+                    cv.put("name", jsonObj.getString("name"));
+                    cv.put("parent", jsonObj.getInt("parent"));
+                    cv.put("image", jsonObj.getString("image"));
                     contentValues.add(cv);
                 }
             }
-        }catch (JSONException e) {
+        } catch (JSONException e) {
             e.printStackTrace();
         } catch (NullPointerException e) {
             e.printStackTrace();
         }
     }
-
 
 
 }

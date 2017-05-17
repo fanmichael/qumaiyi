@@ -5,6 +5,7 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -64,6 +65,15 @@ public class ExpActivity extends BaseActivity implements ExpAdapter.setonClick {
         ButterKnife.bind(this);
         context = this;
         initView();
+
+
+        listExp.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                expAdapter.changeSelected(position);
+            }
+        });
+
     }
 
     private void initView() {
@@ -95,15 +105,6 @@ public class ExpActivity extends BaseActivity implements ExpAdapter.setonClick {
     @Override
     public void onClick(int pos, String com, String no) {
         comName = com;
-        for (int i = 0; i < contentValues.size(); i++) {
-            ContentValues cv = new ContentValues();
-            cv.put("chose", 0);
-            if (pos == i) {
-                cv.put("chose", 1);
-            }
-            contentValues.add(pos, cv);
-        }
-        expAdapter.notifyDataSetChanged();
     }
 
     @OnClick(R.id.lin_exp)

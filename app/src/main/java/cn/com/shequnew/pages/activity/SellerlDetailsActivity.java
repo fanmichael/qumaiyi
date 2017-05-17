@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.hardware.Camera;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
@@ -26,8 +27,12 @@ import android.widget.Toast;
 
 import com.facebook.drawee.view.SimpleDraweeView;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import butterknife.BindView;
@@ -35,8 +40,12 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.com.shequnew.R;
 import cn.com.shequnew.pages.adapter.AppraiesimgeAdapter;
+import cn.com.shequnew.pages.config.AppContext;
+import cn.com.shequnew.pages.http.HttpConnectTool;
+import cn.com.shequnew.pages.prompt.Loading;
 import cn.com.shequnew.tools.ImageToools;
 import cn.com.shequnew.tools.TextContent;
+import cn.com.shequnew.tools.ValidData;
 
 /**
  * 申请买主
@@ -70,6 +79,11 @@ public class SellerlDetailsActivity extends BaseActivity {
     @BindView(R.id.sell_card_gridView)
     GridView sellCardGridView;
 
+    private File sellImagesFile;
+    private File sellCardZFile;
+    private File sellCardFFile;
+    private List<File> files = new ArrayList<>();
+
     private Uri imageUri;
     private File file;
     private Context context;
@@ -92,6 +106,13 @@ public class SellerlDetailsActivity extends BaseActivity {
         context = this;
         initView();
         ImageToools.verifyStoragePermissions(SellerlDetailsActivity.this);
+    }
+
+
+    @OnClick(R.id.top_regit_title)
+    void submit() {
+        /**提交资料*/
+        initData();
     }
 
 
@@ -118,6 +139,29 @@ public class SellerlDetailsActivity extends BaseActivity {
             mesg = "请输入资质说明！";
             isIt = false;
         }
+        if (sellImagesFile == null) {
+            mesg = "请上传本人照片！";
+            isIt = false;
+        }
+        if (sellCardZFile == null) {
+            mesg = "请上传身份证正面！";
+            isIt = false;
+        }
+        if (sellCardFFile == null) {
+            mesg = "请上传身份证反面！";
+            isIt = false;
+        }
+        if (file == null) {
+            mesg = "请上传资质照片！";
+            isIt = false;
+        }
+
+        if (isIt) {
+            new asyncTask().execute(1);
+        } else {
+            Toast.makeText(context, mesg, Toast.LENGTH_SHORT).show();
+        }
+
         return isIt;
     }
 
@@ -304,25 +348,29 @@ public class SellerlDetailsActivity extends BaseActivity {
 
         if (requestCode == 1) {
             Uri uri = data.getData();
-
             switch (type) {
                 case 1:
-
+                    ValidData.load(uri, sellImages, 70, 70);
+                    sellImagesFile = uri2File(uri);
                     break;
                 case 2:
-
+                    ValidData.load(uri, sellCardZ, 70, 70);
+                    sellCardZFile = uri2File(uri);
                     break;
                 case 3:
-
+                    ValidData.load(uri, sellCardF, 70, 70);
+                    sellCardFFile = uri2File(uri);
                     break;
                 case 4:
+                    file = uri2File(uri);
+                    files.add(file);
                     ContentValues cv = new ContentValues();
                     cv.put("image", uri.toString());
                     contentValues.add(cv);
                     appraiesimgeAdapter.notifyDataSetChanged();
                     break;
             }
-//            file = uri2File(uri);
+
         }
 
         if (requestCode == 2) {
@@ -332,25 +380,28 @@ public class SellerlDetailsActivity extends BaseActivity {
                      * 该uri就是照片文件夹对应的uri
                      */
                     String path = imageUri.getPath();
-
                     switch (type) {
                         case 1:
-
+                            sellImagesFile = new File(path);
+                            ValidData.load(imageUri, sellImages, 70, 70);
                             break;
                         case 2:
-
+                            sellCardZFile = new File(path);
+                            ValidData.load(imageUri, sellCardZ, 70, 70);
                             break;
                         case 3:
-
+                            sellCardFFile = new File(path);
+                            ValidData.load(imageUri, sellCardF, 70, 70);
                             break;
                         case 4:
+                            file = new File(path);
+                            files.add(file);
                             ContentValues cv = new ContentValues();
                             cv.put("image", imageUri.toString());
                             contentValues.add(cv);
                             appraiesimgeAdapter.notifyDataSetChanged();
                             break;
                     }
-//                    file = new File(path);
                 } catch (Exception e) {
                     e.printStackTrace();
                     Toast.makeText(this, "程序崩溃", Toast.LENGTH_SHORT).show();
@@ -360,4 +411,73 @@ public class SellerlDetailsActivity extends BaseActivity {
             }
         }
     }
+
+    /**
+     * 异步请求
+     */
+    private class asyncTask extends AsyncTask<Integer, Integer, Bundle> {
+
+        @Override
+        protected Bundle doInBackground(Integer... params) {
+            Bundle bundle = new Bundle();
+            switch (params[0]) {
+                case 1:
+                    mLoading = new Loading(context, topRegitTitle);
+                    mLoading.setText("正在提交......");
+                    mLoading.show();
+                    bundle.putInt("what", 1);
+                    break;
+                case 2:
+                    bundle.putInt("what", 2);
+                    break;
+            }
+            return bundle;
+        }
+
+        @Override
+        protected void onPostExecute(Bundle bundle) {
+            int what = bundle.containsKey("what") ? bundle.getInt("what") : -1;
+            removeLoading();
+            switch (what) {
+                case 1:
+                    break;
+                case 2:
+                    break;
+            }
+
+        }
+    }
+
+
+    /**
+     * 申请卖主
+     */
+    private void httpApply(int gender) {
+        HashMap<String, String> map = new HashMap<>();
+        map.put("action", "Merchant.apply");
+        map.put("uid", AppContext.cv.getAsInteger("id") + "");
+        map.put("gender", gender + "");
+        map.put("name", "gender");
+        String json = HttpConnectTool.post(map);
+        if (!json.equals("")) {
+//            xmlComm(json);
+        }
+    }
+
+    private void xmlApply(String data) {
+        try {
+            JSONObject jsonObject = new JSONObject(data);
+
+
+            String img = jsonObject.getString("data");
+            if (!img.equals("") && img != null) {
+                Toast.makeText(context, "提交成功", Toast.LENGTH_SHORT).show();
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        } catch (Exception ee) {
+            ee.printStackTrace();
+        }
+    }
+
 }
