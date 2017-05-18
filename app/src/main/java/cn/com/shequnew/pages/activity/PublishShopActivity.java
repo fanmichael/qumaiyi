@@ -116,7 +116,7 @@ public class PublishShopActivity extends BaseActivity {
         publishShopSumit.setClickable(false);
         ImageToools.verifyStoragePermissions(PublishShopActivity.this);
         contentValues.add(0, null);
-        appraiesimgeAdapter = new AppraiesimgeAdapter(contentValues, context);
+        appraiesimgeAdapter = new AppraiesimgeAdapter(contentValues, context, 2);
         publishShopImage.setAdapter(appraiesimgeAdapter);
         publishShopImage.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override

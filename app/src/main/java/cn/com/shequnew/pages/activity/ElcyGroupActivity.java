@@ -23,71 +23,78 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.com.shequnew.R;
-import cn.com.shequnew.pages.adapter.UserGoodsElcyAdapter;
+import cn.com.shequnew.pages.adapter.UserGroupAdapter;
 import cn.com.shequnew.pages.config.AppContext;
 import cn.com.shequnew.pages.http.HttpConnectTool;
 
-/**
- * 关联的商品
- */
-public class ElevancyShopActivity extends BaseActivity implements UserGoodsElcyAdapter.setBoolChose {
+
+public class ElcyGroupActivity extends BaseActivity implements UserGroupAdapter.setBoolChose {
+
 
     @BindView(R.id.image_back)
     ImageView imageBack;
+    @BindView(R.id.top_all)
+    TextView topAll;
     @BindView(R.id.top_title)
     TextView topTitle;
     @BindView(R.id.top_regit_title)
     TextView topRegitTitle;
-    @BindView(R.id.elevancy_list)
-    ListView elevancyList;
+    @BindView(R.id.group_list)
+    ListView groupList;
     private Context context;
-    private List<ContentValues> contentValuesList = new ArrayList<>();
-    private UserGoodsElcyAdapter userGoodsElcyAdapter;
+    private List<ContentValues> contentValues = new ArrayList<>();
+    private UserGroupAdapter userGroupAdapter;
+    private int type = 0;
     private List<String> strings = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_elevancy_shop);
+        setContentView(R.layout.activity_elcy_group);
         ButterKnife.bind(this);
         context = this;
-        topTitle.setText("我的商品");
+        topAll.setText("全选");
+        topTitle.setText("我的群聊");
         topRegitTitle.setText("关联");
+        topAll.setVisibility(View.VISIBLE);
         topRegitTitle.setVisibility(View.VISIBLE);
-        userGoodsElcyAdapter = new UserGoodsElcyAdapter(context, contentValuesList, this);
-        elevancyList.setAdapter(userGoodsElcyAdapter);
+        userGroupAdapter = new UserGroupAdapter(context, contentValues, this, type);
+        groupList.setAdapter(userGroupAdapter);
         new asyncTask().execute(1);
     }
+
 
     @OnClick(R.id.image_back)
     void back() {
         destroyActitity();
     }
 
-    /**
-     * 关联
-     */
+    //全选
+    @OnClick(R.id.top_all)
+    void all() {
+        type = 1;
+        new asyncTask().execute(2);
+    }
+
     @OnClick(R.id.top_regit_title)
-    void elevancy() {
+    void group() {
         if (strings.size() <= 0) {
-            Toast.makeText(context, "请选择关联的商品", Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, "请选择关联的群组", Toast.LENGTH_SHORT).show();
         } else {
             Intent intent = new Intent();
-            intent.putExtra("goods", strings.toString());
+            intent.putExtra("group", strings.toString());
             intent.putExtra("num", strings.size() + "");
-            this.setResult(11, intent);
+            this.setResult(12, intent);
             destroyActitity();
         }
+
     }
 
 
-    /**
-     * 选中还是未选择
-     */
     @Override
     public void onClick(int pos, boolean is) {
         if (is) {
-            strings.add(contentValuesList.get(pos).getAsInteger("id") + "");
+            strings.add(contentValues.get(pos).getAsInteger("group_id") + "");
         } else {
             if (strings.size() == 1) {
                 strings.clear();
@@ -109,6 +116,12 @@ public class ElevancyShopActivity extends BaseActivity implements UserGoodsElcyA
                     httpGoodsInfo();
                     bundle.putInt("what", 1);
                     break;
+                case 2:
+                    for (int i = 0; i < contentValues.size(); i++) {
+                        strings.add(contentValues.get(i).getAsInteger("id") + "");
+                    }
+                    bundle.putInt("what", 1);
+                    break;
 
             }
             return bundle;
@@ -120,7 +133,7 @@ public class ElevancyShopActivity extends BaseActivity implements UserGoodsElcyA
             // removeLoading();
             switch (what) {
                 case 1:
-                    userGoodsElcyAdapter.notifyDataSetChanged();
+                    userGroupAdapter.notifyDataSetChanged();
                     //初始加载数据
                     break;
 
@@ -129,14 +142,13 @@ public class ElevancyShopActivity extends BaseActivity implements UserGoodsElcyA
         }
     }
 
-
     /**
      * 发布商品
      */
     private void httpGoodsInfo() {
         try {
             HashMap<String, String> map = new HashMap<>();
-            map.put("action", "Trade.goodsInfo");
+            map.put("action", "Group.groupQuery");
             map.put("uid", AppContext.cv.getAsInteger("id") + "");
             String json = HttpConnectTool.post(map);
             if (!json.equals("")) {
@@ -155,14 +167,13 @@ public class ElevancyShopActivity extends BaseActivity implements UserGoodsElcyA
                 for (int i = 0; i < jsonArr.length(); i++) {
                     JSONObject jsonObj = jsonArr.getJSONObject(i);
                     ContentValues cv = new ContentValues();
-                    cv.put("good_image", jsonObj.getString("good_image"));
+                    cv.put("group_name", jsonObj.getString("group_name"));
                     cv.put("id", jsonObj.getInt("id"));
-                    cv.put("good_name", jsonObj.getString("good_name"));
-                    cv.put("price", jsonObj.getString("price"));
-                    cv.put("maf_time", jsonObj.getInt("maf_time"));
-                    cv.put("nick", jsonObj.getString("nick"));
+                    cv.put("group_id", jsonObj.getInt("group_id"));
+                    cv.put("uid", jsonObj.getInt("uid"));
+                    cv.put("group_public", jsonObj.getString("group_public"));
                     cv.put("icon", jsonObj.getString("icon"));
-                    contentValuesList.add(cv);
+                    contentValues.add(cv);
                 }
             }
         } catch (JSONException e) {
@@ -172,5 +183,6 @@ public class ElevancyShopActivity extends BaseActivity implements UserGoodsElcyA
         }
 
     }
+
 
 }

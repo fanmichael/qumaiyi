@@ -150,7 +150,6 @@ public class ChoseNewsActivity extends BaseActivity {
 
                     if (contentUser.size() > 0) {
                         choseUser.setVisibility(View.VISIBLE);
-
                     } else {
                         choseUser.setVisibility(View.GONE);
                     }

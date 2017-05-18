@@ -7,7 +7,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.ImageView;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.TextView;
 
 import com.facebook.drawee.view.SimpleDraweeView;
@@ -21,17 +22,26 @@ import cn.com.shequnew.tools.ValidData;
  * Created by Administrator on 2017/4/25 0025.
  */
 
-public class AppraiesimgeAdapter extends BaseAdapter {
+public class TagItemAdapter extends BaseAdapter {
     private List<ContentValues> contentValues;
     private Context context;
     private LayoutInflater mInflater;
-    private int type;
+    private int mSelect = -1;
+    private setOnclick setOnclick;
 
-    public AppraiesimgeAdapter(List<ContentValues> contentValues, Context context, int type) {
+    public TagItemAdapter(List<ContentValues> contentValues, Context context, setOnclick setOnclick) {
         this.context = context;
         this.contentValues = contentValues;
+        this.setOnclick = setOnclick;
         mInflater = LayoutInflater.from(context);
-        this.type = type;
+
+    }
+
+    public void changeSelected(int positon) { //刷新方法
+        if (positon != mSelect) {
+            mSelect = positon;
+            notifyDataSetChanged();
+        }
     }
 
     @Override
@@ -57,9 +67,9 @@ public class AppraiesimgeAdapter extends BaseAdapter {
         ViewHolder holder;
         if (convertView == null) {
             holder = new ViewHolder();
-            convertView = mInflater.inflate(R.layout.app_item_imagse, null);
-            holder.icon = (SimpleDraweeView) convertView.findViewById(R.id.app_image);
-            holder.imgDelete = (ImageView) convertView.findViewById(R.id.image_delete);
+            convertView = mInflater.inflate(R.layout.tag_itme, null);
+            holder.checkBox = (CheckBox) convertView.findViewById(R.id.tag_chose);
+            holder.title = (TextView) convertView.findViewById(R.id.text_tag);
             convertView.setTag(holder);
         } else {
             holder = (ViewHolder) convertView.getTag();
@@ -68,29 +78,30 @@ public class AppraiesimgeAdapter extends BaseAdapter {
         if (contentValues == null || contentValues.size() <= position) {
             return convertView;
         }
-        if (position == 0) {
-            holder.icon.setBackgroundDrawable(context.getResources().getDrawable(R.drawable.addimages));
-        } else {
-            final ContentValues cv = contentValues.get(position);
-            Uri imageIcon = Uri.parse(cv.getAsString("image"));
-            ValidData.load(imageIcon, holder.icon, 150, 150);
-            if (type == 2) {
-                holder.imgDelete.setVisibility(View.VISIBLE);
-                holder.imgDelete.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        contentValues.remove(position);
-                        notifyDataSetChanged();
-                    }
-                });
+        ContentValues cv = contentValues.get(position);
+        holder.title.setText(cv.getAsString("name"));
+        holder.checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                setOnclick.chose(position);
             }
+        });
+
+        if (mSelect == position) {
+            holder.checkBox.setChecked(true);
+        } else {
+            holder.checkBox.setChecked(false);
         }
         return convertView;
     }
 
     public final class ViewHolder {
-        public SimpleDraweeView icon;
-        public ImageView imgDelete;
+        public TextView title;
+        public CheckBox checkBox;
+    }
+
+    public interface setOnclick {
+        void chose(int pos);
     }
 
 }

@@ -18,17 +18,21 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
-import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.facebook.drawee.view.SimpleDraweeView;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -41,11 +45,16 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
 import cn.com.shequnew.R;
-import cn.com.shequnew.pages.activity.PublishShopActivity;
+import cn.com.shequnew.pages.activity.ElcyGroupActivity;
+import cn.com.shequnew.pages.activity.ElevancyShopActivity;
+import cn.com.shequnew.pages.activity.TagsActivity;
+import cn.com.shequnew.pages.activity.TagsItemActivity;
 import cn.com.shequnew.pages.adapter.AppraiesimgeAdapter;
+import cn.com.shequnew.pages.adapter.TagItemAdapter;
 import cn.com.shequnew.pages.config.AppContext;
 import cn.com.shequnew.pages.http.HttpConnectTool;
 import cn.com.shequnew.pages.prompt.Loading;
+import cn.com.shequnew.pages.view.MyGridView;
 import cn.com.shequnew.tools.ImageToools;
 import cn.com.shequnew.tools.TextContent;
 import cn.com.shequnew.tools.ValidData;
@@ -72,7 +81,7 @@ public class ContentFragment extends BasicFragment {
     @BindView(R.id.content_img_details)
     EditText contentImgDetails;
     @BindView(R.id.contect_gridView)
-    GridView contectGridView;
+    MyGridView contectGridView;
     @BindView(R.id.content_add_tags)
     LinearLayout contentAddTags;
     @BindView(R.id.content_text_qun)
@@ -88,6 +97,8 @@ public class ContentFragment extends BasicFragment {
     @BindView(R.id.content_add_sumit)
     Button contentAddSumit;
     Unbinder unbinder;
+    @BindView(R.id.tag_num)
+    TextView tagNum;
     /**
      * 添加数据刷新
      */
@@ -102,6 +113,10 @@ public class ContentFragment extends BasicFragment {
     private File sellImagesFile;
     private File file;
     private Context context;
+    private String goods = "";
+    private String group = "";
+    private String tag = "";
+    private String tagsId = "";
 
     @Nullable
     @Override
@@ -118,8 +133,9 @@ public class ContentFragment extends BasicFragment {
         contentAddSumit.setClickable(false);
         ImageToools.verifyStoragePermissions(getActivity());
         contentValues.add(0, null);
-        appraiesimgeAdapter = new AppraiesimgeAdapter(contentValues, context);
+        appraiesimgeAdapter = new AppraiesimgeAdapter(contentValues, context, 2);
         contectGridView.setAdapter(appraiesimgeAdapter);
+
     }
 
 
@@ -137,7 +153,9 @@ public class ContentFragment extends BasicFragment {
      */
     @OnClick(R.id.content_type_lin)
     void linType() {
-
+        Intent intent = new Intent();
+        intent.setClass(context, TagsItemActivity.class);
+        startActivityForResult(intent, 14);
     }
 
 
@@ -146,8 +164,9 @@ public class ContentFragment extends BasicFragment {
      */
     @OnClick(R.id.content_add_tags)
     void addTags() {
-
-
+        Intent intent = new Intent();
+        intent.setClass(context, TagsActivity.class);
+        startActivityForResult(intent, 13);
     }
 
     /**
@@ -155,7 +174,9 @@ public class ContentFragment extends BasicFragment {
      */
     @OnClick(R.id.contect_lin_qun)
     void linQun() {
-
+        Intent intent = new Intent();
+        intent.setClass(context, ElcyGroupActivity.class);
+        startActivityForResult(intent, 12);
     }
 
     /**
@@ -163,9 +184,10 @@ public class ContentFragment extends BasicFragment {
      */
     @OnClick(R.id.content_lin_add_shop)
     void linShop() {
-//        ElevancyShopActivity
+        Intent intent = new Intent();
+        intent.setClass(context, ElevancyShopActivity.class);
+        startActivityForResult(intent, 11);
     }
-
 
     /**
      * 发布
@@ -219,23 +241,45 @@ public class ContentFragment extends BasicFragment {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-
+        if (resultCode == 11) {
+            goods = data.getStringExtra("goods");
+            String num = data.getStringExtra("num");
+            shopContentNum.setText("已关联" + num + "商品");
+        }
+        if (resultCode == 12) {
+            goods = data.getStringExtra("group");
+            String number = data.getStringExtra("num");
+            contentTextQun.setText("已关联" + number + "群组");
+        }
+        if (resultCode == 13) {
+            tag = data.getStringExtra("tag");
+            String number = data.getStringExtra("num");
+            tagNum.setText("已关联" + number + "标签");
+        }
+        if (resultCode == 14) {
+            String ts = data.getStringExtra("name");
+            tagsId = data.getStringExtra("num");
+            contentTypeName.setText(ts);
+        }
 
         if (requestCode == 1) {
-            Uri uri = data.getData();
-            switch (type) {
-                case 1:
-                    ValidData.load(uri, contentImag, 90, 90);
-                    sellImagesFile = uri2File(uri);
-                    break;
-                case 2:
-                    file = uri2File(uri);
-                    files.add(file);
-                    ContentValues cv = new ContentValues();
-                    cv.put("image", uri.toString());
-                    contentValues.add(cv);
-                    appraiesimgeAdapter.notifyDataSetChanged();
-                    break;
+            if (resultCode == getActivity().RESULT_OK) {
+                Uri uri = data.getData();
+
+                switch (type) {
+                    case 1:
+                        ValidData.load(uri, contentImag, 90, 90);
+                        sellImagesFile = uri2File(uri);
+                        break;
+                    case 2:
+                        file = uri2File(uri);
+                        files.add(file);
+                        ContentValues cv = new ContentValues();
+                        cv.put("image", uri.toString());
+                        contentValues.add(cv);
+                        appraiesimgeAdapter.notifyDataSetChanged();
+                        break;
+                }
             }
 
         }
@@ -372,8 +416,27 @@ public class ContentFragment extends BasicFragment {
             msg = "请输入添加内容！";
             isit = false;
         }
+        if (tagsId.equals("")) {
+            msg = "请选择分类！";
+            isit = false;
+        }
+//        if (tag.equals("")) {
+//            msg = "请选择标签！";
+//            isit = false;
+//        }
+//        if (tagsId.equals("")) {
+//            msg = "请选择分类！";
+//            isit = false;
+//        }
+//        if (tagsId.equals("")) {
+//            msg = "请选择分类！";
+//            isit = false;
+//        }
 
         if (isit) {
+            mLoading = new Loading(context, contentAddSumit);
+            mLoading.setText("正在提交......");
+            mLoading.show();
             new asyncTask().execute(1);
         } else {
             Toast.makeText(context, msg, Toast.LENGTH_SHORT).show();
@@ -393,14 +456,9 @@ public class ContentFragment extends BasicFragment {
             Bundle bundle = new Bundle();
             switch (params[0]) {
                 case 1:
-                    mLoading = new Loading(context, contentAddSumit);
-                    mLoading.setText("正在提交......");
-                    mLoading.show();
+
                     httpShop();
                     bundle.putInt("what", 1);
-                    break;
-                case 2:
-                    bundle.putInt("what", 2);
                     break;
             }
             return bundle;
@@ -412,9 +470,6 @@ public class ContentFragment extends BasicFragment {
             removeLoading();
             switch (what) {
                 case 1:
-
-                    break;
-                case 2:
 
                     break;
             }
@@ -431,18 +486,18 @@ public class ContentFragment extends BasicFragment {
             HashMap<String, String> map = new HashMap<>();
             map.put("action", "Trade.tradeRelease");
             map.put("uid", AppContext.cv.getAsInteger("id") + "");
-            map.put("cid", "");
+            map.put("cid", tagsId);
             map.put("title", contentName.getText().toString().trim());
             map.put("content", contentImgDetails.getText().toString().trim());
-            map.put("tags", "");
-            map.put("groupid", "");
-            map.put("goodsid", "");
+            map.put("tags", tag);
+            map.put("groupid", group);
+            map.put("goodsid", goods);
             map.put("type", "0");
             Map<String, File> file = new HashMap<String, File>();
             file.put("cover", sellImagesFile);
             if (files.size() > 0) {
                 for (int i = 0; i < files.size(); i++) {
-                    file.put("show", files.get(i));
+                    file.put("show[]", files.get(i));
                 }
             }
             String json = HttpConnectTool.post(map, file);
@@ -460,4 +515,6 @@ public class ContentFragment extends BasicFragment {
         super.onDestroyView();
         unbinder.unbind();
     }
+
+
 }

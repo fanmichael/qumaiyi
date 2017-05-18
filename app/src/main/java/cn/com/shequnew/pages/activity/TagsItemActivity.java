@@ -6,9 +6,9 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.ImageView;
+import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import org.json.JSONArray;
@@ -23,78 +23,65 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.com.shequnew.R;
-import cn.com.shequnew.pages.adapter.UserGoodsElcyAdapter;
-import cn.com.shequnew.pages.config.AppContext;
+import cn.com.shequnew.pages.activity.BaseActivity;
+import cn.com.shequnew.pages.adapter.TagItemAdapter;
 import cn.com.shequnew.pages.http.HttpConnectTool;
 
-/**
- * 关联的商品
- */
-public class ElevancyShopActivity extends BaseActivity implements UserGoodsElcyAdapter.setBoolChose {
+public class TagsItemActivity extends BaseActivity implements TagItemAdapter.setOnclick {
 
-    @BindView(R.id.image_back)
-    ImageView imageBack;
-    @BindView(R.id.top_title)
-    TextView topTitle;
-    @BindView(R.id.top_regit_title)
-    TextView topRegitTitle;
-    @BindView(R.id.elevancy_list)
-    ListView elevancyList;
+
+    @BindView(R.id.tag_list)
+    ListView tagList;
+    @BindView(R.id.tag_cal)
+    Button tagCal;
+    @BindView(R.id.tag_sumbit)
+    Button tagSumbit;
+    private TagItemAdapter tagItemAdapter;
+    private List<ContentValues> tags = new ArrayList<>();
     private Context context;
-    private List<ContentValues> contentValuesList = new ArrayList<>();
-    private UserGoodsElcyAdapter userGoodsElcyAdapter;
-    private List<String> strings = new ArrayList<>();
+    private int num = -1;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_elevancy_shop);
+        setContentView(R.layout.activity_tags2);
         ButterKnife.bind(this);
         context = this;
-        topTitle.setText("我的商品");
-        topRegitTitle.setText("关联");
-        topRegitTitle.setVisibility(View.VISIBLE);
-        userGoodsElcyAdapter = new UserGoodsElcyAdapter(context, contentValuesList, this);
-        elevancyList.setAdapter(userGoodsElcyAdapter);
+        tagItemAdapter = new TagItemAdapter(tags, context, this);
+        tagList.setAdapter(tagItemAdapter);
+//        tagList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+//                num = position;
+//                tagItemAdapter.changeSelected(position);
+//            }
+//        });
         new asyncTask().execute(1);
     }
 
-    @OnClick(R.id.image_back)
-    void back() {
+    @OnClick(R.id.tag_cal)
+    void cal() {
         destroyActitity();
     }
 
-    /**
-     * 关联
-     */
-    @OnClick(R.id.top_regit_title)
-    void elevancy() {
-        if (strings.size() <= 0) {
-            Toast.makeText(context, "请选择关联的商品", Toast.LENGTH_SHORT).show();
-        } else {
-            Intent intent = new Intent();
-            intent.putExtra("goods", strings.toString());
-            intent.putExtra("num", strings.size() + "");
-            this.setResult(11, intent);
-            destroyActitity();
+    @OnClick(R.id.tag_sumbit)
+    void sumbit() {
+        if (num == -1) {
+            Toast.makeText(context, "请选择分类！", Toast.LENGTH_SHORT).show();
+            return;
         }
+        Intent intent = new Intent();
+        intent.putExtra("num", tags.get(num).getAsInteger("id") + "");
+        intent.putExtra("name", tags.get(num).getAsString("name") + "");
+        this.setResult(14, intent);
+        destroyActitity();
     }
 
-
-    /**
-     * 选中还是未选择
-     */
     @Override
-    public void onClick(int pos, boolean is) {
-        if (is) {
-            strings.add(contentValuesList.get(pos).getAsInteger("id") + "");
-        } else {
-            if (strings.size() == 1) {
-                strings.clear();
-            } else {
-                strings.remove(pos);
-            }
-        }
+    public void chose(int pos) {
+        num = pos;
+        tagItemAdapter.changeSelected(pos);
     }
 
 
@@ -120,7 +107,7 @@ public class ElevancyShopActivity extends BaseActivity implements UserGoodsElcyA
             // removeLoading();
             switch (what) {
                 case 1:
-                    userGoodsElcyAdapter.notifyDataSetChanged();
+                    tagItemAdapter.notifyDataSetChanged();
                     //初始加载数据
                     break;
 
@@ -129,15 +116,13 @@ public class ElevancyShopActivity extends BaseActivity implements UserGoodsElcyA
         }
     }
 
-
     /**
      * 发布商品
      */
     private void httpGoodsInfo() {
         try {
             HashMap<String, String> map = new HashMap<>();
-            map.put("action", "Trade.goodsInfo");
-            map.put("uid", AppContext.cv.getAsInteger("id") + "");
+            map.put("action", "Community.getAllCate");
             String json = HttpConnectTool.post(map);
             if (!json.equals("")) {
                 listXml(json);
@@ -155,14 +140,10 @@ public class ElevancyShopActivity extends BaseActivity implements UserGoodsElcyA
                 for (int i = 0; i < jsonArr.length(); i++) {
                     JSONObject jsonObj = jsonArr.getJSONObject(i);
                     ContentValues cv = new ContentValues();
-                    cv.put("good_image", jsonObj.getString("good_image"));
                     cv.put("id", jsonObj.getInt("id"));
-                    cv.put("good_name", jsonObj.getString("good_name"));
-                    cv.put("price", jsonObj.getString("price"));
-                    cv.put("maf_time", jsonObj.getInt("maf_time"));
-                    cv.put("nick", jsonObj.getString("nick"));
-                    cv.put("icon", jsonObj.getString("icon"));
-                    contentValuesList.add(cv);
+                    cv.put("status", jsonObj.getInt("status"));
+                    cv.put("name", jsonObj.getString("name"));
+                    tags.add(cv);
                 }
             }
         } catch (JSONException e) {
@@ -170,7 +151,7 @@ public class ElevancyShopActivity extends BaseActivity implements UserGoodsElcyA
         } catch (NullPointerException e) {
             e.printStackTrace();
         }
-
     }
+
 
 }

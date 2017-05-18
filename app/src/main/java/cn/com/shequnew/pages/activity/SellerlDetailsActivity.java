@@ -20,7 +20,6 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
-import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -44,7 +43,9 @@ import cn.com.shequnew.pages.adapter.AppraiesimgeAdapter;
 import cn.com.shequnew.pages.config.AppContext;
 import cn.com.shequnew.pages.http.HttpConnectTool;
 import cn.com.shequnew.pages.prompt.Loading;
+import cn.com.shequnew.pages.view.MyGridView;
 import cn.com.shequnew.tools.ImageToools;
+import cn.com.shequnew.tools.ListTools;
 import cn.com.shequnew.tools.TextContent;
 import cn.com.shequnew.tools.ValidData;
 
@@ -78,7 +79,7 @@ public class SellerlDetailsActivity extends BaseActivity {
     @BindView(R.id.sell_news_details)
     TextView sellNewsDetails;
     @BindView(R.id.sell_card_gridView)
-    GridView sellCardGridView;
+    MyGridView sellCardGridView;
 
     private File sellImagesFile;
     private File sellCardZFile;
@@ -157,7 +158,7 @@ public class SellerlDetailsActivity extends BaseActivity {
         topRegitTitle.setVisibility(View.VISIBLE);
         topRegitTitle.setClickable(false);
         contentValues.add(0, null);
-        appraiesimgeAdapter = new AppraiesimgeAdapter(contentValues, context);
+        appraiesimgeAdapter = new AppraiesimgeAdapter(contentValues, context, 2);
         sellCardGridView.setAdapter(appraiesimgeAdapter);
         sellCardGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -298,30 +299,31 @@ public class SellerlDetailsActivity extends BaseActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
         if (requestCode == 1) {
-            Uri uri = data.getData();
-            switch (type) {
-                case 1:
-                    ValidData.load(uri, sellImages, 70, 70);
-                    sellImagesFile = uri2File(uri);
-                    break;
-                case 2:
-                    ValidData.load(uri, sellCardZ, 70, 70);
-                    sellCardZFile = uri2File(uri);
-                    break;
-                case 3:
-                    ValidData.load(uri, sellCardF, 70, 70);
-                    sellCardFFile = uri2File(uri);
-                    break;
-                case 4:
-                    file = uri2File(uri);
-                    files.add(file);
-                    ContentValues cv = new ContentValues();
-                    cv.put("image", uri.toString());
-                    contentValues.add(cv);
-                    appraiesimgeAdapter.notifyDataSetChanged();
-                    break;
+            if (resultCode == RESULT_OK) {
+                Uri uri = data.getData();
+                switch (type) {
+                    case 1:
+                        ValidData.load(uri, sellImages, 70, 70);
+                        sellImagesFile = uri2File(uri);
+                        break;
+                    case 2:
+                        ValidData.load(uri, sellCardZ, 70, 70);
+                        sellCardZFile = uri2File(uri);
+                        break;
+                    case 3:
+                        ValidData.load(uri, sellCardF, 70, 70);
+                        sellCardFFile = uri2File(uri);
+                        break;
+                    case 4:
+                        file = uri2File(uri);
+                        files.add(file);
+                        ContentValues cv = new ContentValues();
+                        cv.put("image", uri.toString());
+                        contentValues.add(cv);
+                        appraiesimgeAdapter.notifyDataSetChanged();
+                        break;
+                }
             }
-
         }
 
         if (requestCode == 2) {
@@ -488,7 +490,7 @@ public class SellerlDetailsActivity extends BaseActivity {
             JSONObject jsonObject = new JSONObject(data);
             int img = jsonObject.getInt("error");
             if (img == 115) {
-                Toast.makeText(context, "成功", Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, "提交成功", Toast.LENGTH_SHORT).show();
             }
             if (img == 108) {
                 Toast.makeText(context, "正在审核中", Toast.LENGTH_SHORT).show();

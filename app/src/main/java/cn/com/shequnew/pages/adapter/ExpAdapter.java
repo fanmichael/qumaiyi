@@ -23,7 +23,7 @@ public class ExpAdapter extends BaseAdapter {
     private Context context;
     private LayoutInflater mInflater;
     private setonClick setonClick;
-    private int mSelect = 0;
+    private int mSelect = -1;
 
     public ExpAdapter(List<ContentValues> contentValues, Context context, setonClick setonClick) {
         this.context = context;

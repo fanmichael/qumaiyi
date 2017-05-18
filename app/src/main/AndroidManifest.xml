@@ -309,7 +309,15 @@
             android:theme="@android:style/Theme.NoTitleBar" />
         <activity android:name=".pages.activity.VideoContentActivity" />
         <activity android:name=".pages.activity.PublishShopActivity" />
-        <activity android:name=".pages.activity.ElevancyShopActivity"></activity>
+        <activity android:name=".pages.activity.ElevancyShopActivity" />
+        <activity android:name=".pages.activity.ElcyGroupActivity" />
+        <activity android:name=".pages.activity.TagsActivity" />
+        <activity
+            android:name=".pages.activity.TagsItemActivity"
+            android:configChanges="keyboardHidden|orientation"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:theme="@style/publish"></activity>
     </application>
 
 </manifest>

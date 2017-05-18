@@ -139,7 +139,7 @@ public class AppraiseActivity extends BaseActivity {
         Bundle bundle = this.getIntent().getExtras();
         ddid = bundle.getString("ddid");
         contentValues.add(0, null);
-        appraiesimgeAdapter = new AppraiesimgeAdapter(contentValues, context);
+        appraiesimgeAdapter = new AppraiesimgeAdapter(contentValues, context,1);
         advBoardGridView.setAdapter(appraiesimgeAdapter);
         advBoardGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override

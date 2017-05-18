@@ -91,7 +91,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:gravity="right"
-                    android:text="估计"
+                    android:text=""
                     android:textColor="@color/col_bg" />
 
                 <ImageView
@@ -154,7 +154,7 @@
                     android:padding="10dp"
                     android:textSize="14dp" />
 
-                <GridView
+                <cn.com.shequnew.pages.view.MyGridView
                     android:id="@+id/contect_gridView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -165,7 +165,7 @@
                     android:numColumns="4"
                     android:scrollbarSize="1px"
                     android:stretchMode="columnWidth"
-                    android:verticalSpacing="10dp"></GridView>
+                    android:verticalSpacing="10dp"></cn.com.shequnew.pages.view.MyGridView>
 
                 <LinearLayout
                     android:id="@+id/content_add_tags"
@@ -183,11 +183,12 @@
                         android:textColor="@color/col_bg" />
 
                     <TextView
+                        android:id="@+id/tag_num"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:gravity="right"
-                        android:text="dsds"
+                        android:text=""
                         android:textColor="@color/bd_top" />
 
                     <ImageView
