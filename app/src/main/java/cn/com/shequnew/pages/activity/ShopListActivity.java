@@ -5,6 +5,7 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.widget.AbsListView;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -66,6 +67,20 @@ public class ShopListActivity extends BaseActivity implements SwipeRefreshLayout
         topTitle.setText(bundle.getString("name"));
         initView();
 
+        listView.setOnScrollListener(new AbsListView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(AbsListView view, int scrollState) {
+
+            }
+
+            @Override
+            public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+                if (firstVisibleItem == 0)
+                    refreshLayout.setEnabled(true);
+                else
+                    refreshLayout.setEnabled(false);
+            }
+        });
     }
 
     private void initView() {

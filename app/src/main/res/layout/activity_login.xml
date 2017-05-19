@@ -14,6 +14,7 @@
         <TextView
             android:layout_width="0px"
             android:layout_height="match_parent"
+            android:layout_marginLeft="20dp"
             android:layout_weight="1"
             android:gravity="center"
             android:text="@string/login"
@@ -66,7 +67,7 @@
                 android:layout_height="15dp"
                 android:layout_gravity="center"
                 android:layout_marginRight="15dp"
-                android:background="@drawable/icon_search_close"
+                android:background="@drawable/remove"
                 android:visibility="gone" />
 
         </LinearLayout>
@@ -102,7 +103,7 @@
                 android:layout_height="15dp"
                 android:layout_gravity="center"
                 android:layout_marginRight="15dp"
-                android:background="@drawable/icon_search_close"
+                android:background="@drawable/remove"
                 android:visibility="gone" />
         </LinearLayout>
     </LinearLayout>

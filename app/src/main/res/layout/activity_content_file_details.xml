@@ -16,7 +16,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:orientation="horizontal">
+        android:orientation="vertical">
 
         <LinearLayout
             android:id="@+id/content_lin"
@@ -124,7 +124,10 @@
                 android:textColor="@color/col_bg" />
         </RadioGroup>
 
-
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/bg"></View>
     </LinearLayout>
 
     <android.support.v7.widget.LinearLayoutCompat
@@ -137,9 +140,8 @@
             android:id="@+id/scrollview"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:scrollbars="none"
             android:fadingEdge="vertical"
-            >
+            android:scrollbars="none">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -271,7 +273,8 @@
                                 android:id="@+id/file_details_attention"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:orientation="horizontal">
+                                android:orientation="horizontal"
+                                android:visibility="gone">
 
                                 <ImageView
                                     android:layout_width="wrap_content"
@@ -362,8 +365,10 @@
                         android:focusable="false"></ListView>
 
                     <TextView
+                        android:id="@+id/file_shop_spek"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_gravity="center"
                         android:text="没有相关商品" />
 
                 </LinearLayout>
@@ -395,6 +400,12 @@
                         android:dividerHeight="1dp"
                         android:focusable="false"></ListView>
 
+                    <TextView
+                        android:id="@+id/file_details_spek"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:text="没有相关评论" />
 
                 </LinearLayout>
 

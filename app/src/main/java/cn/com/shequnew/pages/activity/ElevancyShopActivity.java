@@ -72,8 +72,18 @@ public class ElevancyShopActivity extends BaseActivity implements UserGoodsElcyA
         if (strings.size() <= 0) {
             Toast.makeText(context, "请选择关联的商品", Toast.LENGTH_SHORT).show();
         } else {
+            StringBuffer stringBufferPop = new StringBuffer();
+            if (strings.size() > 0) {
+                for (int i = 0; i < strings.size(); i++) {
+                    if (strings.size() == (i + 1)) {
+                        stringBufferPop.append(strings.get(i));
+                    } else {
+                        stringBufferPop.append(strings.get(i) + ",");
+                    }
+                }
+            }
             Intent intent = new Intent();
-            intent.putExtra("goods", strings.toString());
+            intent.putExtra("goods", stringBufferPop.toString());
             intent.putExtra("num", strings.size() + "");
             this.setResult(11, intent);
             destroyActitity();

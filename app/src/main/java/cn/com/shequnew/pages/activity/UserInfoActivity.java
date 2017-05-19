@@ -188,21 +188,15 @@ public class UserInfoActivity extends BaseActivity {
     @OnClick(R.id.user_attention)
     void userSttention() {
         //关注
-        setDelayMessage(2, 100);
-        mLoading = new Loading(
-                context, imageBack);
-        mLoading.setText("正在加载......");
-        mLoading.show();
+        new asyncTask().execute(2);
+
     }
 
     @OnClick(R.id.user_attention_no)
     void attNo() {
         //取消关注
-        mLoading = new Loading(
-                context, imageBack);
-        mLoading.setText("正在加载......");
-        mLoading.show();
-        setDelayMessage(3, 100);
+        new asyncTask().execute(3);
+
     }
 
 
@@ -223,6 +217,8 @@ public class UserInfoActivity extends BaseActivity {
         userAddress.setText(cvUser.getAsString("location"));
         userInfo.setText("粉丝  " + cvUser.getAsInteger("info"));
         userFollow.setText("关注  " + cvUser.getAsInteger("follow"));
+
+
     }
 
     private void dynamicAdapter() {
@@ -312,9 +308,11 @@ public class UserInfoActivity extends BaseActivity {
                     break;
                 case 2:
                     httpAttention();
+                    bundle.putInt("what", 2);
                     break;
                 case 3:
                     httpAttention();
+                    bundle.putInt("what", 3);
                     break;
             }
             return bundle;
@@ -339,12 +337,12 @@ public class UserInfoActivity extends BaseActivity {
                     }
                     break;
                 case 2:
-                    userAttention.setVisibility(View.VISIBLE);
-                    userAttentionNo.setVisibility(View.GONE);
-                    break;
-                case 3:
                     userAttention.setVisibility(View.GONE);
                     userAttentionNo.setVisibility(View.VISIBLE);
+                    break;
+                case 3:
+                    userAttention.setVisibility(View.VISIBLE);
+                    userAttentionNo.setVisibility(View.GONE);
                     break;
             }
         }
@@ -360,7 +358,7 @@ public class UserInfoActivity extends BaseActivity {
             String json = HttpConnectTool.post(map);
             if (!json.equals("")) {
                 JSONObject obj = new JSONObject(json);
-                int error = obj.getInt("desc");
+                int error = obj.getInt("error");
                 if (error == 121) {
                     isCancal = false;
                 } else if (error == 0) {
@@ -383,17 +381,6 @@ public class UserInfoActivity extends BaseActivity {
             map.put("type", "2");
             map.put("type_id", uid + "");
             String json = HttpConnectTool.post(map);
-            if (!json.equals("")) {
-                JSONObject obj = new JSONObject(json);
-                String desc = obj.getString("desc");
-                if (desc.equals("success")) {
-                    if (isCancal == true) {
-                        setDelayMessage(3, 100);
-                    } else {
-                        setDelayMessage(4, 100);
-                    }
-                }
-            }
         } catch (Exception e) {
             e.printStackTrace();
         }

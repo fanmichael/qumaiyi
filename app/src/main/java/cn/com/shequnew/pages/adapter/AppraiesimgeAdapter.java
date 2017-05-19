@@ -68,6 +68,7 @@ public class AppraiesimgeAdapter extends BaseAdapter {
         if (contentValues == null || contentValues.size() <= position) {
             return convertView;
         }
+
         if (position == 0) {
             holder.icon.setBackgroundDrawable(context.getResources().getDrawable(R.drawable.addimages));
         } else {

@@ -247,7 +247,7 @@ public class ContentFragment extends BasicFragment {
             shopContentNum.setText("已关联" + num + "商品");
         }
         if (resultCode == 12) {
-            goods = data.getStringExtra("group");
+            group = data.getStringExtra("group");
             String number = data.getStringExtra("num");
             contentTextQun.setText("已关联" + number + "群组");
         }
@@ -456,7 +456,6 @@ public class ContentFragment extends BasicFragment {
             Bundle bundle = new Bundle();
             switch (params[0]) {
                 case 1:
-
                     httpShop();
                     bundle.putInt("what", 1);
                     break;
@@ -470,7 +469,12 @@ public class ContentFragment extends BasicFragment {
             removeLoading();
             switch (what) {
                 case 1:
-
+                    if (error == 0) {
+                        Toast.makeText(context, "提交成功！", Toast.LENGTH_SHORT).show();
+                        getActivity().onBackPressed();
+                    } else if (error == 121) {
+                        Toast.makeText(context, "提交失败！", Toast.LENGTH_SHORT).show();
+                    }
                     break;
             }
 
@@ -484,7 +488,7 @@ public class ContentFragment extends BasicFragment {
     private void httpShop() {
         try {
             HashMap<String, String> map = new HashMap<>();
-            map.put("action", "Trade.tradeRelease");
+            map.put("action", "Community.addNote");
             map.put("uid", AppContext.cv.getAsInteger("id") + "");
             map.put("cid", tagsId);
             map.put("title", contentName.getText().toString().trim());
@@ -502,11 +506,29 @@ public class ContentFragment extends BasicFragment {
             }
             String json = HttpConnectTool.post(map, file);
             if (!json.equals("")) {
-//            xmlComm(json);
+                listXml(json);
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    private int error;
+
+    public void listXml(String data) {
+        try {
+            JSONObject obj = new JSONObject(data);
+            if (obj.has("error")) {
+                error = obj.getInt("error");
+            } else {
+                Toast.makeText(context, "提交失败！", Toast.LENGTH_SHORT).show();
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+        }
+
     }
 
 

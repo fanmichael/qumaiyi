@@ -15,7 +15,6 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ScrollView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.facebook.drawee.view.SimpleDraweeView;
 
@@ -210,10 +209,8 @@ public class ShopDetailsActivity extends BaseActivity implements UserGoodsShopAd
     @OnClick(R.id.shop_details_attention)
     void shopAtten() {
         //关注
-        mLoading = new Loading(
-                context, shopDetailsAttention);
-        mLoading.setText("正在加载......");
-        mLoading.show();
+        shopDetailsAttention.setVisibility(View.GONE);
+        shopDetailsAttentionNo.setVisibility(View.VISIBLE);
         typecomm = 4;
         setDelayMessage(4, 100);
 
@@ -222,24 +219,21 @@ public class ShopDetailsActivity extends BaseActivity implements UserGoodsShopAd
     @OnClick(R.id.shop_details_attention_no)
     void shopNoAtten() {
         //取消关注
-        mLoading = new Loading(
-                context, shopDetailsAttentionNo);
-        mLoading.setText("正在加载......");
-        mLoading.show();
+        shopDetailsAttention.setVisibility(View.VISIBLE);
+        shopDetailsAttentionNo.setVisibility(View.GONE);
         typecomm = 5;
         setDelayMessage(5, 100);
     }
 
     @OnClick(R.id.linayout_estimate)
-    void shopEstimate(){
-        Intent intent=new Intent(context,EstimateActivity.class);
-        Bundle bundle=new Bundle();
-        bundle.putInt("id",id);
+    void shopEstimate() {
+        Intent intent = new Intent(context, EstimateActivity.class);
+        Bundle bundle = new Bundle();
+        bundle.putInt("id", id);
         intent.putExtras(bundle);
         context.startActivity(intent);
 
     }
-
 
 
     private void initDelay() {
@@ -306,7 +300,7 @@ public class ShopDetailsActivity extends BaseActivity implements UserGoodsShopAd
                     break;
                 case 4:
                     httpFollowStatusfollow();
-                    bundle.putInt("what", 4);
+//                    bundle.putInt("what", 4);
                     break;
                 case 5:
                     httpFollowStatusfollow();

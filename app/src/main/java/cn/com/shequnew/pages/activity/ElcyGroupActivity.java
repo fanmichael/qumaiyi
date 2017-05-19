@@ -81,8 +81,18 @@ public class ElcyGroupActivity extends BaseActivity implements UserGroupAdapter.
         if (strings.size() <= 0) {
             Toast.makeText(context, "请选择关联的群组", Toast.LENGTH_SHORT).show();
         } else {
+            StringBuffer stringBufferPop = new StringBuffer();
+            if (strings.size() > 0) {
+                for (int i = 0; i < strings.size(); i++) {
+                    if(strings.size()==(i+1)){
+                        stringBufferPop.append(strings.get(i));
+                    }else{
+                        stringBufferPop.append(strings.get(i) + ",");
+                    }
+                }
+            }
             Intent intent = new Intent();
-            intent.putExtra("group", strings.toString());
+            intent.putExtra("group", stringBufferPop.toString());
             intent.putExtra("num", strings.size() + "");
             this.setResult(12, intent);
             destroyActitity();

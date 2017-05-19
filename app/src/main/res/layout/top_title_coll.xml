@@ -14,9 +14,10 @@
 
         <ImageView
             android:id="@+id/image_back_coll"
-            android:layout_width="wrap_content"
-            android:layout_height="25dp"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
             android:layout_gravity="left|center"
+            android:layout_marginLeft="10dp"
             android:background="@drawable/arrowleft"
             android:clickable="true"
             android:scaleType="centerCrop" />
@@ -42,8 +43,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginRight="10dp"
                 android:src="@drawable/collect"
-                android:visibility="gone"
-                />
+                android:visibility="gone" />
 
             <ImageView
                 android:id="@+id/collect_re"
@@ -64,4 +64,8 @@
 
     </FrameLayout>
 
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/bg"></View>
 </LinearLayout>

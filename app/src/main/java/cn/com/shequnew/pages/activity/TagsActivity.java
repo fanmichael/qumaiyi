@@ -107,8 +107,20 @@ public class TagsActivity extends BaseActivity implements TagsAdapter.setOnclick
         for (int i = 0; i < cvs.size(); i++) {
             strings.add(cvs.get(i).getAsString("name"));
         }
+        StringBuffer stringBufferPop = new StringBuffer();
+        if (strings.size() > 0) {
+            for (int i = 0; i < strings.size(); i++) {
+                if(strings.size()==(i+1)){
+                    stringBufferPop.append(strings.get(i));
+                }else{
+                    stringBufferPop.append(strings.get(i) + ",");
+                }
+
+            }
+        }
+
         Intent intent = new Intent();
-        intent.putExtra("tag", strings.toString());
+        intent.putExtra("tag", stringBufferPop.toString());
         intent.putExtra("num", strings.size() + "");
         this.setResult(13, intent);
         destroyActitity();

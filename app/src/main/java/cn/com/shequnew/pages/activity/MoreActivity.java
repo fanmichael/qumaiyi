@@ -2,6 +2,7 @@ package cn.com.shequnew.pages.activity;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
@@ -9,9 +10,11 @@ import android.os.Message;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
 import android.view.View;
+import android.widget.AbsListView;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.handmark.pulltorefresh.library.PullToRefreshBase;
 import com.handmark.pulltorefresh.library.PullToRefreshListView;
@@ -34,7 +37,7 @@ import cn.com.shequnew.pages.fragment.DynamicFragment;
 import cn.com.shequnew.pages.http.HttpConnectTool;
 import cn.com.shequnew.tools.ListTools;
 
-public class MoreActivity extends BaseActivity implements SwipeRefreshLayout.OnRefreshListener,UserGoodsShopAdapter.setOnClickLoction{
+public class MoreActivity extends BaseActivity implements SwipeRefreshLayout.OnRefreshListener, UserGoodsShopAdapter.setOnClickLoction {
 
     @BindView(R.id.image_back)
     ImageView imageBack;
@@ -47,13 +50,13 @@ public class MoreActivity extends BaseActivity implements SwipeRefreshLayout.OnR
     private ListView listView = null;
     private MoreAdapter moreAdapter;
     public String cid;
-    public String page = "1";
+    public int page = 1;
     public String hot;
     private Context context;
     private List<ContentValues> moreList = new ArrayList<>();
     private List<ContentValues> cahe = new ArrayList<>();
     private List<ContentValues> newList = new ArrayList<>();
-
+    private List<ContentValues> newListData = new ArrayList<>();
     private UserGoodsShopAdapter goodsAdapter;//喜欢的商品
 
     @Override
@@ -64,7 +67,20 @@ public class MoreActivity extends BaseActivity implements SwipeRefreshLayout.OnR
         ButterKnife.bind(this);
         initDelay();
         initView();
+        listView.setOnScrollListener(new AbsListView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(AbsListView view, int scrollState) {
 
+            }
+
+            @Override
+            public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+                if (firstVisibleItem == 0)
+                    slMore.setEnabled(true);
+                else
+                    slMore.setEnabled(false);
+            }
+        });
 
     }
 
@@ -73,7 +89,7 @@ public class MoreActivity extends BaseActivity implements SwipeRefreshLayout.OnR
             newList = new ArrayList<ContentValues>();
         }
         if (goodsAdapter == null) {
-            goodsAdapter = new UserGoodsShopAdapter(context, newList,this);
+            goodsAdapter = new UserGoodsShopAdapter(context, newListData, this);
             listView.setAdapter(goodsAdapter);
         }
         return goodsAdapter;
@@ -99,7 +115,7 @@ public class MoreActivity extends BaseActivity implements SwipeRefreshLayout.OnR
         slMore.setOnRefreshListener(this);
         mPullToRefreshListView.setOnRefreshListener(onListener2);
         mPullToRefreshListView.getLoadingLayoutProxy(false, true).setPullLabel("上拉中");
-        mPullToRefreshListView.setMode(PullToRefreshBase.Mode.DISABLED);//Mode.PULL_FROM_START
+        mPullToRefreshListView.setMode(PullToRefreshBase.Mode.PULL_FROM_END);//Mode.PULL_FROM_START
         mPullToRefreshListView.getLoadingLayoutProxy(false, true).setRefreshingLabel("刷新中");
         mPullToRefreshListView.getLoadingLayoutProxy(false, true).setReleaseLabel("释放刷新");
         // 获得可刷新的gridView
@@ -117,9 +133,6 @@ public class MoreActivity extends BaseActivity implements SwipeRefreshLayout.OnR
             listView.setAdapter(initDataAndAdapterNew());
             setDelayMessage(4, 100);
         }
-
-//        listView.setAdapter(initDataAndAdapter());
-
     }
 
 
@@ -127,18 +140,12 @@ public class MoreActivity extends BaseActivity implements SwipeRefreshLayout.OnR
 
         @Override
         public void onPullDownToRefresh(PullToRefreshBase<ListView> refreshView) {
-            // isDown = true;
-            // // mList_LimitSta = 0;
-            // Request_Cursor = (data.get(0).getAsInteger("customPosition") -
-            // 11) > 0 ? data
-            // .get(0).getAsInteger("customPosition") - 11 : 0;
-            // LoadingNext();
         }
 
         @Override
         public void onPullUpToRefresh(PullToRefreshBase<ListView> refreshView) {
-            page = "1,2";
-            setDelayMessage(1, 100);
+            page = page + 1;
+            setDelayMessage(5, 100);
         }
     };
 
@@ -178,6 +185,9 @@ public class MoreActivity extends BaseActivity implements SwipeRefreshLayout.OnR
                     case 4:
                         new asyncTask().execute(4);
                         break;
+                    case 5:
+                        new asyncTask().execute(5);
+                        break;
                 }
             }
         };
@@ -185,7 +195,12 @@ public class MoreActivity extends BaseActivity implements SwipeRefreshLayout.OnR
 
     @Override
     public void shopDetails(int posit, int id, int uid) {
-
+        Intent intent = new Intent(context, ShopDetailsActivity.class);
+        Bundle bundle = new Bundle();
+        bundle.putInt("id", id);
+        bundle.putInt("uid", uid);
+        intent.putExtras(bundle);
+        context.startActivity(intent);
     }
 
     private class asyncTask extends AsyncTask<Integer, Integer, Bundle> {
@@ -202,6 +217,18 @@ public class MoreActivity extends BaseActivity implements SwipeRefreshLayout.OnR
                     httpComm();
                     bundle.putInt("what", 4);
                     break;
+                case 5:
+                    if (hot.equals("0")) {
+                        httpMore();
+                    } else if (hot.equals("1")) {
+                        httpMore();
+                    } else if (hot.equals("2")) {
+                        httpComm();
+
+                    }
+                    bundle.putInt("what", 5);
+                    break;
+
             }
             return bundle;
         }
@@ -223,7 +250,35 @@ public class MoreActivity extends BaseActivity implements SwipeRefreshLayout.OnR
                     break;
                 case 4:
                     slMore.setRefreshing(false);//刷新完成
+
+                    if (newListData.size() > 0) {
+                        newListData.clear();
+                    }
+                    if (newList.size() > 0) {
+                        newListData.addAll(cahe);
+                    }
+
                     goodsAdapter.notifyDataSetChanged();
+                    break;
+                case 5:
+                    if (moreList == null) {
+                        moreList = new ArrayList<>();
+                    }
+                    if (cahe != null && cahe.size() > 0) {
+                        moreList.addAll(cahe);
+                        if (hot.equals("0")) {
+                            moreAdapter.notifyDataSetChanged();
+                        } else if (hot.equals("1")) {
+                            moreAdapter.notifyDataSetChanged();
+                        } else if (hot.equals("2")) {
+                            goodsAdapter.notifyDataSetChanged();
+                        }
+                        mPullToRefreshListView.onRefreshComplete();
+                    } else {
+                        mPullToRefreshListView.onRefreshComplete();
+                        mPullToRefreshListView.setMode(PullToRefreshBase.Mode.DISABLED);
+                        Toast.makeText(context, "没有更多数据了！", Toast.LENGTH_SHORT).show();
+                    }
                     break;
 
             }
@@ -237,7 +292,7 @@ public class MoreActivity extends BaseActivity implements SwipeRefreshLayout.OnR
             HashMap<String, String> map = new HashMap<>();
             map.put("action", "Community.more");
             map.put("cid", cid);
-            map.put("page", page);
+            map.put("page", page + "");
             map.put("hot", hot);
             String json = HttpConnectTool.post(map);
             if (!json.equals("")) {
@@ -250,6 +305,10 @@ public class MoreActivity extends BaseActivity implements SwipeRefreshLayout.OnR
     }
 
     private void xmlMore(String data) {
+        if (cahe.size() > 0) {
+            cahe.clear();
+        }
+
         try {
             JSONObject obj = new JSONObject(data);
             JSONObject objData = new JSONObject(obj.getString("data"));
@@ -286,7 +345,7 @@ public class MoreActivity extends BaseActivity implements SwipeRefreshLayout.OnR
             HashMap<String, String> map = new HashMap<>();
             map.put("action", "Trade.category");
             map.put("type", "new");
-            map.put("page", "1");
+            map.put("page", page + "");
             String json = HttpConnectTool.post(map);
             if (!json.equals("")) {
                 xmlComm(json);
@@ -298,27 +357,38 @@ public class MoreActivity extends BaseActivity implements SwipeRefreshLayout.OnR
 
 
     private void xmlComm(String data) {
+        if (newList.size() > 0) {
+            newList.clear();
+        }
+
+
         try {
             JSONObject obj = new JSONObject(data);
-            JSONArray objData = new JSONArray(obj.getString("data"));
-            if (objData.length() > 0) {
-                for (int i = 0; i < objData.length(); i++) {
-                    JSONObject jsonObj = objData.getJSONObject(i);
-                    ContentValues cv = new ContentValues();
-                    cv.put("id", jsonObj.getInt("id"));
-                    cv.put("uid", jsonObj.getInt("uid"));
-                    cv.put("cid", jsonObj.getInt("cid"));
-                    cv.put("good_name", jsonObj.getString("good_name"));
-                    cv.put("good_image", jsonObj.getString("good_image"));
-                    cv.put("price", jsonObj.getString("price"));
-                    cv.put("maf_time", jsonObj.getInt("maf_time"));
-                    cv.put("origin", jsonObj.getInt("origin"));
-                    cv.put("type", jsonObj.getInt("type"));
-                    cv.put("nick", jsonObj.getString("nick"));
-                    cv.put("icon", jsonObj.getString("icon"));
-                    newList.add(cv);
+            if (obj.getInt("error") == 0) {
+                JSONArray objData = new JSONArray(obj.getString("data"));
+                if (objData.length() > 0) {
+                    for (int i = 0; i < objData.length(); i++) {
+                        JSONObject jsonObj = objData.getJSONObject(i);
+                        ContentValues cv = new ContentValues();
+                        cv.put("id", jsonObj.getInt("id"));
+                        cv.put("uid", jsonObj.getInt("uid"));
+                        cv.put("cid", jsonObj.getInt("cid"));
+                        cv.put("good_name", jsonObj.getString("good_name"));
+                        cv.put("good_image", jsonObj.getString("good_image"));
+                        cv.put("price", jsonObj.getString("price"));
+                        cv.put("maf_time", jsonObj.getInt("maf_time"));
+                        cv.put("origin", jsonObj.getInt("origin"));
+                        cv.put("type", jsonObj.getInt("type"));
+                        cv.put("nick", jsonObj.getString("nick"));
+                        cv.put("icon", jsonObj.getString("icon"));
+                        newList.add(cv);
+                    }
                 }
+            } else {
+                Toast.makeText(context, "没有数据了！", Toast.LENGTH_SHORT).show();
             }
+
+
         } catch (JSONException e) {
             e.printStackTrace();
         } catch (NullPointerException e) {
@@ -330,6 +400,7 @@ public class MoreActivity extends BaseActivity implements SwipeRefreshLayout.OnR
 
     @Override
     public void onRefresh() {
+        page = 1;
         if (hot.equals("0")) {
             setDelayMessage(1, 100);
         } else if (hot.equals("1")) {

@@ -46,6 +46,9 @@ import cn.com.shequnew.pages.prompt.Loading;
 import cn.com.shequnew.tools.ListTools;
 import cn.com.shequnew.tools.ValidData;
 
+/**
+ * 详情
+ */
 public class ContentFileDetailsActivity extends BaseActivity implements CommentAdapter.setOnClickLoction {
 
     @BindView(R.id.image_back_coll)
@@ -108,6 +111,10 @@ public class ContentFileDetailsActivity extends BaseActivity implements CommentA
     Button contentSumbit;
     @BindView(R.id.content_lin)
     LinearLayout contentLin;
+    @BindView(R.id.file_shop_spek)
+    TextView fileShopSpek;
+    @BindView(R.id.file_details_spek)
+    TextView fileDetailsSpek;
 
     private Context context;
     public int id;
@@ -167,23 +174,25 @@ public class ContentFileDetailsActivity extends BaseActivity implements CommentA
 
     }
 
+    /**
+     * 关注
+     */
     @OnClick(R.id.file_details_attention)
     void attention() {
-        mLoading = new Loading(
-                context, fileDetailsAttention);
-        mLoading.setText("正在提交......");
-        mLoading.show();
         typeatt = 4;
+        fileDetailsAttention.setVisibility(View.GONE);
+        fileDetailsAttentionNo.setVisibility(View.VISIBLE);
         setDelayMessage(3, 100);
     }
 
+    /**
+     * 取消关注
+     */
     @OnClick(R.id.file_details_attention_no)
     void attno() {
-        mLoading = new Loading(
-                context, fileDetailsAttention);
-        mLoading.setText("正在提交......");
-        mLoading.show();
         typeatt = 5;
+        fileDetailsAttention.setVisibility(View.VISIBLE);
+        fileDetailsAttentionNo.setVisibility(View.GONE);
         setDelayMessage(3, 100);
     }
 
@@ -193,6 +202,10 @@ public class ContentFileDetailsActivity extends BaseActivity implements CommentA
         right();
     }
 
+
+    /**
+     * 回复-评论提交
+     */
     @OnClick(R.id.content_sumbit)
     void sumbit() {
         right();
@@ -200,17 +213,23 @@ public class ContentFileDetailsActivity extends BaseActivity implements CommentA
         if (contentDetails.equals("")) {
             Toast.makeText(context, "请输入评语", Toast.LENGTH_SHORT).show();
         } else {
-            setDelayMessage(4, 100);//回复
+            new asyncTask().execute(6);
         }
     }
 
 
+    /**
+     * 进入动画
+     */
     private void left() {//jin
         contentLin.setVisibility(View.VISIBLE);
         radioPagesFile.setVisibility(View.GONE);
         contentLin.setAnimation(AnimationUtils.makeInAnimation(this, false));
     }
 
+    /**
+     * 进入动画
+     */
     private void right() {//chu
         contentLin.setVisibility(View.GONE);
         radioPagesFile.setVisibility(View.VISIBLE);
@@ -235,7 +254,12 @@ public class ContentFileDetailsActivity extends BaseActivity implements CommentA
         }
     }
 
+    /**
+     * 进入动画
+     */
     private void imgsList() {
+
+
         shopImagesAdapter = new ShopImagesAdapter(context, imgs);
         fileDetailsImages.setAdapter(shopImagesAdapter);
         ListTools.setListViewHeightBasedOnChildren(fileDetailsImages);
@@ -269,7 +293,6 @@ public class ContentFileDetailsActivity extends BaseActivity implements CommentA
                     case R.id.chat:
                         Intent intent = new Intent(context, LocalVideoActivity.class);
                         startActivity(intent);
-
                         break;
                     case R.id.faith:
                         break;
@@ -286,6 +309,9 @@ public class ContentFileDetailsActivity extends BaseActivity implements CommentA
 
     }
 
+    /**
+     * 延迟加载
+     */
     private void initDelay() {
         mDelay = new Handler() {
             @Override
@@ -312,7 +338,9 @@ public class ContentFileDetailsActivity extends BaseActivity implements CommentA
         };
     }
 
-
+    /**
+     * 回复
+     */
     @Override
     public void content(int posit, int nid, int uid, int parent) {
         //回复
@@ -321,7 +349,8 @@ public class ContentFileDetailsActivity extends BaseActivity implements CommentA
         left();
     }
 
-    private void httpContent() {//商品详情
+    //商品详情
+    private void httpContent() {
         try {
             HashMap<String, String> map = new HashMap<>();
             map.put("action", "Community.content");
@@ -331,7 +360,7 @@ public class ContentFileDetailsActivity extends BaseActivity implements CommentA
             map.put("parent", parentnum + "");
             String json = HttpConnectTool.post(map);
             if (!json.equals("")) {
-                Log.e("", "444444444" + json);
+                Log.e("", "" + json);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -357,11 +386,14 @@ public class ContentFileDetailsActivity extends BaseActivity implements CommentA
                     break;
                 case 5:
                     httpFollowStatusfollow();
-                    bundle.putInt("what", 2);
                     break;
                 case 6:
                     httpContent();
                     bundle.putInt("what", 6);
+                    break;
+                case 7:
+                    httpS();
+                    bundle.putInt("what", 7);
                     break;
             }
             return bundle;
@@ -376,14 +408,28 @@ public class ContentFileDetailsActivity extends BaseActivity implements CommentA
                     initData();
                     isColl();
                     imgsList();
-                    scrollview.smoothScrollTo(0, 0);
+                    (new Handler()).post(new Runnable() {
+                        @Override
+                        public void run() {
+                            scrollview.fullScroll(ScrollView.FOCUS_UP);
+                        }
+                    });
                     commAdapter();
                     break;
                 case 2:
                     isColl();
                     break;
                 case 6:
-                    setDelayMessage(1, 100);
+                    new asyncTask().execute(7);
+                    break;
+                case 7:
+                    (new Handler()).post(new Runnable() {
+                        @Override
+                        public void run() {
+                            scrollview.fullScroll(ScrollView.FOCUS_DOWN);
+                        }
+                    });
+                    commAdapter();
                     break;
 
 
@@ -392,12 +438,15 @@ public class ContentFileDetailsActivity extends BaseActivity implements CommentA
     }
 
     private void commAdapter() {
+        if (lists.size() > 0) {
+            fileDetailsSpek.setVisibility(View.GONE);
+        }
         commentAdapter = new CommentAdapter(context, list, lists, this);
         fileDetailsComment.setAdapter(commentAdapter);
         ListTools.setListViewHeightBasedOnChildren(fileDetailsComment);
     }
 
-
+    //判断隐藏
     private void isColl() {
         if (isCancal == false) {
             fileDetailsAttention.setVisibility(View.VISIBLE);
@@ -416,8 +465,8 @@ public class ContentFileDetailsActivity extends BaseActivity implements CommentA
         }
     }
 
-
-    private void httpFollowStatusfollow() {//判断关注状态Community.follow
+    //判断关注状态Community.follow
+    private void httpFollowStatusfollow() {
         try {
             HashMap<String, String> map = new HashMap<>();
             map.put("action", "Community.follow");
@@ -442,7 +491,8 @@ public class ContentFileDetailsActivity extends BaseActivity implements CommentA
         }
     }
 
-    private void httpFollowStatus() {//判断关注状态Community.follow
+    //判断关注状态Community.follow
+    private void httpFollowStatus() {
         try {
             HashMap<String, String> map = new HashMap<>();
             map.put("action", "Community.checkFollowStatus");
@@ -465,7 +515,8 @@ public class ContentFileDetailsActivity extends BaseActivity implements CommentA
         }
     }
 
-    private void httpCollesStatuscollection() {//判断收藏状态Community.collection
+    //判断收藏状态Community.collection
+    private void httpCollesStatuscollection() {
         try {
             HashMap<String, String> map = new HashMap<>();
             map.put("action", "Community.collection");
@@ -490,7 +541,8 @@ public class ContentFileDetailsActivity extends BaseActivity implements CommentA
         }
     }
 
-    private void httpCollesStatus() {//判断收藏状态Community.collection
+    //判断收藏状态Community.collection
+    private void httpCollesStatus() {
         try {
             HashMap<String, String> map = new HashMap<>();
             map.put("action", "Community.checkCollectStatus");
@@ -513,7 +565,91 @@ public class ContentFileDetailsActivity extends BaseActivity implements CommentA
         }
     }
 
-    private void httpShop() {//商品详情
+    /**
+     * 评价
+     */
+    //商品详情
+    private void httpS() {
+        if (list == null) {
+            list = new ArrayList<>();
+        } else if (list.size() > 0) {
+            list.clear();
+        }
+
+        if (lists == null) {
+            lists = new ArrayList<>();
+        } else if (lists.size() > 0) {
+            lists.clear();
+        }
+
+        try {
+            HashMap<String, String> map = new HashMap<>();
+            map.put("action", "Community.details");
+            map.put("id", id + "");
+            map.put("uid", AppContext.cv.getAsInteger("id") + "");
+            String json = HttpConnectTool.post(map);
+            if (!json.equals("")) {
+                xmlS(json);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    private void xmlS(String data) {
+        try {
+            JSONObject obj = new JSONObject(data);
+            JSONObject objData = new JSONObject(obj.getString("data"));
+            JSONArray commentJson = new JSONArray(objData.getString("comment"));//图片介绍
+            if (commentJson.length() > 0) {
+                for (int i = 0; i < commentJson.length(); i++) {
+                    JSONObject jsonObj = commentJson.getJSONObject(i);
+                    ContentValues contentValues = new ContentValues();
+                    contentValues.put("id", jsonObj.getInt("id"));
+                    contentValues.put("uid", jsonObj.getInt("uid"));
+                    contentValues.put("nid", jsonObj.getInt("nid"));
+                    contentValues.put("parent", jsonObj.getInt("parent"));
+                    contentValues.put("content", jsonObj.getString("content"));
+                    contentValues.put("createtime", jsonObj.getString("createtime"));
+                    contentValues.put("nick", jsonObj.getString("nick"));
+                    contentValues.put("icon", jsonObj.getString("icon"));
+                    list.add(contentValues);
+                    JSONArray commJson = new JSONArray(jsonObj.getString("case"));
+                    if (commJson.length() > 0) {
+                        List<ContentValues> cvx = new ArrayList<>();
+                        for (int j = 0; j < commJson.length(); j++) {
+                            JSONArray commJsons = commJson.getJSONArray(j);
+                            if (commJsons.length() > 0) {
+                                for (int g = 0; g < commJsons.length(); g++) {
+                                    JSONObject jsonObjss = commJsons.getJSONObject(g);
+                                    ContentValues content = new ContentValues();
+                                    content.put("id", jsonObjss.getInt("id"));
+                                    content.put("uid", jsonObjss.getInt("uid"));
+                                    content.put("nid", jsonObjss.getInt("nid"));
+                                    content.put("parent", jsonObjss.getInt("parent"));
+                                    content.put("content", jsonObjss.getString("content"));
+                                    content.put("createtime", jsonObjss.getString("createtime"));
+                                    content.put("nick", jsonObjss.getString("nick"));
+                                    cvx.add(content);
+                                }
+                            }
+                        }
+                        lists.add(i, cvx);
+                    }
+                }
+            }
+
+        } catch (JSONException er) {
+            er.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    //商品详情
+    private void httpShop() {
         if (values == null) {
             values = new ContentValues();
         } else if (values.size() > 0) {

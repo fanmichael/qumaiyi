@@ -80,9 +80,9 @@ public class TagItemAdapter extends BaseAdapter {
         }
         ContentValues cv = contentValues.get(position);
         holder.title.setText(cv.getAsString("name"));
-        holder.checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        holder.checkBox.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+            public void onClick(View v) {
                 setOnclick.chose(position);
             }
         });

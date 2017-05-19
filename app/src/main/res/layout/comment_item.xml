@@ -18,8 +18,9 @@
             android:layout_height="60dp"
             android:layout_gravity="center"
             fresco:roundBottomLeft="true"
+            android:layout_marginRight="10dp"
             fresco:roundBottomRight="true"
-            fresco:roundedCornerRadius="15dp"
+            fresco:roundedCornerRadius="25dp"
             fresco:roundingBorderColor="@color/white"
             fresco:roundingBorderWidth="1dp" />
 

@@ -67,12 +67,12 @@ public class ExpActivity extends BaseActivity implements ExpAdapter.setonClick {
         initView();
 
 
-        listExp.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                expAdapter.changeSelected(position);
-            }
-        });
+//        listExp.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+//                expAdapter.changeSelected(position);
+//            }
+//        });
 
     }
 
@@ -105,6 +105,7 @@ public class ExpActivity extends BaseActivity implements ExpAdapter.setonClick {
     @Override
     public void onClick(int pos, String com, String no) {
         comName = com;
+        expAdapter.changeSelected(pos);
     }
 
     @OnClick(R.id.lin_exp)

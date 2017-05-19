@@ -465,16 +465,13 @@ public class PagesFragment extends BasicFragment implements SwipeRefreshLayout.O
             JSONObject obj = new JSONObject(data);
             JSONArray list = new JSONArray(obj.getString("data"));
             for (int i = 0; i < list.length(); i++) {
-                JSONArray lists = list.getJSONArray(i);
-                for (int j = 0; j < lists.length(); j++) {
-                    JSONObject jsonObj = lists.getJSONObject(j);
-                    ContentValues cv = new ContentValues();
-                    cv.put("id", jsonObj.getInt("id"));
-                    cv.put("cid", jsonObj.getInt("cid"));
-                    cv.put("title", jsonObj.getString("title"));
-                    cv.put("img", jsonObj.getString("img"));
-                    imagesList.add(cv);
-                }
+                JSONObject jsonObj = list.getJSONObject(i);
+                ContentValues cv = new ContentValues();
+                cv.put("id", jsonObj.getInt("id"));
+                cv.put("cid", jsonObj.getInt("cid"));
+                cv.put("title", jsonObj.getString("title"));
+                cv.put("img", jsonObj.getString("img"));
+                imagesList.add(cv);
             }
         } catch (JSONException e) {
             e.printStackTrace();

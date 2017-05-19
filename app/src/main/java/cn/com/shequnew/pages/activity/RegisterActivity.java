@@ -39,7 +39,7 @@ import cn.com.shequnew.tools.ValidData;
 
 /**
  * 注册
- * */
+ */
 public class RegisterActivity extends BaseActivity {
 
 
@@ -80,6 +80,8 @@ public class RegisterActivity extends BaseActivity {
     private List<Integer> tagPopList = new ArrayList<>();
     private List<Integer> tagThList = new ArrayList<>();
     private String type;
+    private int error;
+    private String desc = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -148,7 +150,7 @@ public class RegisterActivity extends BaseActivity {
 
     @OnClick(R.id.btn_issue)
     void issue() {
-        init();
+        phone = regsPhone.getText().toString().trim();
         if (ValidData.validMobile(phone)) {
             setDelayMessage(2, 100);
         } else {
@@ -158,7 +160,10 @@ public class RegisterActivity extends BaseActivity {
 
     @OnClick(R.id.register)
     void regs() {
-        init();
+        phone = regsPhone.getText().toString().trim();
+        pwd = regsPaw.getText().toString().trim();
+        newPwd = regsNewPaw.getText().toString().trim();
+        tag = regsIssue.getText().toString().trim();
         boolean is = true;
         String msg = "";
         if (!ValidData.validMobile(phone)) {
@@ -206,8 +211,8 @@ public class RegisterActivity extends BaseActivity {
             SimpleDraweeView imagesItem = (SimpleDraweeView) view.findViewById(R.id.images_item);
             TextView nameItem = (TextView) view.findViewById(R.id.name_item);
             final CheckBox boxItem = (CheckBox) view.findViewById(R.id.box_item);
-            Uri imageUri = Uri.parse(dv.get(i).getAsString("icon").trim());
-            ValidData.load(imageUri,imagesItem,60,60);
+            Uri imageUri = Uri.parse(dv.get(i).getAsString("icon"));
+            ValidData.load(imageUri, imagesItem, 60, 60);
             nameItem.setText(dv.get(i).getAsString("nick"));
             boxItem.setTag(dv.get(i).getAsInteger("id"));
 
@@ -306,10 +311,37 @@ public class RegisterActivity extends BaseActivity {
             hashMap.put("think", stringBufferThink.toString());
             hashMap.put("code", tag);
             String json = HttpConnectTool.post(hashMap);
+            if (!json.equals("")) {
+                listData(json);
+            }
+
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
+
+
+    public void listData(String data) {
+        try {
+            JSONObject obj = new JSONObject(data);
+
+            if (obj.has("error")) {
+                if (obj.getInt("error") == 0) {
+                    error = obj.getInt("error");
+                } else {
+                    desc = obj.getString("desc");
+                }
+            } else {
+                Toast.makeText(mContext, "数据有误！", Toast.LENGTH_SHORT).show();
+                return;
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+        }
+    }
+
 
     private void httpUpdatePwd() {
         try {
@@ -386,7 +418,11 @@ public class RegisterActivity extends BaseActivity {
 
                     break;
                 case 3:
-                    destroyActitity();
+                    if (error == 0) {
+                        destroyActitity();
+                    } else {
+                        Toast.makeText(mContext, desc, Toast.LENGTH_SHORT).show();
+                    }
                     break;
                 case 4:
 

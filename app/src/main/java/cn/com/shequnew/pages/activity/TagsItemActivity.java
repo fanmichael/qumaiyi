@@ -5,8 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -23,7 +21,6 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.com.shequnew.R;
-import cn.com.shequnew.pages.activity.BaseActivity;
 import cn.com.shequnew.pages.adapter.TagItemAdapter;
 import cn.com.shequnew.pages.http.HttpConnectTool;
 
