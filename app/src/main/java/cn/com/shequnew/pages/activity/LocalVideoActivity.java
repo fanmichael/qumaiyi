@@ -6,7 +6,9 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.MediaController;
 import android.widget.Toast;
+import android.widget.VideoView;
 
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import cn.com.shequnew.R;
 
@@ -15,6 +17,9 @@ import cn.com.shequnew.R;
  */
 public class LocalVideoActivity extends BaseActivity {
 
+
+    @BindView(R.id.video_video)
+    VideoView video;
 
     String url = "http://clips.vorwaerts-gmbh.de/big_buck_bunny.mp4";
 
@@ -35,18 +40,16 @@ public class LocalVideoActivity extends BaseActivity {
 
 
     private void initView() {
-        Bundle bundle = this.getIntent().getExtras();
-        int id = bundle.getInt("id");
-        int uid = bundle.getInt("uid");
-
-
+//        Bundle bundle = this.getIntent().getExtras();
+//        int id = bundle.getInt("id");
+//        int uid = bundle.getInt("uid");
         Uri uri = Uri.parse(url);
         MediaController mc = new MediaController(this);
         mc.setVisibility(View.VISIBLE);
-//        video.setMediaController(mc);
-//        video.setOnCompletionListener(new MyPlayerOnCompletionListener());
-//        video.setVideoURI(uri);
-//        video.start();
+        video.setMediaController(mc);
+        video.setOnCompletionListener(new MyPlayerOnCompletionListener());
+        video.setVideoURI(uri);
+        video.start();
     }
 
     class MyPlayerOnCompletionListener implements MediaPlayer.OnCompletionListener {

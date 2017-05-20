@@ -41,10 +41,11 @@ public class ElcyGroupActivity extends BaseActivity implements UserGroupAdapter.
     TextView topRegitTitle;
     @BindView(R.id.group_list)
     ListView groupList;
+
+    private boolean isit = false;
     private Context context;
     private List<ContentValues> contentValues = new ArrayList<>();
     private UserGroupAdapter userGroupAdapter;
-    private int type = 0;
     private List<String> strings = new ArrayList<>();
 
     @Override
@@ -58,7 +59,7 @@ public class ElcyGroupActivity extends BaseActivity implements UserGroupAdapter.
         topRegitTitle.setText("关联");
         topAll.setVisibility(View.VISIBLE);
         topRegitTitle.setVisibility(View.VISIBLE);
-        userGroupAdapter = new UserGroupAdapter(context, contentValues, this, type);
+        userGroupAdapter = new UserGroupAdapter(context, contentValues, this);
         groupList.setAdapter(userGroupAdapter);
         new asyncTask().execute(1);
     }
@@ -72,7 +73,13 @@ public class ElcyGroupActivity extends BaseActivity implements UserGroupAdapter.
     //全选
     @OnClick(R.id.top_all)
     void all() {
-        type = 1;
+        if (isit == true) {
+            return;
+        }
+        isit = true;
+        for (int i = 0; i < contentValues.size(); i++) {
+            contentValues.get(i).put("is", true);
+        }
         new asyncTask().execute(2);
     }
 
@@ -84,9 +91,9 @@ public class ElcyGroupActivity extends BaseActivity implements UserGroupAdapter.
             StringBuffer stringBufferPop = new StringBuffer();
             if (strings.size() > 0) {
                 for (int i = 0; i < strings.size(); i++) {
-                    if(strings.size()==(i+1)){
+                    if (strings.size() == (i + 1)) {
                         stringBufferPop.append(strings.get(i));
-                    }else{
+                    } else {
                         stringBufferPop.append(strings.get(i) + ",");
                     }
                 }
@@ -127,6 +134,7 @@ public class ElcyGroupActivity extends BaseActivity implements UserGroupAdapter.
                     bundle.putInt("what", 1);
                     break;
                 case 2:
+                    strings.size();
                     for (int i = 0; i < contentValues.size(); i++) {
                         strings.add(contentValues.get(i).getAsInteger("id") + "");
                     }
@@ -183,6 +191,7 @@ public class ElcyGroupActivity extends BaseActivity implements UserGroupAdapter.
                     cv.put("uid", jsonObj.getInt("uid"));
                     cv.put("group_public", jsonObj.getString("group_public"));
                     cv.put("icon", jsonObj.getString("icon"));
+                    cv.put("is", false);
                     contentValues.add(cv);
                 }
             }

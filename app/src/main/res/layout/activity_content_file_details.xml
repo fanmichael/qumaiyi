@@ -400,6 +400,16 @@
                         android:dividerHeight="1dp"
                         android:focusable="false"></ListView>
 
+                    <ExpandableListView
+                        android:id="@+id/expendlistS"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:cacheColorHint="#00000000"
+                        android:childDivider="#00000000"
+                        android:divider="#00000000"
+                        android:fadingEdge="none"
+                        android:visibility="gone"></ExpandableListView>
+
                     <TextView
                         android:id="@+id/file_details_spek"
                         android:layout_width="wrap_content"

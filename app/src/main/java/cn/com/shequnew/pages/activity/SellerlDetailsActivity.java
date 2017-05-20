@@ -158,7 +158,7 @@ public class SellerlDetailsActivity extends BaseActivity {
         topRegitTitle.setVisibility(View.VISIBLE);
         topRegitTitle.setClickable(false);
         contentValues.add(0, null);
-        appraiesimgeAdapter = new AppraiesimgeAdapter(contentValues, context, 2);
+        appraiesimgeAdapter = new AppraiesimgeAdapter(contentValues, context, 2,true);
         sellCardGridView.setAdapter(appraiesimgeAdapter);
         sellCardGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override

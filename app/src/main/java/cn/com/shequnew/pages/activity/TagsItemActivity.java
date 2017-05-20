@@ -47,13 +47,6 @@ public class TagsItemActivity extends BaseActivity implements TagItemAdapter.set
         context = this;
         tagItemAdapter = new TagItemAdapter(tags, context, this);
         tagList.setAdapter(tagItemAdapter);
-//        tagList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//                num = position;
-//                tagItemAdapter.changeSelected(position);
-//            }
-//        });
         new asyncTask().execute(1);
     }
 

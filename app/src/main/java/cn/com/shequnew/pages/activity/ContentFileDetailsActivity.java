@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ExpandableListView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -39,6 +40,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.com.shequnew.R;
 import cn.com.shequnew.pages.adapter.CommentAdapter;
+import cn.com.shequnew.pages.adapter.ContentFileDetailsAdapter;
 import cn.com.shequnew.pages.adapter.ShopImagesAdapter;
 import cn.com.shequnew.pages.config.AppContext;
 import cn.com.shequnew.pages.http.HttpConnectTool;
@@ -48,6 +50,7 @@ import cn.com.shequnew.tools.ValidData;
 
 /**
  * 详情
+ * ,ContentFileDetailsAdapter.setOnClickLoction
  */
 public class ContentFileDetailsActivity extends BaseActivity implements CommentAdapter.setOnClickLoction {
 
@@ -115,6 +118,8 @@ public class ContentFileDetailsActivity extends BaseActivity implements CommentA
     TextView fileShopSpek;
     @BindView(R.id.file_details_spek)
     TextView fileDetailsSpek;
+//    @BindView(R.id.expendlist)
+//    ExpandableListView expendlist;
 
     private Context context;
     public int id;
@@ -135,6 +140,11 @@ public class ContentFileDetailsActivity extends BaseActivity implements CommentA
     private ShopImagesAdapter shopImagesAdapter;//图片介绍
     private CommentAdapter commentAdapter;/////////////////////
     private Handler handlers;
+
+    /**
+     * 双层list
+     */
+    private ContentFileDetailsAdapter contentFileDetailsAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -158,7 +168,8 @@ public class ContentFileDetailsActivity extends BaseActivity implements CommentA
             collect.setVisibility(View.GONE);
             collectRe.setVisibility(View.GONE);
         }
-
+//        commentAdapter = new CommentAdapter(context, list, lists, this);
+//        contentFileDetailsAdapter=new ContentFileDetailsAdapter(context,list,lists,this);
         setDelayMessage(1, 100);
     }
 
@@ -273,19 +284,15 @@ public class ContentFileDetailsActivity extends BaseActivity implements CommentA
             public void onCheckedChanged(RadioGroup group, @IdRes int checkedId) {
                 switch (checkedId) {
                     case R.id.coll_con_no:
-                        mLoading = new Loading(
-                                context, fileDetailsAttention);
-                        mLoading.setText("正在提交......");
-                        mLoading.show();
+                        collCon.setVisibility(View.VISIBLE);
+                        collConNo.setVisibility(View.GONE);
                         typecomm = 2;
                         setDelayMessage(2, 100);
                         collConNo.setChecked(false);
                         break;
                     case R.id.coll_con:
-                        mLoading = new Loading(
-                                context, fileDetailsAttention);
-                        mLoading.setText("正在提交......");
-                        mLoading.show();
+                        collCon.setVisibility(View.GONE);
+                        collConNo.setVisibility(View.VISIBLE);
                         typecomm = 3;
                         setDelayMessage(2, 100);
                         collCon.setChecked(false);
@@ -382,7 +389,7 @@ public class ContentFileDetailsActivity extends BaseActivity implements CommentA
                     break;
                 case 2:
                     httpCollesStatuscollection();
-                    bundle.putInt("what", 2);
+//                    bundle.putInt("what", 2);
                     break;
                 case 5:
                     httpFollowStatusfollow();
@@ -408,13 +415,13 @@ public class ContentFileDetailsActivity extends BaseActivity implements CommentA
                     initData();
                     isColl();
                     imgsList();
+                    commAdapter();
                     (new Handler()).post(new Runnable() {
                         @Override
                         public void run() {
                             scrollview.fullScroll(ScrollView.FOCUS_UP);
                         }
                     });
-                    commAdapter();
                     break;
                 case 2:
                     isColl();
@@ -423,13 +430,13 @@ public class ContentFileDetailsActivity extends BaseActivity implements CommentA
                     new asyncTask().execute(7);
                     break;
                 case 7:
-                    (new Handler()).post(new Runnable() {
-                        @Override
-                        public void run() {
-                            scrollview.fullScroll(ScrollView.FOCUS_DOWN);
-                        }
-                    });
                     commAdapter();
+//                    (new Handler()).post(new Runnable() {
+//                        @Override
+//                        public void run() {
+//                            scrollview.fullScroll(ScrollView.FOCUS_DOWN);
+//                        }
+//                    });
                     break;
 
 

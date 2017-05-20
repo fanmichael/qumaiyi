@@ -50,6 +50,7 @@
                         android:layout_marginLeft="5dp"
                         android:gravity="center"
                         android:text="444"
+                        android:textColor="@color/col_bg"
                         android:textSize="14dp" />
 
                 </LinearLayout>
@@ -81,6 +82,7 @@
                         android:gravity="center"
                         android:lines="1"
                         android:text="444"
+                        android:textColor="@color/col_bg"
                         android:textSize="14dp" />
                 </LinearLayout>
 
@@ -105,6 +107,7 @@
                         android:gravity="center"
                         android:lines="1"
                         android:text="444"
+                        android:textColor="@color/col_bg"
                         android:textSize="14dp" />
                 </LinearLayout>
             </LinearLayout>

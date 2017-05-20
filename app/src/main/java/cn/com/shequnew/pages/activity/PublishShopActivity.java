@@ -11,6 +11,8 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
@@ -90,7 +92,7 @@ public class PublishShopActivity extends BaseActivity {
     TextView publishShopXi;
     @BindView(R.id.publish_shop_sumit)
     Button publishShopSumit;
-
+    private String tagsId = "";
     private Context context;
     /**
      * 添加数据刷新
@@ -116,7 +118,7 @@ public class PublishShopActivity extends BaseActivity {
         publishShopSumit.setClickable(false);
         ImageToools.verifyStoragePermissions(PublishShopActivity.this);
         contentValues.add(0, null);
-        appraiesimgeAdapter = new AppraiesimgeAdapter(contentValues, context, 2);
+        appraiesimgeAdapter = new AppraiesimgeAdapter(contentValues, context, 2, true);
         publishShopImage.setAdapter(appraiesimgeAdapter);
         publishShopImage.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -128,9 +130,42 @@ public class PublishShopActivity extends BaseActivity {
             }
         });
 
-
+        publishShopContent.addTextChangedListener(mTextWatcher);
     }
 
+    TextWatcher mTextWatcher = new TextWatcher() {
+        private CharSequence temp;
+        private int editStart;
+        private int editEnd;
+
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+            // TODO Auto-generated method stub
+            temp = s;
+        }
+
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count,
+                                      int after) {
+            // TODO Auto-generated method stub
+//          mTextView.setText(s);//将输入的内容实时显示
+        }
+
+        @Override
+        public void afterTextChanged(Editable s) {
+            // TODO Auto-generated method stub
+            editStart = publishShopContent.getSelectionStart();
+            editEnd = publishShopContent.getSelectionEnd();
+            publishShopNum.setText(temp.length() + "/50");
+            if (temp.length() > 50) {
+                Toast.makeText(context, "你输入的字数已经超过了限制！", Toast.LENGTH_SHORT).show();
+                s.delete(editStart - 1, editEnd);
+                int tempSelection = editStart;
+                publishShopContent.setText(s);
+                publishShopContent.setSelection(tempSelection);
+            }
+        }
+    };
 
     /**
      * 判断非空
@@ -150,6 +185,10 @@ public class PublishShopActivity extends BaseActivity {
             msg = "商品价格不能为空！";
             isit = false;
         }
+//        if (tagsId.equals("")) {
+//            msg = "请选择所属分类！";
+//            isit = false;
+//        }
         if (publishShopExpPrice.getText().toString().trim().equals("")) {
             msg = "商品运费不能为空！";
             isit = false;
@@ -171,6 +210,9 @@ public class PublishShopActivity extends BaseActivity {
             isit = false;
         }
         if (isit) {
+            mLoading = new Loading(context, publishShopSumit);
+            mLoading.setText("正在提交......");
+            mLoading.show();
             new asyncTask().execute(1);
         } else {
             Toast.makeText(context, msg, Toast.LENGTH_SHORT).show();
@@ -235,7 +277,9 @@ public class PublishShopActivity extends BaseActivity {
      */
     @OnClick(R.id.publish_shop_tags)
     void addTags() {
-
+        Intent intent = new Intent();
+        intent.setClass(context, TagDetailsActivity.class);
+        startActivityForResult(intent, 14);
     }
 
     /**
@@ -272,9 +316,7 @@ public class PublishShopActivity extends BaseActivity {
             Bundle bundle = new Bundle();
             switch (params[0]) {
                 case 1:
-                    mLoading = new Loading(context, publishShopSumit);
-                    mLoading.setText("正在提交......");
-                    mLoading.show();
+
                     httpShop();
                     bundle.putInt("what", 1);
                     break;
@@ -310,7 +352,7 @@ public class PublishShopActivity extends BaseActivity {
             HashMap<String, String> map = new HashMap<>();
             map.put("action", "Trade.tradeRelease");
             map.put("uid", AppContext.cv.getAsInteger("id") + "");
-            map.put("cid", "");
+            map.put("cid", tagsId);
             map.put("good_name", publishShopName.getText().toString().trim());
             map.put("good_intro", publishShopContent.getText().toString().trim());
             map.put("price", publishShopPrice.getText().toString().trim());
@@ -321,7 +363,7 @@ public class PublishShopActivity extends BaseActivity {
             file.put("cover", sellImagesFile);
             if (files.size() > 0) {
                 for (int i = 0; i < files.size(); i++) {
-                    file.put("show", files.get(i));
+                    file.put("show[]", files.get(i));
                 }
             }
             String json = HttpConnectTool.post(map, file);
@@ -336,6 +378,12 @@ public class PublishShopActivity extends BaseActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        if (resultCode == 14) {
+            String ts = data.getStringExtra("name");
+            String tagsId = data.getStringExtra("num");
+            publishShopTagsName.setText(ts);
+        }
 
         if (requestCode == 1) {
             Uri uri = data.getData();

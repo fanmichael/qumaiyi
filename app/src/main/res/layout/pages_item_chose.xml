@@ -43,6 +43,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="5dp"
                     android:gravity="center"
+                    android:textColor="@color/col_bg"
                     android:text=""
                     android:textSize="14dp" />
 
@@ -86,6 +87,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="5dp"
                     android:gravity="center"
+                    android:textColor="@color/col_bg"
                     android:lines="1"
                     android:text=""
                     android:textSize="14dp" />
@@ -110,6 +112,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="5dp"
                     android:gravity="center"
+                    android:textColor="@color/col_bg"
                     android:lines="1"
                     android:text=""
                     android:textSize="14dp" />

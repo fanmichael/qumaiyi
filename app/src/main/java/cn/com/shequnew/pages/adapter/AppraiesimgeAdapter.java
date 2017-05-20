@@ -26,12 +26,14 @@ public class AppraiesimgeAdapter extends BaseAdapter {
     private Context context;
     private LayoutInflater mInflater;
     private int type;
+    private boolean le;
 
-    public AppraiesimgeAdapter(List<ContentValues> contentValues, Context context, int type) {
+    public AppraiesimgeAdapter(List<ContentValues> contentValues, Context context, int type, boolean le) {
         this.context = context;
         this.contentValues = contentValues;
         mInflater = LayoutInflater.from(context);
         this.type = type;
+        this.le = le;
     }
 
     @Override
@@ -70,7 +72,11 @@ public class AppraiesimgeAdapter extends BaseAdapter {
         }
 
         if (position == 0) {
-            holder.icon.setBackgroundDrawable(context.getResources().getDrawable(R.drawable.addimages));
+            if (le) {
+                holder.icon.setBackgroundDrawable(context.getResources().getDrawable(R.drawable.addimages));
+            } else {
+                holder.icon.setVisibility(View.GONE);
+            }
         } else {
             final ContentValues cv = contentValues.get(position);
             Uri imageIcon = Uri.parse(cv.getAsString("image"));

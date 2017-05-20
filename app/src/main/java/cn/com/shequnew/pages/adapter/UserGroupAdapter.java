@@ -27,13 +27,11 @@ public class UserGroupAdapter extends BaseAdapter {
     private List<ContentValues> contentValues;
     private LayoutInflater mInflater;
     private setBoolChose setBoolChose;
-    private int type;
 
-    public UserGroupAdapter(Context context, List<ContentValues> contentValues, setBoolChose setBoolChose, int type) {
+    public UserGroupAdapter(Context context, List<ContentValues> contentValues, setBoolChose setBoolChose) {
         this.context = context;
         this.contentValues = contentValues;
         this.setBoolChose = setBoolChose;
-        this.type = type;
         mInflater = LayoutInflater.from(context);
     }
 
@@ -76,10 +74,7 @@ public class UserGroupAdapter extends BaseAdapter {
         Uri imageIcon = Uri.parse(good.getAsString("icon"));
         ValidData.load(imageIcon, holder.goodIcon, 60, 60);
         holder.goodNick.setText(good.getAsString("group_name"));
-
-        if (type == 1) {
-            holder.checkBox.setChecked(true);
-        }
+        holder.checkBox.setChecked(good.getAsBoolean("is"));
 
         holder.checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override

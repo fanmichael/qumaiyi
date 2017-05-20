@@ -14,6 +14,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.nostra13.universalimageloader.utils.L;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -110,9 +112,9 @@ public class TagsActivity extends BaseActivity implements TagsAdapter.setOnclick
         StringBuffer stringBufferPop = new StringBuffer();
         if (strings.size() > 0) {
             for (int i = 0; i < strings.size(); i++) {
-                if(strings.size()==(i+1)){
+                if (strings.size() == (i + 1)) {
                     stringBufferPop.append(strings.get(i));
-                }else{
+                } else {
                     stringBufferPop.append(strings.get(i) + ",");
                 }
 
@@ -162,12 +164,6 @@ public class TagsActivity extends BaseActivity implements TagsAdapter.setOnclick
             switch (params[0]) {
                 case 1:
                     httpGoodsInfo();
-                    bundle.putInt("what", 1);
-                    break;
-                case 2:
-                    for (int i = 0; i < contentValues.size(); i++) {
-//                        strings.add(contentValues.get(i).getAsInteger("id") + "");
-                    }
                     bundle.putInt("what", 1);
                     break;
 
