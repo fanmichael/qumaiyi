@@ -1,16 +1,14 @@
 package cn.com.shequnew.pages.activity;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Point;
 import android.os.Bundle;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
@@ -45,6 +43,7 @@ public class AppStartActivity extends BaseActivity implements ViewPager.OnPageCh
     private int[] imgIdArray;
 
     private int currentItem;
+    private Context context;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,6 +51,7 @@ public class AppStartActivity extends BaseActivity implements ViewPager.OnPageCh
         final View view = View.inflate(this, R.layout.activity_app_start, null);
         setContentView(view);
         ButterKnife.bind(this);
+        context = this;
 
 //        //渐变动画
 //        AlphaAnimation animation = new AlphaAnimation(0.6f, 1.0f);
@@ -79,8 +79,7 @@ public class AppStartActivity extends BaseActivity implements ViewPager.OnPageCh
 
 
     private void initView() {
-        imgIdArray = new int[]{R.drawable.logo, R.drawable.logo, R.drawable.logo};
-
+        imgIdArray = new int[]{R.drawable.background, R.drawable.background, R.drawable.background};
         tips = new ImageView[imgIdArray.length];
         for (int i = 0; i < tips.length; i++) {
             ImageView imageView = new ImageView(this);
@@ -94,8 +93,8 @@ public class AppStartActivity extends BaseActivity implements ViewPager.OnPageCh
 
             LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(new ViewGroup.LayoutParams(ViewPager.LayoutParams.WRAP_CONTENT,
                     ViewPager.LayoutParams.WRAP_CONTENT));
-            layoutParams.leftMargin = 5;
-            layoutParams.rightMargin = 5;
+            layoutParams.leftMargin = 4;
+            layoutParams.rightMargin = 4;
             viewGroup.addView(imageView, layoutParams);
         }
 
@@ -107,7 +106,7 @@ public class AppStartActivity extends BaseActivity implements ViewPager.OnPageCh
             imageView.setBackgroundResource(imgIdArray[i]);
         }
         //设置Adapter
-        viewPager.setAdapter(new MyAdapter());
+        viewPager.setAdapter(new MyAdapter(this));
         viewPager.setFocusable(true);
         //设置监听，主要是设置点点的背景
         viewPager.setOnPageChangeListener(this);
@@ -118,10 +117,15 @@ public class AppStartActivity extends BaseActivity implements ViewPager.OnPageCh
 
 
     public class MyAdapter extends PagerAdapter {
+        Activity activity = null;
+
+        public MyAdapter(Activity activity) {
+            this.activity = activity;
+        }
 
         @Override
         public int getCount() {
-            return Integer.MAX_VALUE;
+            return mImageViews.length;
         }
 
         @Override
@@ -131,7 +135,7 @@ public class AppStartActivity extends BaseActivity implements ViewPager.OnPageCh
 
         @Override
         public void destroyItem(View container, int position, Object object) {
-//            ((ViewPager) container).removeView(mImageViews[position % mImageViews.length]);
+            ((ViewPager) container).removeView(mImageViews[position]);
         }
 
         /**
@@ -140,11 +144,11 @@ public class AppStartActivity extends BaseActivity implements ViewPager.OnPageCh
         @Override
         public Object instantiateItem(View container, int position) {
             try {
-                ((ViewPager) container).addView(mImageViews[position % mImageViews.length], 0);
+                ((ViewPager) container).addView(mImageViews[position], 0);
             } catch (Exception e) {
                 //handler something
             }
-            return mImageViews[position % mImageViews.length];
+            return mImageViews[position];
         }
 
 
@@ -158,7 +162,7 @@ public class AppStartActivity extends BaseActivity implements ViewPager.OnPageCh
         destroyActitity();
     }
 
-    private boolean flag;
+    private boolean flag = false;
 
     @Override
     public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
@@ -168,7 +172,7 @@ public class AppStartActivity extends BaseActivity implements ViewPager.OnPageCh
 
     @Override
     public void onPageSelected(int position) {
-        setImageBackground(position % mImageViews.length);
+        setImageBackground(position);
         currentItem = position;
     }
 
@@ -179,24 +183,19 @@ public class AppStartActivity extends BaseActivity implements ViewPager.OnPageCh
             case ViewPager.SCROLL_STATE_DRAGGING:
                 //拖的时候才进入下一页
                 flag = false;
-                Log.d("vivi", "SCROLL_STATE_DRAGGING: " + ViewPager.SCROLL_STATE_DRAGGING);
-
                 break;
             case ViewPager.SCROLL_STATE_SETTLING:
                 flag = true;
-                Log.d("vivi", "SCROLL_STATE_SETTLING: " + ViewPager.SCROLL_STATE_SETTLING);
                 break;
-
             case ViewPager.SCROLL_STATE_IDLE:
-                Log.d("vivi", "SCROLL_STATE_IDLE: " + ViewPager.SCROLL_STATE_IDLE + "  mViewPager.getCurrentItem() " + viewPager.getCurrentItem());
-                /**
-                 * 判断是不是最后一页，同是是不是拖的状态
-                 */
+                // 当前为最后一张，此时从右向左滑，则切换到第一张
                 if (viewPager.getCurrentItem() == viewPager.getAdapter().getCount() - 1 && !flag) {
                     redirectTo();
                 }
-                flag = true;
-
+                // 当前为第一张，此时从左向右滑，则切换到最后一张
+                else if (viewPager.getCurrentItem() == 0 && !flag) {
+                    viewPager.setCurrentItem(viewPager.getAdapter().getCount() - 2);
+                }
                 break;
         }
     }
