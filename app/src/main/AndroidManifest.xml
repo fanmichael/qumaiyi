@@ -348,7 +348,9 @@
             android:configChanges="keyboardHidden|orientation"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
-            android:theme="@style/publish"></activity>
+            android:theme="@style/publish" />
+        <activity android:name=".pages.activity.InfromActivity" />
+        <activity android:name=".pages.activity.FristAdvActivity"></activity>
     </application>
 
 </manifest>

@@ -22,7 +22,6 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
-import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -44,8 +43,8 @@ import cn.com.shequnew.pages.adapter.AppraiesimgeAdapter;
 import cn.com.shequnew.pages.config.AppContext;
 import cn.com.shequnew.pages.http.HttpConnectTool;
 import cn.com.shequnew.pages.prompt.Loading;
+import cn.com.shequnew.pages.view.MyGridView;
 import cn.com.shequnew.tools.ImageToools;
-import cn.com.shequnew.tools.SharedPreferenceUtil;
 import cn.com.shequnew.tools.TextContent;
 import cn.com.shequnew.tools.ValidData;
 
@@ -83,7 +82,7 @@ public class PublishShopActivity extends BaseActivity {
     @BindView(R.id.publish_shop_tile)
     EditText publishShopTile;
     @BindView(R.id.publish_shop_image)
-    GridView publishShopImage;
+    MyGridView publishShopImage;
     @BindView(R.id.publish_shop_type)
     TextView publishShopType;
     @BindView(R.id.publish_shop_chose)

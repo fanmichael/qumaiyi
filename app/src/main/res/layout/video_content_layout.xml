@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/bg"
+    android:background="@color/white"
     android:orientation="vertical">
 
     <ScrollView
@@ -21,15 +21,45 @@
                 android:gravity="center_horizontal"
                 android:orientation="vertical">
 
-                <VideoView
-                    android:layout_width="80dp"
-                    android:layout_height="80dp" />
 
-                <TextView
+                <com.facebook.drawee.view.SimpleDraweeView
+                    android:id="@+id/video_images"
+                    android:layout_width="100dp"
+                    android:layout_height="80dp"
+                    android:background="@drawable/addimages" />
+
+                <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="上传" />
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginTop="5dp"
+                    android:gravity="center"
+                    android:orientation="horizontal">
 
+                    <Button
+                        android:id="@+id/voide_chose"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="left"
+                        android:layout_marginRight="10dp"
+                        android:background="@drawable/login_btn"
+                        android:padding="5dp"
+                        android:text="选择视频"
+                        android:textColor="@color/white"
+                        android:visibility="visible" />
+
+                    <Button
+                        android:id="@+id/voide_pu"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="right"
+                        android:layout_marginLeft="10dp"
+                        android:background="@drawable/login_btn"
+                        android:padding="5dp"
+                        android:text="   上传   "
+                        android:textColor="@color/white" />
+
+                </LinearLayout>
 
             </LinearLayout>
 
@@ -53,6 +83,7 @@
                     android:textColor="@color/col_bg" />
 
                 <EditText
+                    android:id="@+id/video_title_name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
@@ -82,6 +113,7 @@
                     android:textColor="@color/col_bg" />
 
                 <TextView
+                    android:id="@+id/video_add_img"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="20dp"
@@ -104,6 +136,7 @@
                 android:orientation="vertical">
 
                 <EditText
+                    android:id="@+id/video_content"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@null"
@@ -113,8 +146,8 @@
                     android:padding="10dp"
                     android:textSize="14dp" />
 
-                <GridView
-                    android:id="@+id/sell_card_gridView"
+                <cn.com.shequnew.pages.view.MyGridView
+                    android:id="@+id/video_gridView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5px"
@@ -124,7 +157,7 @@
                     android:numColumns="4"
                     android:scrollbarSize="1px"
                     android:stretchMode="columnWidth"
-                    android:verticalSpacing="10dp"></GridView>
+                    android:verticalSpacing="10dp"></cn.com.shequnew.pages.view.MyGridView>
             </LinearLayout>
 
             <View
@@ -133,6 +166,7 @@
                 android:background="@color/grays"></View>
 
             <LinearLayout
+                android:id="@+id/video_tags"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
@@ -147,11 +181,12 @@
                     android:textColor="@color/col_bg" />
 
                 <TextView
+                    android:id="@+id/video_tags_num"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:gravity="right"
-                    android:text="dsds"
+                    android:text=""
                     android:textColor="@color/bd_top" />
 
                 <ImageView
@@ -167,6 +202,7 @@
                 android:background="@color/grays"></View>
 
             <LinearLayout
+                android:id="@+id/video_group"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center_vertical"
@@ -180,11 +216,13 @@
                     android:textColor="@color/col_bg" />
 
                 <TextView
+                    android:id="@+id/video_group_num"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:gravity="right"
-                    android:textColor="@color/col_bg" />
+
+                    android:textColor="@color/bd_top" />
 
                 <ImageView
                     android:layout_width="25dp"
@@ -198,6 +236,7 @@
                 android:background="@color/grays"></View>
 
             <LinearLayout
+                android:id="@+id/video_shop"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center_vertical"
@@ -211,11 +250,12 @@
                     android:textColor="@color/col_bg" />
 
                 <TextView
+                    android:id="@+id/video_shop_num"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:gravity="right"
-                    android:textColor="@color/col_bg" />
+                    android:textColor="@color/bd_top" />
 
                 <ImageView
                     android:layout_width="25dp"
@@ -242,6 +282,7 @@
                     android:textColor="@color/col_bg" />
 
                 <TextView
+                    android:id="@+id/video_details"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="right"
@@ -256,6 +297,7 @@
                 android:orientation="horizontal">
 
                 <Button
+                    android:id="@+id/publish_video"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="50dp"

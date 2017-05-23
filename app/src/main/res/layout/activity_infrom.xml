@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/bg"
+    android:orientation="vertical"
+    tools:context="cn.com.shequnew.pages.activity.InfromActivity">
+
+
+    <include layout="@layout/top_title"></include>
+
+    <EditText
+        android:id="@+id/info_content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:gravity="start"
+        android:hint="请输入举报原因....."
+        android:lines="6"
+        android:padding="5dp" />
+
+</LinearLayout>

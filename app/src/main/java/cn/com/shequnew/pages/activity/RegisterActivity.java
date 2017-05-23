@@ -1,5 +1,6 @@
 package cn.com.shequnew.pages.activity;
 
+import android.app.Dialog;
 import android.content.ContentValues;
 import android.content.Context;
 import android.net.Uri;
@@ -7,9 +8,11 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.util.Log;
+import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
@@ -35,6 +38,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.com.shequnew.R;
 import cn.com.shequnew.pages.http.HttpConnectTool;
+import cn.com.shequnew.tools.TextContent;
 import cn.com.shequnew.tools.ValidData;
 
 /**
@@ -69,6 +73,12 @@ public class RegisterActivity extends BaseActivity {
     LinearLayout imagheLayout;
     @BindView(R.id.tags_layout)
     LinearLayout tagsLayout;
+    @BindView(R.id.regs_chose)
+    CheckBox regsChose;
+    @BindView(R.id.regs_tip)
+    TextView regsTip;
+    @BindView(R.id.lin_ch)
+    LinearLayout linCh;
 
     private Context mContext;
     private String phone;
@@ -82,6 +92,7 @@ public class RegisterActivity extends BaseActivity {
     private String type;
     private int error;
     private String desc = "";
+    private Dialog dialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,6 +103,48 @@ public class RegisterActivity extends BaseActivity {
         initDelay();
         init();
 
+        regsChose.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    register.setClickable(true);
+                } else {
+                    register.setClickable(false);
+                }
+            }
+        });
+
+    }
+
+    @OnClick(R.id.regs_tip)
+    void regsTip() {
+        dealView();
+    }
+
+
+    private void dealView() {
+        DisplayMetrics dm = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(dm);
+        dialog = new Dialog(mContext, R.style.AlertDialog);
+        dialog.setContentView(R.layout.deal_content);
+        dialog.show();
+        // 设置对话框大小
+        WindowManager.LayoutParams layoutParams = dialog.getWindow().getAttributes();
+        layoutParams.width = dm.widthPixels;
+        layoutParams.height = dm.heightPixels;
+        dialog.getWindow().setAttributes(layoutParams);
+        TextView content = (TextView) dialog.findViewById(R.id.deal_content);
+        CheckBox chose = (CheckBox) dialog.findViewById(R.id.deal_chose);
+        LinearLayout linearLayout = (LinearLayout) dialog.findViewById(R.id.lin_con);
+        linearLayout.setVisibility(View.GONE);
+        TextContent textContent = new TextContent();
+        content.setText(textContent.deal);
+    }
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        dialog.dismiss();
+        return super.onTouchEvent(event);
     }
 
     /**
@@ -132,6 +185,7 @@ public class RegisterActivity extends BaseActivity {
             setDelayMessage(1, 100);
         } else if (type.equals("paw")) {
             layoutRegs.setVisibility(View.GONE);
+            linCh.setVisibility(View.GONE);
             regsTile.setText("密码找回");
             register.setText("确定");
         }

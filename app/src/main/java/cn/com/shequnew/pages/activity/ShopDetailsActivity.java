@@ -92,6 +92,8 @@ public class ShopDetailsActivity extends BaseActivity implements UserGoodsShopAd
     ListView shopDetailsLike;
     @BindView(R.id.scrollview)
     ScrollView scrollview;
+    @BindView(R.id.shop_details_info_from)
+    LinearLayout shopDetailsInfoFrom;
 
     private ContentValues values = new ContentValues();
     private List<ContentValues> imagesList = new ArrayList<>();
@@ -128,6 +130,19 @@ public class ShopDetailsActivity extends BaseActivity implements UserGoodsShopAd
         topTitleColl.setText("商品详情");
         initDelay();
         setDelayMessage(1, 100);
+    }
+
+    /**
+     * 评价
+     */
+    @OnClick(R.id.shop_details_info_from)
+    void infoFrom() {
+        Intent intent = new Intent(context, InfromActivity.class);
+        Bundle bundle = new Bundle();
+        bundle.putString("rid", "" + id);
+        bundle.putString("type", "1");
+        intent.putExtras(bundle);
+        context.startActivity(intent);
     }
 
 

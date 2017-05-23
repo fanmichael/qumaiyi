@@ -180,7 +180,6 @@
                         android:id="@+id/video_title"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text=""
                         android:textColor="@color/col_bg"
                         android:textSize="16dp" />
 
@@ -192,10 +191,9 @@
                         android:orientation="horizontal">
 
                         <TextView
-                            android:id="@+id/video__title"
+                            android:id="@+id/video_tags"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text=""
                             android:textColor="@color/col_bg" />
 
                         <LinearLayout
@@ -211,7 +209,7 @@
                                 android:src="@drawable/browse" />
 
                             <TextView
-                                android:id="@+id/video__details_price"
+                                android:id="@+id/video_details_price"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="0" />
@@ -246,10 +244,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:orientation="horizontal"
-
-                        >
-
+                        android:orientation="horizontal">
 
                         <com.facebook.drawee.view.SimpleDraweeView
                             android:id="@+id/video_user_info_icon"
@@ -359,7 +354,7 @@
                         android:background="@color/grays"></View>
 
                     <ListView
-                        android:id="@+id/file_details_goods"
+                        android:id="@+id/vide_details_goods"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:divider="#b5b5b5"
@@ -367,8 +362,10 @@
                         android:focusable="false"></ListView>
 
                     <TextView
+                        android:id="@+id/video_details_tip"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:gravity="center"
                         android:text="没有相关商品" />
 
                 </LinearLayout>
@@ -389,6 +386,14 @@
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
                         android:background="@color/grays"></View>
+
+                    <TextView
+                        android:id="@+id/video_group_tip"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="没有相关评论" />
+
 
                     <ListView
                         android:id="@+id/video_details_comment"

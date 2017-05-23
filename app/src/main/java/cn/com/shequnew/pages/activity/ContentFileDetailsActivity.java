@@ -118,6 +118,10 @@ public class ContentFileDetailsActivity extends BaseActivity implements CommentA
     TextView fileShopSpek;
     @BindView(R.id.file_details_spek)
     TextView fileDetailsSpek;
+    @BindView(R.id.file_details_info_from)
+    LinearLayout fileDetailsInfoFrom;
+    @BindView(R.id.expendlistS)
+    ExpandableListView expendlistS;
 //    @BindView(R.id.expendlist)
 //    ExpandableListView expendlist;
 
@@ -176,6 +180,16 @@ public class ContentFileDetailsActivity extends BaseActivity implements CommentA
     @OnClick(R.id.image_back_coll)
     void back() {
         destroyActitity();
+    }
+
+    @OnClick(R.id.file_details_info_from)
+    void infrom() {
+        Intent intent = new Intent(context, InfromActivity.class);
+        Bundle bundle = new Bundle();
+        bundle.putString("rid", "" + id);
+        bundle.putString("type", "2");
+        intent.putExtras(bundle);
+        context.startActivity(intent);
     }
 
 
@@ -266,11 +280,9 @@ public class ContentFileDetailsActivity extends BaseActivity implements CommentA
     }
 
     /**
-     * 进入动画
+     * 添加介绍
      */
     private void imgsList() {
-
-
         shopImagesAdapter = new ShopImagesAdapter(context, imgs);
         fileDetailsImages.setAdapter(shopImagesAdapter);
         ListTools.setListViewHeightBasedOnChildren(fileDetailsImages);

@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/bg"
+    android:background="@color/white"
     android:orientation="vertical">
 
     <include layout="@layout/top_title"></include>
@@ -278,7 +278,7 @@
                     android:textColor="@color/col_bg"
                     android:textSize="15dp" />
 
-                <GridView
+                <cn.com.shequnew.pages.view.MyGridView
                     android:id="@+id/publish_shop_image"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -289,7 +289,7 @@
                     android:numColumns="4"
                     android:scrollbarSize="1px"
                     android:stretchMode="columnWidth"
-                    android:verticalSpacing="10dp"></GridView>
+                    android:verticalSpacing="10dp"></cn.com.shequnew.pages.view.MyGridView>
 
             </LinearLayout>
 

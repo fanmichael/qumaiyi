@@ -152,7 +152,9 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="@string/interest_man" />
+                        android:text="@string/interest_man"
+                        android:textColor="@color/col_bg"
+                        android:textSize="15dp" />
 
                     <Button
                         android:id="@+id/p_trade"
@@ -173,6 +175,7 @@
                     android:id="@+id/imaghe_layout"
                     android:layout_width="fill_parent"
                     android:layout_height="fill_parent"
+                    android:layout_marginTop="10dp"
                     android:orientation="horizontal"></LinearLayout>
 
                 <View
@@ -190,7 +193,9 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="@string/interest_thing" />
+                        android:text="@string/interest_thing"
+                        android:textColor="@color/col_bg"
+                        android:textSize="15dp" />
 
                     <Button
                         android:id="@+id/t_trade"
@@ -211,8 +216,41 @@
                     android:id="@+id/tags_layout"
                     android:layout_width="fill_parent"
                     android:layout_height="fill_parent"
+                    android:layout_marginTop="10dp"
                     android:orientation="horizontal"></LinearLayout>
             </LinearLayout>
+
+
+            <LinearLayout
+                android:id="@+id/lin_ch"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <CheckBox
+                    android:id="@+id/regs_chose"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:button="@drawable/chose_check"
+                    android:checked="true" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="我已阅读并同意"
+                    android:textColor="@color/col_bg"
+                    android:textSize="15dp" />
+
+                <TextView
+                    android:id="@+id/regs_tip"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:text="《注册协议"
+                    android:textColor="@color/bd_top"
+                    android:textSize="15dp" />
+            </LinearLayout>
+
 
             <Button
                 android:id="@+id/register"

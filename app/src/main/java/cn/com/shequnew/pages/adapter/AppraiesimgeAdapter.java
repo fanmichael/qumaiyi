@@ -71,13 +71,7 @@ public class AppraiesimgeAdapter extends BaseAdapter {
             return convertView;
         }
 
-        if (position == 0) {
-            if (le) {
-                holder.icon.setBackgroundDrawable(context.getResources().getDrawable(R.drawable.addimages));
-            } else {
-                holder.icon.setVisibility(View.GONE);
-            }
-        } else {
+        if (le == false) {
             final ContentValues cv = contentValues.get(position);
             Uri imageIcon = Uri.parse(cv.getAsString("image"));
             ValidData.load(imageIcon, holder.icon, 150, 150);
@@ -91,7 +85,27 @@ public class AppraiesimgeAdapter extends BaseAdapter {
                     }
                 });
             }
+        } else {
+            if (position == 0) {
+                holder.icon.setBackgroundDrawable(context.getResources().getDrawable(R.drawable.addimages));
+            } else {
+                final ContentValues cv = contentValues.get(position);
+                Uri imageIcon = Uri.parse(cv.getAsString("image"));
+                ValidData.load(imageIcon, holder.icon, 150, 150);
+                if (type == 2) {
+                    holder.imgDelete.setVisibility(View.VISIBLE);
+                    holder.imgDelete.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            contentValues.remove(position);
+                            notifyDataSetChanged();
+                        }
+                    });
+                }
+            }
         }
+
+
         return convertView;
     }
 

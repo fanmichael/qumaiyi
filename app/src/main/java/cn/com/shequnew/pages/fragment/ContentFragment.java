@@ -132,13 +132,9 @@ public class ContentFragment extends BasicFragment {
         context = getActivity();
         contentAddSumit.setClickable(false);
         ImageToools.verifyStoragePermissions(getActivity());
-        contentValues = new ArrayList<>();
-        contentValues.add(0, null);
         appraiesimgeAdapter = new AppraiesimgeAdapter(contentValues, context, 2, false);
         contectGridView.setAdapter(appraiesimgeAdapter);
-
     }
-
 
     /**
      * 加入图片
