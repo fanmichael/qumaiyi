@@ -150,7 +150,6 @@ public class NewSiteActivity extends BaseActivity {
                 .setCancelColor(getResources().getColor(R.color.col_bg))//取消按钮文字颜色
                 .setTitleBgColor(getResources().getColor(R.color.white))//标题背景颜色 Night mode
                 .setBgColor(getResources().getColor(R.color.bg))//滚轮背景颜色 Night mode
-                .setBgColor(0xFF000000)//滚轮背景颜色 Night mode
                 .setContentTextSize(18)//滚轮文字大小
                 .setLinkage(true)//设置是否联动，默认true
                 // .setLabels("省", "市", "区")//设置选择的三级单位

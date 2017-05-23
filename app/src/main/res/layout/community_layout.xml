@@ -40,11 +40,9 @@
                     android:id="@+id/lin_allCate"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
                     android:background="@color/white"
                     android:gravity="center"
-                    >
-                </LinearLayout>
+                    android:orientation="horizontal"></LinearLayout>
 
 
                 <LinearLayout
@@ -58,17 +56,27 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
+                        android:padding="5dp"
                         android:text="推荐"
-                        android:textSize="14dp" />
+                        android:textColor="@color/col_bg"
+                        android:textSize="15dp" />
 
                     <TextView
+                        android:id="@+id/more_recommend"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:gravity="right"
+                        android:padding="5dp"
                         android:text="更多"
-                        android:textSize="14dp" />
+                        android:textColor="@color/col_bg"
+                        android:textSize="15dp" />
                 </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/bg"></View>
 
                 <LinearLayout
                     android:id="@+id/recommed_deal"
@@ -92,17 +100,27 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
+                        android:padding="5dp"
                         android:text="新品"
-                        android:textSize="14dp" />
+                        android:textColor="@color/col_bg"
+                        android:textSize="15dp" />
 
                     <TextView
+                        android:id="@+id/more_new_good"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:gravity="right"
+                        android:padding="5dp"
                         android:text="更多"
-                        android:textSize="14dp" />
+                        android:textColor="@color/col_bg"
+                        android:textSize="15dp" />
                 </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/bg"></View>
 
                 <LinearLayout
                     android:id="@+id/new_deal"
@@ -113,6 +131,7 @@
                     android:orientation="vertical">
 
                 </LinearLayout>
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -124,17 +143,27 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
+                        android:padding="5dp"
                         android:text="热门"
-                        android:textSize="14dp" />
+                        android:textColor="@color/col_bg"
+                        android:textSize="15dp" />
 
                     <TextView
+                        android:id="@+id/hot_more"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:gravity="right"
+                        android:padding="5dp"
                         android:text="更多"
-                        android:textSize="14dp" />
+                        android:textColor="@color/col_bg"
+                        android:textSize="15dp" />
                 </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/bg"></View>
 
                 <LinearLayout
                     android:id="@+id/hot_deal"
@@ -142,8 +171,7 @@
                     android:layout_height="wrap_content"
                     android:background="@color/white"
                     android:gravity="center"
-                    android:orientation="vertical">
-                </LinearLayout>
+                    android:orientation="vertical"></LinearLayout>
             </LinearLayout>
         </ScrollView>
     </android.support.v4.widget.SwipeRefreshLayout>

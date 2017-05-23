@@ -151,7 +151,8 @@
                         android:layout_weight="1"
                         android:padding="5dp"
                         android:text="最新内容"
-                        android:textSize="14dp" />
+                        android:textColor="@color/col_bg"
+                        android:textSize="15dp" />
 
                     <TextView
                         android:id="@+id/pagse_news_text_more"
@@ -161,8 +162,14 @@
                         android:gravity="right"
                         android:padding="5dp"
                         android:text="更多"
-                        android:textSize="14dp" />
+                        android:textColor="@color/col_bg"
+                        android:textSize="15dp" />
                 </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/bg"></View>
 
                 <LinearLayout
                     android:id="@+id/pages_news_layout"
@@ -188,7 +195,8 @@
                         android:layout_weight="1"
                         android:padding="5dp"
                         android:text="最热门内容"
-                        android:textSize="14dp" />
+                        android:textColor="@color/col_bg"
+                        android:textSize="15dp" />
 
                     <TextView
                         android:id="@+id/pages_hot_text_more"
@@ -198,8 +206,14 @@
                         android:gravity="right"
                         android:padding="5dp"
                         android:text="更多"
-                        android:textSize="14dp" />
+                        android:textColor="@color/col_bg"
+                        android:textSize="15dp" />
                 </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/bg"></View>
 
                 <LinearLayout
                     android:id="@+id/pages_hot_layout"

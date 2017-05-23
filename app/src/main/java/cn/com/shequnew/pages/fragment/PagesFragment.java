@@ -251,9 +251,8 @@ public class PagesFragment extends BasicFragment implements SwipeRefreshLayout.O
     }
 
 
-    @OnClick(R.id.pages_news_more)
+    @OnClick(R.id.pagse_news_text_more)
     void newsMore() {
-
         Intent intent = new Intent();
         Bundle bundle = new Bundle();
         bundle.putString("cid", type);
@@ -263,7 +262,7 @@ public class PagesFragment extends BasicFragment implements SwipeRefreshLayout.O
         context.startActivity(intent);
     }
 
-    @OnClick(R.id.pagse_hot_more)
+    @OnClick(R.id.pages_hot_text_more)
     void hotMore() {
         Intent intent = new Intent();
         Bundle bundle = new Bundle();
@@ -379,6 +378,12 @@ public class PagesFragment extends BasicFragment implements SwipeRefreshLayout.O
                     newsList();
                     hotList();
                     btnText(namesList);
+                    if (imagesUrls.size() > 0) {
+                        slideshowView.setVisibility(View.VISIBLE);
+                    } else {
+                        slideshowView.setVisibility(View.GONE);
+                    }
+
                     imageUrls = new String[imagesUrls.size()];
                     for (int j = 0; j < imagesUrls.size(); j++) {
                         imageUrls[j] = imagesUrls.get(j).getAsString("img_add");
@@ -394,6 +399,11 @@ public class PagesFragment extends BasicFragment implements SwipeRefreshLayout.O
                 case 2:
                     newsList();
                     hotList();
+                    if (imagesUrls.size() > 0) {
+                        slideshowView.setVisibility(View.VISIBLE);
+                    } else {
+                        slideshowView.setVisibility(View.GONE);
+                    }
                     imageUrls = new String[imagesUrls.size()];
                     for (int j = 0; j < imagesUrls.size(); j++) {
                         imageUrls[j] = imagesUrls.get(j).getAsString("img_add");
@@ -409,6 +419,11 @@ public class PagesFragment extends BasicFragment implements SwipeRefreshLayout.O
                 case 3:
                     newsList();
                     hotList();
+                    if (imagesUrls.size() > 0) {
+                        slideshowView.setVisibility(View.VISIBLE);
+                    } else {
+                        slideshowView.setVisibility(View.GONE);
+                    }
                     imageUrls = new String[imagesUrls.size()];
                     for (int j = 0; j < imagesUrls.size(); j++) {
                         imageUrls[j] = imagesUrls.get(j).getAsString("img_add");
@@ -424,6 +439,11 @@ public class PagesFragment extends BasicFragment implements SwipeRefreshLayout.O
                 case 4:
                     newsList();
                     hotList();
+                    if (imagesUrls.size() > 0) {
+                        slideshowView.setVisibility(View.VISIBLE);
+                    } else {
+                        slideshowView.setVisibility(View.GONE);
+                    }
                     imageUrls = new String[imagesUrls.size()];
                     for (int j = 0; j < imagesUrls.size(); j++) {
                         imageUrls[j] = imagesUrls.get(j).getAsString("img_add");
@@ -584,6 +604,11 @@ public class PagesFragment extends BasicFragment implements SwipeRefreshLayout.O
      * 最新内容
      */
     private void newsList() {
+        if (newaList.size() > 8) {
+            pagseNewsTextMore.setVisibility(View.VISIBLE);
+        } else {
+            pagseNewsTextMore.setVisibility(View.GONE);
+        }
         if (newaList.size() > 0) {
             for (int i = 0; i < newaList.size(); i++) {
                 View view = LayoutInflater.from(context).inflate(R.layout.pages_item_chose, null);
@@ -664,6 +689,11 @@ public class PagesFragment extends BasicFragment implements SwipeRefreshLayout.O
      * 最新内容
      */
     private void hotList() {
+        if (hotList.size() > 8) {
+            pagesHotTextMore.setVisibility(View.VISIBLE);
+        } else {
+            pagesHotTextMore.setVisibility(View.GONE);
+        }
         if (hotList.size() > 0) {
             for (int i = 0; i < hotList.size(); i++) {
                 View view = LayoutInflater.from(context).inflate(R.layout.pages_item_chose, null);

@@ -8,8 +8,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.util.Log;
-import android.view.View;
 import android.widget.AbsListView;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -33,10 +31,11 @@ import butterknife.OnClick;
 import cn.com.shequnew.R;
 import cn.com.shequnew.pages.adapter.MoreAdapter;
 import cn.com.shequnew.pages.adapter.UserGoodsShopAdapter;
-import cn.com.shequnew.pages.fragment.DynamicFragment;
 import cn.com.shequnew.pages.http.HttpConnectTool;
-import cn.com.shequnew.tools.ListTools;
 
+/**
+ * 更多加载
+ */
 public class MoreActivity extends BaseActivity implements SwipeRefreshLayout.OnRefreshListener, UserGoodsShopAdapter.setOnClickLoction {
 
     @BindView(R.id.image_back)
@@ -111,6 +110,10 @@ public class MoreActivity extends BaseActivity implements SwipeRefreshLayout.OnR
             topTitle.setText("热门内容");
         } else if (hot.equals("2")) {
             topTitle.setText("新品");
+        } else if (hot.equals("3")) {
+            topTitle.setText("推荐");
+        } else if (hot.equals("4")) {
+            topTitle.setText("热门");
         }
         slMore.setOnRefreshListener(this);
         mPullToRefreshListView.setOnRefreshListener(onListener2);
@@ -130,6 +133,12 @@ public class MoreActivity extends BaseActivity implements SwipeRefreshLayout.OnR
             listView.setAdapter(initDataAndAdapter());
             setDelayMessage(1, 100);
         } else if (hot.equals("2")) {
+            listView.setAdapter(initDataAndAdapterNew());
+            setDelayMessage(4, 100);
+        } else if (hot.equals("3")) {
+            listView.setAdapter(initDataAndAdapterNew());
+            setDelayMessage(4, 100);
+        } else if (hot.equals("4")) {
             listView.setAdapter(initDataAndAdapterNew());
             setDelayMessage(4, 100);
         }
@@ -224,7 +233,10 @@ public class MoreActivity extends BaseActivity implements SwipeRefreshLayout.OnR
                         httpMore();
                     } else if (hot.equals("2")) {
                         httpComm();
-
+                    } else if (hot.equals("3")) {
+                        httpComm();
+                    } else if (hot.equals("4")) {
+                        httpComm();
                     }
                     bundle.putInt("what", 5);
                     break;
@@ -250,14 +262,12 @@ public class MoreActivity extends BaseActivity implements SwipeRefreshLayout.OnR
                     break;
                 case 4:
                     slMore.setRefreshing(false);//刷新完成
-
                     if (newListData.size() > 0) {
                         newListData.clear();
                     }
                     if (newList.size() > 0) {
-                        newListData.addAll(cahe);
+                        newListData.addAll(newList);
                     }
-
                     goodsAdapter.notifyDataSetChanged();
                     break;
                 case 5:
@@ -271,6 +281,10 @@ public class MoreActivity extends BaseActivity implements SwipeRefreshLayout.OnR
                         } else if (hot.equals("1")) {
                             moreAdapter.notifyDataSetChanged();
                         } else if (hot.equals("2")) {
+                            goodsAdapter.notifyDataSetChanged();
+                        } else if (hot.equals("3")) {
+                            goodsAdapter.notifyDataSetChanged();
+                        } else if (hot.equals("4")) {
                             goodsAdapter.notifyDataSetChanged();
                         }
                         mPullToRefreshListView.onRefreshComplete();
@@ -344,7 +358,13 @@ public class MoreActivity extends BaseActivity implements SwipeRefreshLayout.OnR
         try {
             HashMap<String, String> map = new HashMap<>();
             map.put("action", "Trade.category");
-            map.put("type", "new");
+            if (hot.equals("2")) {
+                map.put("type", "new");
+            } else if (hot.equals("3")) {
+                map.put("type", "recommend");
+            } else if (hot.equals("4")) {
+                map.put("type", "hot");
+            }
             map.put("page", page + "");
             String json = HttpConnectTool.post(map);
             if (!json.equals("")) {
@@ -360,8 +380,6 @@ public class MoreActivity extends BaseActivity implements SwipeRefreshLayout.OnR
         if (newList.size() > 0) {
             newList.clear();
         }
-
-
         try {
             JSONObject obj = new JSONObject(data);
             if (obj.getInt("error") == 0) {
@@ -406,6 +424,10 @@ public class MoreActivity extends BaseActivity implements SwipeRefreshLayout.OnR
         } else if (hot.equals("1")) {
             setDelayMessage(1, 100);
         } else if (hot.equals("2")) {
+            setDelayMessage(4, 100);
+        } else if (hot.equals("3")) {
+            setDelayMessage(4, 100);
+        } else if (hot.equals("4")) {
             setDelayMessage(4, 100);
         }
     }

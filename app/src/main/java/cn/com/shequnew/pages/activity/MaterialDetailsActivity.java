@@ -326,11 +326,10 @@ public class MaterialDetailsActivity extends BaseActivity {
                 .setCancelText("取消")//取消按钮文字
                 .setSubCalSize(18)//确定和取消文字大小
                 .setTitleSize(20)//标题文字大小
-                .setTitleColor(Color.BLACK)//标题文字颜色
-                .setSubmitColor(R.color.bd_top)//确定按钮文字颜色
-                .setCancelColor(Color.WHITE)//取消按钮文字颜色
-                .setTitleBgColor(R.color.grays)//标题背景颜色 Night mode
-                .setBgColor(R.color.gray)//滚轮背景颜色 Night mode
+                .setSubmitColor(getResources().getColor(R.color.bd_top))//确定按钮文字颜色
+                .setCancelColor(getResources().getColor(R.color.col_bg))//取消按钮文字颜色
+                .setTitleBgColor(getResources().getColor(R.color.white))//标题背景颜色 Night mode
+                .setBgColor(getResources().getColor(R.color.bg))//滚轮背景颜色 Night mode
                 .setContentTextSize(18)//滚轮文字大小
                 .setLinkage(false)//设置是否联动，默认true
                 .setCyclic(false, false, false)//循环与否

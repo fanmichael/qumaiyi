@@ -219,12 +219,14 @@ public class InstallDetailsActivity extends BaseActivity {
         photographAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(context, LoginActivity.class);
-                startActivity(intent);
                 if (SharedPreferenceUtil.hasKey("mobile") && SharedPreferenceUtil.hasKey("password")) {
-                    SharedPreferenceUtil.clear();
+                    SharedPreferenceUtil.remove("mobile");
+                    SharedPreferenceUtil.remove("password");
                 }
-               destroyActitity();
+//                android.os.Process.killProcess(android.os.Process.myPid());
+                System.exit(0);
+                Intent intent = new Intent(InstallDetailsActivity.this, FristAdvActivity.class);
+                startActivity(intent);
             }
         });
     }

@@ -15,7 +15,7 @@
 
         <ImageView
             android:id="@+id/video_back"
-            android:layout_width="wrap_content"
+            android:layout_width="25dp"
             android:layout_height="25dp"
             android:layout_gravity="left|center"
             android:background="@drawable/arrowleft"
@@ -50,6 +50,13 @@
 
 
     </FrameLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/bg">
+
+    </View>
 
 
     <FrameLayout

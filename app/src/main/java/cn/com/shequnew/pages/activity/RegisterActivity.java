@@ -8,6 +8,8 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -111,7 +113,6 @@ public class RegisterActivity extends BaseActivity {
                 }
             }
         });
-
     }
 
     @OnClick(R.id.regs_tip)
@@ -222,6 +223,9 @@ public class RegisterActivity extends BaseActivity {
             is = false;
         } else if (pwd.isEmpty() || newPwd.isEmpty() || tag.isEmpty()) {
             msg = "输入不能为空";
+            is = false;
+        } else if (!ValidData.validPaw(pwd)) {
+            msg = "密码6~18位字母和数字";
             is = false;
         }
         if (is) {

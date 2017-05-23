@@ -16,6 +16,7 @@ import android.widget.Toast;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import cn.com.shequnew.R;
+import cn.com.shequnew.tools.SharedPreferenceUtil;
 
 /**
  * 启动页
@@ -74,7 +75,13 @@ public class AppStartActivity extends BaseActivity implements ViewPager.OnPageCh
 //            }
 //        });
 
-        initView();
+        if (SharedPreferenceUtil.hasKey("is")) {
+            Intent intent = new Intent(AppStartActivity.this, FristAdvActivity.class);
+            startActivity(intent);
+            destroyActitity();
+        } else {
+            initView();
+        }
     }
 
 
@@ -159,6 +166,7 @@ public class AppStartActivity extends BaseActivity implements ViewPager.OnPageCh
     private void redirectTo() {
         Intent intent = new Intent(AppStartActivity.this, FristAdvActivity.class);
         startActivity(intent);
+        SharedPreferenceUtil.insert("is", true);
         destroyActitity();
     }
 

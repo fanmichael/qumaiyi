@@ -60,6 +60,12 @@ public class CommunityFragment extends BasicFragment implements SwipeRefreshLayo
     LinearLayout linAllCate;
     @BindView(R.id.comm_new)
     LinearLayout commNew;
+    @BindView(R.id.more_recommend)
+    TextView moreRecommend;
+    @BindView(R.id.more_new_good)
+    TextView moreNewGood;
+    @BindView(R.id.hot_more)
+    TextView hotMore;
 
     private Context context;
     private List<ContentValues> recommendList = new ArrayList<>();
@@ -99,17 +105,36 @@ public class CommunityFragment extends BasicFragment implements SwipeRefreshLayo
 
     }
 
-    @OnClick(R.id.comm_new)
-    void newComm() {
+
+    @OnClick(R.id.more_recommend)
+    void moreRecomend() {
+        Intent intent = new Intent();
+        Bundle bundle = new Bundle();
+        bundle.putString("hot", "3");
+        intent.putExtras(bundle);
+        intent.setClass(context, MoreActivity.class);
+        context.startActivity(intent);
+    }
+
+    @OnClick(R.id.more_new_good)
+    void moreNewGood() {
         Intent intent = new Intent();
         Bundle bundle = new Bundle();
         bundle.putString("hot", "2");
         intent.putExtras(bundle);
         intent.setClass(context, MoreActivity.class);
         context.startActivity(intent);
-
     }
 
+    @OnClick(R.id.hot_more)
+    void moreHot() {
+        Intent intent = new Intent();
+        Bundle bundle = new Bundle();
+        bundle.putString("hot", "4");
+        intent.putExtras(bundle);
+        intent.setClass(context, MoreActivity.class);
+        context.startActivity(intent);
+    }
 
     /**
      * 延迟线程消息
@@ -208,6 +233,12 @@ public class CommunityFragment extends BasicFragment implements SwipeRefreshLayo
 
 
     private void commend() {
+        if (recommendList.size() > 8) {
+            moreRecommend.setVisibility(View.VISIBLE);
+        } else {
+            moreRecommend.setVisibility(View.GONE);
+        }
+
         if (recommendList.size() > 0) {
             for (int i = 0; i < recommendList.size(); i++) {
                 View view = LayoutInflater.from(context).inflate(R.layout.commend_item_list, null);
@@ -245,6 +276,12 @@ public class CommunityFragment extends BasicFragment implements SwipeRefreshLayo
                 recommedDeal.addView(view);
             }
         }
+        if (netList.size() > 8) {
+            moreNewGood.setVisibility(View.VISIBLE);
+        } else {
+            moreNewGood.setVisibility(View.GONE);
+        }
+
         if (netList.size() > 0) {
             for (int i = 0; i < netList.size(); i++) {
                 View view = LayoutInflater.from(context).inflate(R.layout.commend_item_list, null);
@@ -281,6 +318,11 @@ public class CommunityFragment extends BasicFragment implements SwipeRefreshLayo
                 });
                 newDeal.addView(view);
             }
+        }
+        if (hotList.size() > 8) {
+            hotMore.setVisibility(View.VISIBLE);
+        } else {
+            hotMore.setVisibility(View.GONE);
         }
         if (hotList.size() > 0) {
             for (int i = 0; i < hotList.size(); i++) {
