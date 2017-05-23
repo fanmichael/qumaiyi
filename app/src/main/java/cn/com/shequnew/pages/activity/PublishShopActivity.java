@@ -439,11 +439,12 @@ public class PublishShopActivity extends BaseActivity {
         getWindowManager().getDefaultDisplay().getMetrics(dm);
         final Dialog dialog = new Dialog(PublishShopActivity.this, R.style.AlertDialog);
         dialog.setContentView(R.layout.deal_content);
+        dialog.setCanceledOnTouchOutside(true);
         dialog.show();
         // 设置对话框大小
         WindowManager.LayoutParams layoutParams = dialog.getWindow().getAttributes();
-        layoutParams.width = dm.widthPixels;
-        layoutParams.height = dm.heightPixels;
+        layoutParams.width = (int) (dm.widthPixels * 0.8);
+        layoutParams.height = (int) (dm.heightPixels * 0.9);
         dialog.getWindow().setAttributes(layoutParams);
         TextView content = (TextView) dialog.findViewById(R.id.deal_content);
         CheckBox chose = (CheckBox) dialog.findViewById(R.id.deal_chose);

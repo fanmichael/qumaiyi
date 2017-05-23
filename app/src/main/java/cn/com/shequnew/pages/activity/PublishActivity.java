@@ -43,6 +43,7 @@ public class PublishActivity extends BaseActivity {
         //发布图文----发布视频
         Intent intent = new Intent(context, VideoContentActivity.class);
         context.startActivity(intent);
+        destroyActitity();
     }
 
     /**
@@ -62,7 +63,7 @@ public class PublishActivity extends BaseActivity {
             destroyActitity();
 
         }
-
+        destroyActitity();
     }
 
 

@@ -10,7 +10,6 @@ import android.os.Handler;
 import android.os.Message;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
@@ -102,7 +101,6 @@ public class RegisterActivity extends BaseActivity {
         mContext = this;
         initDelay();
         init();
-
         regsChose.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -127,11 +125,13 @@ public class RegisterActivity extends BaseActivity {
         getWindowManager().getDefaultDisplay().getMetrics(dm);
         dialog = new Dialog(mContext, R.style.AlertDialog);
         dialog.setContentView(R.layout.deal_content);
+        dialog.setCanceledOnTouchOutside(true);
         dialog.show();
         // 设置对话框大小
         WindowManager.LayoutParams layoutParams = dialog.getWindow().getAttributes();
-        layoutParams.width = dm.widthPixels;
-        layoutParams.height = dm.heightPixels;
+        layoutParams.width = (int) (dm.widthPixels * 0.8);
+        layoutParams.height = (int) (dm.heightPixels * 0.9);
+
         dialog.getWindow().setAttributes(layoutParams);
         TextView content = (TextView) dialog.findViewById(R.id.deal_content);
         CheckBox chose = (CheckBox) dialog.findViewById(R.id.deal_chose);
@@ -139,12 +139,6 @@ public class RegisterActivity extends BaseActivity {
         linearLayout.setVisibility(View.GONE);
         TextContent textContent = new TextContent();
         content.setText(textContent.deal);
-    }
-
-    @Override
-    public boolean onTouchEvent(MotionEvent event) {
-        dialog.dismiss();
-        return super.onTouchEvent(event);
     }
 
     /**
