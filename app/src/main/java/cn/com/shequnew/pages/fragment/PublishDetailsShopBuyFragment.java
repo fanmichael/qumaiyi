@@ -14,6 +14,7 @@ import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.LinearLayout;
@@ -87,6 +88,20 @@ public class PublishDetailsShopBuyFragment extends BasicFragment implements Swip
         context = getActivity();
         page = 1;
         initView();
+        shopListPullBuy.setOnScrollListener(new AbsListView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(AbsListView view, int scrollState) {
+
+            }
+
+            @Override
+            public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+                if (firstVisibleItem == 0)
+                    collectSwiBuy.setEnabled(true);
+                else
+                    collectSwiBuy.setEnabled(false);
+            }
+        });
         new asyncTask().execute(1);
     }
 
