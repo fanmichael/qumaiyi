@@ -111,7 +111,7 @@ public class AppStartActivity extends BaseActivity implements ViewPager.OnPageCh
         //设置监听，主要是设置点点的背景
         viewPager.setOnPageChangeListener(this);
         //设置ViewPager的默认项, 设置为长度的100倍，这样子开始就能往左滑动
-        viewPager.setCurrentItem((mImageViews.length) * 100);
+        viewPager.setCurrentItem(0);
 
     }
 
