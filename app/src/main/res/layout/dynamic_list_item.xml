@@ -112,20 +112,34 @@
                 </LinearLayout>
             </LinearLayout>
 
-            <com.facebook.drawee.view.SimpleDraweeView
-                android:id="@+id/dynamic_item_subject"
-                android:layout_width="100dp"
-                android:layout_height="80dp"
-                android:layout_centerInParent="true"
-                android:layout_marginTop="5dp"
-                fresco:roundAsCircle="false"
-                fresco:roundBottomLeft="true"
-                fresco:roundBottomRight="true"
-                fresco:roundTopLeft="true"
-                fresco:roundTopRight="true"
-                fresco:roundedCornerRadius="10dp"
-                fresco:roundingBorderColor="@color/white"
-                fresco:roundingBorderWidth="1dp" />
+            <FrameLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <com.facebook.drawee.view.SimpleDraweeView
+                    android:id="@+id/dynamic_item_subject"
+                    android:layout_width="100dp"
+                    android:layout_height="80dp"
+                    android:layout_centerInParent="true"
+                    android:layout_marginTop="5dp"
+                    fresco:roundAsCircle="false"
+                    fresco:roundBottomLeft="true"
+                    fresco:roundBottomRight="true"
+                    fresco:roundTopLeft="true"
+                    fresco:roundTopRight="true"
+                    fresco:roundedCornerRadius="10dp"
+                    fresco:roundingBorderColor="@color/white"
+                    fresco:roundingBorderWidth="1dp" />
+
+                <ImageView
+                    android:id="@+id/play_video_dy"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:background="@drawable/paly_video"
+                    android:visibility="gone" />
+            </FrameLayout>
+
 
         </LinearLayout>
 

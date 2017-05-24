@@ -76,7 +76,7 @@ public class UserDynamicAdapter extends BaseAdapter {
             holder.dynamicM = (ImageView) convertView.findViewById(R.id.pages_file_m);//视频
             holder.dynamicF = (ImageView) convertView.findViewById(R.id.pages_file_f);//文件
             holder.dynamicNick = (TextView) convertView.findViewById(R.id.pages_item_nick_text);//昵称
-
+            holder.vidoImage = (ImageView) convertView.findViewById(R.id.play_video);
             holder.dynamicSign = (TextView) convertView.findViewById(R.id.pages_sign_item_text);//签名
             convertView.setTag(holder);
         } else {
@@ -103,16 +103,15 @@ public class UserDynamicAdapter extends BaseAdapter {
                 ValidData.load(image, holder.dynamicImages, 100, 80);
                 holder.dynamicF.setVisibility(View.VISIBLE);
                 holder.dynamicM.setVisibility(View.GONE);
+                holder.vidoImage.setVisibility(View.GONE);
             } else {
-                holder.dynamicF.setVisibility(View.GONE);
-                holder.dynamicM.setVisibility(View.VISIBLE);
-                (new Handler()).postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        Bitmap bitmap = Util.createVideoThumbnail("http://clips.vorwaerts-gmbh.de/big_buck_bunny.mp4", 200, 150);
-//                       holder.dynamicImages.setImageBitmap(bitmap);
-                    }
-                }, 100);
+                if(user.containsKey("video_img")){
+                    Uri image = Uri.parse(user.getAsString("video_img"));
+                    ValidData.load(image, holder.dynamicImages, 100, 80);
+                    holder.dynamicF.setVisibility(View.GONE);
+                    holder.dynamicM.setVisibility(View.VISIBLE);
+                    holder.vidoImage.setVisibility(View.VISIBLE);
+                }
 
             }
         } else {
@@ -176,6 +175,7 @@ public class UserDynamicAdapter extends BaseAdapter {
         public TextView dynamicTitle;
         public TextView dynamicTags;//标签呢
         public SimpleDraweeView dynamicImages;//
+        public ImageView vidoImage;
 
     }
 

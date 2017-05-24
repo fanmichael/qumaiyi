@@ -78,7 +78,7 @@ public class DynamicAdapter extends BaseAdapter {
             holder.dynamicTags = (TextView) convertView.findViewById(R.id.dynamic_tags_item_text);
             holder.dynamicImages = (SimpleDraweeView) convertView.findViewById(R.id.dynamic_item_subject);
             holder.dynamicTime = (TextView) convertView.findViewById(R.id.dynamic_time);
-
+            holder.playVideo = (ImageView) convertView.findViewById(R.id.play_video_dy);
             holder.commodityLayout = (LinearLayout) convertView.findViewById(R.id.dynamic_commodity);
             holder.commodityImages = (SimpleDraweeView) convertView.findViewById(R.id.dynamic_commodity_images);
             holder.commodityName = (TextView) convertView.findViewById(R.id.dynamic_commodity_title);
@@ -105,18 +105,16 @@ public class DynamicAdapter extends BaseAdapter {
                 holder.dynamicF.setVisibility(View.VISIBLE);
                 holder.dynamicM.setVisibility(View.GONE);
                 Uri image = Uri.parse(dy.getAsString("subject"));
-                holder.dynamicImages.setImageURI(image);
+                ValidData.load(image, holder.dynamicImages, 100, 80);
+                holder.playVideo.setVisibility(View.GONE);
             } else {
-                holder.dynamicF.setVisibility(View.GONE);
-                holder.dynamicM.setVisibility(View.VISIBLE);
-
-                (new Handler()).postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        Bitmap bitmap = Util.createVideoThumbnail("http://clips.vorwaerts-gmbh.de/big_buck_bunny.mp4", 200, 150);
-//                        holder.dynamicImages.setImageBitmap(bitmap);
-                    }
-                }, 100);
+                if(dy.containsKey("video_img")){
+                    holder.dynamicF.setVisibility(View.GONE);
+                    holder.dynamicM.setVisibility(View.VISIBLE);
+                    holder.playVideo.setVisibility(View.VISIBLE);
+                    Uri image = Uri.parse(dy.getAsString("video_img"));
+                    ValidData.load(image, holder.dynamicImages, 100, 80);
+                }
 
             }
             holder.dynamicSign.setText(dy.getAsString("title"));
@@ -193,6 +191,7 @@ public class DynamicAdapter extends BaseAdapter {
         public TextView commodityTime;
         public TextView commodityPrice;
         public SimpleDraweeView commodityIcon;
+        private ImageView playVideo;
     }
 
 

@@ -63,8 +63,8 @@ import butterknife.Unbinder;
 import cn.com.shequnew.R;
 import cn.com.shequnew.pages.activity.ElcyGroupActivity;
 import cn.com.shequnew.pages.activity.ElevancyShopActivity;
-import cn.com.shequnew.pages.activity.MainActivity;
 import cn.com.shequnew.pages.activity.TagsActivity;
+import cn.com.shequnew.pages.activity.TagsItemActivity;
 import cn.com.shequnew.pages.adapter.AppraiesimgeAdapter;
 import cn.com.shequnew.pages.config.AppContext;
 import cn.com.shequnew.pages.http.HttpConnectTool;
@@ -109,6 +109,10 @@ public class VideoContentFragment extends BasicFragment {
     SimpleDraweeView videoImages;
     @BindView(R.id.voide_chose)
     Button voideChose;
+    @BindView(R.id.video_type_name)
+    TextView videoTypeName;
+    @BindView(R.id.video_type_lin)
+    LinearLayout videoTypeLin;
 
     private Context context;
     /**
@@ -181,7 +185,11 @@ public class VideoContentFragment extends BasicFragment {
             String number = data.getStringExtra("num");
             videoTagsNum.setText("已关联" + number + "标签");
         }
-
+        if (resultCode == 14) {
+            String ts = data.getStringExtra("name");
+            tagsId = data.getStringExtra("num");
+            videoTypeName.setText(ts);
+        }
 
         if (requestCode == 1) {
             if (resultCode == getActivity().RESULT_OK) {
@@ -261,6 +269,16 @@ public class VideoContentFragment extends BasicFragment {
 
     }
 
+
+    /**
+     * 所属分类
+     */
+    @OnClick(R.id.video_type_lin)
+    void videoType() {
+        Intent intent = new Intent();
+        intent.setClass(context, TagsItemActivity.class);
+        startActivityForResult(intent, 14);
+    }
 
     /**
      * 获取视频图
@@ -535,7 +553,7 @@ public class VideoContentFragment extends BasicFragment {
             map.put("groupid", group);
             map.put("goodsid", goods);
             map.put("type", "1");
-            map.put("subject", videoAddress);
+            map.put("cover", videoAddress);
             Map<String, File> file = new HashMap<String, File>();
             file.put("video_img", fristFile);
             if (files.size() > 0) {
@@ -638,7 +656,8 @@ public class VideoContentFragment extends BasicFragment {
             public void onSuccess(PutObjectRequest request, PutObjectResult result) {
 //                Log.e("PutObject", "UploadSuccess");
                 if (request.getObjectKey() != null && !request.getObjectKey().equals("")) {
-                    videoAddress = "qumaiyi.oss-cn-shenzhen.aliyuncs.com/" + request.getObjectKey();
+//                    videoAddress = "qumaiyi.oss-cn-shenzhen.aliyuncs.com/" + request.getObjectKey();
+                    videoAddress = request.getObjectKey();
                 } else {
                     Toast.makeText(context, "上传失败！", Toast.LENGTH_SHORT).show();
                 }

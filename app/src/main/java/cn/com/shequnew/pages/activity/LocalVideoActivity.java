@@ -260,6 +260,9 @@ public class LocalVideoActivity extends BaseActivity implements CommentAdapter.s
         });
     }
 
+    /**
+     * 下载阿里云视屏
+     */
     private void downloadview() {
         // TODO Auto-generated method stub
         String endpoint = "http://oss-cn-shenzhen.aliyuncs.com";
@@ -372,11 +375,12 @@ public class LocalVideoActivity extends BaseActivity implements CommentAdapter.s
                 case VIDEO_STATE_UPDATE:
                     double cachepercent = readSize * 100.00 / mediaLength * 1.0;
                     String s = String.format("已缓存: [%.2f%%]", cachepercent);
-                    Log.e("cachepercent","s:"+s);
+                    Log.e("cachepercent", "s:" + s);
                     if (cachepercent == 10.0 || cachepercent == 100.00) {
                         video.setVideoPath(localUrl);
                         video.start();
                         String s1 = String.format("已缓存: [%.2f%%]", cachepercent);
+                        Log.e("cachepercent", "s1:" + s1);
                         return;
                     }
                     mHandler.sendEmptyMessageDelayed(VIDEO_STATE_UPDATE, 1000);
@@ -437,7 +441,7 @@ public class LocalVideoActivity extends BaseActivity implements CommentAdapter.s
         videoUserInfoIcon.setImageBitmap(null);//头像
         videoDetailsNick.setText("昵称");
         videoDetailsTags.setText("标签");
-
+//        videoTest
 
     }
 

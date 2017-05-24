@@ -73,6 +73,7 @@ public class MoreAdapter extends BaseAdapter {
             holder.tags = (TextView) convertView.findViewById(R.id.pages_title_text);
             holder.content = (TextView) convertView.findViewById(R.id.pages_tags_item_text);
             holder.image = (SimpleDraweeView) convertView.findViewById(R.id.pages_item_subject);
+            holder.video = (ImageView) convertView.findViewById(R.id.play_video);
             convertView.setTag(holder);
         } else {
             holder = (ViewHolder) convertView.getTag();
@@ -87,20 +88,19 @@ public class MoreAdapter extends BaseAdapter {
         holder.tags.setText(cv.getAsString("title"));
         holder.content.setText(cv.getAsString("tags"));
         if (cv.getAsInteger("file_type") == 1) {
-            holder.imageF.setVisibility(View.GONE);
-            holder.imageM.setVisibility(View.VISIBLE);
-            (new Handler()).postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    Bitmap bitmap = Util.createVideoThumbnail("http://clips.vorwaerts-gmbh.de/big_buck_bunny.mp4", 200, 150);
-//                    holder.image.dynamicImages.setImageBitmap(bitmap);
-                }
-            }, 100);
+            if (cv.containsKey("video_img")) {
+                holder.imageF.setVisibility(View.GONE);
+                holder.imageM.setVisibility(View.VISIBLE);
+                holder.video.setVisibility(View.VISIBLE);
+                Uri image = Uri.parse(cv.getAsString("video_img"));
+                ValidData.load(image, holder.image, 100, 80);
+            }
         } else {
             holder.imageF.setVisibility(View.VISIBLE);
             holder.imageM.setVisibility(View.GONE);
             Uri image = Uri.parse(cv.getAsString("subject"));
             ValidData.load(image, holder.image, 100, 80);
+            holder.video.setVisibility(View.GONE);
         }
 
         holder.linearLayout.setOnClickListener(new View.OnClickListener() {
@@ -139,6 +139,7 @@ public class MoreAdapter extends BaseAdapter {
         public TextView content;
         public SimpleDraweeView image;
         public LinearLayout linearLayout;
+        public ImageView video;
     }
 
 

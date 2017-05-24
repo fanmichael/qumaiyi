@@ -9,12 +9,15 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.json.JSONObject;
+
 import java.util.HashMap;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.com.shequnew.R;
+import cn.com.shequnew.pages.config.AppContext;
 import cn.com.shequnew.pages.http.HttpConnectTool;
 
 /**
@@ -41,6 +44,8 @@ public class WalletPriceActivity extends BaseActivity {
     @BindView(R.id.wallet_phone)
     EditText walletPhone;
     private Context context;
+    private String allPrice;
+    private int error;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +54,9 @@ public class WalletPriceActivity extends BaseActivity {
         ButterKnife.bind(this);
         context = this;
         topTitle.setText("提现");
+        Bundle bundle = this.getIntent().getExtras();
+        allPrice = bundle.getString("allPrice");
+
     }
 
     @OnClick(R.id.image_back)
@@ -76,6 +84,13 @@ public class WalletPriceActivity extends BaseActivity {
             msg = "请输入账号";
             it = false;
         }
+        double money = Double.parseDouble(allPrice);
+        double price = Double.parseDouble(walletPriceNumber.getText().toString().trim());
+        if (price > money) {
+            msg = "输入金额不能大于余额！";
+            it = false;
+        }
+
         if (it) {
             new asyncTask().execute(1);
         } else {
@@ -97,11 +112,17 @@ public class WalletPriceActivity extends BaseActivity {
     private void httpWallet() {
         try {
             HashMap<String, String> hashMap = new HashMap<>();
-//            hashMap.put("action", "User.forgotPassword");
-//            hashMap.put("mobile", phone);
-//            hashMap.put("password", pwd);
-//            hashMap.put("code", tag);
+            hashMap.put("action", "Enchashment");
+            hashMap.put("uid", AppContext.cv.getAsInteger("id") + "");
+            hashMap.put("name", walletName.getText().toString().trim());
+            hashMap.put("mobile", walletPhone.getText().toString().trim());
+            hashMap.put("money", walletPriceNumber.getText().toString().trim());
+            hashMap.put("account", walletNumber.getText().toString().trim());
             String json = HttpConnectTool.post(hashMap);
+            if (!json.equals("")) {
+                JSONObject obj = new JSONObject(json);
+                error = obj.getInt("error");
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -129,6 +150,12 @@ public class WalletPriceActivity extends BaseActivity {
             // removeLoading();
             switch (what) {
                 case 1:
+                    if (error == 0) {
+                        Toast.makeText(context, "提交成功！", Toast.LENGTH_SHORT).show();
+                        destroyActitity();
+                    } else {
+                        Toast.makeText(context, "输入金额大于余额！", Toast.LENGTH_SHORT).show();
+                    }
                     break;
 
             }

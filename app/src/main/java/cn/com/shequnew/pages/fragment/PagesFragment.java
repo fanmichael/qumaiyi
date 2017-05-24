@@ -562,6 +562,9 @@ public class PagesFragment extends BasicFragment implements SwipeRefreshLayout.O
                     cv.put("file_type", jsonObj.getInt("file_type"));
                     cv.put("cid", jsonObj.getInt("cid"));
                     cv.put("subject", jsonObj.getString("subject"));
+                    if (jsonObj.has("video_img")) {
+                        cv.put("video_img", jsonObj.getString("video_img"));
+                    }
                     cv.put("subject_type", jsonObj.getString("subject_type"));
                     cv.put("tags", jsonObj.getString("tags"));
                     cv.put("nick", jsonObj.getString("nick"));
@@ -581,6 +584,9 @@ public class PagesFragment extends BasicFragment implements SwipeRefreshLayout.O
                     cv.put("file_type", jsonObj.getInt("file_type"));//文件类型 0是文件1是视频
                     cv.put("cid", jsonObj.getInt("cid"));
                     cv.put("subject", jsonObj.getString("subject"));//右侧图像或者视频预览？
+                    if(jsonObj.has("video_img")){
+                        cv.put("video_img", jsonObj.getString("video_img"));
+                    }
                     cv.put("subject_type", jsonObj.getString("subject_type"));
                     cv.put("title", jsonObj.getString("title"));//标题
                     cv.put("tags", jsonObj.getString("tags"));//标签
@@ -622,6 +628,7 @@ public class PagesFragment extends BasicFragment implements SwipeRefreshLayout.O
                 ImageView pagesFileF = (ImageView) view.findViewById(R.id.pages_file_f);//文件
                 TextView pagesItemNick = (TextView) view.findViewById(R.id.pages_item_nick_text);//昵称
                 TextView pagesSign = (TextView) view.findViewById(R.id.pages_sign_item_text);//签名
+                ImageView video = (ImageView) view.findViewById(R.id.play_video);
                 Uri imageUri = Uri.parse(newaList.get(i).getAsString("icon"));
                 pagesIcon.setImageURI(imageUri);
                 pagesItemNick.setText(newaList.get(i).getAsString("nick"));
@@ -645,15 +652,11 @@ public class PagesFragment extends BasicFragment implements SwipeRefreshLayout.O
                 if (newaList.get(i).getAsInteger("file_type") == 0) {
                     Uri imageUris = Uri.parse(newaList.get(i).getAsString("subject"));
                     pagesSubject.setImageURI(imageUris);
+                    video.setVisibility(View.GONE);
                 } else {
-                    (new Handler()).postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            Bitmap bitmap = Util.createVideoThumbnail("http://clips.vorwaerts-gmbh.de/big_buck_bunny.mp4", 200, 150);
-                            pagesSubject.setImageBitmap(bitmap);
-                        }
-                    }, 100);
-
+                    Uri imageUris = Uri.parse(newaList.get(i).getAsString("video_img"));
+                    pagesSubject.setImageURI(imageUris);
+                    video.setVisibility(View.VISIBLE);
                 }
                 final int type = newaList.get(i).getAsInteger("file_type");
                 final String str = newaList.get(i).getAsString("nick");
@@ -707,6 +710,7 @@ public class PagesFragment extends BasicFragment implements SwipeRefreshLayout.O
                 ImageView pagesFileF = (ImageView) view.findViewById(R.id.pages_file_f);//文件
                 TextView pagesItemNick = (TextView) view.findViewById(R.id.pages_item_nick_text);//昵称
                 TextView pagesSign = (TextView) view.findViewById(R.id.pages_sign_item_text);//签名
+                ImageView video = (ImageView) view.findViewById(R.id.play_video);
                 Uri imageUri = Uri.parse(hotList.get(i).getAsString("icon"));
                 ValidData.load(imageUri, pagesIcon, 30, 30);
                 pagesItemNick.setText(hotList.get(i).getAsString("nick"));
@@ -730,15 +734,11 @@ public class PagesFragment extends BasicFragment implements SwipeRefreshLayout.O
                 if (hotList.get(i).getAsInteger("file_type") == 0) {
                     Uri imageUris = Uri.parse(hotList.get(i).getAsString("subject"));
                     ValidData.load(imageUris, pagesSubject, 100, 80);
+                    video.setVisibility(View.GONE);
                 } else {
-
-                    (new Handler()).postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            Bitmap bitmap = Util.createVideoThumbnail("http://clips.vorwaerts-gmbh.de/big_buck_bunny.mp4", 200, 150);
-                            pagesSubject.setImageBitmap(bitmap);
-                        }
-                    }, 100);
+                    Uri imageUris = Uri.parse(hotList.get(i).getAsString("video_img"));
+                    ValidData.load(imageUris, pagesSubject, 100, 80);
+                    video.setVisibility(View.VISIBLE);
                 }
                 final int type = hotList.get(i).getAsInteger("file_type");
                 final String str = hotList.get(i).getAsString("nick");

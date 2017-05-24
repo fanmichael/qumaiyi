@@ -11,8 +11,8 @@
         android:id="@+id/page_item"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="10dp"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:padding="10dp">
 
         <LinearLayout
             android:layout_width="0dp"
@@ -43,8 +43,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="5dp"
                     android:gravity="center"
-                    android:textColor="@color/col_bg"
                     android:text=""
+                    android:textColor="@color/col_bg"
                     android:textSize="14dp" />
 
                 <TextView
@@ -58,8 +58,7 @@
                     android:text="签约"
                     android:textColor="@color/white"
                     android:textSize="12dp"
-                    android:visibility="gone"
-                    />
+                    android:visibility="gone" />
             </LinearLayout>
 
             <LinearLayout
@@ -87,9 +86,9 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="5dp"
                     android:gravity="center"
-                    android:textColor="@color/col_bg"
                     android:lines="1"
                     android:text=""
+                    android:textColor="@color/col_bg"
                     android:textSize="14dp" />
             </LinearLayout>
 
@@ -112,33 +111,49 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="5dp"
                     android:gravity="center"
-                    android:textColor="@color/col_bg"
                     android:lines="1"
                     android:text=""
+                    android:textColor="@color/col_bg"
                     android:textSize="14dp" />
             </LinearLayout>
         </LinearLayout>
 
-        <com.facebook.drawee.view.SimpleDraweeView
-            android:id="@+id/pages_item_subject"
-            android:layout_width="100dp"
-            android:layout_height="80dp"
-            android:layout_centerInParent="true"
-            android:layout_marginTop="5dp"
-            fresco:roundAsCircle="false"
-            fresco:roundBottomLeft="true"
-            fresco:roundBottomRight="true"
-            fresco:roundTopLeft="true"
-            fresco:roundTopRight="true"
-            fresco:roundedCornerRadius="10dp"
-            fresco:roundingBorderColor="@color/white"
-            fresco:roundingBorderWidth="1dp" />
+        <FrameLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <com.facebook.drawee.view.SimpleDraweeView
+                android:id="@+id/pages_item_subject"
+                android:layout_width="100dp"
+                android:layout_height="80dp"
+                android:layout_centerInParent="true"
+                android:layout_marginTop="5dp"
+                fresco:roundAsCircle="false"
+                fresco:roundBottomLeft="true"
+                fresco:roundBottomRight="true"
+                fresco:roundTopLeft="true"
+                fresco:roundTopRight="true"
+                fresco:roundedCornerRadius="10dp"
+                fresco:roundingBorderColor="@color/white"
+                fresco:roundingBorderWidth="1dp" />
+
+            <ImageView
+                android:id="@+id/play_video"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:background="@drawable/paly_video"
+                android:visibility="gone" />
+
+
+        </FrameLayout>
+
+
     </LinearLayout>
 
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="@color/bg"
-        ></View>
+        android:background="@color/bg"></View>
 
 </LinearLayout>

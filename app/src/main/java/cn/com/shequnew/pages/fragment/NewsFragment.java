@@ -90,6 +90,9 @@ public class NewsFragment extends BasicFragment {
      * 加载数据
      */
     private void initView() {
+        if (!AppContext.cv.containsKey("icon")) {
+            return;
+        }
         Uri imageUri = Uri.parse(AppContext.cv.getAsString("icon"));
         ValidData.load(imageUri, myIcon, 60, 60);
         ValidData.load(imageUri, myImageIcon, 250, 250);

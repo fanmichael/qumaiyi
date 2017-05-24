@@ -337,6 +337,9 @@ public class MoreActivity extends BaseActivity implements SwipeRefreshLayout.OnR
                     cv.put("file_type", jsonObj.getInt("file_type"));
                     cv.put("title", jsonObj.getString("title"));
                     cv.put("subject", jsonObj.getString("subject"));
+                    if (jsonObj.has("video_img")) {
+                        cv.put("video_img", jsonObj.getString("video_img"));
+                    }
                     cv.put("tags", jsonObj.getString("tags"));
                     cv.put("content", jsonObj.getString("content"));
                     cv.put("icon", jsonObj.getString("icon"));
