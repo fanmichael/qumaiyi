@@ -27,6 +27,7 @@ import cn.com.shequnew.pages.activity.SellerDetailsActivity;
 import cn.com.shequnew.pages.activity.SellerlDetailsActivity;
 import cn.com.shequnew.pages.activity.ShopBuyActivity;
 import cn.com.shequnew.pages.activity.SiteDetailsActivity;
+import cn.com.shequnew.pages.activity.WalletActivity;
 import cn.com.shequnew.pages.config.AppContext;
 import cn.com.shequnew.tools.ValidData;
 
@@ -65,6 +66,8 @@ public class NewsFragment extends BasicFragment {
     SimpleDraweeView myImageIcon;
     @BindView(R.id.my_sellerl_layout_shop_buy)
     LinearLayout mySellerlLayoutShopBuy;
+    @BindView(R.id.my_wallet_layout)
+    LinearLayout myWalletLayout;
     private Context mContext;
 
 
@@ -123,6 +126,16 @@ public class NewsFragment extends BasicFragment {
         materialIntent.setClass(mContext, MaterialDetailsActivity.class);
         startActivityForResult(materialIntent, 101);
 //        mContext.startActivity(materialIntent);
+    }
+
+    /**
+     * 我的钱包
+     */
+    @OnClick(R.id.my_wallet_layout)
+    void wallet() {
+        Intent walletIntent = new Intent();
+        walletIntent.setClass(mContext, WalletActivity.class);
+        mContext.startActivity(walletIntent);
     }
 
     /**
@@ -214,5 +227,6 @@ public class NewsFragment extends BasicFragment {
     public void onDestroyView() {
         super.onDestroyView();
         unbinder.unbind();
+        System.gc();
     }
 }

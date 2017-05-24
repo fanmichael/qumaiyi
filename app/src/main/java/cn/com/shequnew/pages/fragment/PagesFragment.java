@@ -141,6 +141,7 @@ public class PagesFragment extends BasicFragment implements SwipeRefreshLayout.O
 
     public void initView() {
         swipeRefreshLayout.setOnRefreshListener(this);
+
 //        swipeRefreshLayout.setColorScheme(android.R.color.black, android.R.color.holo_blue_bright,
 //                android.R.color.holo_blue_light, android.R.color.holo_red_light);
         radioDynamicChose();

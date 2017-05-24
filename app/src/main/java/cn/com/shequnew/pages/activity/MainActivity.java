@@ -78,21 +78,18 @@ public class MainActivity extends FragmentActivity {
                             dynamicFragment = new DynamicFragment();
                         }
                         transaction.replace(R.id.fra_layout, dynamicFragment);
-                        dynamic.setChecked(false);
                         break;
                     case R.id.news:
                         if (publishFragment == null) {
                             publishFragment = new PublishFragment();
                         }
                         transaction.replace(R.id.fra_layout, publishFragment);
-                        news.setChecked(false);
                         break;
                     case R.id.mine:
                         if (newsFragment == null) {
                             newsFragment = new NewsFragment();
                         }
                         transaction.replace(R.id.fra_layout, newsFragment);
-                        mine.setChecked(false);
                         break;
                     case R.id.publish:
                         //发布消息

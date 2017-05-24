@@ -87,7 +87,34 @@
                     android:layout_marginLeft="10dp"
                     android:text="@string/material"
                     android:textColor="@color/col_bg"
-                    android:textSize="18dp" />
+                    android:textSize="16dp" />
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:id="@+id/my_wallet_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingBottom="10dp"
+                android:paddingTop="5dp">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:background="@drawable/wallet" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:text="我的钱包"
+                    android:textColor="@color/col_bg"
+                    android:textSize="16dp" />
 
             </LinearLayout>
 
@@ -114,7 +141,7 @@
                     android:layout_marginLeft="10dp"
                     android:text="@string/seller"
                     android:textColor="@color/col_bg"
-                    android:textSize="18dp" />
+                    android:textSize="16dp" />
 
             </LinearLayout>
 
@@ -141,7 +168,7 @@
                     android:layout_marginLeft="10dp"
                     android:text="@string/seller_detials"
                     android:textColor="@color/col_bg"
-                    android:textSize="18dp" />
+                    android:textSize="16dp" />
 
             </LinearLayout>
 
@@ -168,7 +195,7 @@
                     android:layout_marginLeft="10dp"
                     android:text="@string/shop_buy"
                     android:textColor="@color/col_bg"
-                    android:textSize="18dp" />
+                    android:textSize="16dp" />
 
             </LinearLayout>
 
@@ -197,7 +224,7 @@
                     android:layout_marginLeft="10dp"
                     android:text="@string/buy"
                     android:textColor="@color/col_bg"
-                    android:textSize="18dp" />
+                    android:textSize="16dp" />
 
             </LinearLayout>
 
@@ -224,7 +251,7 @@
                     android:layout_marginLeft="10dp"
                     android:text="@string/publish"
                     android:textColor="@color/col_bg"
-                    android:textSize="18dp" />
+                    android:textSize="16dp" />
 
             </LinearLayout>
 
@@ -251,7 +278,7 @@
                     android:layout_marginLeft="10dp"
                     android:text="@string/collect"
                     android:textColor="@color/col_bg"
-                    android:textSize="18dp" />
+                    android:textSize="16dp" />
 
             </LinearLayout>
 
@@ -278,7 +305,7 @@
                     android:layout_marginLeft="10dp"
                     android:text="@string/site"
                     android:textColor="@color/col_bg"
-                    android:textSize="18dp" />
+                    android:textSize="16dp" />
 
             </LinearLayout>
 
@@ -305,7 +332,7 @@
                     android:layout_marginLeft="10dp"
                     android:text="@string/install"
                     android:textColor="@color/col_bg"
-                    android:textSize="18dp" />
+                    android:textSize="16dp" />
 
             </LinearLayout>
 

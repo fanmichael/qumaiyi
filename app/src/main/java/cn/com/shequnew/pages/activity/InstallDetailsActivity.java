@@ -224,9 +224,10 @@ public class InstallDetailsActivity extends BaseActivity {
                     SharedPreferenceUtil.remove("password");
                 }
 //                android.os.Process.killProcess(android.os.Process.myPid());
-                System.exit(0);
                 Intent intent = new Intent(InstallDetailsActivity.this, FristAdvActivity.class);
                 startActivity(intent);
+                System.exit(0);
+
             }
         });
     }

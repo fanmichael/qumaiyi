@@ -54,5 +54,9 @@
         <item name="android:windowAnimationStyle">@android:style/Animation</item>
         <item name="android:windowBackground">@android:color/transparent</item>
     </style>
-
+    <style name="Theme.AppStartLoadTranslucent" parent="android:Theme">
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="windowNoTitle">true</item>
+        <item name="android:windowNoTitle">true</item>
+    </style>
 </resources>

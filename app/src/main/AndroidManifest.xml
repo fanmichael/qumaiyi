@@ -37,7 +37,7 @@
             android:name=".pages.activity.AppStartActivity"
             android:configChanges="keyboardHidden|orientation"
             android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.NoTitleBar">
+            android:theme="@style/Theme.AppStartLoadTranslucent">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -349,8 +349,30 @@
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:theme="@style/publish" />
-        <activity android:name=".pages.activity.InfromActivity" />
-        <activity android:name=".pages.activity.FristAdvActivity"></activity>
+        <activity
+            android:name=".pages.activity.InfromActivity"
+            android:configChanges="keyboardHidden|orientation"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.NoTitleBar" />
+        <activity
+            android:name=".pages.activity.FristAdvActivity"
+            android:configChanges="keyboardHidden|orientation"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppStartLoadTranslucent" />
+        <activity
+            android:name=".pages.activity.WalletActivity"
+            android:configChanges="keyboardHidden|orientation"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.NoTitleBar" />
+        <activity
+            android:name=".pages.activity.WalletPriceActivity"
+            android:configChanges="keyboardHidden|orientation"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.NoTitleBar"></activity>
     </application>
 
 </manifest>
