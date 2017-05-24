@@ -7,12 +7,7 @@ configurations.all {
 
 android {
     signingConfigs {
-        release {
-            keyAlias 'original'
-            keyPassword 'original'
-            storeFile file('C:/Users/Administrator/Desktop/APP/original.keystore')
-            storePassword 'original'
-        }
+
     }
     buildscript {
         repositories {
@@ -39,10 +34,8 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-            signingConfig signingConfigs.release
         }
         debug {
-            signingConfig signingConfigs.release
         }
     }
 }
@@ -60,7 +53,7 @@ dependencies {
     compile files('libs/aliyun-oss-sdk-android-2.3.0.jar')
     compile 'com.squareup.retrofit2:retrofit:2.1.0'
     compile 'com.squareup.retrofit2:retrofit:2.1.0'
-    compile 'com.android.support:appcompat-v7:25.3.1'
+    compile 'com.android.support:appcompat-v7:25.3.0'
     compile 'com.android.support:support-v4:25.3.0'
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
     compile 'com.squareup.retrofit2:adapter-rxjava:2.1.0'
