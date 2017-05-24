@@ -5,6 +5,7 @@ import android.content.ContentValues;
 import android.support.multidex.MultiDex;
 
 import com.facebook.drawee.backends.pipeline.Fresco;
+import com.tencent.bugly.crashreport.CrashReport;
 
 import java.lang.Thread.UncaughtExceptionHandler;
 
@@ -25,9 +26,11 @@ public class AppContext extends Application implements UncaughtExceptionHandler 
         appContext = this;
         MultiDex.install(this);
         Fresco.initialize(this);
-        //       EaseUI.getInstance().init(this, null);
-        // EMClient.getInstance().setDebugMode(true);
+        //EaseUI.getInstance().init(this, null);
+       // EMClient.getInstance().setDebugMode(true);
         // 获取系统默认的UncaughtException处理
+        CrashReport.initCrashReport(getApplicationContext(), "23c6e1948f", false);
+
         mDefaultHandler = Thread.getDefaultUncaughtExceptionHandler();
     }
 

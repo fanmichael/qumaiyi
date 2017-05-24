@@ -73,7 +73,7 @@ public class MainActivity extends FragmentActivity {
                         if (pagesFragment == null) {
                             pagesFragment = new PageCommFragment();
                         }
-                        transaction.replace(R.id.fra_layout, pagesFragment);
+                         transaction.replace(R.id.fra_layout, pagesFragment);
                         break;
                     case R.id.dynamic:
                         if (dynamicFragment == null) {
@@ -83,9 +83,9 @@ public class MainActivity extends FragmentActivity {
                         break;
                     case R.id.news:
                         if (publishFragment == null) {
-                            // publishFragment = new EaseConversationListFragment();
+                            publishFragment = new EaseConversationListFragment();
                         }
-                        // transaction.replace(R.id.fra_layout, publishFragment);
+                        transaction.replace(R.id.fra_layout, publishFragment);
                         break;
                     case R.id.mine:
                         if (newsFragment == null) {
