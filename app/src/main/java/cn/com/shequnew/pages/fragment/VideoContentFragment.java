@@ -47,7 +47,10 @@ import com.facebook.drawee.view.SimpleDraweeView;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.BufferedOutputStream;
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -130,6 +133,10 @@ public class VideoContentFragment extends BasicFragment {
     private String videoAddress = "";
     private int error;
     private ProgressDialog pd;
+    /**
+     * 视频的第一帧
+     */
+    private File fristFile;
 
     @Nullable
     @Override
@@ -232,6 +239,29 @@ public class VideoContentFragment extends BasicFragment {
     }
 
 
+    public void saveBitmapFile(Bitmap bitmap) {
+        File file = new File(Environment.getExternalStorageDirectory(), "拍照");
+        if (!file.exists()) {
+            file.mkdir();
+        }
+        String name = "" + System.currentTimeMillis();
+        File output = new File(file, name + ".jpg");
+        try {
+            BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(output));
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, bos);
+            bos.flush();
+            bos.close();
+            String path = Environment.getExternalStorageDirectory() + "/拍照/" + name + ".jpg";
+            Log.e("path", "" + path);
+            fristFile = new File(path);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        Log.e("cxccc", fristFile.getName() + "" + fristFile.length());
+
+    }
+
+
     /**
      * 获取视频图
      */
@@ -239,6 +269,7 @@ public class VideoContentFragment extends BasicFragment {
         Bitmap bitmap = getVideoThumb(path);
         Bitmap bit = ThumbnailUtils.extractThumbnail(bitmap, 100, 80);
         videoImages.setImageBitmap(bit);
+        saveBitmapFile(bit);
     }
 
     /**
@@ -506,12 +537,13 @@ public class VideoContentFragment extends BasicFragment {
             map.put("type", "1");
             map.put("subject", videoAddress);
             Map<String, File> file = new HashMap<String, File>();
+            file.put("video_img", fristFile);
             if (files.size() > 0) {
                 for (int i = 0; i < files.size(); i++) {
                     file.put("show[]", files.get(i));
                 }
             }
-            String json = HttpConnectTool.post(map);
+            String json = HttpConnectTool.post(map, file);
             if (!json.equals("")) {
                 listXml(json);
             }

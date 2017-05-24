@@ -26,8 +26,7 @@ import cn.com.shequnew.inc.Ini;
 
 public class HttpConnectTool {
 
-    public
-    static String post(HashMap<String, String> hashMap) {
+    public static String post(HashMap<String, String> hashMap) {
         String result = "";
         DataOutputStream out = null;
         try {

@@ -9,7 +9,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 
 import butterknife.BindView;
@@ -37,6 +36,10 @@ public class WalletPriceActivity extends BaseActivity {
     EditText walletNumber;
     @BindView(R.id.wallet_sumbit)
     Button walletSumbit;
+    @BindView(R.id.wallet_name)
+    EditText walletName;
+    @BindView(R.id.wallet_phone)
+    EditText walletPhone;
     private Context context;
 
     @Override
@@ -57,6 +60,14 @@ public class WalletPriceActivity extends BaseActivity {
     private void initView() {
         boolean it = true;
         String msg = "";
+        if (walletName.getText().toString().trim().equals("")) {
+            msg = "请输入姓名";
+            it = false;
+        }
+        if (walletPhone.getText().toString().trim().equals("")) {
+            msg = "请输入手机号";
+            it = false;
+        }
         if (walletPriceNumber.getText().toString().trim().equals("")) {
             msg = "请输入金额";
             it = false;

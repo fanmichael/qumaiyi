@@ -1,5 +1,6 @@
 package cn.com.shequnew.pages.activity;
 
+import android.app.ProgressDialog;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
@@ -7,6 +8,7 @@ import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.IdRes;
@@ -26,12 +28,27 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.VideoView;
 
+import com.alibaba.sdk.android.oss.ClientException;
+import com.alibaba.sdk.android.oss.OSS;
+import com.alibaba.sdk.android.oss.OSSClient;
+import com.alibaba.sdk.android.oss.ServiceException;
+import com.alibaba.sdk.android.oss.callback.OSSCompletedCallback;
+import com.alibaba.sdk.android.oss.common.auth.OSSCredentialProvider;
+import com.alibaba.sdk.android.oss.common.auth.OSSPlainTextAKSKCredentialProvider;
+import com.alibaba.sdk.android.oss.internal.OSSAsyncTask;
+import com.alibaba.sdk.android.oss.model.GetObjectRequest;
+import com.alibaba.sdk.android.oss.model.GetObjectResult;
 import com.facebook.drawee.view.SimpleDraweeView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -135,6 +152,27 @@ public class LocalVideoActivity extends BaseActivity implements CommentAdapter.s
     //评论
     private CommentAdapter commentAdapter;
 
+
+    /**
+     * 视频缓存播放
+     */
+    private ProgressDialog progressDialog = null;
+    private static final int READY_BUFF = 6 * 1024 * 1000;
+    private static final int CACHE_BUFF = 50 * 1024;
+    private boolean isready = false;
+    private boolean iserror = false;
+    private int errorCnt = 0;
+    private int curPosition = 0;
+    private long mediaLength = 0;
+    private long readSize = 0;
+    private InputStream inputStream;
+    private String localUrl, objectname;
+    private final static int VIDEO_STATE_UPDATE = 0;
+    private final static int CACHE_VIDEO_READY = 1;
+    private final static int CACHE_VIDEO_UPDATE = 2;
+    private final static int CACHE_VIDEO_END = 3;
+
+
     String url = "http://clips.vorwaerts-gmbh.de/big_buck_bunny.mp4";
 
     //    String url="qumaiyi.oss-cn-shenzhen.aliyuncs.com/video/1495424257134video_20170522_110819.mp4";
@@ -161,6 +199,215 @@ public class LocalVideoActivity extends BaseActivity implements CommentAdapter.s
         }
         setDelayMessage(1, 100);
     }
+
+
+    /**
+     * 视频缓存播放
+     */
+    private void initPlayVideo() {
+        video.setMediaController(new MediaController(this));
+        video.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+            public void onPrepared(MediaPlayer mediaplayer) {
+                dismissProgressDialog();
+                video.seekTo(curPosition);
+                mediaplayer.start();
+            }
+        });
+        video.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+
+            public void onCompletion(MediaPlayer mediaplayer) {
+                curPosition = 0;
+                video.pause();
+            }
+        });
+
+        video.setOnErrorListener(new MediaPlayer.OnErrorListener() {
+
+            public boolean onError(MediaPlayer mediaplayer, int i, int j) {
+                iserror = true;
+                errorCnt++;
+                video.pause();
+                showProgressDialog();
+                return true;
+            }
+        });
+
+    }
+
+    private void showProgressDialog() {
+        mHandler.post(new Runnable() {
+
+            @Override
+            public void run() {
+                if (progressDialog == null) {
+                    progressDialog = ProgressDialog.show(LocalVideoActivity.this,
+                            "视频缓存", "正在努力加载中 ...", true, false);
+                }
+            }
+        });
+    }
+
+    private void dismissProgressDialog() {
+        mHandler.post(new Runnable() {
+
+            @Override
+            public void run() {
+                if (progressDialog != null) {
+                    progressDialog.dismiss();
+                    progressDialog = null;
+                }
+            }
+        });
+    }
+
+    private void downloadview() {
+        // TODO Auto-generated method stub
+        String endpoint = "http://oss-cn-shenzhen.aliyuncs.com";
+        OSSCredentialProvider credentialProvider = new OSSPlainTextAKSKCredentialProvider("LTAImg7aetBxp8Kn", "mgUv74WJqepnQOPIj5LF8C30GYSlzH");
+        OSS oss = new OSSClient(getApplicationContext(), endpoint, credentialProvider);
+        GetObjectRequest get = new GetObjectRequest("qumaiyi", "video/1495424257134video_20170522_110819.mp4");
+        @SuppressWarnings("rawtypes")
+        OSSAsyncTask task = oss.asyncGetObject(get, new OSSCompletedCallback<GetObjectRequest, GetObjectResult>() {
+            @Override
+            public void onSuccess(GetObjectRequest request, GetObjectResult result) {
+                Log.d("Content-Length", "" + result.getContentLength());
+                inputStream = result.getObjectContent();
+                mediaLength = result.getContentLength();
+                showProgressDialog();
+                byte[] buffer = new byte[2 * 2048];
+                int len;
+                FileOutputStream out = null;
+                long lastReadSize = 0;
+                if (localUrl == null) {
+                    localUrl = Environment.getExternalStorageDirectory()
+                            .getAbsolutePath()
+                            + "/VideoCache/"
+                            + System.currentTimeMillis() + ".mp4";
+                }
+                Log.d("localUrl: ", localUrl);
+                File cacheFile = new File(localUrl);
+                if (!cacheFile.exists()) {
+                    cacheFile.getParentFile().mkdirs();
+                    try {
+                        cacheFile.createNewFile();
+                    } catch (IOException e) {
+                        // TODO Auto-generated catch block
+                        e.printStackTrace();
+                    }
+                }
+                readSize = cacheFile.length();
+                try {
+                    out = new FileOutputStream(cacheFile, true);
+                } catch (FileNotFoundException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+                if (mediaLength == -1) {
+                    return;
+                }
+                mHandler.sendEmptyMessage(VIDEO_STATE_UPDATE);
+                try {
+                    while ((len = inputStream.read(buffer)) != -1) {
+                        try {
+                            out.write(buffer, 0, len);
+                            readSize += len;
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                        if (!isready) {
+                            if ((readSize - lastReadSize) > READY_BUFF) {
+                                lastReadSize = readSize;
+                                mHandler.sendEmptyMessage(CACHE_VIDEO_READY);
+                            }
+                        } else {
+                            if ((readSize - lastReadSize) > CACHE_BUFF
+                                    * (errorCnt + 1)) {
+                                lastReadSize = readSize;
+                                mHandler.sendEmptyMessage(CACHE_VIDEO_UPDATE);
+                            }
+                        }
+                    }
+                    mHandler.sendEmptyMessage(CACHE_VIDEO_END);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } finally {
+                    if (out != null) {
+                        try {
+                            out.close();
+                        } catch (IOException e) {
+                        }
+                    }
+                    if (inputStream != null) {
+                        try {
+                            inputStream.close();
+                        } catch (IOException e) {
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(GetObjectRequest request, ClientException clientExcepion, ServiceException serviceException) {
+                if (clientExcepion != null) {
+                    clientExcepion.printStackTrace();
+                }
+                if (serviceException != null) {
+                    Log.e("ErrorCode", serviceException.getErrorCode());
+                    Log.e("RequestId", serviceException.getRequestId());
+                    Log.e("HostId", serviceException.getHostId());
+                    Log.e("RawMessage", serviceException.getRawMessage());
+                }
+            }
+
+        });
+        // task.cancel();
+
+//		 task.waitUntilFinished();
+    }
+
+    private final Handler mHandler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            switch (msg.what) {
+                case VIDEO_STATE_UPDATE:
+                    double cachepercent = readSize * 100.00 / mediaLength * 1.0;
+                    String s = String.format("已缓存: [%.2f%%]", cachepercent);
+                    Log.e("cachepercent","s:"+s);
+                    if (cachepercent == 10.0 || cachepercent == 100.00) {
+                        video.setVideoPath(localUrl);
+                        video.start();
+                        String s1 = String.format("已缓存: [%.2f%%]", cachepercent);
+                        return;
+                    }
+                    mHandler.sendEmptyMessageDelayed(VIDEO_STATE_UPDATE, 1000);
+                    break;
+
+                case CACHE_VIDEO_READY:
+                    isready = true;
+                    video.setVideoPath(localUrl);
+                    video.start();
+                    break;
+
+                case CACHE_VIDEO_UPDATE:
+                    if (iserror) {
+                        video.setVideoPath(localUrl);
+                        video.start();
+                        iserror = false;
+                    }
+                    break;
+
+                case CACHE_VIDEO_END:
+                    if (iserror) {
+                        video.setVideoPath(localUrl);
+                        video.start();
+                        iserror = false;
+                    }
+                    break;
+            }
+            super.handleMessage(msg);
+        }
+    };
+
 
     /**
      * 测试数据
@@ -274,7 +521,7 @@ public class LocalVideoActivity extends BaseActivity implements CommentAdapter.s
      * 返回
      */
     @OnClick(R.id.image_back_coll)
-     void back() {
+    void back() {
         destroyActitity();
     }
 
@@ -546,7 +793,6 @@ public class LocalVideoActivity extends BaseActivity implements CommentAdapter.s
     /**
      * 评价
      */
-    //商品详情
     private void httpS() {
         if (list == null) {
             list = new ArrayList<>();

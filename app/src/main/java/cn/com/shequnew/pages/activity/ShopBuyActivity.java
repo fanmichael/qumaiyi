@@ -315,8 +315,9 @@ public class ShopBuyActivity extends BaseActivity implements SwipeRefreshLayout.
         }
         if (contentValues.get(posit).getAsInteger("state") == 2 && contentValues.get(posit).getAsInteger("status") == 1) {
 //            holder.buy.setText("申请提现");
-            number = id;
-            new asyncTask().execute(3);
+//            number = id;
+//            new asyncTask().execute(3);
+            return;
         }
 
 
