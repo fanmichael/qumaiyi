@@ -1,14 +1,20 @@
 package cn.com.shequnew.pages.fragment;
 
 
+import android.app.Fragment;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.media.MediaMetadataRetriever;
+import android.media.ThumbnailUtils;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.provider.MediaStore;
 import android.support.annotation.IdRes;
 import android.support.annotation.Nullable;
 import android.support.v4.view.PagerAdapter;
@@ -17,12 +23,14 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.facebook.drawee.view.SimpleDraweeView;
 
@@ -40,6 +48,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
 import cn.com.shequnew.R;
+import cn.com.shequnew.pages.activity.ChoseNewsActivity;
 import cn.com.shequnew.pages.activity.ContentFileDetailsActivity;
 import cn.com.shequnew.pages.activity.LocalVideoActivity;
 import cn.com.shequnew.pages.activity.MoreActivity;
@@ -47,6 +56,7 @@ import cn.com.shequnew.pages.activity.SpecialNoteActivity;
 import cn.com.shequnew.pages.http.HttpConnectTool;
 import cn.com.shequnew.pages.prompt.Loading;
 import cn.com.shequnew.pages.view.SlideShowView;
+import cn.com.shequnew.tools.Util;
 import cn.com.shequnew.tools.ValidData;
 
 /**
@@ -125,7 +135,7 @@ public class PagesFragment extends BasicFragment implements SwipeRefreshLayout.O
         super.onActivityCreated(savedInstanceState);
         context = getActivity();
         initDelay();
-        setDelayMessage(1, 0);
+        setDelayMessage(1, 100);
         initView();
     }
 
@@ -221,19 +231,19 @@ public class PagesFragment extends BasicFragment implements SwipeRefreshLayout.O
                 switch (checkedId) {
                     case R.id.rad_dynamic_wu:
                         btnTextFo();
-                        setDelayMessage(1, 0);
+                        setDelayMessage(1, 1000);
                         break;
                     case R.id.rad_dynamic_gu:
                         btnTextOne();
-                        setDelayMessage(2, 0);
+                        setDelayMessage(2, 1000);
                         break;
                     case R.id.rad_dynamic_yang:
                         btnTextTwo();
-                        setDelayMessage(3, 0);
+                        setDelayMessage(3, 1000);
                         break;
                     case R.id.rad_dynamic_jue:
                         btnTextSe();
-                        setDelayMessage(4, 0);
+                        setDelayMessage(4, 1000);
                         break;
 
                 }
@@ -276,7 +286,7 @@ public class PagesFragment extends BasicFragment implements SwipeRefreshLayout.O
                         mLoading = new Loading(
                                 getActivity(), pagseHotMore);
                         mLoading.setText("正在加载......");
-                        // mLoading.show();
+                        mLoading.show();
                         new asyncTask().execute(1);
                         break;
                     case 2:
@@ -366,7 +376,8 @@ public class PagesFragment extends BasicFragment implements SwipeRefreshLayout.O
                 case 1:
                     info();
                     swipeRefreshLayout.setRefreshing(false);//刷新完成
-
+                    newsList();
+                    hotList();
                     btnText(namesList);
                     if (imagesUrls.size() > 0) {
                         slideshowView.setVisibility(View.VISIBLE);
@@ -385,8 +396,6 @@ public class PagesFragment extends BasicFragment implements SwipeRefreshLayout.O
                         imageList.add(image_uri);
                     }
                     slideshowView.setImageUrls(imageList);
-                    newsList();
-                    hotList();
                     break;
                 case 2:
                     newsList();
@@ -553,10 +562,14 @@ public class PagesFragment extends BasicFragment implements SwipeRefreshLayout.O
                     cv.put("file_type", jsonObj.getInt("file_type"));
                     cv.put("cid", jsonObj.getInt("cid"));
                     cv.put("subject", jsonObj.getString("subject"));
+                    if (jsonObj.has("video_img")) {
+                        cv.put("video_img", jsonObj.getString("video_img"));
+                    }
                     cv.put("subject_type", jsonObj.getString("subject_type"));
                     cv.put("tags", jsonObj.getString("tags"));
                     cv.put("nick", jsonObj.getString("nick"));
                     cv.put("icon", jsonObj.getString("icon"));
+                    cv.put("title", jsonObj.getString("title"));
                     cv.put("isSign", jsonObj.getInt("isSign"));
                     cv.put("follow", jsonObj.getInt("follow"));
                     newaList.add(cv);
@@ -572,6 +585,9 @@ public class PagesFragment extends BasicFragment implements SwipeRefreshLayout.O
                     cv.put("file_type", jsonObj.getInt("file_type"));//文件类型 0是文件1是视频
                     cv.put("cid", jsonObj.getInt("cid"));
                     cv.put("subject", jsonObj.getString("subject"));//右侧图像或者视频预览？
+                    if(jsonObj.has("video_img")){
+                        cv.put("video_img", jsonObj.getString("video_img"));
+                    }
                     cv.put("subject_type", jsonObj.getString("subject_type"));
                     cv.put("title", jsonObj.getString("title"));//标题
                     cv.put("tags", jsonObj.getString("tags"));//标签
@@ -613,8 +629,9 @@ public class PagesFragment extends BasicFragment implements SwipeRefreshLayout.O
                 ImageView pagesFileF = (ImageView) view.findViewById(R.id.pages_file_f);//文件
                 TextView pagesItemNick = (TextView) view.findViewById(R.id.pages_item_nick_text);//昵称
                 TextView pagesSign = (TextView) view.findViewById(R.id.pages_sign_item_text);//签名
+                ImageView video = (ImageView) view.findViewById(R.id.play_video);
                 Uri imageUri = Uri.parse(newaList.get(i).getAsString("icon"));
-                pagesIcon.setImageURI(imageUri);
+                ValidData.load(imageUri, pagesIcon, 30, 30);
                 pagesItemNick.setText(newaList.get(i).getAsString("nick"));
                 pagesTags.setText(newaList.get(i).getAsString("tags"));
                 pagesTitle.setText(newaList.get(i).getAsString("title"));
@@ -636,15 +653,11 @@ public class PagesFragment extends BasicFragment implements SwipeRefreshLayout.O
                 if (newaList.get(i).getAsInteger("file_type") == 0) {
                     Uri imageUris = Uri.parse(newaList.get(i).getAsString("subject"));
                     pagesSubject.setImageURI(imageUris);
+                    video.setVisibility(View.GONE);
                 } else {
-//                    (new Handler()).postDelayed(new Runnable() {
-//                        @Override
-//                        public void run() {
-//                            Bitmap bitmap = Util.createVideoThumbnail("http://clips.vorwaerts-gmbh.de/big_buck_bunny.mp4", 200, 150);
-//                            pagesSubject.setImageBitmap(bitmap);
-//                        }
-//                    }, 100);
-
+                    Uri imageUris = Uri.parse(newaList.get(i).getAsString("video_img"));
+                    pagesSubject.setImageURI(imageUris);
+                    video.setVisibility(View.VISIBLE);
                 }
                 final int type = newaList.get(i).getAsInteger("file_type");
                 final String str = newaList.get(i).getAsString("nick");
@@ -698,6 +711,7 @@ public class PagesFragment extends BasicFragment implements SwipeRefreshLayout.O
                 ImageView pagesFileF = (ImageView) view.findViewById(R.id.pages_file_f);//文件
                 TextView pagesItemNick = (TextView) view.findViewById(R.id.pages_item_nick_text);//昵称
                 TextView pagesSign = (TextView) view.findViewById(R.id.pages_sign_item_text);//签名
+                ImageView video = (ImageView) view.findViewById(R.id.play_video);
                 Uri imageUri = Uri.parse(hotList.get(i).getAsString("icon"));
                 ValidData.load(imageUri, pagesIcon, 30, 30);
                 pagesItemNick.setText(hotList.get(i).getAsString("nick"));
@@ -721,15 +735,11 @@ public class PagesFragment extends BasicFragment implements SwipeRefreshLayout.O
                 if (hotList.get(i).getAsInteger("file_type") == 0) {
                     Uri imageUris = Uri.parse(hotList.get(i).getAsString("subject"));
                     ValidData.load(imageUris, pagesSubject, 100, 80);
+                    video.setVisibility(View.GONE);
                 } else {
-
-//                    (new Handler()).postDelayed(new Runnable() {
-//                        @Override
-//                        public void run() {
-//                            Bitmap bitmap = Util.createVideoThumbnail("http://clips.vorwaerts-gmbh.de/big_buck_bunny.mp4", 200, 150);
-//                            pagesSubject.setImageBitmap(bitmap);
-//                        }
-//                    }, 100);
+                    Uri imageUris = Uri.parse(hotList.get(i).getAsString("video_img"));
+                    ValidData.load(imageUris, pagesSubject, 100, 80);
+                    video.setVisibility(View.VISIBLE);
                 }
                 final int type = hotList.get(i).getAsInteger("file_type");
                 final String str = hotList.get(i).getAsString("nick");

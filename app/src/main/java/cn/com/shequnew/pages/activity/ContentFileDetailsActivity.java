@@ -225,6 +225,7 @@ public class ContentFileDetailsActivity extends BaseActivity implements CommentA
     @OnClick(R.id.content_cal)
     void cal() {
         right();
+        contectText.setText("");
     }
 
 
@@ -310,10 +311,13 @@ public class ContentFileDetailsActivity extends BaseActivity implements CommentA
                         collCon.setChecked(false);
                         break;
                     case R.id.chat:
-                        Intent intent = new Intent(context, LocalVideoActivity.class);
-                        startActivity(intent);
+                        //加入群聊
+                        Intent intent = new Intent(context,ElcyGroupDeActivity.class);
+                        context.startActivity(intent);
                         break;
                     case R.id.faith:
+                        //私聊群主
+
                         break;
                     case R.id.dis:
                         parentnum = 0;

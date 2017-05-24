@@ -451,6 +451,9 @@ public class UserInfoActivity extends BaseActivity {
                     JSONObject jsonObj = dynamicsList.getJSONObject(i);
                     ContentValues cv = new ContentValues();
                     cv.put("subject", jsonObj.getString("subject"));
+                    if(jsonObj.has("video_img")){
+                        cv.put("video_img", jsonObj.getString("video_img"));
+                    }
                     cv.put("id", jsonObj.getInt("id"));
                     cv.put("title", jsonObj.getString("title"));
                     cv.put("tags", jsonObj.getString("tags"));

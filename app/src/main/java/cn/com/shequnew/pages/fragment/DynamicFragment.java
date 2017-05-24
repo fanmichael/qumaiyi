@@ -291,6 +291,9 @@ public class DynamicFragment extends BasicFragment implements SwipeRefreshLayout
                         for (int j = 0; j < ss.length(); j++) {
                             JSONObject sss = ss.getJSONObject(j);
                             ccv.put("subject", sss.getString("subject"));
+                            if (sss.has("video_img")) {
+                                ccv.put("video_img", sss.getString("video_img"));
+                            }
                             ccv.put("title", sss.getString("title"));
                             ccv.put("tags", sss.getString("tags"));
                             ccv.put("file_type", sss.getInt("file_type"));
@@ -308,6 +311,7 @@ public class DynamicFragment extends BasicFragment implements SwipeRefreshLayout
                         ccv.put("title", "");
                         ccv.put("file_type", "");
                         ccv.put("sign", "");
+                        ccv.put("video_img", "");
                         ccv.put("good_name", ss.getString("good_name"));
                         ccv.put("good_image", ss.getString("good_image"));
                         ccv.put("price", ss.getString("price"));

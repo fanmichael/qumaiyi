@@ -564,8 +564,9 @@ public class ShopDetailsActivity extends BaseActivity implements UserGoodsShopAd
                     cv.put("good_name", jsonObj.getString("good_name"));//标题
                     cv.put("good_image", jsonObj.getString("good_image"));//图
                     cv.put("price", jsonObj.getString("price"));//价格
-                    cv.put("icon", jsonObj.getString("icon"));//价格
-                    cv.put("nick", jsonObj.getString("nick"));//价格
+                    cv.put("icon", jsonObj.getString("icon"));
+                    cv.put("ship", jsonObj.getString("ship"));//运费
+                    cv.put("nick", jsonObj.getString("nick"));
                     shopsList.add(cv);
                 }
 

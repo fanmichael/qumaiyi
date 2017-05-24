@@ -47,7 +47,10 @@ import com.facebook.drawee.view.SimpleDraweeView;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.BufferedOutputStream;
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -60,8 +63,8 @@ import butterknife.Unbinder;
 import cn.com.shequnew.R;
 import cn.com.shequnew.pages.activity.ElcyGroupActivity;
 import cn.com.shequnew.pages.activity.ElevancyShopActivity;
-import cn.com.shequnew.pages.activity.MainActivity;
 import cn.com.shequnew.pages.activity.TagsActivity;
+import cn.com.shequnew.pages.activity.TagsItemActivity;
 import cn.com.shequnew.pages.adapter.AppraiesimgeAdapter;
 import cn.com.shequnew.pages.config.AppContext;
 import cn.com.shequnew.pages.http.HttpConnectTool;
@@ -106,6 +109,10 @@ public class VideoContentFragment extends BasicFragment {
     SimpleDraweeView videoImages;
     @BindView(R.id.voide_chose)
     Button voideChose;
+    @BindView(R.id.video_type_name)
+    TextView videoTypeName;
+    @BindView(R.id.video_type_lin)
+    LinearLayout videoTypeLin;
 
     private Context context;
     /**
@@ -130,6 +137,10 @@ public class VideoContentFragment extends BasicFragment {
     private String videoAddress = "";
     private int error;
     private ProgressDialog pd;
+    /**
+     * 视频的第一帧
+     */
+    private File fristFile;
 
     @Nullable
     @Override
@@ -174,7 +185,11 @@ public class VideoContentFragment extends BasicFragment {
             String number = data.getStringExtra("num");
             videoTagsNum.setText("已关联" + number + "标签");
         }
-
+        if (resultCode == 14) {
+            String ts = data.getStringExtra("name");
+            tagsId = data.getStringExtra("num");
+            videoTypeName.setText(ts);
+        }
 
         if (requestCode == 1) {
             if (resultCode == getActivity().RESULT_OK) {
@@ -232,6 +247,39 @@ public class VideoContentFragment extends BasicFragment {
     }
 
 
+    public void saveBitmapFile(Bitmap bitmap) {
+        File file = new File(Environment.getExternalStorageDirectory(), "拍照");
+        if (!file.exists()) {
+            file.mkdir();
+        }
+        String name = "" + System.currentTimeMillis();
+        File output = new File(file, name + ".jpg");
+        try {
+            BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(output));
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, bos);
+            bos.flush();
+            bos.close();
+            String path = Environment.getExternalStorageDirectory() + "/拍照/" + name + ".jpg";
+            Log.e("path", "" + path);
+            fristFile = new File(path);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        Log.e("cxccc", fristFile.getName() + "" + fristFile.length());
+
+    }
+
+
+    /**
+     * 所属分类
+     */
+    @OnClick(R.id.video_type_lin)
+    void videoType() {
+        Intent intent = new Intent();
+        intent.setClass(context, TagsItemActivity.class);
+        startActivityForResult(intent, 14);
+    }
+
     /**
      * 获取视频图
      */
@@ -239,6 +287,7 @@ public class VideoContentFragment extends BasicFragment {
         Bitmap bitmap = getVideoThumb(path);
         Bitmap bit = ThumbnailUtils.extractThumbnail(bitmap, 100, 80);
         videoImages.setImageBitmap(bit);
+        saveBitmapFile(bit);
     }
 
     /**
@@ -504,14 +553,15 @@ public class VideoContentFragment extends BasicFragment {
             map.put("groupid", group);
             map.put("goodsid", goods);
             map.put("type", "1");
-            map.put("subject", videoAddress);
+            map.put("cover", videoAddress);
             Map<String, File> file = new HashMap<String, File>();
+            file.put("video_img", fristFile);
             if (files.size() > 0) {
                 for (int i = 0; i < files.size(); i++) {
                     file.put("show[]", files.get(i));
                 }
             }
-            String json = HttpConnectTool.post(map);
+            String json = HttpConnectTool.post(map, file);
             if (!json.equals("")) {
                 listXml(json);
             }
@@ -606,7 +656,8 @@ public class VideoContentFragment extends BasicFragment {
             public void onSuccess(PutObjectRequest request, PutObjectResult result) {
 //                Log.e("PutObject", "UploadSuccess");
                 if (request.getObjectKey() != null && !request.getObjectKey().equals("")) {
-                    videoAddress = "qumaiyi.oss-cn-shenzhen.aliyuncs.com/" + request.getObjectKey();
+//                    videoAddress = "qumaiyi.oss-cn-shenzhen.aliyuncs.com/" + request.getObjectKey();
+                    videoAddress = request.getObjectKey();
                 } else {
                     Toast.makeText(context, "上传失败！", Toast.LENGTH_SHORT).show();
                 }

@@ -100,7 +100,9 @@ public class ShopBuyDetailActivity extends BaseActivity {
             btnShopDetail.setText("发货");
         }
         if (state == 2 && status == 1) {
-            btnShopDetail.setText("申请提现");
+            btnShopDetail.setText("钱已转到账户余额");
+            btnShopDetail.setClickable(false);
+            btnShopDetail.setEnabled(false);
         }
 
 
@@ -124,18 +126,18 @@ public class ShopBuyDetailActivity extends BaseActivity {
 
 
         if (state == 7 && status == 1) {
-            btnShopDetail.setText("提现审核中....");
+            btnShopDetail.setText("钱已转到账户余额");
             btnShopDetail.setClickable(false);
             btnShopDetail.setEnabled(false);
         }
 
         if (state == 8 && status == 1) {
-            btnShopDetail.setText("提现成功");
+            btnShopDetail.setText("钱已转到账户余额");
             btnShopDetail.setClickable(false);
             btnShopDetail.setEnabled(false);
         }
         if (state == 9 && status == 1) {
-            btnShopDetail.setText("提现失败");
+            btnShopDetail.setText("钱已转到账户余额");
             btnShopDetail.setClickable(false);
             btnShopDetail.setEnabled(false);
         }
@@ -293,6 +295,9 @@ public class ShopBuyDetailActivity extends BaseActivity {
      * 赋值
      */
     private void initView() {
+        if (!order.containsKey("icon")) {
+            return;
+        }
         Uri imageUri = Uri.parse(order.getAsString("icon"));
         Uri image = Uri.parse(order.getAsString("good_image"));
         ValidData.load(imageUri, buyDetailIcon, 30, 30);

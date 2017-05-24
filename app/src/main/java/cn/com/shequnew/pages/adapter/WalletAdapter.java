@@ -65,9 +65,15 @@ public class WalletAdapter extends BaseAdapter {
             return convertView;
         }
         ContentValues cv = contentValues.get(position);
-        holder.wallName.setText(cv.getAsString(""));
-        holder.wallTime.setText(cv.getAsString(""));
-        holder.wallPrice.setText(cv.getAsString(""));
+        if (cv.getAsInteger("type") == 0) {
+            holder.wallName.setText("提现");
+        } else if (cv.getAsInteger("type") == 1) {
+            holder.wallName.setText("消费");
+        } else if (cv.getAsInteger("type") == 2) {
+            holder.wallName.setText("营业所得");
+        }
+        holder.wallTime.setText(cv.getAsString("time"));
+        holder.wallPrice.setText(cv.getAsString("money"));
         return convertView;
     }
 

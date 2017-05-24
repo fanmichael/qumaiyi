@@ -255,6 +255,9 @@ public class ShopListActivity extends BaseActivity implements SwipeRefreshLayout
                         }
                         cv.put("title", jsonObj.getString("comment"));
                         cv.put("subject", jsonObj.getString("img"));
+                        if(jsonObj.has("video_img")){
+                            cv.put("video_img", jsonObj.getString("video_img"));
+                        }
                         values.add(cv);
                     }
                 }

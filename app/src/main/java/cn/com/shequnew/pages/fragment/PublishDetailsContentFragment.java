@@ -351,6 +351,9 @@ public class PublishDetailsContentFragment extends BasicFragment implements Swip
                         note.put("uid", jsonObj.getInt("uid"));
                         note.put("file_type", jsonObj.getInt("file_type"));
                         note.put("subject", jsonObj.getString("subject"));
+                        if(jsonObj.has("video_img")){
+                            note.put("video_img", jsonObj.getString("video_img"));
+                        }
                         note.put("title", jsonObj.getString("title"));
                         note.put("content", jsonObj.getString("content"));
                         note.put("tags", jsonObj.getString("tags"));
