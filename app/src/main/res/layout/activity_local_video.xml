@@ -157,7 +157,7 @@
 
                     <VideoView
                         android:id="@+id/video_video"
-                        android:layout_width="match_parent"
+                        android:layout_width="fill_parent"
                         android:layout_height="150dp"
                         android:visibility="gone"></VideoView>
 
