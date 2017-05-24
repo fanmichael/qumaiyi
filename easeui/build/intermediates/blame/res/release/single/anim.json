@@ -28,12 +28,12 @@
         "source": "C:\\Users\\kongqing\\AndroidStudioProjects\\qumaiyi\\easeui\\res\\anim\\voice_from_icon.xml"
     },
     {
-        "merged": "C:\\Users\\kongqing\\AndroidStudioProjects\\qumaiyi\\easeui\\build\\intermediates\\res\\merged\\release\\anim\\fade_out.xml",
-        "source": "C:\\Users\\kongqing\\AndroidStudioProjects\\qumaiyi\\easeui\\res\\anim\\fade_out.xml"
-    },
-    {
         "merged": "C:\\Users\\kongqing\\AndroidStudioProjects\\qumaiyi\\easeui\\build\\intermediates\\res\\merged\\release\\anim\\slide_out_to_right.xml",
         "source": "C:\\Users\\kongqing\\AndroidStudioProjects\\qumaiyi\\easeui\\res\\anim\\slide_out_to_right.xml"
+    },
+    {
+        "merged": "C:\\Users\\kongqing\\AndroidStudioProjects\\qumaiyi\\easeui\\build\\intermediates\\res\\merged\\release\\anim\\fade_out.xml",
+        "source": "C:\\Users\\kongqing\\AndroidStudioProjects\\qumaiyi\\easeui\\res\\anim\\fade_out.xml"
     },
     {
         "merged": "C:\\Users\\kongqing\\AndroidStudioProjects\\qumaiyi\\easeui\\build\\intermediates\\res\\merged\\release\\anim\\push_bottom_in.xml",

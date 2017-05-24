@@ -16,12 +16,12 @@
         "source": "C:\\Users\\kongqing\\AndroidStudioProjects\\qumaiyi\\easeui\\res\\layout\\ease_row_sent_message.xml"
     },
     {
-        "merged": "C:\\Users\\kongqing\\AndroidStudioProjects\\qumaiyi\\easeui\\build\\intermediates\\res\\merged\\release\\layout\\ease_row_received_message.xml",
-        "source": "C:\\Users\\kongqing\\AndroidStudioProjects\\qumaiyi\\easeui\\res\\layout\\ease_row_received_message.xml"
-    },
-    {
         "merged": "C:\\Users\\kongqing\\AndroidStudioProjects\\qumaiyi\\easeui\\build\\intermediates\\res\\merged\\release\\layout\\ease_widget_contact_list.xml",
         "source": "C:\\Users\\kongqing\\AndroidStudioProjects\\qumaiyi\\easeui\\res\\layout\\ease_widget_contact_list.xml"
+    },
+    {
+        "merged": "C:\\Users\\kongqing\\AndroidStudioProjects\\qumaiyi\\easeui\\build\\intermediates\\res\\merged\\release\\layout\\ease_row_received_message.xml",
+        "source": "C:\\Users\\kongqing\\AndroidStudioProjects\\qumaiyi\\easeui\\res\\layout\\ease_row_received_message.xml"
     },
     {
         "merged": "C:\\Users\\kongqing\\AndroidStudioProjects\\qumaiyi\\easeui\\build\\intermediates\\res\\merged\\release\\layout\\ease_row_sent_bigexpression.xml",
