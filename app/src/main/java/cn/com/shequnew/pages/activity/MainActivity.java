@@ -10,13 +10,14 @@ import android.support.v4.app.FragmentActivity;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
+import com.hyphenate.easeui.ui.EaseConversationListFragment;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import cn.com.shequnew.R;
 import cn.com.shequnew.pages.fragment.DynamicFragment;
 import cn.com.shequnew.pages.fragment.NewsFragment;
 import cn.com.shequnew.pages.fragment.PageCommFragment;
-import cn.com.shequnew.pages.fragment.PublishFragment;
 
 /**
  * 主页
@@ -38,7 +39,8 @@ public class MainActivity extends FragmentActivity {
     private Context context;
     private PageCommFragment pagesFragment;
     private DynamicFragment dynamicFragment;
-    private PublishFragment publishFragment;
+    //聊天界面
+    private EaseConversationListFragment publishFragment;
     private NewsFragment newsFragment;
 
     @Override
@@ -81,9 +83,9 @@ public class MainActivity extends FragmentActivity {
                         break;
                     case R.id.news:
                         if (publishFragment == null) {
-                            publishFragment = new PublishFragment();
+                            // publishFragment = new EaseConversationListFragment();
                         }
-                        transaction.replace(R.id.fra_layout, publishFragment);
+                        // transaction.replace(R.id.fra_layout, publishFragment);
                         break;
                     case R.id.mine:
                         if (newsFragment == null) {

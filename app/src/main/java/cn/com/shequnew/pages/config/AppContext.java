@@ -2,6 +2,7 @@ package cn.com.shequnew.pages.config;
 
 import android.app.Application;
 import android.content.ContentValues;
+import android.support.multidex.MultiDex;
 
 import com.facebook.drawee.backends.pipeline.Fresco;
 
@@ -22,7 +23,10 @@ public class AppContext extends Application implements UncaughtExceptionHandler 
     public void onCreate() {
         super.onCreate();
         appContext = this;
+        MultiDex.install(this);
         Fresco.initialize(this);
+        //       EaseUI.getInstance().init(this, null);
+        // EMClient.getInstance().setDebugMode(true);
         // 获取系统默认的UncaughtException处理
         mDefaultHandler = Thread.getDefaultUncaughtExceptionHandler();
     }
