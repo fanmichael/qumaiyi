@@ -569,6 +569,7 @@ public class PagesFragment extends BasicFragment implements SwipeRefreshLayout.O
                     cv.put("tags", jsonObj.getString("tags"));
                     cv.put("nick", jsonObj.getString("nick"));
                     cv.put("icon", jsonObj.getString("icon"));
+                    cv.put("title", jsonObj.getString("title"));
                     cv.put("isSign", jsonObj.getInt("isSign"));
                     cv.put("follow", jsonObj.getInt("follow"));
                     newaList.add(cv);
@@ -630,7 +631,7 @@ public class PagesFragment extends BasicFragment implements SwipeRefreshLayout.O
                 TextView pagesSign = (TextView) view.findViewById(R.id.pages_sign_item_text);//签名
                 ImageView video = (ImageView) view.findViewById(R.id.play_video);
                 Uri imageUri = Uri.parse(newaList.get(i).getAsString("icon"));
-                pagesIcon.setImageURI(imageUri);
+                ValidData.load(imageUri, pagesIcon, 30, 30);
                 pagesItemNick.setText(newaList.get(i).getAsString("nick"));
                 pagesTags.setText(newaList.get(i).getAsString("tags"));
                 pagesTitle.setText(newaList.get(i).getAsString("title"));

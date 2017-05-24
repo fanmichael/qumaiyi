@@ -63,6 +63,7 @@ import cn.com.shequnew.pages.config.AppContext;
 import cn.com.shequnew.pages.http.HttpConnectTool;
 import cn.com.shequnew.pages.prompt.Loading;
 import cn.com.shequnew.tools.ListTools;
+import cn.com.shequnew.tools.ValidData;
 
 /**
  * 播放视频
@@ -130,6 +131,8 @@ public class LocalVideoActivity extends BaseActivity implements CommentAdapter.s
     ListView videoDetailsComment;
     @BindView(R.id.video_scrollview)
     ScrollView videoScrollview;
+    @BindView(R.id.video_images_play)
+    ImageView videoImagesPlay;
 
     private Context context;
     //主题
@@ -172,10 +175,6 @@ public class LocalVideoActivity extends BaseActivity implements CommentAdapter.s
     private final static int CACHE_VIDEO_UPDATE = 2;
     private final static int CACHE_VIDEO_END = 3;
 
-
-    String url = "http://clips.vorwaerts-gmbh.de/big_buck_bunny.mp4";
-
-    //    String url="qumaiyi.oss-cn-shenzhen.aliyuncs.com/video/1495424257134video_20170522_110819.mp4";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -198,8 +197,18 @@ public class LocalVideoActivity extends BaseActivity implements CommentAdapter.s
             collectRe.setVisibility(View.GONE);
         }
         setDelayMessage(1, 100);
+
     }
 
+
+    @OnClick(R.id.video_images_play)
+    void videoPlay() {
+        initPlayVideo();
+        downloadview();
+
+        videoImagesPlay.setVisibility(View.GONE);
+        video.setVisibility(View.VISIBLE);
+    }
 
     /**
      * 视频缓存播放
@@ -268,7 +277,7 @@ public class LocalVideoActivity extends BaseActivity implements CommentAdapter.s
         String endpoint = "http://oss-cn-shenzhen.aliyuncs.com";
         OSSCredentialProvider credentialProvider = new OSSPlainTextAKSKCredentialProvider("LTAImg7aetBxp8Kn", "mgUv74WJqepnQOPIj5LF8C30GYSlzH");
         OSS oss = new OSSClient(getApplicationContext(), endpoint, credentialProvider);
-        GetObjectRequest get = new GetObjectRequest("qumaiyi", "video/1495424257134video_20170522_110819.mp4");
+        GetObjectRequest get = new GetObjectRequest("qumaiyi", values.getAsString("subject"));
         @SuppressWarnings("rawtypes")
         OSSAsyncTask task = oss.asyncGetObject(get, new OSSCompletedCallback<GetObjectRequest, GetObjectResult>() {
             @Override
@@ -414,35 +423,18 @@ public class LocalVideoActivity extends BaseActivity implements CommentAdapter.s
 
 
     /**
-     * 测试数据
-     */
-    private void test() {
-//        Bitmap bitmap = createVideoThumbnail(url, 200, 150);
-//        test.setImageBitmap(bitmap);
-        //    MediaController mc = new MediaController(this);
-//        mc.setVisibility(View.INVISIBLE);
-//        videoView.setMediaController(mc);
-
-    }
-
-    /**
      * 数据
      */
     private void initView() {
-        Uri uri = Uri.parse(url);
-        MediaController mc = new MediaController(this);
-        mc.setVisibility(View.VISIBLE);
-        video.setMediaController(mc);
-        video.setOnCompletionListener(new MyPlayerOnCompletionListener());
-        video.setVideoURI(uri);
-        video.start();
-
-        videoDetailsPrice.setText("观察数");
-        videoUserInfoIcon.setImageBitmap(null);//头像
-        videoDetailsNick.setText("昵称");
-        videoDetailsTags.setText("标签");
-//        videoTest
-
+        videoDetailsPrice.setText(values.getAsInteger("follow") + "");
+        Uri imageUri = Uri.parse(values.getAsString("icon"));
+        ValidData.load(imageUri, videoUserInfoIcon, 60, 60);
+        videoDetailsNick.setText(values.getAsString("nick"));
+        videoDetailsTags.setText(values.getAsString("tags"));
+        Uri videoImage = Uri.parse(values.getAsString("video_img"));
+        ValidData.load(videoImage, videoTest, 150, 150);
+        videoImagesPlay.setVisibility(View.VISIBLE);
+        video.setVisibility(View.GONE);
     }
 
 
@@ -511,14 +503,14 @@ public class LocalVideoActivity extends BaseActivity implements CommentAdapter.s
         videoDetailsComment.setAdapter(commentAdapter);
         ListTools.setListViewHeightBasedOnChildren(videoDetailsComment);
     }
-
-    class MyPlayerOnCompletionListener implements MediaPlayer.OnCompletionListener {
-
-        @Override
-        public void onCompletion(MediaPlayer mp) {
-            Toast.makeText(LocalVideoActivity.this, "播放完成了", Toast.LENGTH_SHORT).show();
-        }
-    }
+//
+//    class MyPlayerOnCompletionListener implements MediaPlayer.OnCompletionListener {
+//
+//        @Override
+//        public void onCompletion(MediaPlayer mp) {
+//            Toast.makeText(LocalVideoActivity.this, "播放完成了", Toast.LENGTH_SHORT).show();
+//        }
+//    }
 
 
     /**
@@ -575,6 +567,8 @@ public class LocalVideoActivity extends BaseActivity implements CommentAdapter.s
                         break;
                     case R.id.video_chat:
                         //加入群聊
+                        Intent intent = new Intent(context, ElcyGroupDeActivity.class);
+                        context.startActivity(intent);
                         break;
                     case R.id.video_faith:
                         //私聊群主
@@ -661,7 +655,7 @@ public class LocalVideoActivity extends BaseActivity implements CommentAdapter.s
             removeLoading();
             switch (what) {
                 case 1:
-//                    initData();
+                    initView();
                     isColl();
 //                    imgsList();
                     commAdapter();
@@ -929,6 +923,9 @@ public class LocalVideoActivity extends BaseActivity implements CommentAdapter.s
             values.put("follow", objnote.getInt("follow"));
             values.put("status", objnote.getInt("status"));
             values.put("subject", objnote.getString("subject"));
+            if (objnote.has("video_img")) {
+                values.put("video_img", objnote.getString("video_img"));
+            }
             values.put("title", objnote.getString("title"));
             values.put("content", objnote.getString("content"));
             values.put("tags", objnote.getString("tags"));
@@ -1034,7 +1031,6 @@ public class LocalVideoActivity extends BaseActivity implements CommentAdapter.s
             e.printStackTrace();
         }
     }
-
 
     //判断状态隐藏
     private void isColl() {

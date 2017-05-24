@@ -66,11 +66,11 @@ public class WalletAdapter extends BaseAdapter {
         }
         ContentValues cv = contentValues.get(position);
         if (cv.getAsInteger("type") == 0) {
-            holder.wallName.setText(cv.getAsString("提现"));
+            holder.wallName.setText("提现");
         } else if (cv.getAsInteger("type") == 1) {
-            holder.wallName.setText(cv.getAsString("消费"));
+            holder.wallName.setText("消费");
         } else if (cv.getAsInteger("type") == 2) {
-            holder.wallName.setText(cv.getAsString("营业所得"));
+            holder.wallName.setText("营业所得");
         }
         holder.wallTime.setText(cv.getAsString("time"));
         holder.wallPrice.setText(cv.getAsString("money"));

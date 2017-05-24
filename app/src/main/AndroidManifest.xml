@@ -372,7 +372,9 @@
             android:configChanges="keyboardHidden|orientation"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.NoTitleBar"></activity>
+            android:theme="@android:style/Theme.NoTitleBar" />
+        <activity android:name=".pages.activity.ElcyGroupDeActivity" />
+        <activity android:name=".pages.activity.DeclareActivity"></activity>
     </application>
 
 </manifest>
