@@ -225,6 +225,7 @@ public class ContentFileDetailsActivity extends BaseActivity implements CommentA
     @OnClick(R.id.content_cal)
     void cal() {
         right();
+        contectText.setText("");
     }
 
 

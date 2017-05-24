@@ -438,6 +438,23 @@ public class LocalVideoActivity extends BaseActivity implements CommentAdapter.s
     }
 
 
+    @OnClick(R.id.video_content_cal)
+    void cal() {
+        right();
+        videoContectText.setText("");
+    }
+
+    @OnClick(R.id.video_content_sumbit)
+    void sumit(){
+        right();
+        contentDetails = videoContectText.getText().toString().trim();
+        if (contentDetails.equals("")) {
+            Toast.makeText(context, "请输入评语", Toast.LENGTH_SHORT).show();
+        } else {
+            new asyncTask().execute(6);
+        }
+    }
+
     /**
      * 点击关注
      */
@@ -503,14 +520,6 @@ public class LocalVideoActivity extends BaseActivity implements CommentAdapter.s
         videoDetailsComment.setAdapter(commentAdapter);
         ListTools.setListViewHeightBasedOnChildren(videoDetailsComment);
     }
-//
-//    class MyPlayerOnCompletionListener implements MediaPlayer.OnCompletionListener {
-//
-//        @Override
-//        public void onCompletion(MediaPlayer mp) {
-//            Toast.makeText(LocalVideoActivity.this, "播放完成了", Toast.LENGTH_SHORT).show();
-//        }
-//    }
 
 
     /**
@@ -632,7 +641,7 @@ public class LocalVideoActivity extends BaseActivity implements CommentAdapter.s
                     break;
                 case 2:
                     httpCollesStatuscollection();
-                    bundle.putInt("what", 2);
+//                    bundle.putInt("what", 2);
                     break;
                 case 5:
                     httpFollowStatusfollow();
