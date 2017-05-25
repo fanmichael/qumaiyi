@@ -374,7 +374,10 @@
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.NoTitleBar" />
         <activity android:name=".pages.activity.ElcyGroupDeActivity" />
-        <activity android:name=".pages.activity.DeclareActivity"></activity>
+        <activity android:name=".pages.activity.DeclareActivity" />
+        <activity
+            android:name=".pages.activity.PictureDisplayActivity"
+            android:theme="@style/Transparent"></activity>
     </application>
 
 </manifest>

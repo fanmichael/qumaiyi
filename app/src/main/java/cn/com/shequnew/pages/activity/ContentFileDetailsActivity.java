@@ -30,6 +30,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.InputStream;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -317,7 +318,14 @@ public class ContentFileDetailsActivity extends BaseActivity implements CommentA
                         break;
                     case R.id.faith:
                         //私聊群主
-
+                        ArrayList<String> imgUrl=new ArrayList<String>();
+                        for(int i=0;i<imgs.size();i++){
+                            imgUrl.add(imgs.get(i).getAsString("imgs"));
+                        }
+                        Intent intent1=new Intent(context,PictureDisplayActivity.class);
+                        intent1.putExtra("position",2);
+                        intent1.putStringArrayListExtra("enlargeImage",imgUrl);
+                        startActivity(intent1);
                         break;
                     case R.id.dis:
                         parentnum = 0;
