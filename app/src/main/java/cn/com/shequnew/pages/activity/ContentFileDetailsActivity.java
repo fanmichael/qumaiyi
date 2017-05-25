@@ -429,7 +429,9 @@ public class ContentFileDetailsActivity extends BaseActivity implements CommentA
             switch (what) {
                 case 1:
                     initData();
-                    isColl();
+                    if(uid!=AppContext.cv.getAsInteger("id")){
+                        isColl();
+                    }
                     imgsList();
                     commAdapter();
                     (new Handler()).post(new Runnable() {

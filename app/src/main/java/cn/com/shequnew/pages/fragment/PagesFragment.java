@@ -283,31 +283,31 @@ public class PagesFragment extends BasicFragment implements SwipeRefreshLayout.O
             public void handleMessage(Message msg) {
                 switch (msg.what) {
                     case 1:
-                        mLoading = new Loading(
-                                getActivity(), pagseHotMore);
-                        mLoading.setText("正在加载......");
-                        mLoading.show();
+//                        mLoading = new Loading(
+//                                getActivity(), pagseHotMore);
+//                        mLoading.setText("正在加载......");
+//                        mLoading.show();
                         new asyncTask().execute(1);
                         break;
                     case 2:
-                        mLoading = new Loading(
-                                getActivity(), pagseHotMore);
-                        mLoading.setText("正在加载......");
-                        mLoading.show();
+//                        mLoading = new Loading(
+//                                getActivity(), pagseHotMore);
+//                        mLoading.setText("正在加载......");
+//                        mLoading.show();
                         new asyncTask().execute(2);
                         break;
                     case 3:
-                        mLoading = new Loading(
-                                getActivity(), pagseHotMore);
-                        mLoading.setText("正在加载......");
-                        mLoading.show();
+//                        mLoading = new Loading(
+//                                getActivity(), pagseHotMore);
+//                        mLoading.setText("正在加载......");
+//                        mLoading.show();
                         new asyncTask().execute(3);
                         break;
                     case 4:
-                        mLoading = new Loading(
-                                getActivity(), pagseHotMore);
-                        mLoading.setText("正在加载......");
-                        mLoading.show();
+//                        mLoading = new Loading(
+//                                getActivity(), pagseHotMore);
+//                        mLoading.setText("正在加载......");
+//                        mLoading.show();
                         new asyncTask().execute(4);
                         break;
                 }

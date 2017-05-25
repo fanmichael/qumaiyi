@@ -12,6 +12,7 @@ import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.IdRes;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
 import android.view.animation.AnimationUtils;
@@ -62,6 +63,7 @@ import cn.com.shequnew.pages.adapter.CommentAdapter;
 import cn.com.shequnew.pages.config.AppContext;
 import cn.com.shequnew.pages.http.HttpConnectTool;
 import cn.com.shequnew.pages.prompt.Loading;
+import cn.com.shequnew.pages.view.MyVideoView;
 import cn.com.shequnew.tools.ListTools;
 import cn.com.shequnew.tools.ValidData;
 
@@ -70,7 +72,7 @@ import cn.com.shequnew.tools.ValidData;
  */
 public class LocalVideoActivity extends BaseActivity implements CommentAdapter.setOnClickLoction {
     @BindView(R.id.video_video)
-    VideoView video;
+    MyVideoView video;
     @BindView(R.id.image_back_coll)
     ImageView imageBackColl;
     @BindView(R.id.top_title_coll)
@@ -160,7 +162,7 @@ public class LocalVideoActivity extends BaseActivity implements CommentAdapter.s
      * 视频缓存播放
      */
     private ProgressDialog progressDialog = null;
-    private static final int READY_BUFF = 6 * 1024 * 1000;
+    private static final int READY_BUFF = 60 * 1024 * 1000;
     private static final int CACHE_BUFF = 50 * 1024;
     private boolean isready = false;
     private boolean iserror = false;
@@ -196,8 +198,8 @@ public class LocalVideoActivity extends BaseActivity implements CommentAdapter.s
             collect.setVisibility(View.GONE);
             collectRe.setVisibility(View.GONE);
         }
+        video = new MyVideoView(context);
         setDelayMessage(1, 100);
-
     }
 
 
@@ -385,7 +387,7 @@ public class LocalVideoActivity extends BaseActivity implements CommentAdapter.s
                     double cachepercent = readSize * 100.00 / mediaLength * 1.0;
                     String s = String.format("已缓存: [%.2f%%]", cachepercent);
                     Log.e("cachepercent", "s:" + s);
-                    if (cachepercent == 10.0 || cachepercent == 100.00) {
+                    if (cachepercent == 30.0 || cachepercent == 100.00) {
                         video.setVideoPath(localUrl);
                         video.start();
                         String s1 = String.format("已缓存: [%.2f%%]", cachepercent);
@@ -426,13 +428,17 @@ public class LocalVideoActivity extends BaseActivity implements CommentAdapter.s
      * 数据
      */
     private void initView() {
+        DisplayMetrics dm = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(dm);
+        int height = dm.heightPixels;
+        int width = dm.widthPixels;
         videoDetailsPrice.setText(values.getAsInteger("follow") + "");
         Uri imageUri = Uri.parse(values.getAsString("icon"));
         ValidData.load(imageUri, videoUserInfoIcon, 60, 60);
         videoDetailsNick.setText(values.getAsString("nick"));
         videoDetailsTags.setText(values.getAsString("tags"));
         Uri videoImage = Uri.parse(values.getAsString("video_img"));
-        ValidData.load(videoImage, videoTest, 150, 150);
+        ValidData.load(videoImage, videoTest, width, 150);
         videoImagesPlay.setVisibility(View.VISIBLE);
         video.setVisibility(View.GONE);
     }
@@ -445,7 +451,7 @@ public class LocalVideoActivity extends BaseActivity implements CommentAdapter.s
     }
 
     @OnClick(R.id.video_content_sumbit)
-    void sumit(){
+    void sumit() {
         right();
         contentDetails = videoContectText.getText().toString().trim();
         if (contentDetails.equals("")) {
@@ -665,7 +671,9 @@ public class LocalVideoActivity extends BaseActivity implements CommentAdapter.s
             switch (what) {
                 case 1:
                     initView();
-                    isColl();
+                    if (uid != AppContext.cv.getAsInteger("id")) {
+                        isColl();
+                    }
 //                    imgsList();
                     commAdapter();
                     (new Handler()).post(new Runnable() {

@@ -155,11 +155,11 @@
                     android:layout_height="150dp"
                     android:orientation="horizontal">
 
-                    <VideoView
+                    <cn.com.shequnew.pages.view.MyVideoView
                         android:id="@+id/video_video"
                         android:layout_width="fill_parent"
                         android:layout_height="150dp"
-                        android:visibility="gone"></VideoView>
+                        android:visibility="gone"></cn.com.shequnew.pages.view.MyVideoView>
 
                     <FrameLayout
                         android:layout_width="match_parent"
@@ -168,8 +168,7 @@
                         <com.facebook.drawee.view.SimpleDraweeView
                             android:id="@+id/video_test"
                             android:layout_width="match_parent"
-                            android:layout_height="150dp"
-                            />
+                            android:layout_height="150dp" />
 
                         <ImageView
                             android:id="@+id/video_images_play"
@@ -308,7 +307,9 @@
                                 android:id="@+id/video_details_attention"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:orientation="horizontal">
+                                android:orientation="horizontal"
+                                android:visibility="gone"
+                                >
 
                                 <ImageView
                                     android:layout_width="wrap_content"
