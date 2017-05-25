@@ -20,6 +20,7 @@ import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -143,6 +144,8 @@ public class LocalVideoActivity extends BaseActivity implements CommentAdapter.s
     ListView videoDetailsImages;
     @BindView(R.id.video_details_info_from)
     LinearLayout videoDetailsInfoFrom;
+    @BindView(R.id.video_ln)
+    FrameLayout videoLn;
 
     private Context context;
     //主题
@@ -171,7 +174,7 @@ public class LocalVideoActivity extends BaseActivity implements CommentAdapter.s
      * 视频缓存播放
      */
     private ProgressDialog progressDialog = null;
-    private static final int READY_BUFF = 6*1024 * 1000;
+    private static final int READY_BUFF = 1024 * 6000;
     private static final int CACHE_BUFF = 50 * 1024;
     private boolean isready = false;
     private boolean iserror = false;
@@ -181,10 +184,10 @@ public class LocalVideoActivity extends BaseActivity implements CommentAdapter.s
     private long readSize = 0;
     private InputStream inputStream;
     private String localUrl, objectname;
-    private final static int VIDEO_STATE_UPDATE = 0;
-    private final static int CACHE_VIDEO_READY = 1;
-    private final static int CACHE_VIDEO_UPDATE = 2;
-    private final static int CACHE_VIDEO_END = 3;
+    private final static int VIDEO_STATE_UPDATE = 5;
+    private final static int CACHE_VIDEO_READY = 6;
+    private final static int CACHE_VIDEO_UPDATE = 7;
+    private final static int CACHE_VIDEO_END = 8;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -207,7 +210,6 @@ public class LocalVideoActivity extends BaseActivity implements CommentAdapter.s
             collect.setVisibility(View.GONE);
             collectRe.setVisibility(View.GONE);
         }
-        video = new MyVideoView(context);
         setDelayMessage(1, 100);
         videoDetailsImages.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -225,8 +227,11 @@ public class LocalVideoActivity extends BaseActivity implements CommentAdapter.s
     }
 
 
+    /**
+     * 评价
+     */
     @OnClick(R.id.video_details_info_from)
-    void inFrom(){
+    void inFrom() {
         Intent intent = new Intent(context, InfromActivity.class);
         Bundle bundle = new Bundle();
         bundle.putString("rid", "" + id);
@@ -235,13 +240,15 @@ public class LocalVideoActivity extends BaseActivity implements CommentAdapter.s
         context.startActivity(intent);
     }
 
+    /**
+     * 播放视频
+     */
     @OnClick(R.id.video_images_play)
     void videoPlay() {
+        video.setVisibility(View.VISIBLE);
+        videoLn.setVisibility(View.GONE);
         initPlayVideo();
         downloadview();
-
-        videoImagesPlay.setVisibility(View.GONE);
-        video.setVisibility(View.VISIBLE);
     }
 
     /**
@@ -253,14 +260,14 @@ public class LocalVideoActivity extends BaseActivity implements CommentAdapter.s
         video.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
             public void onPrepared(MediaPlayer mediaplayer) {
                 //避免黑屏出现
-//                mediaplayer.setOnInfoListener(new MediaPlayer.OnInfoListener() {
-//                    @Override
-//                    public boolean onInfo(MediaPlayer mp, int what, int extra) {
-//                        if (what == MediaPlayer.MEDIA_INFO_VIDEO_RENDERING_START)
-//                            video.setBackgroundColor(Color.TRANSPARENT);
-//                        return true;
-//                    }
-//                });
+                mediaplayer.setOnInfoListener(new MediaPlayer.OnInfoListener() {
+                    @Override
+                    public boolean onInfo(MediaPlayer mp, int what, int extra) {
+                        if (what == MediaPlayer.MEDIA_INFO_VIDEO_RENDERING_START)
+                            video.setBackgroundColor(Color.TRANSPARENT);
+                        return true;
+                    }
+                });
 
                 dismissProgressDialog();
                 video.seekTo(curPosition);
@@ -430,9 +437,10 @@ public class LocalVideoActivity extends BaseActivity implements CommentAdapter.s
                     double cachepercent = readSize * 100.00 / mediaLength * 1.0;
                     String s = String.format("已缓存: [%.2f%%]", cachepercent);
                     Log.e("cachepercent", "s:" + s);
-                    if (cachepercent == 20.0 || cachepercent == 100.00) {
+                    if (cachepercent == 100.0 || cachepercent == 100.00) {
                         video.setVideoPath(localUrl);
                         video.start();
+                        dismissProgressDialog();
                         String s1 = String.format("已缓存: [%.2f%%]", cachepercent);
                         Log.e("cachepercent", "s1:" + s1);
                         return;
@@ -570,6 +578,7 @@ public class LocalVideoActivity extends BaseActivity implements CommentAdapter.s
         videoDetailsComment.setAdapter(commentAdapter);
         ListTools.setListViewHeightBasedOnChildren(videoDetailsComment);
     }
+
     /**
      * 添加介绍
      */
