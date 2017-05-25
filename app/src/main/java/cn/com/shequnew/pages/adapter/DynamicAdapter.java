@@ -140,7 +140,7 @@ public class DynamicAdapter extends BaseAdapter {
                 if (dy.getAsInteger("file_type") == 0) {
                     Intent intent = new Intent();
                     Bundle bundle = new Bundle();
-                    bundle.putInt("id", dy.getAsInteger("id"));
+                    bundle.putInt("id", dy.getAsInteger("from_id"));
                     bundle.putInt("uid", dy.getAsInteger("uid"));
                     intent.putExtras(bundle);
                     intent.setClass(mContext, ContentFileDetailsActivity.class);
@@ -148,7 +148,7 @@ public class DynamicAdapter extends BaseAdapter {
                 } else {
                     Intent intent = new Intent();
                     Bundle bundle = new Bundle();
-                    bundle.putInt("id", dy.getAsInteger("id"));
+                    bundle.putInt("id", dy.getAsInteger("from_id"));
                     bundle.putInt("uid", dy.getAsInteger("uid"));
                     intent.putExtras(bundle);
                     intent.setClass(mContext, LocalVideoActivity.class);
@@ -163,7 +163,7 @@ public class DynamicAdapter extends BaseAdapter {
             public void onClick(View v) {
                 Intent intent = new Intent();
                 Bundle bundle = new Bundle();
-                bundle.putInt("id", dy.getAsInteger("id"));
+                bundle.putInt("id", dy.getAsInteger("from_id"));
                 bundle.putInt("uid", dy.getAsInteger("uid"));
                 intent.putExtras(bundle);
                 intent.setClass(mContext, ShopDetailsActivity.class);

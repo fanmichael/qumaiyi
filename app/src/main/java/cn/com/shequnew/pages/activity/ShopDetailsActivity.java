@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -130,6 +131,30 @@ public class ShopDetailsActivity extends BaseActivity implements UserGoodsShopAd
         topTitleColl.setText("商品详情");
         initDelay();
         setDelayMessage(1, 100);
+        shopDetailsImages.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                ArrayList<String> imgUrl = new ArrayList<String>();
+                for (int i = 0; i < imagesList.size(); i++) {
+                    imgUrl.add(imagesList.get(i).getAsString("imgs"));
+                }
+                Intent intent1 = new Intent(context, PictureDisplayActivity.class);
+                intent1.putExtra("position", imgUrl.size());
+                intent1.putStringArrayListExtra("enlargeImage", imgUrl);
+                startActivity(intent1);
+            }
+        });
+
+    }
+
+    @OnClick(R.id.shop_details_sim_title)
+    void clikeBig() {
+        ArrayList<String> imgUrl = new ArrayList<String>();
+        imgUrl.add(values.getAsString("good_image"));
+        Intent intent1 = new Intent(context, PictureDisplayActivity.class);
+        intent1.putExtra("position", imgUrl.size());
+        intent1.putStringArrayListExtra("enlargeImage", imgUrl);
+        startActivity(intent1);
     }
 
     /**

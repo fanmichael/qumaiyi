@@ -12,6 +12,7 @@ import android.support.annotation.IdRes;
 import android.util.Log;
 import android.view.View;
 import android.view.animation.AnimationUtils;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ExpandableListView;
@@ -176,6 +177,20 @@ public class ContentFileDetailsActivity extends BaseActivity implements CommentA
 //        commentAdapter = new CommentAdapter(context, list, lists, this);
 //        contentFileDetailsAdapter=new ContentFileDetailsAdapter(context,list,lists,this);
         setDelayMessage(1, 100);
+
+        fileDetailsImages.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                ArrayList<String> imgUrl = new ArrayList<String>();
+                for (int i = 0; i < imgs.size(); i++) {
+                    imgUrl.add(imgs.get(i).getAsString("imgs"));
+                }
+                Intent intent1 = new Intent(context, PictureDisplayActivity.class);
+                intent1.putExtra("position", imgUrl.size());
+                intent1.putStringArrayListExtra("enlargeImage", imgUrl);
+                startActivity(intent1);
+            }
+        });
     }
 
     @OnClick(R.id.image_back_coll)
@@ -290,6 +305,16 @@ public class ContentFileDetailsActivity extends BaseActivity implements CommentA
         ListTools.setListViewHeightBasedOnChildren(fileDetailsImages);
     }
 
+    @OnClick(R.id.file_details_sim_title)
+    void clikeBig() {
+        ArrayList<String> imgUrl = new ArrayList<String>();
+        imgUrl.add(values.getAsString("subject"));
+        Intent intent1 = new Intent(context, PictureDisplayActivity.class);
+        intent1.putExtra("position", imgUrl.size());
+        intent1.putStringArrayListExtra("enlargeImage", imgUrl);
+        startActivity(intent1);
+    }
+
 
     private void groupClike() {
 
@@ -313,19 +338,12 @@ public class ContentFileDetailsActivity extends BaseActivity implements CommentA
                         break;
                     case R.id.chat:
                         //加入群聊
-                        Intent intent = new Intent(context,ElcyGroupDeActivity.class);
+                        Intent intent = new Intent(context, ElcyGroupDeActivity.class);
                         context.startActivity(intent);
                         break;
                     case R.id.faith:
                         //私聊群主
-                        ArrayList<String> imgUrl=new ArrayList<String>();
-                        for(int i=0;i<imgs.size();i++){
-                            imgUrl.add(imgs.get(i).getAsString("imgs"));
-                        }
-                        Intent intent1=new Intent(context,PictureDisplayActivity.class);
-                        intent1.putExtra("position",2);
-                        intent1.putStringArrayListExtra("enlargeImage",imgUrl);
-                        startActivity(intent1);
+
                         break;
                     case R.id.dis:
                         parentnum = 0;
@@ -437,7 +455,7 @@ public class ContentFileDetailsActivity extends BaseActivity implements CommentA
             switch (what) {
                 case 1:
                     initData();
-                    if(uid!=AppContext.cv.getAsInteger("id")){
+                    if (uid != AppContext.cv.getAsInteger("id")) {
                         isColl();
                     }
                     imgsList();

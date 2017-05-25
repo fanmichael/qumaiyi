@@ -348,7 +348,71 @@
 
                     </LinearLayout>
                 </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:orientation="vertical">
 
+                    <TextView
+                        android:id="@+id/video_name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:text="海口风景"
+                        android:textColor="@color/col_bg" />
+
+                    <ListView
+                        android:id="@+id/video_details_images"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:divider="#b5b5b5"
+                        android:dividerHeight="1dp"
+                        android:focusable="false"></ListView>
+
+                </LinearLayout>
+
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/bg"></View>
+
+                <LinearLayout
+                    android:id="@+id/video_details_info_from"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginTop="5dp"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_gravity="center"
+                        android:src="@drawable/info_from" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:padding="10dp"
+                        android:text="举报"
+                        android:textColor="@color/col_bg" />
+
+
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_gravity="right|center"
+                        android:src="@drawable/back_go" />
+
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/bg"></View>
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -381,7 +445,7 @@
                         android:id="@+id/video_details_tip"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:gravity="center"
+                        android:layout_gravity="center"
                         android:text="没有相关商品" />
 
                 </LinearLayout>
@@ -407,7 +471,7 @@
                         android:id="@+id/video_group_tip"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:gravity="center"
+                        android:layout_gravity="center"
                         android:text="没有相关评论" />
 
 

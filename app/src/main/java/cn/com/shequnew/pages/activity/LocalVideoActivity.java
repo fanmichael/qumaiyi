@@ -17,6 +17,7 @@ import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
 import android.view.animation.AnimationUtils;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -28,7 +29,6 @@ import android.widget.RadioGroup;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.VideoView;
 
 import com.alibaba.sdk.android.oss.ClientException;
 import com.alibaba.sdk.android.oss.OSS;
@@ -61,6 +61,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.com.shequnew.R;
 import cn.com.shequnew.pages.adapter.CommentAdapter;
+import cn.com.shequnew.pages.adapter.ShopImagesAdapter;
 import cn.com.shequnew.pages.config.AppContext;
 import cn.com.shequnew.pages.http.HttpConnectTool;
 import cn.com.shequnew.pages.prompt.Loading;
@@ -136,6 +137,12 @@ public class LocalVideoActivity extends BaseActivity implements CommentAdapter.s
     ScrollView videoScrollview;
     @BindView(R.id.video_images_play)
     ImageView videoImagesPlay;
+    @BindView(R.id.video_name)
+    TextView videoName;
+    @BindView(R.id.video_details_images)
+    ListView videoDetailsImages;
+    @BindView(R.id.video_details_info_from)
+    LinearLayout videoDetailsInfoFrom;
 
     private Context context;
     //主题
@@ -145,6 +152,7 @@ public class LocalVideoActivity extends BaseActivity implements CommentAdapter.s
     private List<List<ContentValues>> lists = new ArrayList<>();
     //商品
     private List<ContentValues> goodsList = new ArrayList<>();
+    private List<ContentValues> imgs = new ArrayList<>();
     //评价内容
     private String contentDetails = "";
     public int id;
@@ -157,13 +165,13 @@ public class LocalVideoActivity extends BaseActivity implements CommentAdapter.s
     private boolean isSoll;
     //评论
     private CommentAdapter commentAdapter;
-
+    private ShopImagesAdapter shopImagesAdapter;//图片介绍
 
     /**
      * 视频缓存播放
      */
     private ProgressDialog progressDialog = null;
-    private static final int READY_BUFF = 60 * 1024 * 1000;
+    private static final int READY_BUFF = 6 * 1024 * 1000;
     private static final int CACHE_BUFF = 50 * 1024;
     private boolean isready = false;
     private boolean iserror = false;
@@ -201,8 +209,31 @@ public class LocalVideoActivity extends BaseActivity implements CommentAdapter.s
         }
         video = new MyVideoView(context);
         setDelayMessage(1, 100);
+        videoDetailsImages.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                ArrayList<String> imgUrl = new ArrayList<String>();
+                for (int i = 0; i < imgs.size(); i++) {
+                    imgUrl.add(imgs.get(i).getAsString("imgs"));
+                }
+                Intent intent1 = new Intent(context, PictureDisplayActivity.class);
+                intent1.putExtra("position", imgUrl.size());
+                intent1.putStringArrayListExtra("enlargeImage", imgUrl);
+                startActivity(intent1);
+            }
+        });
     }
 
+
+    @OnClick(R.id.video_details_info_from)
+    void inFrom(){
+        Intent intent = new Intent(context, InfromActivity.class);
+        Bundle bundle = new Bundle();
+        bundle.putString("rid", "" + id);
+        bundle.putString("type", "2");
+        intent.putExtras(bundle);
+        context.startActivity(intent);
+    }
 
     @OnClick(R.id.video_images_play)
     void videoPlay() {
@@ -399,7 +430,7 @@ public class LocalVideoActivity extends BaseActivity implements CommentAdapter.s
                     double cachepercent = readSize * 100.00 / mediaLength * 1.0;
                     String s = String.format("已缓存: [%.2f%%]", cachepercent);
                     Log.e("cachepercent", "s:" + s);
-                    if (cachepercent == 30.0 || cachepercent == 100.00) {
+                    if (cachepercent == 20.0 || cachepercent == 100.00) {
                         video.setVideoPath(localUrl);
                         video.start();
                         String s1 = String.format("已缓存: [%.2f%%]", cachepercent);
@@ -451,6 +482,7 @@ public class LocalVideoActivity extends BaseActivity implements CommentAdapter.s
         videoDetailsTags.setText(values.getAsString("tags"));
         Uri videoImage = Uri.parse(values.getAsString("video_img"));
         ValidData.load(videoImage, videoTest, width, 150);
+        videoName.setText(values.getAsString("content"));
         videoImagesPlay.setVisibility(View.VISIBLE);
         video.setVisibility(View.GONE);
     }
@@ -538,7 +570,14 @@ public class LocalVideoActivity extends BaseActivity implements CommentAdapter.s
         videoDetailsComment.setAdapter(commentAdapter);
         ListTools.setListViewHeightBasedOnChildren(videoDetailsComment);
     }
-
+    /**
+     * 添加介绍
+     */
+    private void imgsList() {
+        shopImagesAdapter = new ShopImagesAdapter(context, imgs);
+        videoDetailsImages.setAdapter(shopImagesAdapter);
+        ListTools.setListViewHeightBasedOnChildren(videoDetailsImages);
+    }
 
     /**
      * 返回
@@ -686,7 +725,7 @@ public class LocalVideoActivity extends BaseActivity implements CommentAdapter.s
                     if (uid != AppContext.cv.getAsInteger("id")) {
                         isColl();
                     }
-//                    imgsList();
+                    imgsList();
                     commAdapter();
                     (new Handler()).post(new Runnable() {
                         @Override
@@ -907,11 +946,11 @@ public class LocalVideoActivity extends BaseActivity implements CommentAdapter.s
             values.clear();
         }
 
-//        if (imgs == null) {
-//            imgs = new ArrayList<>();
-//        } else if (imgs.size() > 0) {
-//            imgs.clear();
-//        }
+        if (imgs == null) {
+            imgs = new ArrayList<>();
+        } else if (imgs.size() > 0) {
+            imgs.clear();
+        }
         if (list == null) {
             list = new ArrayList<>();
         } else if (list.size() > 0) {
@@ -962,16 +1001,15 @@ public class LocalVideoActivity extends BaseActivity implements CommentAdapter.s
             values.put("nick", objnote.getString("nick"));
             values.put("icon", objnote.getString("icon"));
 
-//
-//            JSONArray imagesJson = new JSONArray(objnote.getString("content_imgs"));//图片介绍
-//            if (imagesJson.length() > 0) {
-//                for (int i = 0; i < imagesJson.length(); i++) {
-//                    ContentValues cv = new ContentValues();
-//                    cv.put("imgs", imagesJson.get(i).toString());
-//                    imgs.add(cv);
-//                }
-//
-//            }
+            JSONArray imagesJson = new JSONArray(objnote.getString("content_imgs"));//图片介绍
+            if (imagesJson.length() > 0) {
+                for (int i = 0; i < imagesJson.length(); i++) {
+                    ContentValues cv = new ContentValues();
+                    cv.put("imgs", imagesJson.get(i).toString());
+                    imgs.add(cv);
+                }
+
+            }
 
 
             JSONArray commentJson = new JSONArray(objData.getString("comment"));//图片介绍

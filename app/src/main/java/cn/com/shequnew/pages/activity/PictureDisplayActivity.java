@@ -9,8 +9,7 @@ import android.os.Looper;
 import android.os.Message;
 import android.util.LruCache;
 import android.view.MotionEvent;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
+import android.view.animation.AlphaAnimation;
 import android.widget.TextView;
 
 import com.facebook.drawee.view.SimpleDraweeView;
@@ -21,6 +20,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -72,32 +72,24 @@ public class PictureDisplayActivity extends BaseActivity {
      * @param bm
      */
     private void updateImageView(Bitmap bm) {
-        //list.add(bm);
-
         mMemoryCache.put("imageKey" + imageKey, bm);
         imageView.setImageBitmap(mMemoryCache.get("imageKey" + a));
-        // LogUtil.e("NSC", "=====" + bm.toString());
         imageKey++;
     }
 
     private Runnable runa = new Runnable() {
         @Override
         public void run() {
-
             Intent intent = getIntent();
-            //int position = intent.getIntExtra("position");
             int position = intent.getIntExtra("position", -1);
-            List url = intent.getStringArrayListExtra("enlargeImage");
+            ArrayList<String> url = intent.getStringArrayListExtra("enlargeImage");
             LogUtil.e(TAG, "a==" + position);
-            a = position + 1;
+            a = position;
             pictureDisplayText.setText((Integer.valueOf(a)) + "/" + Integer.valueOf(url.size()));
-            //  bit(urlPosition);//先显示传进来的第一张
+//            bit("http://qmy.51edn.com/upload/icons/20170509/049939874ca7289dbbfeabea355f947f.jpg");//先显示传进来的第一张
             for (int i = 0; i < url.size(); i++) {
                 bit(url.get(i).toString());
-                //LogUtil.e("NSC",url.get(i).toString()+"i = "+i);
-                // addView();
             }
-
         }
     };
 
@@ -145,16 +137,11 @@ public class PictureDisplayActivity extends BaseActivity {
     public boolean onTouchEvent(MotionEvent event) {
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN://获取点击的时候屏幕位置
-
                 downX = (int) event.getRawX();
-
-                // LogUtil.e("NSC","x = "+x+"  y="+y);
                 break;
 
             case MotionEvent.ACTION_MOVE:
                 moveX = (int) event.getRawX();
-
-                //LogUtil.e("NSC","mx = "+mx+"  my="+my);
                 break;
 
             case MotionEvent.ACTION_UP://手离开的时候位置
@@ -167,8 +154,9 @@ public class PictureDisplayActivity extends BaseActivity {
                     if (a <= mMemoryCache.size()) {
                         // LogUtil.e(TAG, mMemoryCache.get("imageKey"+a).getWidth()+":"+mMemoryCache.get("imageKey"+a).getHeight());
                         //mMemoryCache.get("imageKey"+a).getWidth();
+                        AlphaAnimation animation = new AlphaAnimation(0.6f, 1.0f);
 //                        Animation rInAnimIn = AnimationUtils.loadAnimation(this, R.anim.push_right_in);
-//                        imageView.setAnimation(rInAnimIn);
+                        imageView.setAnimation(animation);
                         imageView.setImageBitmap(mMemoryCache.get("imageKey" + a));
                         pictureDisplayText.setText((Integer.valueOf(a)) + "/" + Integer.valueOf(mMemoryCache.size()));
 
@@ -181,8 +169,9 @@ public class PictureDisplayActivity extends BaseActivity {
                 } else if (upX - downX < -120) {//左滑
                     LogUtil.e("NSC", "aaaa = " + a + ":" + mMemoryCache.size());
                     if (a > 0) {
+                        AlphaAnimation animation = new AlphaAnimation(0.6f, 1.0f);
 //                        Animation lInAnim = AnimationUtils.loadAnimation(this, R.anim.push_left_in);       // 向左滑动左侧进入的渐变效果（alpha 0.1  -> 1.0）
-//                        imageView.setAnimation(lInAnim);
+                        imageView.setAnimation(animation);
                         imageView.setImageBitmap(mMemoryCache.get("imageKey" + a));
                         pictureDisplayText.setText((Integer.valueOf(a)) + "/" + Integer.valueOf(mMemoryCache.size()));
                         a--;
