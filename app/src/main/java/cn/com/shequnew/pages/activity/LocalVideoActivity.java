@@ -4,6 +4,7 @@ import android.app.ProgressDialog;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -217,8 +218,19 @@ public class LocalVideoActivity extends BaseActivity implements CommentAdapter.s
      */
     private void initPlayVideo() {
         video.setMediaController(new MediaController(this));
+
         video.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
             public void onPrepared(MediaPlayer mediaplayer) {
+                //避免黑屏出现
+                mediaplayer.setOnInfoListener(new MediaPlayer.OnInfoListener() {
+                    @Override
+                    public boolean onInfo(MediaPlayer mp, int what, int extra) {
+                        if (what == MediaPlayer.MEDIA_INFO_VIDEO_RENDERING_START)
+                            video.setBackgroundColor(Color.TRANSPARENT);
+                        return true;
+                    }
+                });
+
                 dismissProgressDialog();
                 video.seekTo(curPosition);
                 mediaplayer.start();
