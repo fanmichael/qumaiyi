@@ -31,12 +31,14 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.com.shequnew.R;
+import cn.com.shequnew.inc.Ini;
 import cn.com.shequnew.pages.adapter.ShopImagesAdapter;
 import cn.com.shequnew.pages.adapter.UserGoodsShopAdapter;
 import cn.com.shequnew.pages.config.AppContext;
 import cn.com.shequnew.pages.http.HttpConnectTool;
 import cn.com.shequnew.pages.prompt.Loading;
 import cn.com.shequnew.tools.ListTools;
+import cn.com.shequnew.tools.UtilsUmeng;
 import cn.com.shequnew.tools.ValidData;
 
 
@@ -119,7 +121,8 @@ public class ShopDetailsActivity extends BaseActivity implements UserGoodsShopAd
         Bundle bundle = this.getIntent().getExtras();
         id = bundle.getInt("id");
         uid = bundle.getInt("uid");
-        if (uid == AppContext.cv.getAsInteger("id")) {
+//        if (uid == AppContext.cv.getAsInteger("id")) {
+        if (String.valueOf(uid).equals(AppContext.cv.get("id"))) {
             lan.setVisibility(View.GONE);
             shopDetailsAttention.setVisibility(View.GONE);
             shopDetailsAttentionNo.setVisibility(View.GONE);
@@ -153,11 +156,13 @@ public class ShopDetailsActivity extends BaseActivity implements UserGoodsShopAd
     @OnClick(R.id.share_coll)
     void shareColl() {
         //分享
-        Intent intent = new Intent(context, ShareAllActivity.class);
-        Bundle bundle = new Bundle();
-        bundle.putString("type", "ShopDetailsActivity");
-        intent.putExtras(bundle);
-        context.startActivity(intent);
+//        Intent intent = new Intent(context, ShareAllActivity.class);
+//        Bundle bundle = new Bundle();
+//        bundle.putString("type", "ShopDetailsActivity");
+//        intent.putExtras(bundle);
+//        context.startActivity(intent);
+        UtilsUmeng.share(ShopDetailsActivity.this, Ini.ShareGood_Url+id,values.getAsString("content"));
+
     }
 
 

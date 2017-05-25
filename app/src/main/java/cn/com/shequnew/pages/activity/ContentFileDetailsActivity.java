@@ -24,6 +24,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.facebook.drawee.view.SimpleDraweeView;
+import com.umeng.socialize.UMAuthListener;
+import com.umeng.socialize.UMShareAPI;
+import com.umeng.socialize.bean.SHARE_MEDIA;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -33,18 +36,23 @@ import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.com.shequnew.R;
+import cn.com.shequnew.inc.Ini;
 import cn.com.shequnew.pages.adapter.CommentAdapter;
 import cn.com.shequnew.pages.adapter.ShopImagesAdapter;
 import cn.com.shequnew.pages.config.AppContext;
 import cn.com.shequnew.pages.http.HttpConnectTool;
 import cn.com.shequnew.pages.prompt.Loading;
 import cn.com.shequnew.tools.ListTools;
+import cn.com.shequnew.tools.UtilsUmeng;
 import cn.com.shequnew.tools.ValidData;
+
+import static android.icu.lang.UCharacter.GraphemeClusterBreak.T;
 
 public class ContentFileDetailsActivity extends BaseActivity implements CommentAdapter.setOnClickLoction {
 
@@ -143,8 +151,8 @@ public class ContentFileDetailsActivity extends BaseActivity implements CommentA
         Bundle bundle = this.getIntent().getExtras();
         id = bundle.getInt("id");
         uid = bundle.getInt("uid");
-
-        if (uid == AppContext.cv.getAsInteger("id")) {
+//        if (uid == AppContext.cv.getAsInteger("id")) {
+        if (String.valueOf(uid).equals(AppContext.cv.get("id"))) {
             lan.setVisibility(View.GONE);
             fileDetailsAttention.setVisibility(View.GONE);
             fileDetailsAttentionNo.setVisibility(View.GONE);
@@ -153,6 +161,34 @@ public class ContentFileDetailsActivity extends BaseActivity implements CommentA
         }
 
         setDelayMessage(1, 100);
+
+        //对于的低端手机可能会有如下问题，
+        // 从开发者app调到qq或者微信的授权界面，
+        // 后台把开发者app杀死了，这样，授权成功没有回调了，可以用如下方式避免
+        UMShareAPI.get(this).fetchAuthResultWithBundle(this, savedInstanceState, new UMAuthListener() {
+
+            @Override
+            public void onStart(SHARE_MEDIA share_media) {
+
+            }
+
+            @Override
+            public void onComplete(SHARE_MEDIA platform, int action, Map<String, String> data) {
+
+            }
+
+            @Override
+            public void onError(SHARE_MEDIA platform, int action, Throwable t) {
+
+            }
+
+            @Override
+            public void onCancel(SHARE_MEDIA platform, int action) {
+
+            }
+        });
+
+
     }
 
     @OnClick(R.id.image_back_coll)
@@ -164,7 +200,7 @@ public class ContentFileDetailsActivity extends BaseActivity implements CommentA
     @OnClick(R.id.share_coll)
     void share() {
         //分享
-
+        UtilsUmeng.share(ContentFileDetailsActivity.this, Ini.ShareCommunity_Url+id,values.getAsString("content"));
     }
 
     @OnClick(R.id.file_details_attention)
@@ -651,5 +687,33 @@ public class ContentFileDetailsActivity extends BaseActivity implements CommentA
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    /**  分享需要
+     * @param requestCode
+     * @param resultCode
+     * @param data
+     */
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        UMShareAPI.get(this).onActivityResult(requestCode, resultCode, data);
+    }
+
+    /**对于的低端手机可能会有如下问题，从开发者app调到qq或者微信的授权界面，后台把开发者app杀死了，
+     * 这样，授权成功没有回调了，可以用如下方式避免：（一般不需要添加，如有特殊需要，可以添加）
+     * @param outState
+     */
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        UMShareAPI.get(this).onSaveInstanceState(outState);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        //防止内存泄露
+        UMShareAPI.get(this).release();
     }
 }

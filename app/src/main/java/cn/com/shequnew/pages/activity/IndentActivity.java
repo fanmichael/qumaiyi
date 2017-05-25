@@ -6,6 +6,9 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -25,11 +28,12 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.com.shequnew.R;
+import cn.com.shequnew.inc.Ini;
 import cn.com.shequnew.pages.config.AppContext;
 import cn.com.shequnew.pages.http.HttpConnectTool;
 import cn.com.shequnew.pages.view.NumberAddSub;
+import cn.com.shequnew.tools.PayTool;
 import cn.com.shequnew.tools.ValidData;
-
 /***
  * 我的订单支付
  * */
@@ -76,6 +80,9 @@ public class IndentActivity extends BaseActivity {
     CheckBox baoPay;
     @BindView(R.id.indent_btn)
     Button bntPay;
+    int num  = 1; //订单数量
+    Handler mHandler;
+
 
     private ContentValues goods = new ContentValues();
     private ContentValues addr = new ContentValues();
@@ -101,6 +108,22 @@ public class IndentActivity extends BaseActivity {
                 Toast.makeText(context, "SubClick Vaule==" + value, Toast.LENGTH_SHORT).show();
             }
         });
+        weixinPay.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (baoPay.isChecked()){
+                    baoPay.setChecked(false);
+                }
+            }
+        });
+        baoPay.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (weixinPay.isChecked()){
+                    weixinPay.setChecked(false);
+                }
+            }
+        });
         new asyncTask().execute(1);
     }
 
@@ -109,6 +132,20 @@ public class IndentActivity extends BaseActivity {
         topRegitTitle.setVisibility(View.GONE);
         Bundle bundle=this.getIntent().getExtras();
         id=bundle.getInt("id");
+         mHandler = new Handler() {
+            public void handleMessage(Message msg) {
+               switch (msg.what){
+                   //支付宝支付回调
+                   case  Ini.SDK_PAY_FLAG:
+                       Toast.makeText(getApplicationContext(),"支付成功",Toast.LENGTH_LONG).show();
+                       finish();
+                       break;
+                   case  Ini.SDK_PAY_FLAG2:
+                       PayTool.payZFB(IndentActivity.this,msg.obj.toString(),mHandler);
+                       break;
+               }
+            };
+        };
     }
 
 
@@ -142,15 +179,20 @@ public class IndentActivity extends BaseActivity {
         destroyActitity();
     }
 
-
     /**
      * 支付
      */
     @OnClick(R.id.indent_btn)
     void btnPay() {
+       if (weixinPay.isChecked()){
+           PayTool.pay(IndentActivity.this,goods,addr, Ini.PAY_TYPE_WEIXIN,mHandler);
+       }else if(baoPay.isChecked()){
+           PayTool.pay(IndentActivity.this, goods,addr,Ini.PAY_TYPE_ZFB,mHandler);
+       }else {
+           Toast.makeText(context,"请选择支付方式",Toast.LENGTH_LONG).show();
+       }
 
-
-    }
+       }
 
 
     /**

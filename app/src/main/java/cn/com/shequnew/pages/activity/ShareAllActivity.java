@@ -11,13 +11,13 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Toast;
 
-import com.sina.weibo.sdk.WbSdk;
+//import com.sina.weibo.sdk.WbSdk;
 import com.sina.weibo.sdk.api.ImageObject;
 import com.sina.weibo.sdk.api.TextObject;
 import com.sina.weibo.sdk.api.WeiboMultiMessage;
-import com.sina.weibo.sdk.auth.AuthInfo;
-import com.sina.weibo.sdk.share.WbShareCallback;
-import com.sina.weibo.sdk.share.WbShareHandler;
+//import com.sina.weibo.sdk.auth.AuthInfo;
+//import com.sina.weibo.sdk.share.WbShareCallback;
+//import com.sina.weibo.sdk.share.WbShareHandler;
 import com.tencent.connect.share.QQShare;
 import com.tencent.connect.share.QzoneShare;
 import com.tencent.mm.opensdk.modelmsg.SendMessageToWX;
@@ -29,6 +29,7 @@ import com.tencent.open.utils.ThreadManager;
 import com.tencent.tauth.IUiListener;
 import com.tencent.tauth.Tencent;
 import com.tencent.tauth.UiError;
+import com.umeng.socialize.sina.auth.AuthInfo;
 
 import java.util.ArrayList;
 
@@ -42,7 +43,7 @@ import cn.com.shequnew.pages.config.AppContext;
 /**
  * 分享，微信好友，朋友圈，qq好友，qq空间，微博
  */
-public class ShareAllActivity extends BaseActivity implements WbShareCallback {
+public class ShareAllActivity extends BaseActivity   {
 
     @BindView(R.id.share_all_weixinp)
     RadioButton shareAllWeixinp;
@@ -65,7 +66,7 @@ public class ShareAllActivity extends BaseActivity implements WbShareCallback {
     /**
      * 三方
      */
-    private WbShareHandler wbShareHandler;
+//    private WbShareHandler wbShareHandler;
     private Tencent mTencent;
     private IWXAPI api;
 
@@ -90,9 +91,9 @@ public class ShareAllActivity extends BaseActivity implements WbShareCallback {
      * 注册
      */
     private void initView() {
-        WbSdk.install(ShareAllActivity.this, new AuthInfo(ShareAllActivity.this, "3287794514", "https://api.weibo.com/oauth2/default.html", "all"));
-        wbShareHandler = new WbShareHandler(ShareAllActivity.this);
-        wbShareHandler.registerApp();
+//        WbSdk.install(ShareAllActivity.this, new AuthInfo(ShareAllActivity.this, "3287794514", "https://api.weibo.com/oauth2/default.html", "all"));
+//        wbShareHandler = new WbShareHandler(ShareAllActivity.this);
+//        wbShareHandler.registerApp();
         mTencent = Tencent.createInstance("1105155596", this.getApplicationContext());
         api = WXAPIFactory.createWXAPI(this, cn.com.shequnew.tools.Constants.APP_ID, true);
         api.registerApp(cn.com.shequnew.tools.Constants.APP_ID);
@@ -206,7 +207,7 @@ public class ShareAllActivity extends BaseActivity implements WbShareCallback {
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
-        wbShareHandler.doResultIntent(intent, this);
+//        wbShareHandler.doResultIntent(intent, this);
     }
 
     @OnClick(R.id.share_all_cal)
@@ -282,24 +283,24 @@ public class ShareAllActivity extends BaseActivity implements WbShareCallback {
         if (hasImage) {
             weiboMessage.imageObject = getImageObj();
         }
-        wbShareHandler.shareMessage(weiboMessage, false);
+//        wbShareHandler.shareMessage(weiboMessage, false);
     }
 
 
-    @Override
-    public void onWbShareSuccess() {
-        Toast.makeText(context, "分享成功", Toast.LENGTH_SHORT).show();
-    }
-
-    @Override
-    public void onWbShareCancel() {
-        Toast.makeText(context, "取消分享", Toast.LENGTH_SHORT).show();
-    }
-
-    @Override
-    public void onWbShareFail() {
-        Toast.makeText(context, "分享失败", Toast.LENGTH_SHORT).show();
-    }
+//    @Override
+//    public void onWbShareSuccess() {
+//        Toast.makeText(context, "分享成功", Toast.LENGTH_SHORT).show();
+//    }
+//
+//    @Override
+//    public void onWbShareCancel() {
+//        Toast.makeText(context, "取消分享", Toast.LENGTH_SHORT).show();
+//    }
+//
+//    @Override
+//    public void onWbShareFail() {
+//        Toast.makeText(context, "分享失败", Toast.LENGTH_SHORT).show();
+//    }
 
     @Override
     protected void onResume() {

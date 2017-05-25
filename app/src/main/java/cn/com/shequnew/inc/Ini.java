@@ -30,9 +30,20 @@ public final class Ini {
     // 输出标记代码-失败
     public static final int _EXNO = 0;
     public static final String _ENCODED_API = "UTF-8";
+    public static final int PAY_TYPE_WEIXIN = 0x00001;
+    public static final int PAY_TYPE_ZFB = 0x00002;
+    public static final int SDK_PAY_FLAG = 0x00003;
+    public static final int SDK_PAY_FLAG2 = 0x00004;
 
 //    public static String Url = "http://qmy.51edn.com/index.php/app";
-    public static String Url="http://qumai.51edn.com/index.php/app";
+    public static String Url_ROOT="http://qumai.51edn.com/";
+    public static String Url=Url_ROOT + "index.php/app";
+    public static String ShareGood_Url=Url_ROOT + "app/Trade/good_detail/id/";
+    public static String ShareCommunity_Url=Url_ROOT + "app/Community/node_detail/id/";
+    public static String RequestPay_Weixin=Url_ROOT + "pay/index.php";
+    public static String RequestPayCallBack_Weixin=Url_ROOT + "pay/wxcheck.php";
+    public static String RequestPay_Alipay=Url_ROOT + "pay/Alipay.php";
+
 
 
 }
