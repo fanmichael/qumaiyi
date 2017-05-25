@@ -171,7 +171,7 @@ public class LocalVideoActivity extends BaseActivity implements CommentAdapter.s
      * 视频缓存播放
      */
     private ProgressDialog progressDialog = null;
-    private static final int READY_BUFF = 6 * 1024 * 1000;
+    private static final int READY_BUFF = 6*1024 * 1000;
     private static final int CACHE_BUFF = 50 * 1024;
     private boolean isready = false;
     private boolean iserror = false;
@@ -253,14 +253,14 @@ public class LocalVideoActivity extends BaseActivity implements CommentAdapter.s
         video.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
             public void onPrepared(MediaPlayer mediaplayer) {
                 //避免黑屏出现
-                mediaplayer.setOnInfoListener(new MediaPlayer.OnInfoListener() {
-                    @Override
-                    public boolean onInfo(MediaPlayer mp, int what, int extra) {
-                        if (what == MediaPlayer.MEDIA_INFO_VIDEO_RENDERING_START)
-                            video.setBackgroundColor(Color.TRANSPARENT);
-                        return true;
-                    }
-                });
+//                mediaplayer.setOnInfoListener(new MediaPlayer.OnInfoListener() {
+//                    @Override
+//                    public boolean onInfo(MediaPlayer mp, int what, int extra) {
+//                        if (what == MediaPlayer.MEDIA_INFO_VIDEO_RENDERING_START)
+//                            video.setBackgroundColor(Color.TRANSPARENT);
+//                        return true;
+//                    }
+//                });
 
                 dismissProgressDialog();
                 video.seekTo(curPosition);

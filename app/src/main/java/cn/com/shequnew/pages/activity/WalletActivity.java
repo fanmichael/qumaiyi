@@ -146,6 +146,7 @@ public class WalletActivity extends BaseActivity {
             // removeLoading();
             switch (what) {
                 case 1:
+                    walletPrice.setText(allMoney);
                     adapter.notifyDataSetChanged();
                     break;
 
