@@ -14,6 +14,7 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -25,8 +26,7 @@ import cn.com.shequnew.inc.Ini;
 
 public class HttpConnectTool {
 
-    public
-    static String post(HashMap<String, String> hashMap) {
+    public static String post(HashMap<String, String> hashMap) {
         String result = "";
         DataOutputStream out = null;
         try {

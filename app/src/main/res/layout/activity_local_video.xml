@@ -1,30 +1,492 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:fresco="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
+    android:background="@color/bg"
     tools:context="cn.com.shequnew.pages.activity.LocalVideoActivity">
 
 
+    <include
+        android:id="@+id/video_in"
+        layout="@layout/top_title_coll"></include>
+
+
     <LinearLayout
+        android:id="@+id/video_lan"
         android:layout_width="match_parent"
-        android:layout_height="150dp"
-        android:orientation="horizontal"
-        >
-        <VideoView
-            android:id="@+id/video"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:id="@+id/video_content_lin"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"></VideoView>
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:background="@color/white"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:visibility="gone">
+
+            <ImageView
+                android:id="@+id/video_content_cal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/shouqi" />
+
+            <EditText
+                android:id="@+id/video_contect_text"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_weight="1"
+                android:hint="请输入评语" />
+
+            <Button
+                android:id="@+id/video_content_sumbit"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="5dp"
+                android:background="@color/bd_top"
+                android:paddingBottom="10dp"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp"
+                android:paddingTop="10dp"
+                android:text="发表"
+                android:textColor="@color/white" />
+
+        </LinearLayout>
+
+
+        <RadioGroup
+            android:id="@+id/video_radio_pages_file"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:background="@color/white"
+            android:orientation="horizontal"
+            android:visibility="visible">
+
+            <RadioButton
+                android:id="@+id/video_coll_con_no"
+                style="@style/text_blue_min"
+                android:layout_width="0dip"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:button="@null"
+                android:drawableLeft="@drawable/coll_con_no"
+                android:text="收藏"
+                android:textColor="@color/col_bg" />
+
+            <RadioButton
+                android:id="@+id/video_coll_con"
+                style="@style/text_blue_min"
+                android:layout_width="0dip"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:button="@null"
+                android:drawableLeft="@drawable/coll_con"
+                android:text="已收藏"
+                android:textColor="@color/col_bg"
+                android:visibility="gone" />
+
+            <RadioButton
+                android:id="@+id/video_chat"
+                style="@style/text_blue_min"
+                android:layout_width="0dip"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:button="@null"
+                android:drawableLeft="@drawable/chat"
+                android:text="加入群聊"
+                android:textColor="@color/col_bg" />
+
+            <RadioButton
+                android:id="@+id/video_faith"
+                style="@style/text_blue_min"
+                android:layout_width="0dip"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:button="@null"
+                android:drawableLeft="@drawable/faith"
+                android:text="私聊群主"
+                android:textColor="@color/col_bg" />
+
+            <RadioButton
+                android:id="@+id/video_dis"
+                style="@style/text_blue_min"
+                android:layout_width="0dip"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:button="@null"
+                android:drawableLeft="@drawable/dis"
+                android:text="评论"
+                android:textColor="@color/col_bg" />
+        </RadioGroup>
+
 
     </LinearLayout>
 
-
-    <com.facebook.drawee.view.SimpleDraweeView
-        android:id="@+id/test"
+    <android.support.v7.widget.LinearLayoutCompat
         android:layout_width="match_parent"
-        android:layout_height="150dp" />
+        android:layout_height="wrap_content"
+        android:layout_above="@id/video_lan"
+        android:layout_below="@id/video_in">
 
-    
-</LinearLayout>
+        <ScrollView
+            android:id="@+id/video_scrollview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fadingEdge="vertical"
+            android:scrollbars="none">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:orientation="vertical">
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <cn.com.shequnew.pages.view.MyVideoView
+                        android:id="@+id/video_video"
+                        android:layout_width="fill_parent"
+                        android:layout_height="150dp"
+                        android:visibility="gone"></cn.com.shequnew.pages.view.MyVideoView>
+
+                    <FrameLayout
+                        android:id="@+id/video_ln"
+                        android:layout_width="match_parent"
+                        android:layout_height="150dp">
+
+                        <com.facebook.drawee.view.SimpleDraweeView
+                            android:id="@+id/video_test"
+                            android:layout_width="match_parent"
+                            android:layout_height="150dp" />
+
+                        <ImageView
+                            android:id="@+id/video_images_play"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:background="@drawable/paly_video" />
+
+                    </FrameLayout>
+
+
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:background="@color/white"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/video_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/col_bg"
+                        android:textSize="16dp" />
+
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/video_tags"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/col_bg" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="10dp"
+                            android:gravity="right"
+                            android:orientation="horizontal">
+
+                            <ImageView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:src="@drawable/browse" />
+
+                            <TextView
+                                android:id="@+id/video_details_price"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="0" />
+                        </LinearLayout>
+
+                    </LinearLayout>
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="5dp"
+                    android:background="@color/white"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="5dp"
+                        android:text="版主"
+                        android:textColor="@color/col_bg" />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/grays"></View>
+
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:orientation="horizontal">
+
+                        <com.facebook.drawee.view.SimpleDraweeView
+                            android:id="@+id/video_user_info_icon"
+                            android:layout_width="60dp"
+                            android:layout_height="60dp"
+                            android:layout_gravity="center"
+                            fresco:roundBottomLeft="true"
+                            fresco:roundBottomRight="true"
+                            fresco:roundedCornerRadius="45dp"
+                            fresco:roundingBorderColor="@color/white"
+                            fresco:roundingBorderWidth="1dp" />
+
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:id="@+id/video_details_nick"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="left"
+                                android:layout_margin="5dp"
+                                android:text=""
+                                android:textColor="@color/col_bg" />
+
+                            <TextView
+                                android:id="@+id/video_details_tags"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="left"
+                                android:layout_margin="5dp"
+                                android:text="" />
+                        </LinearLayout>
+
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="5dp"
+                            android:orientation="horizontal">
+
+                            <LinearLayout
+                                android:id="@+id/video_details_attention"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal"
+                                android:visibility="gone"
+                                >
+
+                                <ImageView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:src="@drawable/jia" />
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginLeft="5dp"
+                                    android:text="关注"
+                                    android:textColor="@color/bd_top" />
+
+                            </LinearLayout>
+
+
+                            <LinearLayout
+                                android:id="@+id/video_details_attention_no"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal"
+                                android:visibility="gone">
+
+                                <ImageView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:src="@drawable/cancle" />
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginLeft="5dp"
+                                    android:text="取消关注" />
+                            </LinearLayout>
+                        </LinearLayout>
+
+                    </LinearLayout>
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/video_name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:text="海口风景"
+                        android:textColor="@color/col_bg" />
+
+                    <ListView
+                        android:id="@+id/video_details_images"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:divider="#b5b5b5"
+                        android:dividerHeight="1dp"
+                        android:focusable="false"></ListView>
+
+                </LinearLayout>
+
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/bg"></View>
+
+                <LinearLayout
+                    android:id="@+id/video_details_info_from"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginTop="5dp"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_gravity="center"
+                        android:src="@drawable/info_from" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:padding="10dp"
+                        android:text="举报"
+                        android:textColor="@color/col_bg" />
+
+
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_gravity="right|center"
+                        android:src="@drawable/back_go" />
+
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/bg"></View>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:background="@color/white"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="相关商品"
+                        android:textColor="@color/col_bg" />
+
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/grays"></View>
+
+                    <ListView
+                        android:id="@+id/vide_details_goods"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:divider="#b5b5b5"
+                        android:dividerHeight="1dp"
+                        android:focusable="false"></ListView>
+
+                    <TextView
+                        android:id="@+id/video_details_tip"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:text="没有相关商品" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="评论互动"
+                        android:textColor="@color/col_bg" />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/grays"></View>
+
+                    <TextView
+                        android:id="@+id/video_group_tip"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:text="没有相关评论" />
+
+
+                    <ListView
+                        android:id="@+id/video_details_comment"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/white"
+                        android:divider="#b5b5b5"
+                        android:dividerHeight="1dp"
+                        android:focusable="false"></ListView>
+                </LinearLayout>
+            </LinearLayout>
+        </ScrollView>
+    </android.support.v7.widget.LinearLayoutCompat>
+
+</RelativeLayout>

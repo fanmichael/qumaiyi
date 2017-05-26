@@ -1,5 +1,6 @@
 package cn.com.shequnew.pages.activity;
 
+import android.app.Dialog;
 import android.content.ContentValues;
 import android.content.Context;
 import android.net.Uri;
@@ -7,9 +8,12 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.util.Log;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
@@ -35,11 +39,12 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.com.shequnew.R;
 import cn.com.shequnew.pages.http.HttpConnectTool;
+import cn.com.shequnew.tools.TextContent;
 import cn.com.shequnew.tools.ValidData;
 
 /**
  * 注册
- * */
+ */
 public class RegisterActivity extends BaseActivity {
 
 
@@ -69,6 +74,12 @@ public class RegisterActivity extends BaseActivity {
     LinearLayout imagheLayout;
     @BindView(R.id.tags_layout)
     LinearLayout tagsLayout;
+    @BindView(R.id.regs_chose)
+    CheckBox regsChose;
+    @BindView(R.id.regs_tip)
+    TextView regsTip;
+    @BindView(R.id.lin_ch)
+    LinearLayout linCh;
 
     private Context mContext;
     private String phone;
@@ -80,6 +91,9 @@ public class RegisterActivity extends BaseActivity {
     private List<Integer> tagPopList = new ArrayList<>();
     private List<Integer> tagThList = new ArrayList<>();
     private String type;
+    private int error;
+    private String desc = "";
+    private Dialog dialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -89,7 +103,43 @@ public class RegisterActivity extends BaseActivity {
         mContext = this;
         initDelay();
         init();
+        regsChose.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    register.setClickable(true);
+                } else {
+                    register.setClickable(false);
+                }
+            }
+        });
+    }
 
+    @OnClick(R.id.regs_tip)
+    void regsTip() {
+        dealView();
+    }
+
+
+    private void dealView() {
+        DisplayMetrics dm = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(dm);
+        dialog = new Dialog(mContext, R.style.AlertDialog);
+        dialog.setContentView(R.layout.deal_content);
+        dialog.setCanceledOnTouchOutside(true);
+        dialog.show();
+        // 设置对话框大小
+        WindowManager.LayoutParams layoutParams = dialog.getWindow().getAttributes();
+        layoutParams.width = (int) (dm.widthPixels * 0.8);
+        layoutParams.height = (int) (dm.heightPixels * 0.9);
+
+        dialog.getWindow().setAttributes(layoutParams);
+        TextView content = (TextView) dialog.findViewById(R.id.deal_content);
+        CheckBox chose = (CheckBox) dialog.findViewById(R.id.deal_chose);
+        LinearLayout linearLayout = (LinearLayout) dialog.findViewById(R.id.lin_con);
+        linearLayout.setVisibility(View.GONE);
+        TextContent textContent = new TextContent();
+        content.setText(textContent.deal);
     }
 
     /**
@@ -130,6 +180,7 @@ public class RegisterActivity extends BaseActivity {
             setDelayMessage(1, 100);
         } else if (type.equals("paw")) {
             layoutRegs.setVisibility(View.GONE);
+            linCh.setVisibility(View.GONE);
             regsTile.setText("密码找回");
             register.setText("确定");
         }
@@ -148,7 +199,7 @@ public class RegisterActivity extends BaseActivity {
 
     @OnClick(R.id.btn_issue)
     void issue() {
-        init();
+        phone = regsPhone.getText().toString().trim();
         if (ValidData.validMobile(phone)) {
             setDelayMessage(2, 100);
         } else {
@@ -158,7 +209,10 @@ public class RegisterActivity extends BaseActivity {
 
     @OnClick(R.id.register)
     void regs() {
-        init();
+        phone = regsPhone.getText().toString().trim();
+        pwd = regsPaw.getText().toString().trim();
+        newPwd = regsNewPaw.getText().toString().trim();
+        tag = regsIssue.getText().toString().trim();
         boolean is = true;
         String msg = "";
         if (!ValidData.validMobile(phone)) {
@@ -169,6 +223,9 @@ public class RegisterActivity extends BaseActivity {
             is = false;
         } else if (pwd.isEmpty() || newPwd.isEmpty() || tag.isEmpty()) {
             msg = "输入不能为空";
+            is = false;
+        } else if (!ValidData.validPaw(pwd)) {
+            msg = "密码6~18位字母和数字";
             is = false;
         }
         if (is) {
@@ -206,8 +263,8 @@ public class RegisterActivity extends BaseActivity {
             SimpleDraweeView imagesItem = (SimpleDraweeView) view.findViewById(R.id.images_item);
             TextView nameItem = (TextView) view.findViewById(R.id.name_item);
             final CheckBox boxItem = (CheckBox) view.findViewById(R.id.box_item);
-            Uri imageUri = Uri.parse(dv.get(i).getAsString("icon").trim());
-            ValidData.load(imageUri,imagesItem,60,60);
+            Uri imageUri = Uri.parse(dv.get(i).getAsString("icon"));
+            ValidData.load(imageUri, imagesItem, 60, 60);
             nameItem.setText(dv.get(i).getAsString("nick"));
             boxItem.setTag(dv.get(i).getAsInteger("id"));
 
@@ -306,10 +363,37 @@ public class RegisterActivity extends BaseActivity {
             hashMap.put("think", stringBufferThink.toString());
             hashMap.put("code", tag);
             String json = HttpConnectTool.post(hashMap);
+            if (!json.equals("")) {
+                listData(json);
+            }
+
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
+
+
+    public void listData(String data) {
+        try {
+            JSONObject obj = new JSONObject(data);
+
+            if (obj.has("error")) {
+                if (obj.getInt("error") == 0) {
+                    error = obj.getInt("error");
+                } else {
+                    desc = obj.getString("desc");
+                }
+            } else {
+                Toast.makeText(mContext, "数据有误！", Toast.LENGTH_SHORT).show();
+                return;
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+        }
+    }
+
 
     private void httpUpdatePwd() {
         try {
@@ -386,7 +470,11 @@ public class RegisterActivity extends BaseActivity {
 
                     break;
                 case 3:
-                    destroyActitity();
+                    if (error == 0) {
+                        destroyActitity();
+                    } else {
+                        Toast.makeText(mContext, desc, Toast.LENGTH_SHORT).show();
+                    }
                     break;
                 case 4:
 

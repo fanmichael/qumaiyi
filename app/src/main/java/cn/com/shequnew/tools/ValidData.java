@@ -77,6 +77,15 @@ public class ValidData {
         return pMobile.length() <= 0 ? false : true;
     }
 
+    //验证密码
+    public static Boolean validPaw(String pwa){
+        if (pwa == null
+                || !Pattern.compile(Ini._REG_PAWSS).matcher(pwa).matches()) {
+            return false;
+        }
+        return pwa.length() <= 0 ? false : true;
+    }
+
     public static void load(Uri uri, SimpleDraweeView draweeView, int width, int height){
         ImageRequest request =
                 ImageRequestBuilder.newBuilderWithSource(uri)

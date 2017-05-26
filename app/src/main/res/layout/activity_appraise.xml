@@ -86,14 +86,15 @@
         <GridView
             android:id="@+id/adv_Board_gridView"
             android:layout_width="match_parent"
-            android:layout_height="0px"
+            android:layout_height="wrap_content"
             android:layout_marginTop="5px"
-            android:layout_weight="1"
+            android:columnWidth="90dp"
             android:gravity="center"
-            android:horizontalSpacing="60px"
+            android:horizontalSpacing="10dp"
             android:numColumns="4"
             android:scrollbarSize="1px"
-            android:verticalSpacing="20px"></GridView>
+            android:stretchMode="columnWidth"
+            android:verticalSpacing="10dp"></GridView>
 
     </LinearLayout>
 

@@ -16,7 +16,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:orientation="horizontal">
+        android:orientation="vertical">
 
         <LinearLayout
             android:id="@+id/content_lin"
@@ -124,7 +124,10 @@
                 android:textColor="@color/col_bg" />
         </RadioGroup>
 
-
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/bg"></View>
     </LinearLayout>
 
     <android.support.v7.widget.LinearLayoutCompat
@@ -138,7 +141,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fadingEdge="vertical"
-            android:scrollbars="vertical">
+            android:scrollbars="none">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -270,7 +273,8 @@
                                 android:id="@+id/file_details_attention"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:orientation="horizontal">
+                                android:orientation="horizontal"
+                                android:visibility="gone">
 
                                 <ImageView
                                     android:layout_width="wrap_content"
@@ -334,6 +338,49 @@
 
                 </LinearLayout>
 
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/bg"></View>
+
+                <LinearLayout
+                    android:id="@+id/file_details_info_from"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginTop="5dp"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_gravity="center"
+                        android:src="@drawable/info_from" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:padding="10dp"
+                        android:text="举报"
+                        android:textColor="@color/col_bg" />
+
+
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_gravity="right|center"
+                        android:src="@drawable/back_go" />
+
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/bg"></View>
+
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -361,8 +408,10 @@
                         android:focusable="false"></ListView>
 
                     <TextView
+                        android:id="@+id/file_shop_spek"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_gravity="center"
                         android:text="没有相关商品" />
 
                 </LinearLayout>
@@ -394,6 +443,22 @@
                         android:dividerHeight="1dp"
                         android:focusable="false"></ListView>
 
+                    <ExpandableListView
+                        android:id="@+id/expendlistS"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:cacheColorHint="#00000000"
+                        android:childDivider="#00000000"
+                        android:divider="#00000000"
+                        android:fadingEdge="none"
+                        android:visibility="gone"></ExpandableListView>
+
+                    <TextView
+                        android:id="@+id/file_details_spek"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:text="没有相关评论" />
 
                 </LinearLayout>
 

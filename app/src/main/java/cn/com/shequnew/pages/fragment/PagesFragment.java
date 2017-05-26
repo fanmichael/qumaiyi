@@ -5,11 +5,16 @@ import android.app.Fragment;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.media.MediaMetadataRetriever;
+import android.media.ThumbnailUtils;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.provider.MediaStore;
 import android.support.annotation.IdRes;
 import android.support.annotation.Nullable;
 import android.support.v4.view.PagerAdapter;
@@ -45,11 +50,13 @@ import butterknife.Unbinder;
 import cn.com.shequnew.R;
 import cn.com.shequnew.pages.activity.ChoseNewsActivity;
 import cn.com.shequnew.pages.activity.ContentFileDetailsActivity;
+import cn.com.shequnew.pages.activity.LocalVideoActivity;
 import cn.com.shequnew.pages.activity.MoreActivity;
 import cn.com.shequnew.pages.activity.SpecialNoteActivity;
 import cn.com.shequnew.pages.http.HttpConnectTool;
 import cn.com.shequnew.pages.prompt.Loading;
 import cn.com.shequnew.pages.view.SlideShowView;
+import cn.com.shequnew.tools.Util;
 import cn.com.shequnew.tools.ValidData;
 
 /**
@@ -134,6 +141,7 @@ public class PagesFragment extends BasicFragment implements SwipeRefreshLayout.O
 
     public void initView() {
         swipeRefreshLayout.setOnRefreshListener(this);
+
 //        swipeRefreshLayout.setColorScheme(android.R.color.black, android.R.color.holo_blue_bright,
 //                android.R.color.holo_blue_light, android.R.color.holo_red_light);
         radioDynamicChose();
@@ -244,9 +252,8 @@ public class PagesFragment extends BasicFragment implements SwipeRefreshLayout.O
     }
 
 
-    @OnClick(R.id.pages_news_more)
+    @OnClick(R.id.pagse_news_text_more)
     void newsMore() {
-
         Intent intent = new Intent();
         Bundle bundle = new Bundle();
         bundle.putString("cid", type);
@@ -256,7 +263,7 @@ public class PagesFragment extends BasicFragment implements SwipeRefreshLayout.O
         context.startActivity(intent);
     }
 
-    @OnClick(R.id.pagse_hot_more)
+    @OnClick(R.id.pages_hot_text_more)
     void hotMore() {
         Intent intent = new Intent();
         Bundle bundle = new Bundle();
@@ -276,31 +283,31 @@ public class PagesFragment extends BasicFragment implements SwipeRefreshLayout.O
             public void handleMessage(Message msg) {
                 switch (msg.what) {
                     case 1:
-                        mLoading = new Loading(
-                                getActivity(), pagseHotMore);
-                        mLoading.setText("正在加载......");
-                        mLoading.show();
+//                        mLoading = new Loading(
+//                                getActivity(), pagseHotMore);
+//                        mLoading.setText("正在加载......");
+//                        mLoading.show();
                         new asyncTask().execute(1);
                         break;
                     case 2:
-                        mLoading = new Loading(
-                                getActivity(), pagseHotMore);
-                        mLoading.setText("正在加载......");
-                        mLoading.show();
+//                        mLoading = new Loading(
+//                                getActivity(), pagseHotMore);
+//                        mLoading.setText("正在加载......");
+//                        mLoading.show();
                         new asyncTask().execute(2);
                         break;
                     case 3:
-                        mLoading = new Loading(
-                                getActivity(), pagseHotMore);
-                        mLoading.setText("正在加载......");
-                        mLoading.show();
+//                        mLoading = new Loading(
+//                                getActivity(), pagseHotMore);
+//                        mLoading.setText("正在加载......");
+//                        mLoading.show();
                         new asyncTask().execute(3);
                         break;
                     case 4:
-                        mLoading = new Loading(
-                                getActivity(), pagseHotMore);
-                        mLoading.setText("正在加载......");
-                        mLoading.show();
+//                        mLoading = new Loading(
+//                                getActivity(), pagseHotMore);
+//                        mLoading.setText("正在加载......");
+//                        mLoading.show();
                         new asyncTask().execute(4);
                         break;
                 }
@@ -372,6 +379,12 @@ public class PagesFragment extends BasicFragment implements SwipeRefreshLayout.O
                     newsList();
                     hotList();
                     btnText(namesList);
+                    if (imagesUrls.size() > 0) {
+                        slideshowView.setVisibility(View.VISIBLE);
+                    } else {
+                        slideshowView.setVisibility(View.GONE);
+                    }
+
                     imageUrls = new String[imagesUrls.size()];
                     for (int j = 0; j < imagesUrls.size(); j++) {
                         imageUrls[j] = imagesUrls.get(j).getAsString("img_add");
@@ -387,6 +400,11 @@ public class PagesFragment extends BasicFragment implements SwipeRefreshLayout.O
                 case 2:
                     newsList();
                     hotList();
+                    if (imagesUrls.size() > 0) {
+                        slideshowView.setVisibility(View.VISIBLE);
+                    } else {
+                        slideshowView.setVisibility(View.GONE);
+                    }
                     imageUrls = new String[imagesUrls.size()];
                     for (int j = 0; j < imagesUrls.size(); j++) {
                         imageUrls[j] = imagesUrls.get(j).getAsString("img_add");
@@ -402,6 +420,11 @@ public class PagesFragment extends BasicFragment implements SwipeRefreshLayout.O
                 case 3:
                     newsList();
                     hotList();
+                    if (imagesUrls.size() > 0) {
+                        slideshowView.setVisibility(View.VISIBLE);
+                    } else {
+                        slideshowView.setVisibility(View.GONE);
+                    }
                     imageUrls = new String[imagesUrls.size()];
                     for (int j = 0; j < imagesUrls.size(); j++) {
                         imageUrls[j] = imagesUrls.get(j).getAsString("img_add");
@@ -417,6 +440,11 @@ public class PagesFragment extends BasicFragment implements SwipeRefreshLayout.O
                 case 4:
                     newsList();
                     hotList();
+                    if (imagesUrls.size() > 0) {
+                        slideshowView.setVisibility(View.VISIBLE);
+                    } else {
+                        slideshowView.setVisibility(View.GONE);
+                    }
                     imageUrls = new String[imagesUrls.size()];
                     for (int j = 0; j < imagesUrls.size(); j++) {
                         imageUrls[j] = imagesUrls.get(j).getAsString("img_add");
@@ -458,16 +486,13 @@ public class PagesFragment extends BasicFragment implements SwipeRefreshLayout.O
             JSONObject obj = new JSONObject(data);
             JSONArray list = new JSONArray(obj.getString("data"));
             for (int i = 0; i < list.length(); i++) {
-                JSONArray lists = list.getJSONArray(i);
-                for (int j = 0; j < lists.length(); j++) {
-                    JSONObject jsonObj = lists.getJSONObject(j);
-                    ContentValues cv = new ContentValues();
-                    cv.put("id", jsonObj.getInt("id"));
-                    cv.put("cid", jsonObj.getInt("cid"));
-                    cv.put("title", jsonObj.getString("title"));
-                    cv.put("img", jsonObj.getString("img"));
-                    imagesList.add(cv);
-                }
+                JSONObject jsonObj = list.getJSONObject(i);
+                ContentValues cv = new ContentValues();
+                cv.put("id", jsonObj.getInt("id"));
+                cv.put("cid", jsonObj.getInt("cid"));
+                cv.put("title", jsonObj.getString("title"));
+                cv.put("img", jsonObj.getString("img"));
+                imagesList.add(cv);
             }
         } catch (JSONException e) {
             e.printStackTrace();
@@ -537,10 +562,14 @@ public class PagesFragment extends BasicFragment implements SwipeRefreshLayout.O
                     cv.put("file_type", jsonObj.getInt("file_type"));
                     cv.put("cid", jsonObj.getInt("cid"));
                     cv.put("subject", jsonObj.getString("subject"));
+                    if (jsonObj.has("video_img")) {
+                        cv.put("video_img", jsonObj.getString("video_img"));
+                    }
                     cv.put("subject_type", jsonObj.getString("subject_type"));
                     cv.put("tags", jsonObj.getString("tags"));
                     cv.put("nick", jsonObj.getString("nick"));
                     cv.put("icon", jsonObj.getString("icon"));
+                    cv.put("title", jsonObj.getString("title"));
                     cv.put("isSign", jsonObj.getInt("isSign"));
                     cv.put("follow", jsonObj.getInt("follow"));
                     newaList.add(cv);
@@ -556,6 +585,9 @@ public class PagesFragment extends BasicFragment implements SwipeRefreshLayout.O
                     cv.put("file_type", jsonObj.getInt("file_type"));//文件类型 0是文件1是视频
                     cv.put("cid", jsonObj.getInt("cid"));
                     cv.put("subject", jsonObj.getString("subject"));//右侧图像或者视频预览？
+                    if(jsonObj.has("video_img")){
+                        cv.put("video_img", jsonObj.getString("video_img"));
+                    }
                     cv.put("subject_type", jsonObj.getString("subject_type"));
                     cv.put("title", jsonObj.getString("title"));//标题
                     cv.put("tags", jsonObj.getString("tags"));//标签
@@ -580,20 +612,26 @@ public class PagesFragment extends BasicFragment implements SwipeRefreshLayout.O
      * 最新内容
      */
     private void newsList() {
+        if (newaList.size() > 8) {
+            pagseNewsTextMore.setVisibility(View.VISIBLE);
+        } else {
+            pagseNewsTextMore.setVisibility(View.GONE);
+        }
         if (newaList.size() > 0) {
             for (int i = 0; i < newaList.size(); i++) {
                 View view = LayoutInflater.from(context).inflate(R.layout.pages_item_chose, null);
                 LinearLayout lay = (LinearLayout) view.findViewById(R.id.pages_iten_layout);
                 SimpleDraweeView pagesIcon = (SimpleDraweeView) view.findViewById(R.id.pages_item_icon);//头像
-                SimpleDraweeView pagesSubject = (SimpleDraweeView) view.findViewById(R.id.pages_item_subject);//大图
+                final SimpleDraweeView pagesSubject = (SimpleDraweeView) view.findViewById(R.id.pages_item_subject);//大图
                 TextView pagesTags = (TextView) view.findViewById(R.id.pages_tags_item_text); //标签
                 TextView pagesTitle = (TextView) view.findViewById(R.id.pages_title_text);//标题
                 ImageView pagesFileM = (ImageView) view.findViewById(R.id.pages_file_m);//视频
                 ImageView pagesFileF = (ImageView) view.findViewById(R.id.pages_file_f);//文件
                 TextView pagesItemNick = (TextView) view.findViewById(R.id.pages_item_nick_text);//昵称
                 TextView pagesSign = (TextView) view.findViewById(R.id.pages_sign_item_text);//签名
+                ImageView video = (ImageView) view.findViewById(R.id.play_video);
                 Uri imageUri = Uri.parse(newaList.get(i).getAsString("icon"));
-                pagesIcon.setImageURI(imageUri);
+                ValidData.load(imageUri, pagesIcon, 30, 30);
                 pagesItemNick.setText(newaList.get(i).getAsString("nick"));
                 pagesTags.setText(newaList.get(i).getAsString("tags"));
                 pagesTitle.setText(newaList.get(i).getAsString("title"));
@@ -615,53 +653,67 @@ public class PagesFragment extends BasicFragment implements SwipeRefreshLayout.O
                 if (newaList.get(i).getAsInteger("file_type") == 0) {
                     Uri imageUris = Uri.parse(newaList.get(i).getAsString("subject"));
                     pagesSubject.setImageURI(imageUris);
+                    video.setVisibility(View.GONE);
                 } else {
-
-
+                    Uri imageUris = Uri.parse(newaList.get(i).getAsString("video_img"));
+                    pagesSubject.setImageURI(imageUris);
+                    video.setVisibility(View.VISIBLE);
                 }
+                final int type = newaList.get(i).getAsInteger("file_type");
                 final String str = newaList.get(i).getAsString("nick");
                 final Integer id = newaList.get(i).getAsInteger("id");
                 final Integer uid = newaList.get(i).getAsInteger("uid");
                 lay.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Intent intent = new Intent();
-                        Bundle bundle = new Bundle();
-                        bundle.putInt("id", id);
-                        bundle.putInt("uid", uid);
-                        intent.putExtras(bundle);
-                        intent.setClass(context, ContentFileDetailsActivity.class);
-                        context.startActivity(intent);
+                        if (type == 0) {
+                            Intent intent = new Intent();
+                            Bundle bundle = new Bundle();
+                            bundle.putInt("id", id);
+                            bundle.putInt("uid", uid);
+                            intent.putExtras(bundle);
+                            intent.setClass(context, ContentFileDetailsActivity.class);
+                            context.startActivity(intent);
+                        } else {
+                            Intent intent = new Intent();
+                            Bundle bundle = new Bundle();
+                            bundle.putInt("id", id);
+                            bundle.putInt("uid", uid);
+                            intent.putExtras(bundle);
+                            intent.setClass(context, LocalVideoActivity.class);
+                            context.startActivity(intent);
+                        }
                     }
                 });
                 pagesNewsLayout.addView(view);
             }
-
-
         }
-
-
     }
 
     /**
      * 最新内容
      */
     private void hotList() {
+        if (hotList.size() > 8) {
+            pagesHotTextMore.setVisibility(View.VISIBLE);
+        } else {
+            pagesHotTextMore.setVisibility(View.GONE);
+        }
         if (hotList.size() > 0) {
             for (int i = 0; i < hotList.size(); i++) {
                 View view = LayoutInflater.from(context).inflate(R.layout.pages_item_chose, null);
                 LinearLayout lay = (LinearLayout) view.findViewById(R.id.pages_iten_layout);
                 SimpleDraweeView pagesIcon = (SimpleDraweeView) view.findViewById(R.id.pages_item_icon);//头像
-                SimpleDraweeView pagesSubject = (SimpleDraweeView) view.findViewById(R.id.pages_item_subject);//大图
+                final SimpleDraweeView pagesSubject = (SimpleDraweeView) view.findViewById(R.id.pages_item_subject);//大图
                 TextView pagesTags = (TextView) view.findViewById(R.id.pages_tags_item_text); //标签
                 TextView pagesTitle = (TextView) view.findViewById(R.id.pages_title_text);//标题
                 ImageView pagesFileM = (ImageView) view.findViewById(R.id.pages_file_m);//视频
                 ImageView pagesFileF = (ImageView) view.findViewById(R.id.pages_file_f);//文件
                 TextView pagesItemNick = (TextView) view.findViewById(R.id.pages_item_nick_text);//昵称
                 TextView pagesSign = (TextView) view.findViewById(R.id.pages_sign_item_text);//签名
+                ImageView video = (ImageView) view.findViewById(R.id.play_video);
                 Uri imageUri = Uri.parse(hotList.get(i).getAsString("icon"));
                 ValidData.load(imageUri, pagesIcon, 30, 30);
-                // pagesIcon.setImageURI(imageUri);
                 pagesItemNick.setText(hotList.get(i).getAsString("nick"));
                 pagesTags.setText(hotList.get(i).getAsString("tags"));
                 pagesTitle.setText(hotList.get(i).getAsString("title"));
@@ -683,25 +735,36 @@ public class PagesFragment extends BasicFragment implements SwipeRefreshLayout.O
                 if (hotList.get(i).getAsInteger("file_type") == 0) {
                     Uri imageUris = Uri.parse(hotList.get(i).getAsString("subject"));
                     ValidData.load(imageUris, pagesSubject, 100, 80);
-                    // pagesSubject.setImageURI(imageUris);
+                    video.setVisibility(View.GONE);
                 } else {
-                    //视频第一帧图
-//                   Bitmap ma=MediaClass.createVideoThumbnail("http://qmy.51edn.com/upload/videos_test/20170401/2f0790e34847a024427f90ad4aaaca82.mp4",100,80);
-//                    pagesSubject.setImageBitmap(ma);
+                    Uri imageUris = Uri.parse(hotList.get(i).getAsString("video_img"));
+                    ValidData.load(imageUris, pagesSubject, 100, 80);
+                    video.setVisibility(View.VISIBLE);
                 }
+                final int type = hotList.get(i).getAsInteger("file_type");
                 final String str = hotList.get(i).getAsString("nick");
                 final Integer id = hotList.get(i).getAsInteger("id");
                 final Integer uid = hotList.get(i).getAsInteger("uid");
                 lay.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Intent intent = new Intent();
-                        Bundle bundle = new Bundle();
-                        bundle.putInt("id", id);
-                        bundle.putInt("uid", uid);
-                        intent.putExtras(bundle);
-                        intent.setClass(context, ContentFileDetailsActivity.class);
-                        context.startActivity(intent);
+                        if (type == 0) {
+                            Intent intent = new Intent();
+                            Bundle bundle = new Bundle();
+                            bundle.putInt("id", id);
+                            bundle.putInt("uid", uid);
+                            intent.putExtras(bundle);
+                            intent.setClass(context, ContentFileDetailsActivity.class);
+                            context.startActivity(intent);
+                        } else {
+                            Intent intent = new Intent();
+                            Bundle bundle = new Bundle();
+                            bundle.putInt("id", id);
+                            bundle.putInt("uid", uid);
+                            intent.putExtras(bundle);
+                            intent.setClass(context, LocalVideoActivity.class);
+                            context.startActivity(intent);
+                        }
                     }
                 });
                 pagesHotLayout.addView(view);
@@ -718,6 +781,9 @@ public class PagesFragment extends BasicFragment implements SwipeRefreshLayout.O
         unbinder.unbind();
     }
 
+    /**
+     * 加载最顶端的数据
+     */
     private void btnText(List<ContentValues> namesList) {
         if (namesList.size() > 0) {
             if (namesList.get(0).containsKey("name")) {
@@ -737,6 +803,9 @@ public class PagesFragment extends BasicFragment implements SwipeRefreshLayout.O
         }
     }
 
+    /**
+     * 点击修改样式
+     */
     private void btnTextFo() {
         radDynamicWu.setBackgroundDrawable(getResources().getDrawable(R.drawable.dynamic_title));
         radDynamicGu.setBackgroundColor(getResources().getColor(R.color.white));
@@ -744,6 +813,9 @@ public class PagesFragment extends BasicFragment implements SwipeRefreshLayout.O
         radDynamicJue.setBackgroundColor(getResources().getColor(R.color.white));
     }
 
+    /**
+     * 点击修改样式
+     */
     private void btnTextOne() {
         radDynamicWu.setBackgroundColor(getResources().getColor(R.color.white));
         radDynamicGu.setBackgroundDrawable(getResources().getDrawable(R.drawable.dynamic_title));
@@ -751,6 +823,9 @@ public class PagesFragment extends BasicFragment implements SwipeRefreshLayout.O
         radDynamicJue.setBackgroundColor(getResources().getColor(R.color.white));
     }
 
+    /**
+     * 点击修改样式
+     */
     private void btnTextTwo() {
         radDynamicWu.setBackgroundColor(getResources().getColor(R.color.white));
         radDynamicGu.setBackgroundColor(getResources().getColor(R.color.white));
@@ -758,6 +833,9 @@ public class PagesFragment extends BasicFragment implements SwipeRefreshLayout.O
         radDynamicJue.setBackgroundColor(getResources().getColor(R.color.white));
     }
 
+    /**
+     * 点击修改样式
+     */
     private void btnTextSe() {
         radDynamicWu.setBackgroundColor(getResources().getColor(R.color.white));
         radDynamicGu.setBackgroundColor(getResources().getColor(R.color.white));

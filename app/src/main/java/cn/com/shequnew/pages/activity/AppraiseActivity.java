@@ -1,25 +1,16 @@
 package cn.com.shequnew.pages.activity;
 
-import android.Manifest;
-import android.app.Activity;
-import android.app.AlertDialog;
 import android.app.Dialog;
-import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.database.Cursor;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.hardware.Camera;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
-import android.support.v4.app.ActivityCompat;
-import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
@@ -30,17 +21,13 @@ import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.BufferedOutputStream;
 import java.io.File;
-import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -53,10 +40,10 @@ import cn.com.shequnew.R;
 import cn.com.shequnew.pages.adapter.AppraiesimgeAdapter;
 import cn.com.shequnew.pages.http.HttpConnectTool;
 import cn.com.shequnew.tools.ImageToools;
-import cn.com.shequnew.tools.ImageUtils;
-import cn.com.shequnew.tools.ImagesUtils;
-import cn.com.shequnew.tools.SharedPreferenceUtil;
 
+/**
+ * 评价
+ */
 public class AppraiseActivity extends BaseActivity {
 
     @BindView(R.id.image_back)
@@ -108,7 +95,7 @@ public class AppraiseActivity extends BaseActivity {
 
     /**
      * 拍照
-     * */
+     */
     private void takePhoto() {
         /**
          * 最后一个参数是文件夹的名称，可以随便起
@@ -152,7 +139,7 @@ public class AppraiseActivity extends BaseActivity {
         Bundle bundle = this.getIntent().getExtras();
         ddid = bundle.getString("ddid");
         contentValues.add(0, null);
-        appraiesimgeAdapter = new AppraiesimgeAdapter(contentValues, context);
+        appraiesimgeAdapter = new AppraiesimgeAdapter(contentValues, context,1,true);
         advBoardGridView.setAdapter(appraiesimgeAdapter);
         advBoardGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -172,7 +159,7 @@ public class AppraiseActivity extends BaseActivity {
 
     /**
      * 相机
-     * */
+     */
     private void diabackLogin() {
         DisplayMetrics dm = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(dm);

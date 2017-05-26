@@ -1,6 +1,7 @@
 package cn.com.shequnew.pages.activity;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Window;
 import android.widget.Button;
@@ -39,8 +40,10 @@ public class PublishActivity extends BaseActivity {
      */
     @OnClick(R.id.publish_content)
     void publishContent() {
-        //发布商品----发布视频
-
+        //发布图文----发布视频
+        Intent intent = new Intent(context, VideoContentActivity.class);
+        context.startActivity(intent);
+        destroyActitity();
     }
 
     /**
@@ -50,12 +53,17 @@ public class PublishActivity extends BaseActivity {
     void publishShop() {
         if (AppContext.cv.getAsString("merchant").equals("0")) {
             //申请卖主
-
+            Intent intent = new Intent(context, SellerlDetailsActivity.class);
+            context.startActivity(intent);
+            destroyActitity();
         } else {
-            //发布
+            //发布商品
+            Intent intent = new Intent(context, PublishShopActivity.class);
+            context.startActivity(intent);
+            destroyActitity();
 
         }
-
+        destroyActitity();
     }
 
 

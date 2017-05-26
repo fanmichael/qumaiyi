@@ -18,6 +18,7 @@
             android:layout_width="20dp"
             android:layout_height="20dp"
             android:layout_gravity="left|center"
+            android:layout_marginLeft="15dp"
             android:background="@drawable/arrowleft"
             android:clickable="true"
             android:scaleType="centerCrop" />
@@ -58,8 +59,8 @@
                     android:background="@null"
                     android:hint="@string/phone"
                     android:inputType="phone"
-                    android:maxLines="1"
                     android:maxEms="13"
+                    android:maxLines="1"
                     android:textSize="16dp" />
 
                 <View
@@ -99,7 +100,7 @@
 
                 <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="50dp"
+                    android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:orientation="horizontal">
 
@@ -120,8 +121,9 @@
                         android:layout_alignParentRight="true"
                         android:layout_alignRight="@id/regs_issue"
                         android:layout_marginRight="20dp"
-                        android:layout_marginTop="15dp"
+                        android:layout_marginTop="10dp"
                         android:background="@drawable/login_btn_xml"
+                        android:gravity="center"
                         android:padding="10dp"
                         android:text="@string/ver_code"
                         android:textColor="@color/white"
@@ -150,7 +152,9 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="@string/interest_man" />
+                        android:text="@string/interest_man"
+                        android:textColor="@color/col_bg"
+                        android:textSize="15dp" />
 
                     <Button
                         android:id="@+id/p_trade"
@@ -167,11 +171,12 @@
 
                 </LinearLayout>
 
-                    <LinearLayout
-                        android:id="@+id/imaghe_layout"
-                        android:layout_width="fill_parent"
-                        android:layout_height="fill_parent"
-                        android:orientation="horizontal"></LinearLayout>
+                <LinearLayout
+                    android:id="@+id/imaghe_layout"
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:layout_marginTop="10dp"
+                    android:orientation="horizontal"></LinearLayout>
 
                 <View
                     android:layout_width="match_parent"
@@ -188,7 +193,9 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="@string/interest_thing" />
+                        android:text="@string/interest_thing"
+                        android:textColor="@color/col_bg"
+                        android:textSize="15dp" />
 
                     <Button
                         android:id="@+id/t_trade"
@@ -204,12 +211,46 @@
                         android:visibility="gone" />
 
                 </LinearLayout>
-                    <LinearLayout
-                        android:id="@+id/tags_layout"
-                        android:layout_width="fill_parent"
-                        android:layout_height="fill_parent"
-                        android:orientation="horizontal"></LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/tags_layout"
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:layout_marginTop="10dp"
+                    android:orientation="horizontal"></LinearLayout>
             </LinearLayout>
+
+
+            <LinearLayout
+                android:id="@+id/lin_ch"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <CheckBox
+                    android:id="@+id/regs_chose"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:button="@drawable/chose_check"
+                    android:checked="true" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="我已阅读并同意"
+                    android:textColor="@color/col_bg"
+                    android:textSize="15dp" />
+
+                <TextView
+                    android:id="@+id/regs_tip"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:text="《注册协议》"
+                    android:textColor="@color/bd_top"
+                    android:textSize="15dp" />
+            </LinearLayout>
+
 
             <Button
                 android:id="@+id/register"

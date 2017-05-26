@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.facebook.drawee.view.SimpleDraweeView;
@@ -24,12 +25,15 @@ public class AppraiesimgeAdapter extends BaseAdapter {
     private List<ContentValues> contentValues;
     private Context context;
     private LayoutInflater mInflater;
+    private int type;
+    private boolean le;
 
-    public AppraiesimgeAdapter(List<ContentValues> contentValues, Context context) {
+    public AppraiesimgeAdapter(List<ContentValues> contentValues, Context context, int type, boolean le) {
         this.context = context;
         this.contentValues = contentValues;
         mInflater = LayoutInflater.from(context);
-
+        this.type = type;
+        this.le = le;
     }
 
     @Override
@@ -48,15 +52,16 @@ public class AppraiesimgeAdapter extends BaseAdapter {
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(final int position, View convertView, ViewGroup parent) {
         if (contentValues == null) {
             return convertView;
         }
         ViewHolder holder;
         if (convertView == null) {
             holder = new ViewHolder();
-            convertView = mInflater.inflate(R.layout.shop_item_imagse, null);
-            holder.icon = (SimpleDraweeView) convertView.findViewById(R.id.shop_itme_image);
+            convertView = mInflater.inflate(R.layout.app_item_imagse, null);
+            holder.icon = (SimpleDraweeView) convertView.findViewById(R.id.app_image);
+            holder.imgDelete = (ImageView) convertView.findViewById(R.id.image_delete);
             convertView.setTag(holder);
         } else {
             holder = (ViewHolder) convertView.getTag();
@@ -65,22 +70,48 @@ public class AppraiesimgeAdapter extends BaseAdapter {
         if (contentValues == null || contentValues.size() <= position) {
             return convertView;
         }
-        if (position == 0) {
-            holder.icon.setMaxWidth(150);
-            holder.icon.setMaxHeight(150);
-            holder.icon.setBackgroundDrawable(context.getResources().getDrawable(R.drawable.addimages));
-        } else {
-            ContentValues cv = contentValues.get(position);
-            holder.icon.setMaxWidth(150);
-            holder.icon.setMaxHeight(150);
+
+        if (le == false) {
+            final ContentValues cv = contentValues.get(position);
             Uri imageIcon = Uri.parse(cv.getAsString("image"));
             ValidData.load(imageIcon, holder.icon, 150, 150);
+            if (type == 2) {
+                holder.imgDelete.setVisibility(View.VISIBLE);
+                holder.imgDelete.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        contentValues.remove(position);
+                        notifyDataSetChanged();
+                    }
+                });
+            }
+        } else {
+            if (position == 0) {
+                holder.icon.setBackgroundDrawable(context.getResources().getDrawable(R.drawable.addimages));
+            } else {
+                final ContentValues cv = contentValues.get(position);
+                Uri imageIcon = Uri.parse(cv.getAsString("image"));
+                ValidData.load(imageIcon, holder.icon, 150, 150);
+                if (type == 2) {
+                    holder.imgDelete.setVisibility(View.VISIBLE);
+                    holder.imgDelete.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            contentValues.remove(position);
+                            notifyDataSetChanged();
+                        }
+                    });
+                }
+            }
         }
+
+
         return convertView;
     }
 
     public final class ViewHolder {
         public SimpleDraweeView icon;
+        public ImageView imgDelete;
     }
 
 }

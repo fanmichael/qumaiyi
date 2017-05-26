@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
@@ -81,6 +82,22 @@ public class DynamicFragment extends BasicFragment implements SwipeRefreshLayout
         initView();
         showProgress();
         setDelayMessage(1, 100);
+
+        listView.setOnScrollListener(new AbsListView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(AbsListView view, int scrollState) {
+
+            }
+
+            @Override
+            public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+                if (firstVisibleItem == 0)
+                    swipeRefreshLayout.setEnabled(true);
+                else
+                    swipeRefreshLayout.setEnabled(false);
+            }
+        });
+
     }
 
     private void initView() {
@@ -274,6 +291,9 @@ public class DynamicFragment extends BasicFragment implements SwipeRefreshLayout
                         for (int j = 0; j < ss.length(); j++) {
                             JSONObject sss = ss.getJSONObject(j);
                             ccv.put("subject", sss.getString("subject"));
+                            if (sss.has("video_img")) {
+                                ccv.put("video_img", sss.getString("video_img"));
+                            }
                             ccv.put("title", sss.getString("title"));
                             ccv.put("tags", sss.getString("tags"));
                             ccv.put("file_type", sss.getInt("file_type"));
@@ -291,6 +311,7 @@ public class DynamicFragment extends BasicFragment implements SwipeRefreshLayout
                         ccv.put("title", "");
                         ccv.put("file_type", "");
                         ccv.put("sign", "");
+                        ccv.put("video_img", "");
                         ccv.put("good_name", ss.getString("good_name"));
                         ccv.put("good_image", ss.getString("good_image"));
                         ccv.put("price", ss.getString("price"));

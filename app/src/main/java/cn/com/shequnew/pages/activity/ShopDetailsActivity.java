@@ -9,13 +9,13 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ScrollView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.facebook.drawee.view.SimpleDraweeView;
 
@@ -95,6 +95,8 @@ public class ShopDetailsActivity extends BaseActivity implements UserGoodsShopAd
     ListView shopDetailsLike;
     @BindView(R.id.scrollview)
     ScrollView scrollview;
+    @BindView(R.id.shop_details_info_from)
+    LinearLayout shopDetailsInfoFrom;
 
     private ContentValues values = new ContentValues();
     private List<ContentValues> imagesList = new ArrayList<>();
@@ -132,6 +134,43 @@ public class ShopDetailsActivity extends BaseActivity implements UserGoodsShopAd
         topTitleColl.setText("商品详情");
         initDelay();
         setDelayMessage(1, 100);
+        shopDetailsImages.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                ArrayList<String> imgUrl = new ArrayList<String>();
+                for (int i = 0; i < imagesList.size(); i++) {
+                    imgUrl.add(imagesList.get(i).getAsString("imgs"));
+                }
+                Intent intent1 = new Intent(context, PictureDisplayActivity.class);
+                intent1.putExtra("position", imgUrl.size());
+                intent1.putStringArrayListExtra("enlargeImage", imgUrl);
+                startActivity(intent1);
+            }
+        });
+
+    }
+
+    @OnClick(R.id.shop_details_sim_title)
+    void clikeBig() {
+        ArrayList<String> imgUrl = new ArrayList<String>();
+        imgUrl.add(values.getAsString("good_image"));
+        Intent intent1 = new Intent(context, PictureDisplayActivity.class);
+        intent1.putExtra("position", imgUrl.size());
+        intent1.putStringArrayListExtra("enlargeImage", imgUrl);
+        startActivity(intent1);
+    }
+
+    /**
+     * 评价
+     */
+    @OnClick(R.id.shop_details_info_from)
+    void infoFrom() {
+        Intent intent = new Intent(context, InfromActivity.class);
+        Bundle bundle = new Bundle();
+        bundle.putString("rid", "" + id);
+        bundle.putString("type", "1");
+        intent.putExtras(bundle);
+        context.startActivity(intent);
     }
 
 
@@ -155,14 +194,7 @@ public class ShopDetailsActivity extends BaseActivity implements UserGoodsShopAd
 
     @OnClick(R.id.share_coll)
     void shareColl() {
-        //分享
-//        Intent intent = new Intent(context, ShareAllActivity.class);
-//        Bundle bundle = new Bundle();
-//        bundle.putString("type", "ShopDetailsActivity");
-//        intent.putExtras(bundle);
-//        context.startActivity(intent);
         UtilsUmeng.share(ShopDetailsActivity.this, Ini.ShareGood_Url+id,values.getAsString("content"));
-
     }
 
 
@@ -215,10 +247,8 @@ public class ShopDetailsActivity extends BaseActivity implements UserGoodsShopAd
     @OnClick(R.id.shop_details_attention)
     void shopAtten() {
         //关注
-        mLoading = new Loading(
-                context, shopDetailsAttention);
-        mLoading.setText("正在加载......");
-        mLoading.show();
+        shopDetailsAttention.setVisibility(View.GONE);
+        shopDetailsAttentionNo.setVisibility(View.VISIBLE);
         typecomm = 4;
         setDelayMessage(4, 100);
 
@@ -227,24 +257,21 @@ public class ShopDetailsActivity extends BaseActivity implements UserGoodsShopAd
     @OnClick(R.id.shop_details_attention_no)
     void shopNoAtten() {
         //取消关注
-        mLoading = new Loading(
-                context, shopDetailsAttentionNo);
-        mLoading.setText("正在加载......");
-        mLoading.show();
+        shopDetailsAttention.setVisibility(View.VISIBLE);
+        shopDetailsAttentionNo.setVisibility(View.GONE);
         typecomm = 5;
         setDelayMessage(5, 100);
     }
 
     @OnClick(R.id.linayout_estimate)
-    void shopEstimate(){
-        Intent intent=new Intent(context,EstimateActivity.class);
-        Bundle bundle=new Bundle();
-        bundle.putInt("id",id);
+    void shopEstimate() {
+        Intent intent = new Intent(context, EstimateActivity.class);
+        Bundle bundle = new Bundle();
+        bundle.putInt("id", id);
         intent.putExtras(bundle);
         context.startActivity(intent);
 
     }
-
 
 
     private void initDelay() {
@@ -311,7 +338,7 @@ public class ShopDetailsActivity extends BaseActivity implements UserGoodsShopAd
                     break;
                 case 4:
                     httpFollowStatusfollow();
-                    bundle.putInt("what", 4);
+//                    bundle.putInt("what", 4);
                     break;
                 case 5:
                     httpFollowStatusfollow();
@@ -560,8 +587,9 @@ public class ShopDetailsActivity extends BaseActivity implements UserGoodsShopAd
                     cv.put("good_name", jsonObj.getString("good_name"));//标题
                     cv.put("good_image", jsonObj.getString("good_image"));//图
                     cv.put("price", jsonObj.getString("price"));//价格
-                    cv.put("icon", jsonObj.getString("icon"));//价格
-                    cv.put("nick", jsonObj.getString("nick"));//价格
+                    cv.put("icon", jsonObj.getString("icon"));
+                    cv.put("ship", jsonObj.getString("ship"));//运费
+                    cv.put("nick", jsonObj.getString("nick"));
                     shopsList.add(cv);
                 }
 

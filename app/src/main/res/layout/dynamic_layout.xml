@@ -22,6 +22,7 @@
             android:paddingLeft="2px"
             android:paddingRight="2px"
             android:paddingTop="2px"
+            android:fadingEdge="none"
             android:layout_marginBottom="10px"
             ptr:ptrHeaderTextColor="@color/green_fresh"
             ptr:ptrDrawable="@drawable/small_add"

@@ -23,6 +23,7 @@ public class ExpAdapter extends BaseAdapter {
     private Context context;
     private LayoutInflater mInflater;
     private setonClick setonClick;
+    private int mSelect = -1;
 
     public ExpAdapter(List<ContentValues> contentValues, Context context, setonClick setonClick) {
         this.context = context;
@@ -31,6 +32,14 @@ public class ExpAdapter extends BaseAdapter {
         mInflater = LayoutInflater.from(context);
 
     }
+
+    public void changeSelected(int positon) { //刷新方法
+        if (positon != mSelect) {
+            mSelect = positon;
+            notifyDataSetChanged();
+        }
+    }
+
 
     @Override
     public int getCount() {
@@ -69,7 +78,7 @@ public class ExpAdapter extends BaseAdapter {
         }
         final ContentValues cv = contentValues.get(position);
         holder.title.setText(cv.getAsString("com"));
-        if (cv.getAsInteger("chose") == 1) {
+        if (mSelect == position) {
             holder.icon.setVisibility(View.VISIBLE);
         } else {
             holder.icon.setVisibility(View.GONE);

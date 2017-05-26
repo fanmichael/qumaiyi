@@ -15,6 +15,7 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.LinearLayout;
@@ -90,6 +91,20 @@ public class PublishDetailsShopCalFragment extends BasicFragment implements Swip
         context = getActivity();
         page = 1;
         initView();
+        shopListPullCal.setOnScrollListener(new AbsListView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(AbsListView view, int scrollState) {
+
+            }
+
+            @Override
+            public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+                if (firstVisibleItem == 0)
+                    collectSwiCal.setEnabled(true);
+                else
+                    collectSwiCal.setEnabled(false);
+            }
+        });
         new asyncTask().execute(1);
     }
 

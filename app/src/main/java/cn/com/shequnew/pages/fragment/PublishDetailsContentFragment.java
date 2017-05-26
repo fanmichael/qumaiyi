@@ -85,6 +85,20 @@ public class PublishDetailsContentFragment extends BasicFragment implements Swip
         context = getActivity();
         initView();
         page = 1;
+        collectListContent.setOnScrollListener(new AbsListView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(AbsListView view, int scrollState) {
+
+            }
+
+            @Override
+            public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+                if (firstVisibleItem == 0)
+                    collectSwiContent.setEnabled(true);
+                else
+                    collectSwiContent.setEnabled(false);
+            }
+        });
         new asyncTask().execute(1);
     }
 
@@ -294,7 +308,7 @@ public class PublishDetailsContentFragment extends BasicFragment implements Swip
             hashMap.put("id", page + "");
             String json = HttpConnectTool.post(hashMap);
             if (!json.equals("")) {
-                listXml(json);
+//                listXml(json);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -337,6 +351,9 @@ public class PublishDetailsContentFragment extends BasicFragment implements Swip
                         note.put("uid", jsonObj.getInt("uid"));
                         note.put("file_type", jsonObj.getInt("file_type"));
                         note.put("subject", jsonObj.getString("subject"));
+                        if(jsonObj.has("video_img")){
+                            note.put("video_img", jsonObj.getString("video_img"));
+                        }
                         note.put("title", jsonObj.getString("title"));
                         note.put("content", jsonObj.getString("content"));
                         note.put("tags", jsonObj.getString("tags"));

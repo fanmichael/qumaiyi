@@ -150,7 +150,6 @@ public class ChoseNewsActivity extends BaseActivity {
 
                     if (contentUser.size() > 0) {
                         choseUser.setVisibility(View.VISIBLE);
-
                     } else {
                         choseUser.setVisibility(View.GONE);
                     }
@@ -180,6 +179,7 @@ public class ChoseNewsActivity extends BaseActivity {
             ImageView pagesFileF = (ImageView) view.findViewById(R.id.pages_file_f);//文件
             TextView pagesItemNick = (TextView) view.findViewById(R.id.pages_item_nick_text);//昵称
             TextView pagesSign = (TextView) view.findViewById(R.id.pages_sign_item_text);//签名
+            ImageView plvideo = (ImageView) view.findViewById(R.id.play_video);
             Uri imageUri = Uri.parse(contentNote.get(i).getAsString("icon"));
             ValidData.load(imageUri, pagesIcon, 30, 30);
             pagesItemNick.setText(contentNote.get(i).getAsString("nick"));
@@ -199,22 +199,36 @@ public class ChoseNewsActivity extends BaseActivity {
             if (contentNote.get(i).getAsInteger("file_type") == 0) {
                 Uri imageUris = Uri.parse(contentNote.get(i).getAsString("subject"));
                 ValidData.load(imageUris, pagesSubject, 100, 80);
+                plvideo.setVisibility(View.GONE);
             } else {
-
+                Uri imageUris = Uri.parse(contentNote.get(i).getAsString("video_img"));
+                ValidData.load(imageUris, pagesSubject, 100, 80);
+                plvideo.setVisibility(View.VISIBLE);
             }
+            final int type = contentNote.get(i).getAsInteger("file_type");
             final String str = contentNote.get(i).getAsString("nick");
             final int id = contentNote.get(i).getAsInteger("id");
             final int uid = contentNote.get(i).getAsInteger("uid");
             lay.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent intent = new Intent();
-                    Bundle bundle = new Bundle();
-                    bundle.putInt("id", id);
-                    bundle.putInt("uid", uid);
-                    intent.putExtras(bundle);
-                    intent.setClass(context, ContentFileDetailsActivity.class);
-                    context.startActivity(intent);
+                    if (type == 0) {
+                        Intent intent = new Intent();
+                        Bundle bundle = new Bundle();
+                        bundle.putInt("id", id);
+                        bundle.putInt("uid", uid);
+                        intent.putExtras(bundle);
+                        intent.setClass(context, ContentFileDetailsActivity.class);
+                        context.startActivity(intent);
+                    } else {
+                        Intent intent = new Intent();
+                        Bundle bundle = new Bundle();
+                        bundle.putInt("id", id);
+                        bundle.putInt("uid", uid);
+                        intent.putExtras(bundle);
+                        intent.setClass(context, LocalVideoActivity.class);
+                        context.startActivity(intent);
+                    }
                 }
             });
             redactChose.addView(view);
@@ -354,6 +368,9 @@ public class ChoseNewsActivity extends BaseActivity {
                     cv.put("file_type", jsonObj.getInt("file_type"));
                     cv.put("title", jsonObj.getString("title"));
                     cv.put("subject", jsonObj.getString("subject"));
+                    if(jsonObj.has("video_img")){
+                        cv.put("video_img", jsonObj.getString("video_img"));
+                    }
                     cv.put("subject_type", jsonObj.getString("subject_type"));
                     cv.put("tags", jsonObj.getString("tags"));
                     cv.put("content", jsonObj.getString("content"));

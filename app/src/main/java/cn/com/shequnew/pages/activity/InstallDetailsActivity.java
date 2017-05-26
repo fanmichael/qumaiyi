@@ -26,6 +26,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.com.shequnew.R;
+import cn.com.shequnew.pages.config.AppContext;
 import cn.com.shequnew.tools.FileUtil;
 import cn.com.shequnew.tools.MethodsCompat;
 import cn.com.shequnew.tools.SharedPreferenceUtil;
@@ -194,6 +195,7 @@ public class InstallDetailsActivity extends BaseActivity {
     void backLogin() {
         //退出登录
         diabackLogin();
+
     }
 
     private void diabackLogin() {
@@ -219,12 +221,13 @@ public class InstallDetailsActivity extends BaseActivity {
         photographAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(context, LoginActivity.class);
-                startActivity(intent);
                 if (SharedPreferenceUtil.hasKey("mobile") && SharedPreferenceUtil.hasKey("password")) {
-                    SharedPreferenceUtil.clear();
+                    SharedPreferenceUtil.remove("mobile");
+                    SharedPreferenceUtil.remove("password");
                 }
-                destroyActitity();
+                AppContext.getInstance().logoutApp();
+                Intent intent = new Intent(InstallDetailsActivity.this, FristAdvActivity.class);
+                startActivity(intent);
             }
         });
     }

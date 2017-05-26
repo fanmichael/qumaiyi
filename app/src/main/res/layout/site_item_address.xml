@@ -10,11 +10,12 @@
         android:layout_height="wrap_content"
         android:background="@color/white"
         android:orientation="horizontal"
-        android:padding="10dp">
+        android:padding="5dp">
 
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
             android:src="@drawable/location" />
 
         <LinearLayout
@@ -34,7 +35,8 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:gravity="left"
-                    android:text="11" />
+                    android:textColor="@color/col_bg"
+                    android:textSize="15dp" />
 
                 <TextView
                     android:id="@+id/address_phone"
@@ -42,7 +44,8 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:gravity="right"
-                    android:text="11" />
+
+                    android:textSize="15dp" />
 
             </LinearLayout>
 
@@ -51,7 +54,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="right"
-                android:text="11" />
+                android:textColor="@color/col_bg"
+                android:textSize="15dp" />
 
 
         </LinearLayout>
@@ -72,7 +76,8 @@
             android:layout_height="wrap_content"
             android:button="@drawable/chose_check"
             android:text="默认地址"
-            android:textColor="@color/col_bg" />
+            android:textColor="@color/col_bg"
+            android:textSize="14dp" />
 
         <LinearLayout
             android:id="@+id/address_edit"
@@ -92,7 +97,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:text="编辑" />
+                android:text="编辑"
+                android:textSize="14dp" />
 
         </LinearLayout>
 
@@ -113,7 +119,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:text="删除" />
+                android:text="删除"
+                android:textSize="14dp" />
 
         </LinearLayout>
 

@@ -130,8 +130,8 @@ public class IndentActivity extends BaseActivity {
     private void initView() {
         topTitle.setText("我的订单");
         topRegitTitle.setVisibility(View.GONE);
-        Bundle bundle=this.getIntent().getExtras();
-        id=bundle.getInt("id");
+        Bundle bundle = this.getIntent().getExtras();
+        id = bundle.getInt("id");
          mHandler = new Handler() {
             public void handleMessage(Message msg) {
                switch (msg.what){
@@ -279,6 +279,7 @@ public class IndentActivity extends BaseActivity {
                 goods.put("uid", goodsObject.getInt("uid"));
                 goods.put("cid", goodsObject.getInt("cid"));
                 goods.put("maf_time", goodsObject.getInt("maf_time"));
+                goods.put("ship", goodsObject.getString("ship"));//运费
                 goods.put("good_name", goodsObject.getString("good_name"));
                 goods.put("good_intro", goodsObject.getString("good_intro"));
                 goods.put("good_image", goodsObject.getString("good_image"));

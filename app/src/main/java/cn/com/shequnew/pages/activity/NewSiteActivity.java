@@ -136,8 +136,8 @@ public class NewSiteActivity extends BaseActivity {
             @Override
             public void onOptionsSelect(int options1, int options2, int options3, View v) {
                 //返回的分别是三个级别的选中位置
-                address="";
-                address = province.get(options1) + " "+city.get(options1).get(options2) +" "+ region.get(options1).get(options2).get(options3);
+                address = "";
+                address = province.get(options1) + " " + city.get(options1).get(options2) + " " + region.get(options1).get(options2).get(options3);
                 siteAddress.setText(address);
             }
         })
@@ -146,14 +146,13 @@ public class NewSiteActivity extends BaseActivity {
                 // .setTitleText("城市选择")//标题
                 .setSubCalSize(18)//确定和取消文字大小
                 .setTitleSize(20)//标题文字大小
-                .setTitleColor(Color.BLACK)//标题文字颜色
-                .setSubmitColor(Color.GREEN)//确定按钮文字颜色
-                .setCancelColor(Color.WHITE)//取消按钮文字颜色
-                .setTitleBgColor(0xFF333333)//标题背景颜色 Night mode
-                .setBgColor(0xFF000000)//滚轮背景颜色 Night mode
+                .setSubmitColor(getResources().getColor(R.color.bd_top))//确定按钮文字颜色
+                .setCancelColor(getResources().getColor(R.color.col_bg))//取消按钮文字颜色
+                .setTitleBgColor(getResources().getColor(R.color.white))//标题背景颜色 Night mode
+                .setBgColor(getResources().getColor(R.color.bg))//滚轮背景颜色 Night mode
                 .setContentTextSize(18)//滚轮文字大小
                 .setLinkage(true)//设置是否联动，默认true
-               // .setLabels("省", "市", "区")//设置选择的三级单位
+                // .setLabels("省", "市", "区")//设置选择的三级单位
                 .setCyclic(false, false, false)//循环与否
                 .setSelectOptions(0, 0, 0)  //设置默认选中项
                 .setOutSideCancelable(false)//点击外部dismiss default true

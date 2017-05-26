@@ -42,7 +42,7 @@ public class SlideShowView extends FrameLayout implements View.OnClickListener {
     //轮播图图片数量
     private final static int IMAGE_COUNT = 5;
     //自动轮播的时间间隔
-    private final static int TIME_INTERVAL = 3;
+    private final static int TIME_INTERVAL = 5;
     //自动轮播启用开关
     private final static boolean isAutoPlay = true;
 
@@ -207,8 +207,9 @@ public class SlideShowView extends FrameLayout implements View.OnClickListener {
         @Override
         public void destroyItem(View container, int position, Object object) {
             // TODO Auto-generated method stub
-            //((ViewPag.er)container).removeView((View)object);
-            ((ViewPager) container).removeView(imageViewsList.get(position));
+//            imageViewsList.clear();
+            ((ViewPager) container).removeView((View) object);
+//            ((ViewPager) container).removeView(imageViewsList.get(position));
         }
 
         @Override

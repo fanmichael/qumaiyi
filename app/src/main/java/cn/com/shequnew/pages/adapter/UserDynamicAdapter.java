@@ -3,8 +3,10 @@ package cn.com.shequnew.pages.adapter;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,7 +21,9 @@ import java.util.List;
 
 import cn.com.shequnew.R;
 import cn.com.shequnew.pages.activity.ContentFileDetailsActivity;
+import cn.com.shequnew.pages.activity.LocalVideoActivity;
 import cn.com.shequnew.pages.activity.ShopDetailsActivity;
+import cn.com.shequnew.tools.Util;
 import cn.com.shequnew.tools.ValidData;
 
 /**
@@ -72,7 +76,7 @@ public class UserDynamicAdapter extends BaseAdapter {
             holder.dynamicM = (ImageView) convertView.findViewById(R.id.pages_file_m);//视频
             holder.dynamicF = (ImageView) convertView.findViewById(R.id.pages_file_f);//文件
             holder.dynamicNick = (TextView) convertView.findViewById(R.id.pages_item_nick_text);//昵称
-
+            holder.vidoImage = (ImageView) convertView.findViewById(R.id.play_video);
             holder.dynamicSign = (TextView) convertView.findViewById(R.id.pages_sign_item_text);//签名
             convertView.setTag(holder);
         } else {
@@ -99,9 +103,16 @@ public class UserDynamicAdapter extends BaseAdapter {
                 ValidData.load(image, holder.dynamicImages, 100, 80);
                 holder.dynamicF.setVisibility(View.VISIBLE);
                 holder.dynamicM.setVisibility(View.GONE);
+                holder.vidoImage.setVisibility(View.GONE);
             } else {
-                holder.dynamicF.setVisibility(View.GONE);
-                holder.dynamicM.setVisibility(View.VISIBLE);
+                if(user.containsKey("video_img")){
+                    Uri image = Uri.parse(user.getAsString("video_img"));
+                    ValidData.load(image, holder.dynamicImages, 100, 80);
+                    holder.dynamicF.setVisibility(View.GONE);
+                    holder.dynamicM.setVisibility(View.VISIBLE);
+                    holder.vidoImage.setVisibility(View.VISIBLE);
+                }
+
             }
         } else {
             holder.dynamicF.setVisibility(View.VISIBLE);
@@ -119,14 +130,25 @@ public class UserDynamicAdapter extends BaseAdapter {
             @Override
             public void onClick(View v) {
                 if (user.containsKey("file_type")) {
-                    Intent intent = new Intent();
-                    Bundle bundle = new Bundle();
-                    bundle.putInt("id", user.getAsInteger("id"));
-                    bundle.putInt("uid", user.getAsInteger("uid"));
-                    intent.putExtras(bundle);
-                    intent.setClass(context, ContentFileDetailsActivity.class);
-                    context.startActivity(intent);
-                }else{
+
+                    if (user.getAsInteger("file_type") == 0) {
+                        Intent intent = new Intent();
+                        Bundle bundle = new Bundle();
+                        bundle.putInt("id", user.getAsInteger("id"));
+                        bundle.putInt("uid", user.getAsInteger("uid"));
+                        intent.putExtras(bundle);
+                        intent.setClass(context, ContentFileDetailsActivity.class);
+                        context.startActivity(intent);
+                    } else {
+                        Intent intent = new Intent();
+                        Bundle bundle = new Bundle();
+                        bundle.putInt("id", user.getAsInteger("id"));
+                        bundle.putInt("uid", user.getAsInteger("uid"));
+                        intent.putExtras(bundle);
+                        intent.setClass(context, LocalVideoActivity.class);
+                        context.startActivity(intent);
+                    }
+                } else {
                     Intent intent = new Intent();
                     Bundle bundle = new Bundle();
                     bundle.putInt("id", user.getAsInteger("id"));
@@ -153,6 +175,7 @@ public class UserDynamicAdapter extends BaseAdapter {
         public TextView dynamicTitle;
         public TextView dynamicTags;//标签呢
         public SimpleDraweeView dynamicImages;//
+        public ImageView vidoImage;
 
     }
 

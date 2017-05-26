@@ -125,11 +125,11 @@ public class BuyGoodsShopAdapter extends BaseAdapter {
             holder.buySta.setText("已签收...");
             holder.buySta.setVisibility(View.VISIBLE);
             holder.cal.setVisibility(View.INVISIBLE);
-            holder.buy.setText("申请提现");
-            holder.buy.setBackgroundColor(context.getResources().getColor(R.color.bd_top));
-            holder.buy.setTextColor(context.getResources().getColor(R.color.white));
-            holder.buy.setClickable(true);
-            holder.buy.setEnabled(true);
+            holder.buy.setText("钱已转到账户余额");
+            holder.buy.setBackgroundColor(context.getResources().getColor(R.color.white));
+            holder.buy.setTextColor(context.getResources().getColor(R.color.col_bg));
+            holder.buy.setClickable(false);
+            holder.buy.setEnabled(false);
         }
         if (good.getAsInteger("state") == 3 && good.getAsInteger("status") == 1) {
             holder.buySta.setText("已签收...");
@@ -168,7 +168,7 @@ public class BuyGoodsShopAdapter extends BaseAdapter {
             holder.buySta.setText("已签收...");
             holder.buySta.setVisibility(View.VISIBLE);
             holder.cal.setVisibility(View.INVISIBLE);
-            holder.buy.setText("提现审核中...");
+            holder.buy.setText("钱已转到账户余额");
             holder.buy.setBackgroundColor(context.getResources().getColor(R.color.white));
             holder.buy.setTextColor(context.getResources().getColor(R.color.col_bg));
             holder.buy.setClickable(false);
@@ -179,7 +179,7 @@ public class BuyGoodsShopAdapter extends BaseAdapter {
             holder.buySta.setText("已签收...");
             holder.buySta.setVisibility(View.VISIBLE);
             holder.cal.setVisibility(View.INVISIBLE);
-            holder.buy.setText("提现成功");
+            holder.buy.setText("钱已转到账户余额");
             holder.buy.setBackgroundColor(context.getResources().getColor(R.color.white));
             holder.buy.setTextColor(context.getResources().getColor(R.color.col_bg));
             holder.buy.setClickable(false);
@@ -189,7 +189,7 @@ public class BuyGoodsShopAdapter extends BaseAdapter {
             holder.buySta.setText("已签收...");
             holder.buySta.setVisibility(View.VISIBLE);
             holder.cal.setVisibility(View.INVISIBLE);
-            holder.buy.setText("提现失败");
+            holder.buy.setText("钱已转到账户余额");
             holder.buy.setBackgroundColor(context.getResources().getColor(R.color.white));
             holder.buy.setTextColor(context.getResources().getColor(R.color.col_bg));
             holder.buy.setClickable(false);
