@@ -26,12 +26,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.facebook.drawee.view.SimpleDraweeView;
+import com.hyphenate.easeui.EaseConstant;
+import com.hyphenate.easeui.model.UserInfo;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.InputStream;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -41,6 +42,8 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.com.shequnew.R;
+import cn.com.shequnew.chat.activity.ChatActivity;
+import cn.com.shequnew.chat.util.ObjectSaveUtils;
 import cn.com.shequnew.pages.adapter.CommentAdapter;
 import cn.com.shequnew.pages.adapter.ContentFileDetailsAdapter;
 import cn.com.shequnew.pages.adapter.ShopImagesAdapter;
@@ -343,7 +346,8 @@ public class ContentFileDetailsActivity extends BaseActivity implements CommentA
                         break;
                     case R.id.faith:
                         //私聊群主
-
+                        sendMessage();
+                        faith.setClickable(false);
                         break;
                     case R.id.dis:
                         parentnum = 0;
@@ -358,17 +362,35 @@ public class ContentFileDetailsActivity extends BaseActivity implements CommentA
 
     }
 
-    /**
-     * 延迟加载
-     */
+    private void sendMessage() {
+        if (String.valueOf(AppContext.cv.getAsInteger("id")).trim().isEmpty()) {
+            return;
+        }
+        Intent intent = new Intent(ContentFileDetailsActivity.this, ChatActivity.class);
+        intent.putExtra(EaseConstant.EXTRA_USER_ID, values.getAsInteger("id") + "").putExtra(EaseConstant.EXTRA_CHAT_TYPE, EaseConstant.CHATTYPE_SINGLE).putExtra("NICK", values.getAsString("nick"));
+        if (UserInfo.getInstance().getInfo() == null || UserInfo.getInstance().getInfo().get(String.valueOf(values.getAsInteger("id"))) == null) {
+            UserInfo.getInstance().addInfo(new UserInfo.User().setUid(String.valueOf(values.getAsInteger("id"))).setNick(values.getAsString("nick")).setIcon(values.getAsString("icon")));
+        } else {
+            UserInfo.getInstance().getInfo().get(String.valueOf(values.getAsInteger("id"))).setNick(values.getAsString("nick")).setIcon(values.getAsString("icon"));
+        }
+        new Thread() {
+            @Override
+            public void run() {
+                super.run();
+                ObjectSaveUtils.saveObject(ContentFileDetailsActivity.this, "USERICON", UserInfo.getInstance());
+            }
+        }.start();
+        startActivity(intent);
+    }
+
     private void initDelay() {
         mDelay = new Handler() {
+
             @Override
             public void handleMessage(Message msg) {
                 switch (msg.what) {
                     case 1:
-                        mLoading = new Loading(
-                                context, fileDetailsNick);
+                        mLoading = new Loading(context, fileDetailsNick);
                         mLoading.setText("正在加载......");
                         mLoading.show();
                         new asyncTask().execute(1);
@@ -388,6 +410,35 @@ public class ContentFileDetailsActivity extends BaseActivity implements CommentA
     }
 
     /**
+     * 延迟加载
+     * <p>
+     * private void initDelay() {
+     * mDelay = new Handler() {
+     *
+     * @Override public void handleMessage(Message msg) {
+     * switch (msg.what) {
+     * case 1:
+     * mLoading = new Loading(
+     * context, fileDetailsNick);
+     * mLoading.setText("正在加载......");
+     * mLoading.show();
+     * new asyncTask().execute(1);
+     * break;
+     * case 2:
+     * new asyncTask().execute(2);
+     * break;
+     * case 3:
+     * new asyncTask().execute(5);
+     * break;
+     * case 4:
+     * new asyncTask().execute(6);
+     * break;
+     * }
+     * }
+     * };
+     * }
+     * <p>
+     * /**
      * 回复
      */
     @Override
