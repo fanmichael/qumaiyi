@@ -636,11 +636,10 @@ public class VideoContentFragment extends BasicFragment {
         PutObjectRequest put = new PutObjectRequest("qumaiyi", name, file.getPath());
         ObjectMetadata metadata = new ObjectMetadata();
         // 指定Content-Type
-        metadata.setContentType("application/octet-stream");
+        metadata.setContentType("application/mp4");
         // user自定义metadata
         metadata.addUserMetadata("x-oss-meta-name1", "value1");
         put.setMetadata(metadata);
-//        PutObjectRequest put = new PutObjectRequest("qumaiyi", , file.getPath());
         // 异步上传时可以设置进度回调
         put.setProgressCallback(new OSSProgressCallback<PutObjectRequest>() {
             @Override
@@ -654,16 +653,12 @@ public class VideoContentFragment extends BasicFragment {
         OSSAsyncTask task = oss.asyncPutObject(put, new OSSCompletedCallback<PutObjectRequest, PutObjectResult>() {
             @Override
             public void onSuccess(PutObjectRequest request, PutObjectResult result) {
-//                Log.e("PutObject", "UploadSuccess");
                 if (request.getObjectKey() != null && !request.getObjectKey().equals("")) {
-//                    videoAddress = "qumaiyi.oss-cn-shenzhen.aliyuncs.com/" + request.getObjectKey();
-                    videoAddress = request.getObjectKey();
+                    videoAddress = "qumaiyi.oss-cn-shenzhen.aliyuncs.com/" + request.getObjectKey();
+//                    videoAddress = request.getObjectKey();
                 } else {
                     Toast.makeText(context, "上传失败！", Toast.LENGTH_SHORT).show();
                 }
-//                Log.e("PutObject", "UploadSuccess" + request.getObjectKey());
-//                Log.e("PutObject", "UploadSuccess" + request.getBucketName());
-//                Log.e("PutObject", "UploadSuccess" + result.getETag());
                 pd.dismiss();
                 getActivity().runOnUiThread(new Runnable() {
                     @Override
