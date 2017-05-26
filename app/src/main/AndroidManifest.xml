@@ -509,6 +509,10 @@
                 <action android:name="android.intent.action.USER_PRESENT" />
             </intent-filter>
         </receiver>
+            android:theme="@android:style/Theme.NoTitleBar" />
+        <activity android:name=".pages.activity.ElcyGroupDeActivity" />
+        <activity android:name=".pages.activity.DeclareActivity" />
+        <activity android:name=".pages.activity.PictureDisplayActivity"></activity>
     </application>
 
 </manifest>

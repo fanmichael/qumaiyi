@@ -341,8 +341,8 @@
 
                 <View
                     android:layout_width="match_parent"
-                    android:layout_height="2dp"
-                    android:background="@color/grays"></View>
+                    android:layout_height="1dp"
+                    android:background="@color/bg"></View>
 
                 <LinearLayout
                     android:id="@+id/file_details_info_from"
@@ -377,8 +377,8 @@
 
                 <View
                     android:layout_width="match_parent"
-                    android:layout_height="2dp"
-                    android:background="@color/grays"></View>
+                    android:layout_height="1dp"
+                    android:background="@color/bg"></View>
 
 
                 <LinearLayout

@@ -18,6 +18,8 @@ import cn.com.shequnew.R;
 import cn.com.shequnew.pages.fragment.DynamicFragment;
 import cn.com.shequnew.pages.fragment.NewsFragment;
 import cn.com.shequnew.pages.fragment.PageCommFragment;
+import cn.com.shequnew.pages.fragment.PublishFragment;
+import cn.com.shequnew.tools.AppManager;
 
 /**
  * 主页
@@ -106,4 +108,15 @@ public class MainActivity extends FragmentActivity {
         });
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        AppManager.getAppManager().addActivity(this);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        AppManager.getAppManager().finishActivity(this);
+    }
 }

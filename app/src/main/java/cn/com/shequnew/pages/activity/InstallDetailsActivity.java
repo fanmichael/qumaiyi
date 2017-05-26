@@ -26,6 +26,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.com.shequnew.R;
+import cn.com.shequnew.pages.config.AppContext;
 import cn.com.shequnew.tools.FileUtil;
 import cn.com.shequnew.tools.MethodsCompat;
 import cn.com.shequnew.tools.SharedPreferenceUtil;
@@ -194,6 +195,7 @@ public class InstallDetailsActivity extends BaseActivity {
     void backLogin() {
         //退出登录
         diabackLogin();
+
     }
 
     private void diabackLogin() {
@@ -223,11 +225,9 @@ public class InstallDetailsActivity extends BaseActivity {
                     SharedPreferenceUtil.remove("mobile");
                     SharedPreferenceUtil.remove("password");
                 }
-//                android.os.Process.killProcess(android.os.Process.myPid());
+                AppContext.getInstance().logoutApp();
                 Intent intent = new Intent(InstallDetailsActivity.this, FristAdvActivity.class);
                 startActivity(intent);
-                System.exit(0);
-
             }
         });
     }

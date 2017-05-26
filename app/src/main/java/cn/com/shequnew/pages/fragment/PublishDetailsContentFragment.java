@@ -308,7 +308,7 @@ public class PublishDetailsContentFragment extends BasicFragment implements Swip
             hashMap.put("id", page + "");
             String json = HttpConnectTool.post(hashMap);
             if (!json.equals("")) {
-                listXml(json);
+//                listXml(json);
             }
         } catch (Exception e) {
             e.printStackTrace();

@@ -20,7 +20,7 @@
             fresco:roundBottomLeft="true"
             android:layout_marginRight="10dp"
             fresco:roundBottomRight="true"
-            fresco:roundedCornerRadius="25dp"
+            fresco:roundedCornerRadius="35dp"
             fresco:roundingBorderColor="@color/white"
             fresco:roundingBorderWidth="1dp" />
 
