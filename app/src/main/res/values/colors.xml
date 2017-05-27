@@ -8,6 +8,9 @@
     <color name="white">#ffffff</color>
     <color name="bg">#f0f0f0</color>
     <color name="grays">#CEC9C3</color>
+    <color name="style">#237c73</color>
+    <color name="ime_background">#cccccc</color>
+
     <!-- 紫色字体 -->
     <color name="col_purple">#475aa6</color>
     <!-- 粉色字体 -->

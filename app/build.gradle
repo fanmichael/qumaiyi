@@ -25,61 +25,74 @@ android {
             keyAlias "original"
             keyPassword "original"
         }
-    }
-    configurations.all {
-        resolutionStrategy.force 'com.google.code.findbugs:jsr305:1.3.9'
-    }
-    compileSdkVersion 24
-    buildToolsVersion "25.0.0"
-    useLibrary 'org.apache.http.legacy'
-    defaultConfig {
-        applicationId "com.yshstudio.originalproduct"
-        minSdkVersion 15
-        targetSdkVersion 25
-        versionCode 1
-        versionName "1.0"
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
-    }
-    buildTypes {
-        release {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-            //signingConfig signingConfigs.release
+        buildscript {
+            repositories {
+                maven { url "https://dl.bintray.com/thelasterstar/maven/" }
+            }
         }
-        debug {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-            signingConfig signingConfigs.debug
+        configurations.all {
+            resolutionStrategy.force 'com.google.code.findbugs:jsr305:1.3.9'
+        }
+        compileSdkVersion 24
+        buildToolsVersion "25.0.0"
+        useLibrary 'org.apache.http.legacy'
+        defaultConfig {
+            multiDexEnabled true
+            applicationId "com.yshstudio.originalproduct"
+            minSdkVersion 15
+            targetSdkVersion 25
+            versionCode 1
+            versionName "5.0"
+            testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        }
+        buildTypes {
+            release {
+                minifyEnabled false
+                proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+                //signingConfig signingConfigs.release
+            }
+            debug {
+                minifyEnabled false
+                proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+                signingConfig signingConfigs.debug
+            }
         }
     }
-}
 
-dependencies {
-    compile fileTree(include: ['*.jar'], dir: 'libs')
-    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
-        exclude group: 'com.android.support', module: 'support-annotations'
-    })
-    compile 'com.tencent.mm.opensdk:wechat-sdk-android-with-mta:+'  //微信支付
-    compile files('libs/universal-image-loader-1.9.4.jar')
-    compile files('libs/open_sdk_r5043_lite.jar')
-    compile files('libs/mta-sdk-1.6.2.jar')
-    compile files('libs/aliyun-oss-sdk-android-2.3.0.jar')
-    compile 'com.squareup.retrofit2:retrofit:2.1.0'
-    compile 'com.squareup.retrofit2:retrofit:2.1.0'
-    compile 'com.android.support:appcompat-v7:25.3.1'
-    compile 'com.android.support:support-v4:25.3.0'
-    compile 'com.android.support.constraint:constraint-layout:1.0.2'
-    compile 'com.squareup.retrofit2:adapter-rxjava:2.1.0'
-    compile 'com.trello:rxlifecycle-components:0.7.0'
-    compile 'com.squareup.retrofit2:converter-gson:2.1.0'
-    compile 'io.reactivex:rxjava:1.2.1'
-    compile 'io.reactivex:rxandroid:1.2.1'
-    compile 'com.google.code.gson:gson:2.7'
-    compile 'com.facebook.fresco:fresco:1.1.0'
-    compile 'org.greenrobot:eventbus:3.0.0'
-    compile 'com.contrarywind:Android-PickerView:3.2.4'
-    compile 'com.github.lufengwen:android-pulltorefresh:1.0.0'
-    compile 'com.jakewharton:butterknife:8.5.1'
-    testCompile 'junit:junit:4.12'
-    apt 'com.jakewharton:butterknife-compiler:8.4.0'
+    dependencies {
+        compile project(path: ':easeui')
+        compile fileTree(include: ['*.jar'], dir: 'libs')
+        androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
+            exclude group: 'com.android.support', module: 'support-annotations'
+        })
+        compile 'com.tencent.mm.opensdk:wechat-sdk-android-with-mta:+'  //微信支付
+        compile 'com.tencent.bugly:crashreport:latest.release'
+        //其中latest.release指代最新Bugly SDK版本号，也可以指定明确的版本号，例如2.1.9
+        compile 'com.tencent.bugly:nativecrashreport:latest.release'
+        compile 'com.android.support:multidex:1.0.0'
+        compile 'de.hdodenhof:circleimageview:2.1.0'
+        compile 'com.android.support:design:25.1.1'
+        compile files('libs/universal-image-loader-1.9.4.jar')
+        compile files('libs/open_sdk_r5043_lite.jar')
+        compile files('libs/mta-sdk-1.6.2.jar')
+        compile files('libs/aliyun-oss-sdk-android-2.3.0.jar')
+        compile 'com.squareup.retrofit2:retrofit:2.1.0'
+        compile 'com.squareup.retrofit2:retrofit:2.1.0'
+        compile 'com.android.support:appcompat-v7:25.3.0'
+        compile 'com.android.support:support-v4:25.3.0'
+        compile 'com.android.support.constraint:constraint-layout:1.0.2'
+        compile 'com.squareup.retrofit2:adapter-rxjava:2.1.0'
+        compile 'com.trello:rxlifecycle-components:0.7.0'
+        compile 'com.squareup.retrofit2:converter-gson:2.1.0'
+        compile 'io.reactivex:rxjava:1.2.1'
+        compile 'io.reactivex:rxandroid:1.2.1'
+        compile 'com.google.code.gson:gson:2.7'
+        compile 'com.facebook.fresco:fresco:1.1.0'
+        compile 'org.greenrobot:eventbus:3.0.0'
+        compile 'com.contrarywind:Android-PickerView:3.2.4'
+        compile 'com.github.lufengwen:android-pulltorefresh:1.0.0'
+        compile 'com.jakewharton:butterknife:8.5.1'
+        testCompile 'junit:junit:4.12'
+        apt 'com.jakewharton:butterknife-compiler:8.4.0'
+    }
 }

@@ -3,22 +3,16 @@ package cn.com.shequnew.pages.config;
 import android.app.Application;
 import android.content.ContentValues;
 import android.content.Context;
-
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.tencent.mm.opensdk.openapi.IWXAPI;
 import com.tencent.mm.opensdk.openapi.WXAPIFactory;
 import com.umeng.socialize.Config;
 import com.umeng.socialize.PlatformConfig;
 import com.umeng.socialize.UMShareAPI;
-
 import java.lang.Thread.UncaughtExceptionHandler;
-
-import static com.umeng.socialize.utils.DeviceConfig.context;
-
-import java.lang.Thread.UncaughtExceptionHandler;
-
+import com.hyphenate.chat.EMClient;
+import com.hyphenate.easeui.controller.EaseUI;
 import cn.com.shequnew.tools.AppManager;
-
 /**
  * Created by Administrator on 2017/4/17 0017.
  */
@@ -35,8 +29,11 @@ public class AppContext extends Application implements UncaughtExceptionHandler 
     public void onCreate() {
         super.onCreate();
         appContext = this;
+//        MultiDex.install(this);
         mContext = this.getApplicationContext();
         Fresco.initialize(this);
+        EaseUI.getInstance().init(this, null);
+        EMClient.getInstance().setDebugMode(true);
         // 获取系统默认的UncaughtException处理
 //        mDefaultHandler = Thread.getDefaultUncaughtExceptionHandler();
         //友盟配置三方平台的appkey
@@ -50,8 +47,8 @@ public class AppContext extends Application implements UncaughtExceptionHandler 
          msgApi = WXAPIFactory.createWXAPI(appContext, null);
 // 将该app注册到微信
         msgApi.registerApp("wxd96b8dd3e5733967");
-
-
+//        CrashReport.initCrashReport(getApplicationContext(), "23c6e1948f", false);
+        mDefaultHandler = Thread.getDefaultUncaughtExceptionHandler();
     }
 
     @Override

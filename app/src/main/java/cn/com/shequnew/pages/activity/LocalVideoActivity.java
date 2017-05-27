@@ -3,6 +3,8 @@ package cn.com.shequnew.pages.activity;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
+import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -21,6 +23,7 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.MediaController;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.ScrollView;
@@ -29,6 +32,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.facebook.drawee.view.SimpleDraweeView;
+import com.hyphenate.easeui.EaseConstant;
+import com.hyphenate.easeui.model.UserInfo;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -44,12 +49,15 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.com.shequnew.R;
 import cn.com.shequnew.inc.Ini;
+import cn.com.shequnew.chat.activity.ChatActivity;
+import cn.com.shequnew.chat.util.ObjectSaveUtils;
 import cn.com.shequnew.pages.adapter.CommentAdapter;
 import cn.com.shequnew.pages.adapter.ShopImagesAdapter;
 import cn.com.shequnew.pages.config.AppContext;
 import cn.com.shequnew.pages.config.PlayVideo;
 import cn.com.shequnew.pages.http.HttpConnectTool;
 import cn.com.shequnew.pages.prompt.Loading;
+import cn.com.shequnew.pages.view.MyVideoView;
 import cn.com.shequnew.tools.ListTools;
 import cn.com.shequnew.tools.UtilsUmeng;
 import cn.com.shequnew.tools.ValidData;
@@ -138,6 +146,8 @@ public class LocalVideoActivity extends BaseActivity implements CommentAdapter.s
     SeekBar skbProgress;
     @BindView(R.id.frm_video)
     FrameLayout frmVideo;
+    @BindView(R.id.video_video)
+    MyVideoView videoVideo;
 
     private Context context;
     //主题
@@ -201,7 +211,7 @@ public class LocalVideoActivity extends BaseActivity implements CommentAdapter.s
             }
         });
 
-
+        videoVideo.setVisibility(View.GONE);
         frmVideo.setVisibility(View.GONE);
     }
 
@@ -224,14 +234,46 @@ public class LocalVideoActivity extends BaseActivity implements CommentAdapter.s
      */
     @OnClick(R.id.video_images_play)
     void videoPlay() {
-        skbProgress.setOnSeekBarChangeListener(new SeekBarChangeEvent());
-        player = new PlayVideo(surfaceView, skbProgress);
+        Uri uri = Uri.parse("http://qumaiyi.oss-cn-shenzhen.aliyuncs.com/video/2726248584.mp4");
+        videoVideo.setMediaController(new MediaController(this));
+        videoVideo.setOnCompletionListener(new MyPlayerOnCompletionListener());
+        videoVideo.setVideoURI(uri);
+        //开始播放视频
         videoLn.setVisibility(View.GONE);
-        frmVideo.setVisibility(View.VISIBLE);
-        String url = "http://baobab.wdjcdn.com/145076769089714.mp4";
-        player.playUrl(url);
+        videoVideo.setVisibility(View.VISIBLE);
+        videoVideo.start();
+//        skbProgress.setOnSeekBarChangeListener(new SeekBarChangeEvent());
+//        player = new PlayVideo(surfaceView, skbProgress);
+//        videoLn.setVisibility(View.GONE);
+//        frmVideo.setVisibility(View.VISIBLE);
+//        String url = "http://baobab.wdjcdn.com/145076769089714.mp4";
+//        player.playUrl(url);
+
+        videoVideo.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+            @Override
+            public void onPrepared(MediaPlayer mp) {
+                mp.setOnInfoListener(new MediaPlayer.OnInfoListener() {
+                    @Override
+                    public boolean onInfo(MediaPlayer mp, int what, int extra) {
+                        if (what == MediaPlayer.MEDIA_INFO_VIDEO_RENDERING_START)
+                            videoVideo.setBackgroundColor(Color.TRANSPARENT);
+                        return true;
+                    }
+                });
+            }
+        });
+
     }
 
+    class MyPlayerOnCompletionListener implements MediaPlayer.OnCompletionListener {
+
+        @Override
+        public void onCompletion(MediaPlayer mp) {
+            Toast.makeText(LocalVideoActivity.this, "播放完成了", Toast.LENGTH_SHORT).show();
+            videoLn.setVisibility(View.VISIBLE);
+            videoVideo.setVisibility(View.GONE);
+        }
+    }
 
     @OnClick(R.id.btnPause)
     void btnPause() {
@@ -439,7 +481,8 @@ public class LocalVideoActivity extends BaseActivity implements CommentAdapter.s
                         break;
                     case R.id.video_faith:
                         //私聊群主
-
+                        sendMessage();
+                        videoFaith.setClickable(false);
                         break;
                     case R.id.video_dis:
                         //评论
@@ -455,7 +498,26 @@ public class LocalVideoActivity extends BaseActivity implements CommentAdapter.s
 
     }
 
-
+    private void sendMessage() {
+        if (String.valueOf(AppContext.cv.getAsInteger("id")).trim().isEmpty()) {
+            return;
+        }
+        Intent intent = new Intent(LocalVideoActivity.this, ChatActivity.class);
+        intent.putExtra(EaseConstant.EXTRA_USER_ID, values.getAsInteger("id") + "").putExtra(EaseConstant.EXTRA_CHAT_TYPE, EaseConstant.CHATTYPE_SINGLE).putExtra("NICK", values.getAsString("nick"));
+        if (UserInfo.getInstance().getInfo() == null || UserInfo.getInstance().getInfo().get(String.valueOf(values.getAsInteger("id"))) == null) {
+            UserInfo.getInstance().addInfo(new UserInfo.User().setUid(String.valueOf(values.getAsInteger("id"))).setNick(values.getAsString("nick")).setIcon(values.getAsString("icon")));
+        } else {
+            UserInfo.getInstance().getInfo().get(String.valueOf(values.getAsInteger("id"))).setNick(values.getAsString("nick")).setIcon(values.getAsString("icon"));
+        }
+        new Thread() {
+            @Override
+            public void run() {
+                super.run();
+                ObjectSaveUtils.saveObject(LocalVideoActivity.this, "USERICON", UserInfo.getInstance());
+            }
+        }.start();
+        startActivity(intent);
+    }
     /**
      * 延迟加载
      */
