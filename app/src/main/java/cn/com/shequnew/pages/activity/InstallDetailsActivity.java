@@ -221,6 +221,7 @@ public class InstallDetailsActivity extends BaseActivity {
                 if (EMClient.getInstance().isLoggedInBefore())
                     EMClient.getInstance().logout(true);
                 ObjectSaveUtils.saveObject(InstallDetailsActivity.this, "USERICON", UserInfo.getInstance());
+                dialog.dismiss();
                 AppContext.getInstance().logoutApp();
                 Intent intent = new Intent(InstallDetailsActivity.this, FristAdvActivity.class);
                 startActivity(intent);

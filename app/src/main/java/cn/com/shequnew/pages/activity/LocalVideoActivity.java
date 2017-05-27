@@ -503,11 +503,11 @@ public class LocalVideoActivity extends BaseActivity implements CommentAdapter.s
             return;
         }
         Intent intent = new Intent(LocalVideoActivity.this, ChatActivity.class);
-        intent.putExtra(EaseConstant.EXTRA_USER_ID, values.getAsInteger("id") + "").putExtra(EaseConstant.EXTRA_CHAT_TYPE, EaseConstant.CHATTYPE_SINGLE).putExtra("NICK", values.getAsString("nick"));
-        if (UserInfo.getInstance().getInfo() == null || UserInfo.getInstance().getInfo().get(String.valueOf(values.getAsInteger("id"))) == null) {
-            UserInfo.getInstance().addInfo(new UserInfo.User().setUid(String.valueOf(values.getAsInteger("id"))).setNick(values.getAsString("nick")).setIcon(values.getAsString("icon")));
+        intent.putExtra(EaseConstant.EXTRA_USER_ID, values.getAsString("mobile")).putExtra(EaseConstant.EXTRA_CHAT_TYPE, EaseConstant.CHATTYPE_SINGLE).putExtra("NICK", values.getAsString("nick"));
+        if (UserInfo.getInstance().getInfo() == null || UserInfo.getInstance().getInfo().get(values.getAsString("mobile")) == null) {
+            UserInfo.getInstance().addInfo(new UserInfo.User().setUid(values.getAsString("mobile")).setNick(values.getAsString("nick")).setIcon(values.getAsString("icon")));
         } else {
-            UserInfo.getInstance().getInfo().get(String.valueOf(values.getAsInteger("id"))).setNick(values.getAsString("nick")).setIcon(values.getAsString("icon"));
+            UserInfo.getInstance().getInfo().get(values.getAsString("mobile")).setNick(values.getAsString("nick")).setIcon(values.getAsString("icon"));
         }
         new Thread() {
             @Override
@@ -864,7 +864,7 @@ public class LocalVideoActivity extends BaseActivity implements CommentAdapter.s
             values.put("personalized", objnote.getString("personalized"));
             values.put("nick", objnote.getString("nick"));
             values.put("icon", objnote.getString("icon"));
-
+            values.put("mobile", objnote.getString("mobile"));
             JSONArray imagesJson = new JSONArray(objnote.getString("content_imgs"));//图片介绍
             if (imagesJson.length() > 0) {
                 for (int i = 0; i < imagesJson.length(); i++) {

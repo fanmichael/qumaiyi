@@ -80,24 +80,14 @@ public class LoginActivity extends BaseActivity {
     private String pwd = "";
     private String msg = "";
     private int tag;
+    private boolean is=true;
 
-//    /**
-//     * san
-//     */
-//    private Tencent mTencent;
-//    private IUiListener loginListener;
-//    private IUiListener userInfoListener; //获取用户信息监听器
-//    private UserInfo userInfo; //qq用户信息
-//    private QQAuth mQQAuth;
     private IWXAPI api;
-
+    private String typeLogin;
     public static final String SINA_APPKEY = "3287794514";//3287794514
     //注册成功之后的REDIRECT_URL
     public static final String SINA_REDIRECT_URL = "https://api.weibo.com/oauth2/default.html";
     public static final String SINA_SCOPE = "all";
-//    private SsoHandler mSsoHandler;
-//    private AuthInfo mAuthInfo;
-//    private Oauth2AccessToken mAccessToken;
 
 
     @Override
@@ -123,65 +113,7 @@ public class LoginActivity extends BaseActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         UMShareAPI.get(this).onActivityResult(requestCode, resultCode, data);
-
     }
-
-
-
-//    @Override
-//    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-//        if (requestCode == Constants.REQUEST_API) {
-//            if (resultCode == Constants.RESULT_LOGIN) {
-//                Tencent.handleResultData(data, loginListener);
-//                userInfo = new UserInfo(LoginActivity.this, mTencent.getQQToken());
-//                userInfo.getUserInfo(userInfoListener);
-//                userInfoListener = new IUiListener() {
-//                    @Override
-//                    public void onComplete(final Object arg0) {
-//                        if (arg0 == null) {
-//                            return;
-//                        }
-//                        try {
-//                            JSONObject jo = (JSONObject) arg0;
-//                            int ret = jo.getInt("ret");
-//                            System.out.println("json=" + String.valueOf(jo));
-//                            String nickName = jo.getString("nickname");
-//                            String gender = jo.getString("gender");
-//                            Toast.makeText(LoginActivity.this, "你好，" + nickName,
-//                                    Toast.LENGTH_LONG).show();
-//
-//                        } catch (Exception e) {
-//                            e.printStackTrace();
-//                            // TODO: handle exception
-//                        }
-//
-//                    }
-//
-//                    @Override
-//                    public void onError(UiError uiError) {
-//                        Toast.makeText(LoginActivity.this, "onError2", Toast.LENGTH_SHORT).show();
-//                    }
-//
-//                    @Override
-//                    public void onCancel() {
-//                        Toast.makeText(LoginActivity.this, "onCancel2", Toast.LENGTH_SHORT).show();
-//                    }
-//                };
-//            }
-//        }
-//
-//        if (resultCode == Constants.ACTIVITY_OK) {
-//            // SSO 授权回调
-//            // 重要：发起 SSO 登陆的 Activity 必须重写 onActivityResults
-//            if (mSsoHandler != null) {
-//                Toast.makeText(LoginActivity.this, "新浪微博登陆返回", Toast.LENGTH_LONG).show();
-//                //不能少
-//                mSsoHandler.authorizeCallBack(requestCode, resultCode, data);
-//            }
-//        }
-//
-//        super.onActivityResult(requestCode, resultCode, data);
-//    }
 
     private void groupLogin() {
         groupLogin.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
@@ -189,23 +121,23 @@ public class LoginActivity extends BaseActivity {
             public void onCheckedChanged(RadioGroup group, @IdRes int checkedId) {
                 switch (checkedId) {
                     case R.id.weixin:
-//                        loginToWeiXin();
+                        is=false;
+                        typeLogin="weixin";
                         UtilsUmeng.Login(LoginActivity.this,getApplicationContext(),SHARE_MEDIA.WEIXIN);
+                        SanhttpLogin();
                         break;
                     case R.id.qq:
+                        is=false;
+                        typeLogin="qq";
                         UtilsUmeng.Login(LoginActivity.this,getApplicationContext(),SHARE_MEDIA.QQ);
-//                        qqLogin();
+                        SanhttpLogin();
                         break;
                     case R.id.weibo:
+                        is=false;
+                        typeLogin="san";
                         UtilsUmeng.Login(LoginActivity.this,getApplicationContext(),SHARE_MEDIA.SINA);
-//                        weibo();
-                        //  Oauth2AccessToken mAccessToken = AccessTokenKeeper.readAccessToken(getApplication());
-//                        UsersAPI mUsersAPI = new UsersAPI(LoginActivity.this, SINA_APPKEY, mAccessToken);
-//                        long uid = Long.parseLong(mAccessToken.getUid());
-//                        mUsersAPI.show(uid, mListener);
+                        SanhttpLogin();
                         break;
-
-
                 }
             }
         });
@@ -311,6 +243,28 @@ public class LoginActivity extends BaseActivity {
     }
 
 
+
+
+
+    /**
+     * 请求登录
+     */
+    private void SanhttpLogin() {
+        try {
+            HashMap<String, String> hashMap = new HashMap<>();
+            hashMap.put("action", "User.oAuthLogin");
+            hashMap.put("openid", AppContext.cv.getAsInteger("id")+"");
+            hashMap.put("name", AppContext.cv.getAsString("nick"));
+            hashMap.put("avatar", AppContext.cv.getAsString("icon"));
+            hashMap.put("oauthtype","qq");
+            String json = HttpConnectTool.post(hashMap);
+            xmlJson(json);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+
     private class asyncTask extends AsyncTask<Integer, Integer, Bundle> {
 
         @Override
@@ -356,34 +310,6 @@ public class LoginActivity extends BaseActivity {
         loginIM("");
     }
 
-//    /**
-//     * 获取微博登陆信息
-//     */
-//    private RequestListener mListener = new RequestListener() {
-//        @Override
-//        public void onComplete(String response) {
-//            if (!TextUtils.isEmpty(response)) {
-//                //LogUtil.i(TAG, response);
-//                // 调用 User#parse 将JSON串解析成User对象
-////                User user = User.parse(response);
-////                if (user != null) {
-////                    Toast.makeText(LoginActivity.this,
-////                            "获取User信息成功，用户昵称：" + user.screen_name,
-////                            Toast.LENGTH_LONG).show();
-////                } else {
-////                    Toast.makeText(LoginActivity.this, response, Toast.LENGTH_LONG).show();
-////                }
-//            }
-//        }
-//
-//        @Override
-//        public void onWeiboException(WeiboException e) {
-//            //LogUtil.e(TAG, e.getMessage());
-//            Toast.makeText(LoginActivity.this, e.getMessage(), Toast.LENGTH_LONG).show();
-//        }
-//    };
-
-
     /**
      * 请求登录
      */
@@ -418,10 +344,10 @@ public class LoginActivity extends BaseActivity {
                 AppContext.cv.put("personalized", jsonLogin.getString("personalized"));//个性签名
                 AppContext.cv.put("sign", jsonLogin.getInt("sign"));//是否签约
                 AppContext.cv.put("merchant", jsonLogin.getString("merchant"));//卖家识别'0'否'1'是
-//                AppContext.cv.put("sessionid", jsonLogin.getString("sessionid"));
-
-                SharedPreferenceUtil.insert("mobile", jsonLogin.getString("mobile"));
-                SharedPreferenceUtil.insert("password", pwd);
+                if(is){
+                    SharedPreferenceUtil.insert("mobile", jsonLogin.getString("mobile"));
+                    SharedPreferenceUtil.insert("password", pwd);
+                }
 
             }
         } catch (JSONException e) {
@@ -435,6 +361,7 @@ public class LoginActivity extends BaseActivity {
         if (SharedPreferenceUtil.hasKey("mobile") && SharedPreferenceUtil.hasKey("password")) {
             phone = SharedPreferenceUtil.read("mobile", "");
             pwd = SharedPreferenceUtil.read("password", "");
+            is=true;
             new asyncTask().execute(1);
         }
 
