@@ -654,7 +654,7 @@ public class VideoContentFragment extends BasicFragment {
             @Override
             public void onSuccess(PutObjectRequest request, PutObjectResult result) {
                 if (request.getObjectKey() != null && !request.getObjectKey().equals("")) {
-                    videoAddress = "qumaiyi.oss-cn-shenzhen.aliyuncs.com/" + request.getObjectKey();
+                    videoAddress = "http://qumaiyi.oss-cn-shenzhen.aliyuncs.com/" + request.getObjectKey();
 //                    videoAddress = request.getObjectKey();
                 } else {
                     Toast.makeText(context, "上传失败！", Toast.LENGTH_SHORT).show();

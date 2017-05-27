@@ -3,6 +3,7 @@ package cn.com.shequnew.pages.activity;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
+import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -21,6 +22,7 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.MediaController;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.ScrollView;
@@ -49,6 +51,7 @@ import cn.com.shequnew.pages.config.AppContext;
 import cn.com.shequnew.pages.config.PlayVideo;
 import cn.com.shequnew.pages.http.HttpConnectTool;
 import cn.com.shequnew.pages.prompt.Loading;
+import cn.com.shequnew.pages.view.MyVideoView;
 import cn.com.shequnew.tools.ListTools;
 import cn.com.shequnew.tools.ValidData;
 
@@ -136,6 +139,8 @@ public class LocalVideoActivity extends BaseActivity implements CommentAdapter.s
     SeekBar skbProgress;
     @BindView(R.id.frm_video)
     FrameLayout frmVideo;
+    @BindView(R.id.video_video)
+    MyVideoView videoVideo;
 
     private Context context;
     //主题
@@ -198,7 +203,7 @@ public class LocalVideoActivity extends BaseActivity implements CommentAdapter.s
             }
         });
 
-
+        videoVideo.setVisibility(View.GONE);
         frmVideo.setVisibility(View.GONE);
     }
 
@@ -221,14 +226,31 @@ public class LocalVideoActivity extends BaseActivity implements CommentAdapter.s
      */
     @OnClick(R.id.video_images_play)
     void videoPlay() {
-        skbProgress.setOnSeekBarChangeListener(new SeekBarChangeEvent());
-        player = new PlayVideo(surfaceView, skbProgress);
+        Uri uri = Uri.parse("http://qumaiyi.oss-cn-shenzhen.aliyuncs.com/video/2726248584.mp4");
+        videoVideo.setMediaController(new MediaController(this));
+        videoVideo.setOnCompletionListener(new MyPlayerOnCompletionListener());
+        videoVideo.setVideoURI(uri);
+        //开始播放视频
         videoLn.setVisibility(View.GONE);
-        frmVideo.setVisibility(View.VISIBLE);
-        String url = "http://baobab.wdjcdn.com/145076769089714.mp4";
-        player.playUrl(url);
+        videoVideo.setVisibility(View.VISIBLE);
+        videoVideo.start();
+//        skbProgress.setOnSeekBarChangeListener(new SeekBarChangeEvent());
+//        player = new PlayVideo(surfaceView, skbProgress);
+//        videoLn.setVisibility(View.GONE);
+//        frmVideo.setVisibility(View.VISIBLE);
+//        String url = "http://baobab.wdjcdn.com/145076769089714.mp4";
+//        player.playUrl(url);
     }
 
+    class MyPlayerOnCompletionListener implements MediaPlayer.OnCompletionListener {
+
+        @Override
+        public void onCompletion(MediaPlayer mp) {
+            Toast.makeText(LocalVideoActivity.this, "播放完成了", Toast.LENGTH_SHORT).show();
+            videoLn.setVisibility(View.VISIBLE);
+            videoVideo.setVisibility(View.GONE);
+        }
+    }
 
     @OnClick(R.id.btnPause)
     void btnPause() {
