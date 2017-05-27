@@ -71,6 +71,7 @@ public class AppContext extends Application implements UncaughtExceptionHandler 
     }
 
     public void logoutApp() {
+        cv.clear();
         AppManager.getAppManager().AppExit(mContext);
     }
 

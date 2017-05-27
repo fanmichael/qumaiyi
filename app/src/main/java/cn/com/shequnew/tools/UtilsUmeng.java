@@ -73,9 +73,6 @@ public class UtilsUmeng {
                 }else {
                     AppContext.cv.put("location", data.get("province")+data.get("city"));//地址
                 }
-                Intent intent = new Intent(activity, MainActivity.class);
-                activity.startActivity(intent);
-                activity.finish();
             }
 
             @Override

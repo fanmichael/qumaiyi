@@ -124,19 +124,25 @@ public class LoginActivity extends BaseActivity {
                         is=false;
                         typeLogin="weixin";
                         UtilsUmeng.Login(LoginActivity.this,getApplicationContext(),SHARE_MEDIA.WEIXIN);
-                        SanhttpLogin();
+                        if(AppContext.cv.containsKey("id")){
+                            new asyncTask().execute(2);
+                        }
                         break;
                     case R.id.qq:
                         is=false;
                         typeLogin="qq";
                         UtilsUmeng.Login(LoginActivity.this,getApplicationContext(),SHARE_MEDIA.QQ);
-                        SanhttpLogin();
+                        if(AppContext.cv.containsKey("id")){
+                            new asyncTask().execute(2);
+                        }
                         break;
                     case R.id.weibo:
                         is=false;
                         typeLogin="san";
                         UtilsUmeng.Login(LoginActivity.this,getApplicationContext(),SHARE_MEDIA.SINA);
-                        SanhttpLogin();
+                        if(AppContext.cv.containsKey("id")){
+                            new asyncTask().execute(2);
+                        }
                         break;
                 }
             }
@@ -256,7 +262,7 @@ public class LoginActivity extends BaseActivity {
             hashMap.put("openid", AppContext.cv.getAsInteger("id")+"");
             hashMap.put("name", AppContext.cv.getAsString("nick"));
             hashMap.put("avatar", AppContext.cv.getAsString("icon"));
-            hashMap.put("oauthtype","qq");
+            hashMap.put("oauthtype",typeLogin);
             String json = HttpConnectTool.post(hashMap);
             xmlJson(json);
         } catch (Exception e) {
@@ -273,6 +279,10 @@ public class LoginActivity extends BaseActivity {
             switch (params[0]) {
                 case 1:
                     httpLogin();
+                    bundle.putInt("what", 1);
+                    break;
+                case 2:
+                    SanhttpLogin();
                     bundle.putInt("what", 1);
                     break;
 
@@ -293,7 +303,6 @@ public class LoginActivity extends BaseActivity {
                         context.startActivity(intent);
                         destroyActitity();
                     }
-
                     break;
                 case 2:
 

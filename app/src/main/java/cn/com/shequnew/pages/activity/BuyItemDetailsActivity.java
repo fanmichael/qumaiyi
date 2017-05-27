@@ -321,10 +321,11 @@ public class BuyItemDetailsActivity extends BaseActivity {
                 orderAddress = "没有添加地址";
             } else {
                 JSONObject jsonAddr = new JSONObject(obj.getString("addr"));
-                order.put("maf_time", jsonAddr.getString("maf_time"));
-                order.put("maf_time", jsonAddr.getString("maf_time"));
-                order.put("maf_time", jsonAddr.getString("maf_time"));
-                order.put("maf_time", jsonAddr.getString("maf_time"));
+                order.put("id", jsonAddr.getInt("id"));
+                order.put("uid", jsonAddr.getInt("uid"));
+                order.put("name", jsonAddr.getString("name"));
+                order.put("mobile", jsonAddr.getString("mobile"));
+                order.put("address", jsonAddr.getString("address"));
             }
             order.put("id", jsonOrder.getInt("id"));
             order.put("num", jsonOrder.getInt("num"));

@@ -234,6 +234,7 @@ public class LocalVideoActivity extends BaseActivity implements CommentAdapter.s
      */
     @OnClick(R.id.video_images_play)
     void videoPlay() {
+        String url=values.getAsString("subject");
         Uri uri = Uri.parse("http://qumaiyi.oss-cn-shenzhen.aliyuncs.com/video/2726248584.mp4");
         videoVideo.setMediaController(new MediaController(this));
         videoVideo.setOnCompletionListener(new MyPlayerOnCompletionListener());
@@ -499,7 +500,7 @@ public class LocalVideoActivity extends BaseActivity implements CommentAdapter.s
     }
 
     private void sendMessage() {
-        if (String.valueOf(AppContext.cv.getAsInteger("id")).trim().isEmpty()) {
+        if (values.getAsString("mobile").trim().isEmpty()) {
             return;
         }
         Intent intent = new Intent(LocalVideoActivity.this, ChatActivity.class);

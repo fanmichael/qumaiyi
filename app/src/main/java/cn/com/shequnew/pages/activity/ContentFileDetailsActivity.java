@@ -395,7 +395,7 @@ public class ContentFileDetailsActivity extends BaseActivity implements CommentA
     }
 
     private void sendMessage() {
-        if (String.valueOf(AppContext.cv.getAsInteger("id")).trim().isEmpty()) {
+        if (values.getAsString("mobile").trim().isEmpty()) {
             return;
         }
         Intent intent = new Intent(ContentFileDetailsActivity.this, ChatActivity.class);
