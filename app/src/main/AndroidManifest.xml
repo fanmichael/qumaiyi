@@ -277,7 +277,7 @@
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.NoTitleBar" />
-        <!-- 友盟 登录与分享-->
+        <!-- 友盟 登录与分享起点-->
         <activity
             android:name="com.yshstudio.originalproduct.wxapi.WXEntryActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
@@ -316,13 +316,12 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-
-
         <!-- 添加友盟appkey -->
         <meta-data
             android:name="UMENG_APPKEY"
             android:value="591124d1a40fa30de100128d" >
         </meta-data>
+        <!-- 友盟 登录与分享终点-->
 //支付宝支付
         <activity
             android:name="com.alipay.sdk.app.H5PayActivity"

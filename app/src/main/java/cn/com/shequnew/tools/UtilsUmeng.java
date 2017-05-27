@@ -41,9 +41,9 @@ import static android.R.attr.thumb;
 public class UtilsUmeng {
 
     /**  第三方登录
-     * @param activity
-     * @param context
-     * @param whereTag
+     * @param activity  登录的activity
+     * @param context  上下文
+     * @param whereTag   SHARE_MEDIA是分享的平台标志，如微信是SHARE_MEDIA.WEIXIN
      */
     public  static  void  Login(final Activity activity , final Context context, SHARE_MEDIA whereTag){
         //授权回调
@@ -92,9 +92,9 @@ public class UtilsUmeng {
     }
 
     /**  第三方分享
-     * @param activity
-     * @param
-     * @param content
+     * @param activity  分享的activity
+     * @param url 分享的链接地址
+     * @param content  上下文对象
      */
     public  static  void share(final Activity activity, final String url, final String content){
         if(Build.VERSION.SDK_INT>=23){
