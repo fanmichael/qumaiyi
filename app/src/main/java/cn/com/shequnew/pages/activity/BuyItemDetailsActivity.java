@@ -76,6 +76,10 @@ public class BuyItemDetailsActivity extends BaseActivity {
     CheckBox indentZhibaoDetails;
     @BindView(R.id.lin_zhifu_pay)
     LinearLayout linZhifuPay;
+    @BindView(R.id.top_all)
+    TextView topAll;
+    @BindView(R.id.buy_details_ship)
+    TextView buyDetailsShip;
 
     private String ddid;
     private ContentValues order = new ContentValues();
@@ -92,6 +96,25 @@ public class BuyItemDetailsActivity extends BaseActivity {
         ButterKnife.bind(this);
         context = this;
         initData();
+
+        indentWeixinDetails.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (indentZhibaoDetails.isChecked()) {
+                    indentZhibaoDetails.setChecked(false);
+                }
+            }
+        });
+
+        indentZhibaoDetails.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (indentWeixinDetails.isChecked()) {
+                    indentWeixinDetails.setChecked(false);
+                }
+            }
+        });
+
     }
 
 
@@ -104,7 +127,7 @@ public class BuyItemDetailsActivity extends BaseActivity {
 
     /**
      * 加载视图
-     * */
+     */
     private void initData() {
         Bundle bundle = this.getIntent().getExtras();
         ddid = bundle.getString("ddid");
@@ -197,7 +220,7 @@ public class BuyItemDetailsActivity extends BaseActivity {
 
     /**
      * 申请退款
-     * */
+     */
     private void htttpOrder() {
         try {
             HashMap<String, String> hashMap = new HashMap<>();
@@ -222,7 +245,7 @@ public class BuyItemDetailsActivity extends BaseActivity {
 
     /**
      * 确认收货
-     * */
+     */
     private void htttpOrd() {
         try {
             HashMap<String, String> hashMap = new HashMap<>();
@@ -366,5 +389,6 @@ public class BuyItemDetailsActivity extends BaseActivity {
         buyDetailsPrice.setText("￥" + order.getAsInteger("money"));
         buyDetailsTime.setText("x" + order.getAsInteger("num"));
         buyOrderPrice.setText("合计：" + order.getAsInteger("totalmoney"));
+        buyDetailsShip.setText("运费：" + order.getAsInteger("ship") + "元");
     }
 }

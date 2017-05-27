@@ -77,7 +77,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:gravity="left"
-                        android:text="11" />
+                        android:text="" />
 
                     <TextView
                         android:id="@+id/buy_daddress_phone"
@@ -85,7 +85,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:gravity="right"
-                        android:text="11" />
+                        android:text="" />
 
                 </LinearLayout>
 
@@ -94,7 +94,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="right"
-                    android:text="11" />
+                    android:text="" />
 
 
             </LinearLayout>
@@ -135,7 +135,7 @@
                     android:layout_marginLeft="5dp"
                     android:layout_weight="1"
                     android:gravity="left"
-                    android:text="444"
+                    android:text=""
                     android:textColor="@color/col_bg"
                     android:textSize="14dp" />
 
@@ -185,11 +185,26 @@
 
                         <TextView
                             android:id="@+id/buy_details_title"
-                            android:layout_width="wrap_content"
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
+                            android:gravity="left"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="5dp"
                             android:textColor="@color/col_bg"
                             android:textSize="16dp" />
+
+
+                        <TextView
+                            android:id="@+id/buy_details_ship"
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
+                            android:gravity="right"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="5dp"
+                            android:textColor="@color/col_bg"
+                            android:textSize="16dp" />
+
+
                     </LinearLayout>
 
                     <LinearLayout
@@ -223,7 +238,7 @@
                             android:layout_marginLeft="5dp"
                             android:layout_weight="1"
                             android:gravity="left"
-                            android:text="444"
+                            android:text=""
                             android:textColor="@color/col_red"
                             android:textSize="14dp" />
 
@@ -234,7 +249,7 @@
                             android:layout_marginLeft="5dp"
                             android:layout_weight="1"
                             android:gravity="right"
-                            android:text="444"
+                            android:text=""
                             android:textColor="@color/col_bg"
                             android:textSize="14dp" />
                     </LinearLayout>

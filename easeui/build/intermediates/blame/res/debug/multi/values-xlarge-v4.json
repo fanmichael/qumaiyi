@@ -1,6 +1,6 @@
 [
     {
-        "outputFile": "D:\\kongqing\\AndroidStudioProjects\\qumaiyi\\easeui\\build\\intermediates\\incremental\\mergeDebugResources\\merged.dir\\values-xlarge-v4\\values-xlarge-v4.xml",
+        "outputFile": "E:\\huayi\\qumaiyi\\ShequNew\\easeui\\build\\intermediates\\incremental\\mergeDebugResources\\merged.dir\\values-xlarge-v4\\values-xlarge-v4.xml",
         "map": [
             {
                 "to": {
@@ -11,7 +11,7 @@
                     "endOffset": 103
                 },
                 "from": {
-                    "file": "D:\\kongqing\\AndroidStudioProjects\\qumaiyi\\easeui\\res\\values-xlarge\\ease_dimens.xml",
+                    "file": "E:\\huayi\\qumaiyi\\ShequNew\\easeui\\res\\values-xlarge\\ease_dimens.xml",
                     "position": {
                         "startLine": 19,
                         "startColumn": 4,
@@ -30,7 +30,7 @@
                     "endOffset": 157
                 },
                 "from": {
-                    "file": "D:\\kongqing\\AndroidStudioProjects\\qumaiyi\\easeui\\res\\values-xlarge\\ease_dimens.xml",
+                    "file": "E:\\huayi\\qumaiyi\\ShequNew\\easeui\\res\\values-xlarge\\ease_dimens.xml",
                     "position": {
                         "startLine": 20,
                         "startColumn": 4,

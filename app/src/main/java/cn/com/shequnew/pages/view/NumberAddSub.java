@@ -26,7 +26,7 @@ public class NumberAddSub extends LinearLayout implements View.OnClickListener {
     private Context mContext;
     private int value = 1;
     private int minValue = 1;
-    private int maxValue = 5;
+    private int maxValue = 100;
 
 
     public NumberAddSub(Context context) {

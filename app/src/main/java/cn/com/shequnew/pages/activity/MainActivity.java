@@ -271,9 +271,10 @@ public class MainActivity extends FragmentActivity {
                                                     @Override
                                                     public void run() {
                                                         //改变用户申请状态
-                                                    /*if (SDK.obatinFirstPage(SDK.obtainCurrentApp()) != null) {
-                                                        SDK.obatinFirstPage(SDK.obtainCurrentApp()).evalJS("check_merchant(0);");
-                                                    }*/
+                                                        AppContext.cv.put("merchant", "1");
+//                                                    if (SDK.obatinFirstPage(SDK.obtainCurrentApp()) != null) {
+//                                                        SDK.obatinFirstPage(SDK.obtainCurrentApp()).evalJS("check_merchant(0);");
+//                                                    }
                                                     }
                                                 });
                                                 break;
@@ -282,6 +283,7 @@ public class MainActivity extends FragmentActivity {
                                                     @Override
                                                     public void run() {
                                                         //改变用户的申请状态
+                                                        AppContext.cv.put("merchant", "0");
                                                     }
                                                 });
                                                 break;
