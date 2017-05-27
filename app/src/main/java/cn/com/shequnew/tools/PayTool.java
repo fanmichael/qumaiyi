@@ -111,11 +111,15 @@ public class PayTool {
      * @param mHandler
      */
     private static void PayForZFB(final Activity activity, final ContentValues goods, final Handler mHandler) {
-
-        int allPrice = (Integer.valueOf(goods.getAsString("price")) * goods.getAsInteger("num")) + Integer.valueOf(goods.getAsString("ship"));
+//        double allPrice = 0;
+//        if (goods.containsKey("price")) {
+//            allPrice = (Integer.valueOf(goods.getAsString("price")) * goods.getAsInteger("num")) + Integer.valueOf(goods.getAsString("ship"));
+//        } else {
+//            allPrice = goods.getAsInteger("totalmoney") + goods.getAsInteger("shid");
+//        }
 
         final OkHttpClient client = new OkHttpClient();
-        String url = Ini.RequestPay_Alipay + "?price=" + allPrice +
+        String url = Ini.RequestPay_Alipay + "?price=" + goods.getAsString("price") +
                 "&orderid=" + SharedPreferenceUtil.read("orderid", "") +
                 "&trade_name=" + goods.getAsString("good_name");
         Request request = new Request.Builder().url(url).build();
@@ -160,9 +164,11 @@ public class PayTool {
      * @param goods
      */
     private static void PayForWeixin(final Activity activity, ContentValues goods) {
-        int allPrice = (Integer.valueOf(goods.getAsString("price")) * goods.getAsInteger("num")) + Integer.valueOf(goods.getAsString("ship"));
+
+//        int allPrice = (Integer.valueOf(goods.getAsString("price")) * goods.getAsInteger("num")) + Integer.valueOf(goods.getAsString("ship"));
+
         OkHttpClient client = new OkHttpClient();
-        String url = Ini.RequestPay_Weixin + "?price=" + allPrice +
+        String url = Ini.RequestPay_Weixin + "?price=" + goods.getAsString("price") +
                 "&orderid=" + SharedPreferenceUtil.read("orderid", "") +
                 "&trade_name=" + goods.getAsString("good_name");
         Request request = new Request.Builder().url(url).build();

@@ -405,6 +405,12 @@ public class BuyDetailsActivity extends BaseActivity implements SwipeRefreshLayo
             hashMap.put("id", id + "");
             hashMap.put("state", "6");
             String json = HttpConnectTool.post(hashMap);
+            if (!json.equals("")) {
+                JSONObject jsonObject = new JSONObject(json);
+                if (jsonObject.getInt("error") == 0) {
+                    Toast.makeText(context, "取消订单成功！", Toast.LENGTH_SHORT).show();
+                }
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }

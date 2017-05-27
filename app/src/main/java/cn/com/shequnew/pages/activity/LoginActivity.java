@@ -16,6 +16,7 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import com.facebook.imagepipeline.listener.RequestListener;
 import com.hyphenate.EMCallBack;
 import com.hyphenate.chat.EMClient;
@@ -80,7 +81,7 @@ public class LoginActivity extends BaseActivity {
     private String pwd = "";
     private String msg = "";
     private int tag;
-    private boolean is=true;
+    private boolean is = true;
 
     private IWXAPI api;
     private String typeLogin;
@@ -108,11 +109,13 @@ public class LoginActivity extends BaseActivity {
         req.state = uuid;
         api.sendReq(req);
     }
+
     //第三方登录登录
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         UMShareAPI.get(this).onActivityResult(requestCode, resultCode, data);
+        new asyncTask().execute(2);
     }
 
     private void groupLogin() {
@@ -121,28 +124,22 @@ public class LoginActivity extends BaseActivity {
             public void onCheckedChanged(RadioGroup group, @IdRes int checkedId) {
                 switch (checkedId) {
                     case R.id.weixin:
-                        is=false;
-                        typeLogin="weixin";
-                        UtilsUmeng.Login(LoginActivity.this,getApplicationContext(),SHARE_MEDIA.WEIXIN);
-                        if(AppContext.cv.containsKey("id")){
-                            new asyncTask().execute(2);
-                        }
+                        is = false;
+                        typeLogin = "weixin";
+                        UtilsUmeng.Login(LoginActivity.this, getApplicationContext(), SHARE_MEDIA.WEIXIN);
+                        weixin.setChecked(false);
                         break;
                     case R.id.qq:
-                        is=false;
-                        typeLogin="qq";
-                        UtilsUmeng.Login(LoginActivity.this,getApplicationContext(),SHARE_MEDIA.QQ);
-                        if(AppContext.cv.containsKey("id")){
-                            new asyncTask().execute(2);
-                        }
+                        is = false;
+                        typeLogin = "qq";
+                        UtilsUmeng.Login(LoginActivity.this, getApplicationContext(), SHARE_MEDIA.QQ);
+                        qq.setChecked(false);
                         break;
                     case R.id.weibo:
-                        is=false;
-                        typeLogin="san";
-                        UtilsUmeng.Login(LoginActivity.this,getApplicationContext(),SHARE_MEDIA.SINA);
-                        if(AppContext.cv.containsKey("id")){
-                            new asyncTask().execute(2);
-                        }
+                        is = false;
+                        typeLogin = "san";
+                        UtilsUmeng.Login(LoginActivity.this, getApplicationContext(), SHARE_MEDIA.SINA);
+                        weibo.setChecked(false);
                         break;
                 }
             }
@@ -249,9 +246,6 @@ public class LoginActivity extends BaseActivity {
     }
 
 
-
-
-
     /**
      * 请求登录
      */
@@ -259,13 +253,47 @@ public class LoginActivity extends BaseActivity {
         try {
             HashMap<String, String> hashMap = new HashMap<>();
             hashMap.put("action", "User.oAuthLogin");
-            hashMap.put("openid", AppContext.cv.getAsInteger("id")+"");
+            hashMap.put("openid", AppContext.cv.getAsInteger("id") + "");
             hashMap.put("name", AppContext.cv.getAsString("nick"));
             hashMap.put("avatar", AppContext.cv.getAsString("icon"));
-            hashMap.put("oauthtype",typeLogin);
+            hashMap.put("oauthtype", typeLogin);
             String json = HttpConnectTool.post(hashMap);
-            xmlJson(json);
+            if (!json.equals("")) {
+                xmlJsonData(json);
+            }
         } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    private void xmlJsonData(String data) {
+        try {
+            JSONObject obj = new JSONObject(data);
+            tag = obj.getInt("error");
+            if (tag == 100) {
+                msg = obj.getString("desc");
+            } else {
+                JSONObject jsonLogin = new JSONObject(obj.getString("data"));
+                AppContext.cv.put("id", jsonLogin.getInt("id"));//标记
+                AppContext.cv.put("mobile", jsonLogin.getString("mobile"));//手机号
+                AppContext.cv.put("password", "");//md5加密密码
+                AppContext.cv.put("nick", jsonLogin.getString("nick"));//昵称
+                AppContext.cv.put("icon", jsonLogin.getString("icon"));//头像
+                AppContext.cv.put("gender", jsonLogin.getInt("gender"));//性别
+                AppContext.cv.put("location", "");//地址
+                AppContext.cv.put("personalized", "");//个性签名
+                AppContext.cv.put("sign", "");//是否签约
+                AppContext.cv.put("merchant", jsonLogin.getString("merchant"));//卖家识别'0'否'1'是
+                if (is) {
+                    SharedPreferenceUtil.insert("mobile", jsonLogin.getString("mobile"));
+                    SharedPreferenceUtil.insert("password", pwd);
+                }
+
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        } catch (NullPointerException e) {
             e.printStackTrace();
         }
     }
@@ -353,7 +381,7 @@ public class LoginActivity extends BaseActivity {
                 AppContext.cv.put("personalized", jsonLogin.getString("personalized"));//个性签名
                 AppContext.cv.put("sign", jsonLogin.getInt("sign"));//是否签约
                 AppContext.cv.put("merchant", jsonLogin.getString("merchant"));//卖家识别'0'否'1'是
-                if(is){
+                if (is) {
                     SharedPreferenceUtil.insert("mobile", jsonLogin.getString("mobile"));
                     SharedPreferenceUtil.insert("password", pwd);
                 }
@@ -370,7 +398,7 @@ public class LoginActivity extends BaseActivity {
         if (SharedPreferenceUtil.hasKey("mobile") && SharedPreferenceUtil.hasKey("password")) {
             phone = SharedPreferenceUtil.read("mobile", "");
             pwd = SharedPreferenceUtil.read("password", "");
-            is=true;
+            is = true;
             new asyncTask().execute(1);
         }
 
