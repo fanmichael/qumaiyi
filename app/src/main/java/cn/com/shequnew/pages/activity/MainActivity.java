@@ -12,7 +12,10 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.Toast;
 
+import com.hyphenate.EMConnectionListener;
+import com.hyphenate.EMError;
 import com.hyphenate.EMMessageListener;
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.chat.EMConversation;
@@ -36,10 +39,12 @@ import cn.com.shequnew.chat.activity.GroupListActivity;
 import cn.com.shequnew.chat.util.ObjectSaveUtils;
 import cn.com.shequnew.chat.util.UpdataGroupsInfo;
 import cn.com.shequnew.chat.view.PopUpWindowMag;
+import cn.com.shequnew.pages.config.AppContext;
 import cn.com.shequnew.pages.fragment.DynamicFragment;
 import cn.com.shequnew.pages.fragment.NewsFragment;
 import cn.com.shequnew.pages.fragment.PageCommFragment;
 import cn.com.shequnew.tools.AppManager;
+import cn.com.shequnew.tools.SharedPreferenceUtil;
 
 /**
  * 主页
@@ -74,6 +79,40 @@ public class MainActivity extends FragmentActivity {
         setDefaultFragment();
         setFragmentChange();
         initChatSet();
+        //异地登录，强制下线
+        EMClient.getInstance().addConnectionListener(new EMConnectionListener() {
+            @Override
+            public void onConnected() {
+
+            }
+
+            @Override
+            public void onDisconnected(int i) {
+                switch (i) {
+                    case EMError.USER_LOGIN_ANOTHER_DEVICE:
+                        try {
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    //执行强制退出
+                                    if (SharedPreferenceUtil.hasKey("mobile") && SharedPreferenceUtil.hasKey("password")) {
+                                        SharedPreferenceUtil.remove("mobile");
+                                        SharedPreferenceUtil.remove("password");
+                                    }
+                                    if (EMClient.getInstance().isLoggedInBefore())
+                                        EMClient.getInstance().logout(true);
+                                    AppContext.getInstance().logoutApp();
+                                    Intent intent = new Intent(MainActivity.this, FristAdvActivity.class);
+                                    startActivity(intent);
+                                }
+                            });
+                        } catch (Exception e) {
+                            Toast.makeText(MainActivity.this, "" + e.getMessage(), Toast.LENGTH_SHORT).show();
+                        }
+                        break;
+                }
+            }
+        });
     }
 
 
@@ -138,6 +177,7 @@ public class MainActivity extends FragmentActivity {
 
     private void initChatFragment() {
         // fragment = new EaseConversationListFragment();
+
         publishFragment.setItemLongClickListener(new EaseConversationListFragment.ItemLongClickListener() {
             @Override
             public void onLongClick(AdapterView<?> parent, View view, final int position, final long id) {
