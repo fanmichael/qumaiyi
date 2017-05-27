@@ -17,6 +17,9 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.hyphenate.EMCallBack;
+import com.hyphenate.chat.EMClient;
+import com.hyphenate.easeui.model.UserLodingInFo;
 import com.sina.weibo.sdk.WbSdk;
 import com.sina.weibo.sdk.auth.AuthInfo;
 import com.sina.weibo.sdk.auth.Oauth2AccessToken;
@@ -45,6 +48,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.com.shequnew.R;
+import cn.com.shequnew.chat.util.ObjectSaveUtils;
 import cn.com.shequnew.pages.config.AppContext;
 import cn.com.shequnew.pages.http.HttpConnectTool;
 import cn.com.shequnew.tools.SharedPreferenceUtil;
@@ -170,6 +174,7 @@ public class LoginActivity extends BaseActivity {
                     mTencent.setOpenId(openID);
                     Log.e("", "openID: " + openID);
                     Toast.makeText(LoginActivity.this, "openID" + openID, Toast.LENGTH_SHORT).show();
+
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -411,6 +416,7 @@ public class LoginActivity extends BaseActivity {
                     if (tag == 100) {
                         Toast.makeText(context, "用户名或密码输入错误", Toast.LENGTH_SHORT).show();
                     } else {
+                        setImLogin();
                         Intent intent = new Intent(context, MainActivity.class);
                         context.startActivity(intent);
                         destroyActitity();
@@ -423,6 +429,14 @@ public class LoginActivity extends BaseActivity {
         }
     }
 
+    private void setImLogin() {
+        UserLodingInFo.getInstance().setIcon(AppContext.cv.getAsString("icon")).
+                setId(AppContext.cv.getAsInteger("id") + "").
+                setNick(AppContext.cv.getAsString("nick")).
+                setMobile(AppContext.cv.getAsString("mobile"));
+        ObjectSaveUtils.saveObject(LoginActivity.this, "USERINFO", UserLodingInFo.getInstance());
+        loginIM("");
+    }
 
     /**
      * 获取微博登陆信息
@@ -506,6 +520,60 @@ public class LoginActivity extends BaseActivity {
             new asyncTask().execute(1);
         }
 
+    }
+
+    private void loginIM(final String username) {
+
+        if (EMClient.getInstance().isLoggedInBefore()) {
+            /*EMClient.getInstance().logout(true, new EMCallBack() {
+                @Override
+                public void onSuccess() {
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            login(username);
+                        }
+                    });
+                }
+
+                @Override
+                public void onError(int i, String s) {
+
+                }
+
+                @Override
+                public void onProgress(int i, String s) {
+
+                }
+            });*/
+        } else {
+            login(username);
+        }
+    }
+
+    private void login(String username) {
+        EMClient.getInstance().login(UserLodingInFo.getInstance().getMobile(), "123456", new EMCallBack() {
+            @Override
+            public void onSuccess() {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        EMClient.getInstance().chatManager().loadAllConversations();
+                        EMClient.getInstance().groupManager().loadAllGroups();
+                    }
+                });
+            }
+
+            @Override
+            public void onError(int i, final String s) {
+
+            }
+
+            @Override
+            public void onProgress(int i, String s) {
+
+            }
+        });
     }
 
 

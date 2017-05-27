@@ -1,12 +1,9 @@
 package cn.com.shequnew.pages.activity;
 
-import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
-import android.hardware.Camera;
 import android.os.Bundle;
-import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.util.DisplayMetrics;
@@ -17,22 +14,18 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import java.io.File;
-import java.util.Properties;
+import com.hyphenate.chat.EMClient;
+import com.hyphenate.easeui.model.UserInfo;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.com.shequnew.R;
+import cn.com.shequnew.chat.util.ObjectSaveUtils;
 import cn.com.shequnew.pages.config.AppContext;
 import cn.com.shequnew.tools.FileUtil;
-import cn.com.shequnew.tools.MethodsCompat;
 import cn.com.shequnew.tools.SharedPreferenceUtil;
-import cn.com.shequnew.tools.Util;
-
-import static java.lang.System.getProperties;
 
 /**
  * 设置
@@ -225,6 +218,9 @@ public class InstallDetailsActivity extends BaseActivity {
                     SharedPreferenceUtil.remove("mobile");
                     SharedPreferenceUtil.remove("password");
                 }
+                if (EMClient.getInstance().isLoggedInBefore())
+                    EMClient.getInstance().logout(true);
+                ObjectSaveUtils.saveObject(InstallDetailsActivity.this, "USERICON", UserInfo.getInstance());
                 AppContext.getInstance().logoutApp();
                 Intent intent = new Intent(InstallDetailsActivity.this, FristAdvActivity.class);
                 startActivity(intent);
