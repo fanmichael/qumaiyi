@@ -1,2 +1,2 @@
 <?xml version="1.0" encoding="utf-8"?>
-<merger version="3"><dataSet config="main"><source path="E:\huayi\qumaiyi\ShequNew\easeui\src\main\shaders"/></dataSet><dataSet config="release"><source path="E:\huayi\qumaiyi\ShequNew\easeui\build-types\release\shaders"/></dataSet></merger>
+<merger version="3"><dataSet config="main"><source path="D:\kongqing\AndroidStudioProjects\qumaiyi\easeui\src\main\shaders"/></dataSet><dataSet config="release"><source path="D:\kongqing\AndroidStudioProjects\qumaiyi\easeui\build-types\release\shaders"/></dataSet></merger>
