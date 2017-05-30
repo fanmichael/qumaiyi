@@ -152,6 +152,7 @@ public class WalletPriceActivity extends BaseActivity {
                 case 1:
                     if (error == 0) {
                         Toast.makeText(context, "提交成功！", Toast.LENGTH_SHORT).show();
+                        setResult(1);
                         destroyActitity();
                     } else {
                         Toast.makeText(context, "输入金额大于余额！", Toast.LENGTH_SHORT).show();

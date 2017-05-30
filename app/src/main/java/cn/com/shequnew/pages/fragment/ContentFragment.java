@@ -499,7 +499,7 @@ public class ContentFragment extends BasicFragment {
             file.put("cover", sellImagesFile);
             if (files.size() > 0) {
                 for (int i = 0; i < files.size(); i++) {
-                    file.put("show[]", files.get(i));
+                    file.put("show["+i+"]", files.get(i));
                 }
             }
             String json = HttpConnectTool.post(map, file);

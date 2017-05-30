@@ -558,7 +558,7 @@ public class VideoContentFragment extends BasicFragment {
             file.put("video_img", fristFile);
             if (files.size() > 0) {
                 for (int i = 0; i < files.size(); i++) {
-                    file.put("show[]", files.get(i));
+                    file.put("show["+i+"]", files.get(i));
                 }
             }
             String json = HttpConnectTool.post(map, file);

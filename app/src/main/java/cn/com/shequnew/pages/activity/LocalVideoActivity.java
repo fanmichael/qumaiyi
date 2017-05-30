@@ -188,7 +188,7 @@ public class LocalVideoActivity extends BaseActivity implements CommentAdapter.s
         Bundle bundle = this.getIntent().getExtras();
         id = bundle.getInt("id");
         uid = bundle.getInt("uid");
-        if (String.valueOf(uid).equals(AppContext.cv.get("id")) ) {
+        if (String.valueOf(uid).equals(AppContext.cv.get("id"))) {
 //        if (uid == AppContext.cv.getAsInteger("id")) {
             videoLan.setVisibility(View.GONE);
             videoDetailsAttention.setVisibility(View.GONE);
@@ -234,8 +234,7 @@ public class LocalVideoActivity extends BaseActivity implements CommentAdapter.s
      */
     @OnClick(R.id.video_images_play)
     void videoPlay() {
-        String url=values.getAsString("subject");
-        Uri uri = Uri.parse("http://qumaiyi.oss-cn-shenzhen.aliyuncs.com/video/2726248584.mp4");
+        Uri uri = Uri.parse(values.getAsString("subject"));
         videoVideo.setMediaController(new MediaController(this));
         videoVideo.setOnCompletionListener(new MyPlayerOnCompletionListener());
         videoVideo.setVideoURI(uri);
@@ -519,6 +518,7 @@ public class LocalVideoActivity extends BaseActivity implements CommentAdapter.s
         }.start();
         startActivity(intent);
     }
+
     /**
      * 延迟加载
      */
@@ -586,8 +586,8 @@ public class LocalVideoActivity extends BaseActivity implements CommentAdapter.s
             switch (what) {
                 case 1:
                     initView();
-                    if (String.valueOf(uid).equals(AppContext.cv.get("id")) ) {
-          //        if (uid == AppContext.cv.getAsInteger("id")) {
+                    if (String.valueOf(uid).equals(AppContext.cv.get("id"))) {
+                        //        if (uid == AppContext.cv.getAsInteger("id")) {
                         isColl();
                     }
                     imgsList();
@@ -985,7 +985,7 @@ public class LocalVideoActivity extends BaseActivity implements CommentAdapter.s
 
     @OnClick(R.id.share_coll)
     void shareColl() {
-        UtilsUmeng.share(LocalVideoActivity.this, Ini.ShareGood_Url+id,values.getAsString("content"));
+        UtilsUmeng.share(LocalVideoActivity.this, Ini.ShareGood_Url + id, values.getAsString("content"));
     }
 
 }

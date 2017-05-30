@@ -201,6 +201,7 @@ public class NewSiteActivity extends BaseActivity {
             switch (what) {
                 case 1:
                     if (error == 0) {
+                        setResult(1);
                         destroyActitity();
                     } else {
                         return;

@@ -3,8 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    >
+    android:orientation="vertical">
 
     <android.support.v4.widget.SwipeRefreshLayout
         android:id="@+id/collect_swi_deta"
@@ -16,13 +15,13 @@
             android:layout_height="wrap_content"
             android:background="@color/white"
             android:orientation="vertical">
+
             <cn.com.shequnew.pages.view.PullToRefreshSwipeMenuListView
                 android:id="@+id/shop_list_pull_deta"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@color/white"
                 android:divider="@color/bg"
-                android:dividerHeight="3px"
                 android:paddingLeft="2px"
                 android:paddingRight="2px"
                 android:paddingTop="2px" />

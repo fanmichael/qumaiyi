@@ -159,7 +159,7 @@ public class SellerlDetailsActivity extends BaseActivity {
         topRegitTitle.setVisibility(View.VISIBLE);
         topRegitTitle.setClickable(false);
         contentValues.add(0, null);
-        appraiesimgeAdapter = new AppraiesimgeAdapter(contentValues, context, 2,true);
+        appraiesimgeAdapter = new AppraiesimgeAdapter(contentValues, context, 2, true);
         sellCardGridView.setAdapter(appraiesimgeAdapter);
         sellCardGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -469,13 +469,13 @@ public class SellerlDetailsActivity extends BaseActivity {
             Map<String, File> file = new HashMap<String, File>();
             file.put("icon", sellImagesFile);
             for (int i = 0; i < files.size(); i++) {
-                file.put("mer[]", files.get(i));
+                file.put("mer[" + i + "]", files.get(i));
             }
             List<File> fileList = new ArrayList<>();
             fileList.add(sellCardZFile);
             fileList.add(sellCardFFile);
             for (int j = 0; j < fileList.size(); j++) {
-                file.put("photo[]", fileList.get(j));
+                file.put("photo[" + j + "]", fileList.get(j));
             }
             String json = HttpConnectTool.post(map, file);
             if (!json.equals("")) {
@@ -492,9 +492,11 @@ public class SellerlDetailsActivity extends BaseActivity {
             int img = jsonObject.getInt("error");
             if (img == 115) {
                 Toast.makeText(context, "提交成功", Toast.LENGTH_SHORT).show();
+                destroyActitity();
             }
             if (img == 108) {
                 Toast.makeText(context, "正在审核中", Toast.LENGTH_SHORT).show();
+                destroyActitity();
             }
         } catch (JSONException e) {
             e.printStackTrace();

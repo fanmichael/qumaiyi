@@ -29,6 +29,8 @@ import android.widget.Toast;
 
 import com.facebook.drawee.view.SimpleDraweeView;
 
+import org.json.JSONObject;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -316,7 +318,6 @@ public class PublishShopActivity extends BaseActivity {
             Bundle bundle = new Bundle();
             switch (params[0]) {
                 case 1:
-
                     httpShop();
                     bundle.putInt("what", 1);
                     break;
@@ -363,11 +364,16 @@ public class PublishShopActivity extends BaseActivity {
             file.put("cover", sellImagesFile);
             if (files.size() > 0) {
                 for (int i = 0; i < files.size(); i++) {
-                    file.put("show[]", files.get(i));
+                    file.put("show[" + i + "]", files.get(i));
                 }
             }
             String json = HttpConnectTool.post(map, file);
             if (!json.equals("")) {
+                JSONObject jsonObject = new JSONObject(json);
+                if (jsonObject.getInt("error") == 0) {
+                    Toast.makeText(context, "提交成功！", Toast.LENGTH_SHORT).show();
+                    destroyActitity();
+                }
 //            xmlComm(json);
             }
         } catch (Exception e) {
@@ -381,7 +387,7 @@ public class PublishShopActivity extends BaseActivity {
 
         if (resultCode == 14) {
             String ts = data.getStringExtra("name");
-            String tagsId = data.getStringExtra("num");
+            tagsId = data.getStringExtra("num");
             publishShopTagsName.setText(ts);
         }
 

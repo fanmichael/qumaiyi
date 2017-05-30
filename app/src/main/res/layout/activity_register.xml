@@ -151,6 +151,7 @@
                     <TextView
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
                         android:layout_weight="1"
                         android:text="@string/interest_man"
                         android:textColor="@color/col_bg"
@@ -175,6 +176,7 @@
                     android:id="@+id/imaghe_layout"
                     android:layout_width="fill_parent"
                     android:layout_height="fill_parent"
+                    android:gravity="center"
                     android:layout_marginTop="10dp"
                     android:orientation="horizontal"></LinearLayout>
 
@@ -192,6 +194,7 @@
                     <TextView
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
                         android:layout_weight="1"
                         android:text="@string/interest_thing"
                         android:textColor="@color/col_bg"
@@ -216,6 +219,7 @@
                     android:id="@+id/tags_layout"
                     android:layout_width="fill_parent"
                     android:layout_height="fill_parent"
+                    android:gravity="center"
                     android:layout_marginTop="10dp"
                     android:orientation="horizontal"></LinearLayout>
             </LinearLayout>

@@ -6,6 +6,7 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.os.Handler;
 import android.os.Message;
 import android.text.Editable;
@@ -94,6 +95,7 @@ public class RegisterActivity extends BaseActivity {
     private int error;
     private String desc = "";
     private Dialog dialog;
+    private MyCountDownTimer mc;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -113,7 +115,27 @@ public class RegisterActivity extends BaseActivity {
                 }
             }
         });
+        mc = new MyCountDownTimer(60000, 1000);
     }
+
+    class MyCountDownTimer extends CountDownTimer {
+        public MyCountDownTimer(long millisInFuture, long countDownInterval) {
+            super(millisInFuture, countDownInterval);
+        }
+
+        @Override
+        public void onTick(long millisUntilFinished) {
+            btnIssue.setText(millisUntilFinished / 1000 + "秒");
+            btnIssue.setClickable(false);
+        }
+
+        @Override
+        public void onFinish() {
+            btnIssue.setText("获取验证码");
+            btnIssue.setClickable(true);
+        }
+    }
+
 
     @OnClick(R.id.regs_tip)
     void regsTip() {
@@ -201,6 +223,7 @@ public class RegisterActivity extends BaseActivity {
     void issue() {
         phone = regsPhone.getText().toString().trim();
         if (ValidData.validMobile(phone)) {
+            mc.start();
             setDelayMessage(2, 100);
         } else {
             Toast.makeText(mContext, "请输入正确的手机号", Toast.LENGTH_SHORT).show();

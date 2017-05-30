@@ -8,6 +8,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.View;
+import android.widget.AbsListView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -76,6 +77,20 @@ public class SellerDetailsActivity extends BaseActivity implements SwipeRefreshL
         ButterKnife.bind(this);
         context = this;
         initView();
+        listView.setOnScrollListener(new AbsListView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(AbsListView view, int scrollState) {
+
+            }
+
+            @Override
+            public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+                if (firstVisibleItem == 0)
+                    collectSwiContent.setEnabled(true);
+                else
+                    collectSwiContent.setEnabled(false);
+            }
+        });
         new asyncTask().execute(1);
     }
 

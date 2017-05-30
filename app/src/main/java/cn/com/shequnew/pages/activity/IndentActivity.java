@@ -148,8 +148,6 @@ public class IndentActivity extends BaseActivity {
                         break;
                 }
             }
-
-            ;
         };
     }
 
