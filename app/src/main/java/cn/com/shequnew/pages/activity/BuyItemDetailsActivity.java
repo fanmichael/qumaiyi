@@ -369,7 +369,7 @@ public class BuyItemDetailsActivity extends BaseActivity {
             if (jsonArrNote.getString("addr") == null || jsonArrNote.getString("addr").equals("null") || jsonArrNote.getString("addr").equals("")) {
                 orderAddress = "没有添加地址";
             } else {
-                JSONObject jsonAddr = new JSONObject(obj.getString("addr"));
+                JSONObject jsonAddr = new JSONObject(jsonArrNote.getString("addr"));
                 addr.put("id", jsonAddr.getInt("id"));
                 addr.put("uid", jsonAddr.getInt("uid"));
                 addr.put("name", jsonAddr.getString("name"));
@@ -414,7 +414,7 @@ public class BuyItemDetailsActivity extends BaseActivity {
         buyDetailsNick.setText(order.getAsString("nick"));
         buyDetailsTitle.setText(order.getAsString("trade_name"));
         buyDetailsGrd.setText("工期：" + order.getAsInteger("maf_time") + "天");
-        buyDetailsPrice.setText("￥" + order.getAsInteger("money"));
+        buyDetailsPrice.setText("￥" + order.getAsString("money"));
         buyDetailsTime.setText("x" + order.getAsInteger("num"));
         buyOrderPrice.setText("合计：" + order.getAsInteger("totalmoney"));
     }

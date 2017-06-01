@@ -117,6 +117,7 @@ public class ContentFragment extends BasicFragment {
     private String group = "";
     private String tag = "";
     private String tagsId = "";
+    private boolean choseBtn = false;
 
     @Nullable
     @Override
@@ -191,7 +192,11 @@ public class ContentFragment extends BasicFragment {
      */
     @OnClick(R.id.content_add_sumit)
     void sumit() {
-        initData();
+        if (choseBtn) {
+            initData();
+        } else {
+            Toast.makeText(context, "请阅读，勾选只是产权承诺！", Toast.LENGTH_LONG).show();
+        }
     }
 
 
@@ -213,14 +218,22 @@ public class ContentFragment extends BasicFragment {
         layoutParams.height = (int) (dm.heightPixels * 0.9);
         dialog.getWindow().setAttributes(layoutParams);
         TextView content = (TextView) dialog.findViewById(R.id.deal_content);
-        CheckBox chose = (CheckBox) dialog.findViewById(R.id.deal_chose);
+        final CheckBox chose = (CheckBox) dialog.findViewById(R.id.deal_chose);
+        chose.setChecked(choseBtn);
         TextContent textContent = new TextContent();
         content.setText(textContent.equities);
         chose.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                choseBtn = chose.isChecked();
                 dialog.dismiss();
-                contentAddSumit.setClickable(true);
+                if (choseBtn) {
+                    contentAddSumit.setClickable(true);
+                    contentAddSumit.setBackgroundDrawable(getResources().getDrawable(R.drawable.login_btn));
+                } else {
+                    contentAddSumit.setClickable(false);
+                    contentAddSumit.setBackgroundDrawable(getResources().getDrawable(R.drawable.chose_no));
+                }
 
             }
         });
@@ -499,7 +512,7 @@ public class ContentFragment extends BasicFragment {
             file.put("cover", sellImagesFile);
             if (files.size() > 0) {
                 for (int i = 0; i < files.size(); i++) {
-                    file.put("show["+i+"]", files.get(i));
+                    file.put("show[" + i + "]", files.get(i));
                 }
             }
             String json = HttpConnectTool.post(map, file);

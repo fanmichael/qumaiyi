@@ -155,6 +155,11 @@
                     android:layout_height="150dp"
                     android:layout_margin="10dp" />
 
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="5dp"
+                    android:background="@color/bg"></View>
+
                 <TextView
                     android:id="@+id/file_details_text_content"
                     android:layout_width="wrap_content"
@@ -196,6 +201,10 @@
 
                 </LinearLayout>
 
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/bg"></View>
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -204,17 +213,30 @@
                     android:layout_marginTop="5dp"
                     android:orientation="vertical">
 
-                    <TextView
+                    <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_margin="5dp"
-                        android:text="版主"
-                        android:textColor="@color/col_bg" />
+                        android:layout_marginBottom="10dp"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:background="@drawable/view_imagse" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="5dp"
+                            android:text="版主"
+                            android:textColor="@color/col_bg" />
+                    </LinearLayout>
 
                     <View
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
-                        android:background="@color/grays"></View>
+                        android:background="@color/bg"></View>
 
 
                     <LinearLayout
@@ -314,6 +336,13 @@
                     </LinearLayout>
                 </LinearLayout>
 
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="5dp"
+                    android:background="@color/bg"></View>
+
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -341,7 +370,7 @@
 
                 <View
                     android:layout_width="match_parent"
-                    android:layout_height="1dp"
+                    android:layout_height="5dp"
                     android:background="@color/bg"></View>
 
                 <LinearLayout
@@ -377,7 +406,7 @@
 
                 <View
                     android:layout_width="match_parent"
-                    android:layout_height="1dp"
+                    android:layout_height="5dp"
                     android:background="@color/bg"></View>
 
 
@@ -387,12 +416,24 @@
                     android:layout_marginTop="5dp"
                     android:orientation="vertical">
 
-                    <TextView
+                    <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="相关商品"
-                        android:textColor="@color/col_bg" />
+                        android:layout_marginBottom="10dp"
+                        android:orientation="horizontal">
 
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:background="@drawable/view_imagse" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="相关商品"
+                            android:textColor="@color/col_bg" />
+                    </LinearLayout>
 
                     <View
                         android:layout_width="match_parent"
@@ -403,8 +444,9 @@
                         android:id="@+id/file_details_goods"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:divider="#b5b5b5"
-                        android:dividerHeight="1dp"
+                        android:divider="@color/bg"
+                        android:dividerHeight="3dp"
+                        android:padding="5dp"
                         android:focusable="false"></ListView>
 
                     <TextView
@@ -416,6 +458,10 @@
 
                 </LinearLayout>
 
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="5dp"
+                    android:background="@color/bg"></View>
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -423,11 +469,24 @@
                     android:layout_marginTop="5dp"
                     android:orientation="vertical">
 
-                    <TextView
+                    <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="评论互动"
-                        android:textColor="@color/col_bg" />
+                        android:layout_marginBottom="10dp"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:background="@drawable/view_imagse" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="评论互动"
+                            android:textColor="@color/col_bg" />
+                    </LinearLayout>
 
                     <View
                         android:layout_width="match_parent"

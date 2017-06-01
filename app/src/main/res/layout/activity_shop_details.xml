@@ -110,7 +110,7 @@
 
                 <View
                     android:layout_width="match_parent"
-                    android:layout_height="1dp"
+                    android:layout_height="5dp"
                     android:background="@color/bg"></View>
 
 
@@ -143,7 +143,7 @@
 
                 <View
                     android:layout_width="match_parent"
-                    android:layout_height="1dp"
+                    android:layout_height="5dp"
                     android:background="@color/bg"></View>
 
                 <LinearLayout
@@ -153,12 +153,26 @@
                     android:layout_marginTop="5dp"
                     android:orientation="vertical">
 
-                    <TextView
+                    <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_margin="5dp"
-                        android:text="卖家信息"
-                        android:textColor="@color/col_bg" />
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:background="@drawable/view_imagse" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="5dp"
+                            android:text="卖家信息"
+                            android:textColor="@color/col_bg" />
+
+                    </LinearLayout>
+
 
                     <View
                         android:layout_width="match_parent"
@@ -261,6 +275,10 @@
 
                     </LinearLayout>
 
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="5dp"
+                        android:background="@color/bg"></View>
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -278,13 +296,16 @@
                         <TextView
                             android:id="@+id/shop_details_intro"
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="" />
+                            android:layout_height="wrap_content" />
                     </LinearLayout>
 
 
                 </LinearLayout>
 
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="5dp"
+                    android:background="@color/bg"></View>
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -302,10 +323,13 @@
                     <TextView
                         android:id="@+id/shop_details_parameter"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="" />
+                        android:layout_height="wrap_content" />
                 </LinearLayout>
 
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="5dp"
+                    android:background="@color/bg"></View>
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -331,7 +355,7 @@
 
                 <View
                     android:layout_width="match_parent"
-                    android:layout_height="1dp"
+                    android:layout_height="5dp"
                     android:background="@color/bg"></View>
 
                 <LinearLayout
@@ -367,7 +391,7 @@
 
                 <View
                     android:layout_width="match_parent"
-                    android:layout_height="1dp"
+                    android:layout_height="5dp"
                     android:background="@color/bg"></View>
 
                 <LinearLayout
@@ -376,18 +400,37 @@
                     android:layout_marginTop="5dp"
                     android:orientation="vertical">
 
-                    <TextView
+                    <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="猜你喜欢"
-                        android:textColor="@color/col_bg" />
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:background="@drawable/view_imagse" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="猜你喜欢"
+                            android:textColor="@color/col_bg" />
+
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/grays"></View>
 
                     <ListView
                         android:id="@+id/shop_details_like"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:divider="#b5b5b5"
-                        android:dividerHeight="1dp"></ListView>
+                        android:divider="@color/bg"
+                        android:dividerHeight="2dp"
+                        android:paddingTop="3dp"></ListView>
 
                 </LinearLayout>
 

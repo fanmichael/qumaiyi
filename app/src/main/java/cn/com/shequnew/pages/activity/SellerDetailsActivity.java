@@ -149,9 +149,11 @@ public class SellerDetailsActivity extends BaseActivity implements SwipeRefreshL
     }
 
     private void initData() {
-        Uri imageUri = Uri.parse(user.getAsString("u_pic").trim());
-        ValidData.load(imageUri, sellerIcon, 60, 60);
-        sellerNick.setText(user.getAsString("name"));
+        if (user.containsKey("u_pic")) {
+            Uri imageUri = Uri.parse(user.getAsString("u_pic").trim());
+            ValidData.load(imageUri, sellerIcon, 60, 60);
+            sellerNick.setText(user.getAsString("name"));
+        }
     }
 
 

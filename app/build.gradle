@@ -1,8 +1,6 @@
 apply plugin: 'com.android.application'
 apply plugin: 'android-apt'
 apply plugin: 'com.jakewharton.butterknife'
-
-
 allprojects {
     repositories {
         jcenter()
@@ -40,7 +38,7 @@ android {
             multiDexEnabled true
             applicationId "com.yshstudio.originalproduct"
             minSdkVersion 15
-            targetSdkVersion 25
+            targetSdkVersion 21
             versionCode 1
             versionName "5.0"
             testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
@@ -95,4 +93,7 @@ android {
         testCompile 'junit:junit:4.12'
         apt 'com.jakewharton:butterknife-compiler:8.4.0'
     }
+}
+dependencies {
+    compile project(':vitamio')
 }

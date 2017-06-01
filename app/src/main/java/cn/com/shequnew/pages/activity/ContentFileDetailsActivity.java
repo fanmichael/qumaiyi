@@ -31,9 +31,11 @@ import com.umeng.socialize.UMShareAPI;
 import com.umeng.socialize.bean.SHARE_MEDIA;
 import com.hyphenate.easeui.EaseConstant;
 import com.hyphenate.easeui.model.UserInfo;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -48,6 +50,7 @@ import cn.com.shequnew.inc.Ini;
 import cn.com.shequnew.chat.activity.ChatActivity;
 import cn.com.shequnew.chat.util.ObjectSaveUtils;
 import cn.com.shequnew.pages.adapter.CommentAdapter;
+import cn.com.shequnew.pages.adapter.ConGoodsAdapter;
 import cn.com.shequnew.pages.adapter.ContentFileDetailsAdapter;
 import cn.com.shequnew.pages.adapter.ShopImagesAdapter;
 import cn.com.shequnew.pages.config.AppContext;
@@ -146,13 +149,15 @@ public class ContentFileDetailsActivity extends BaseActivity implements CommentA
 
     private boolean isSart = false;//是否出售
     private boolean isCancal = false;//是否关注
-    private boolean isSoll = false;//是否收藏
+    private boolean isSoll;//是否收藏
     private ContentValues values = new ContentValues();
     private List<ContentValues> imgs = new ArrayList<>();
     private List<ContentValues> list = new ArrayList<>();
     private List<List<ContentValues>> lists = new ArrayList<>();
+    private List<ContentValues> shopList = new ArrayList<>();
     private ShopImagesAdapter shopImagesAdapter;//图片介绍
     private CommentAdapter commentAdapter;/////////////////////
+    private ConGoodsAdapter conGoodsAdapter;
     private Handler handlers;
 
     /**
@@ -174,8 +179,8 @@ public class ContentFileDetailsActivity extends BaseActivity implements CommentA
         Bundle bundle = this.getIntent().getExtras();
         id = bundle.getInt("id");
         uid = bundle.getInt("uid");
-//        if (uid == AppContext.cv.getAsInteger("id")) {
-        if (String.valueOf(uid).equals(AppContext.cv.get("id"))) {
+        if (uid == AppContext.cv.getAsInteger("id")) {
+//        if (String.valueOf(uid).equals(AppContext.cv.getAsInteger("id"))) {
             lan.setVisibility(View.GONE);
             fileDetailsAttention.setVisibility(View.GONE);
             fileDetailsAttentionNo.setVisibility(View.GONE);
@@ -243,11 +248,20 @@ public class ContentFileDetailsActivity extends BaseActivity implements CommentA
         context.startActivity(intent);
     }
 
+    @OnClick(R.id.file_user_info_icon)
+    void userInfo() {
+        Intent intent = new Intent(context, UserInfoActivity.class);
+        Bundle bundle = new Bundle();
+        bundle.putInt("uid", uid);
+        intent.putExtras(bundle);
+        startActivity(intent);
+    }
+
 
     @OnClick(R.id.share_coll)
     void share() {
         //分享
-        UtilsUmeng.share(ContentFileDetailsActivity.this, Ini.ShareCommunity_Url+id,values.getAsString("content"));
+        UtilsUmeng.share(ContentFileDetailsActivity.this, Ini.ShareCommunity_Url + id, values.getAsString("content"));
     }
 
     /**
@@ -340,6 +354,23 @@ public class ContentFileDetailsActivity extends BaseActivity implements CommentA
         ListTools.setListViewHeightBasedOnChildren(fileDetailsImages);
     }
 
+
+    /***
+     * 相关的商品
+     * */
+    private void conAdapter() {
+        if (shopList.size() < 0) {
+            fileShopSpek.setVisibility(View.VISIBLE);
+            fileDetailsGoods.setVisibility(View.GONE);
+        } else {
+            fileShopSpek.setVisibility(View.GONE);
+            fileDetailsGoods.setVisibility(View.VISIBLE);
+            conGoodsAdapter = new ConGoodsAdapter(shopList, context);
+            fileDetailsGoods.setAdapter(conGoodsAdapter);
+            ListTools.setListViewHeightBasedOnChildren(fileDetailsGoods);
+        }
+    }
+
     @OnClick(R.id.file_details_sim_title)
     void clikeBig() {
         ArrayList<String> imgUrl = new ArrayList<String>();
@@ -375,11 +406,12 @@ public class ContentFileDetailsActivity extends BaseActivity implements CommentA
                         //加入群聊
                         Intent intent = new Intent(context, ElcyGroupDeActivity.class);
                         context.startActivity(intent);
+                        chat.setChecked(false);
                         break;
                     case R.id.faith:
                         //私聊群主
                         sendMessage();
-                        faith.setClickable(false);
+                        faith.setChecked(false);
                         break;
                     case R.id.dis:
                         parentnum = 0;
@@ -538,11 +570,11 @@ public class ContentFileDetailsActivity extends BaseActivity implements CommentA
             switch (what) {
                 case 1:
                     initData();
-                    //        if (uid == AppContext.cv.getAsInteger("id")) {
-                    if (String.valueOf(uid).equals(AppContext.cv.get("id"))) {
+                    if (uid != AppContext.cv.getAsInteger("id")) {
                         isColl();
                     }
                     imgsList();
+                    conAdapter();
                     commAdapter();
                     (new Handler()).post(new Runnable() {
                         @Override
@@ -594,7 +626,7 @@ public class ContentFileDetailsActivity extends BaseActivity implements CommentA
         if (isSoll == false) {
             collCon.setVisibility(View.GONE);
             collConNo.setVisibility(View.VISIBLE);
-        } else if (isSoll == true) {
+        } else {
             collCon.setVisibility(View.VISIBLE);
             collConNo.setVisibility(View.GONE);
         }
@@ -897,24 +929,18 @@ public class ContentFileDetailsActivity extends BaseActivity implements CommentA
             }
 
 
-//            JSONArray goodsJson = new JSONArray(objData.getString("goods"));//g感兴趣的商品
-//            if (goodsJson.length() > 0) {
-//                for (int i = 0; i < goodsJson.length(); i++) {
-//                    JSONObject jsonObj = goodsJson.getJSONObject(i);
-//                    ContentValues cv = new ContentValues();
-//                    cv.put("id", jsonObj.getInt("id"));//id
-//                    cv.put("uid", jsonObj.getInt("uid"));
-//                    cv.put("cid", jsonObj.getInt("cid"));
-//                    cv.put("maf_time", jsonObj.getInt("maf_time"));//天数
-//                    cv.put("good_name", jsonObj.getString("good_name"));//标题
-//                    cv.put("good_image", jsonObj.getString("good_image"));//图
-//                    cv.put("price", jsonObj.getString("price"));//价格
-//                    cv.put("icon", jsonObj.getString("icon"));//价格
-//                    cv.put("nick", jsonObj.getString("nick"));//价格
-//                    shopsList.add(cv);
-//                }
-//
-//            }
+            JSONArray goodsJson = new JSONArray(objData.getString("goods"));//g感兴趣的商品
+            if (goodsJson.length() > 0) {
+                for (int i = 0; i < goodsJson.length(); i++) {
+                    JSONObject jsonObj = goodsJson.getJSONObject(i);
+                    ContentValues cv = new ContentValues();
+                    cv.put("id", jsonObj.getInt("id"));//id
+                    cv.put("good_name", jsonObj.getString("good_name"));//标题
+                    cv.put("good_image", jsonObj.getString("good_image"));//图
+                    cv.put("price", jsonObj.getString("price"));//价格
+                    shopList.add(cv);
+                }
+            }
 
 
         } catch (JSONException er) {
@@ -924,7 +950,9 @@ public class ContentFileDetailsActivity extends BaseActivity implements CommentA
         }
     }
 
-    /**  分享需要
+    /**
+     * 分享需要
+     *
      * @param requestCode
      * @param resultCode
      * @param data
@@ -935,8 +963,10 @@ public class ContentFileDetailsActivity extends BaseActivity implements CommentA
         UMShareAPI.get(this).onActivityResult(requestCode, resultCode, data);
     }
 
-    /**对于的低端手机可能会有如下问题，从开发者app调到qq或者微信的授权界面，后台把开发者app杀死了，
+    /**
+     * 对于的低端手机可能会有如下问题，从开发者app调到qq或者微信的授权界面，后台把开发者app杀死了，
      * 这样，授权成功没有回调了，可以用如下方式避免：（一般不需要添加，如有特殊需要，可以添加）
+     *
      * @param outState
      */
     @Override

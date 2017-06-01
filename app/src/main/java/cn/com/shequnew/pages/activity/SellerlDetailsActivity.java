@@ -90,6 +90,9 @@ public class SellerlDetailsActivity extends BaseActivity {
     private File file;
     private Context context;
     private int type = 1;
+    private boolean choseBtn = false;
+    private int error;
+
 
     /**
      * 添加数据刷新
@@ -139,14 +142,22 @@ public class SellerlDetailsActivity extends BaseActivity {
         layoutParams.height = (int) (dm.heightPixels * 0.9);
         dialog.getWindow().setAttributes(layoutParams);
         TextView content = (TextView) dialog.findViewById(R.id.deal_content);
-        CheckBox chose = (CheckBox) dialog.findViewById(R.id.deal_chose);
+        final CheckBox chose = (CheckBox) dialog.findViewById(R.id.deal_chose);
+        chose.setChecked(choseBtn);
         TextContent textContent = new TextContent();
         content.setText(textContent.shopEquities);
         chose.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                choseBtn = chose.isChecked();
                 dialog.dismiss();
-                topRegitTitle.setClickable(true);
+                if (choseBtn) {
+                    topRegitTitle.setClickable(true);
+                    topRegitTitle.setTextColor(getResources().getColor(R.color.bd_top));
+                } else {
+                    topRegitTitle.setClickable(false);
+                    topRegitTitle.setTextColor(getResources().getColor(R.color.bd_top_chose));
+                }
             }
         });
 
@@ -158,6 +169,7 @@ public class SellerlDetailsActivity extends BaseActivity {
         topRegitTitle.setText("提交");
         topRegitTitle.setVisibility(View.VISIBLE);
         topRegitTitle.setClickable(false);
+        topRegitTitle.setTextColor(getResources().getColor(R.color.bd_top_chose));
         contentValues.add(0, null);
         appraiesimgeAdapter = new AppraiesimgeAdapter(contentValues, context, 2, true);
         sellCardGridView.setAdapter(appraiesimgeAdapter);
@@ -379,9 +391,6 @@ public class SellerlDetailsActivity extends BaseActivity {
                     httpApply();
                     bundle.putInt("what", 1);
                     break;
-                case 2:
-                    bundle.putInt("what", 2);
-                    break;
             }
             return bundle;
         }
@@ -392,6 +401,14 @@ public class SellerlDetailsActivity extends BaseActivity {
             removeLoading();
             switch (what) {
                 case 1:
+                    if (error == 115) {
+                        Toast.makeText(context, "提交成功", Toast.LENGTH_SHORT).show();
+                        destroyActitity();
+                    }
+                    if (error == 108) {
+                        Toast.makeText(context, "正在审核中", Toast.LENGTH_SHORT).show();
+                        destroyActitity();
+                    }
                     break;
                 case 2:
                     break;
@@ -489,15 +506,7 @@ public class SellerlDetailsActivity extends BaseActivity {
     private void xmlApply(String data) {
         try {
             JSONObject jsonObject = new JSONObject(data);
-            int img = jsonObject.getInt("error");
-            if (img == 115) {
-                Toast.makeText(context, "提交成功", Toast.LENGTH_SHORT).show();
-                destroyActitity();
-            }
-            if (img == 108) {
-                Toast.makeText(context, "正在审核中", Toast.LENGTH_SHORT).show();
-                destroyActitity();
-            }
+            error = jsonObject.getInt("error");
         } catch (JSONException e) {
             e.printStackTrace();
         } catch (Exception ee) {

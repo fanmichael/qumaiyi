@@ -64,7 +64,7 @@ public class PayTool {
                 .add("uid", AppContext.cv.getAsString("id"))
                 .add("channel", channel)
                 .add("money", goods.containsKey("price") ? goods.getAsString("price") : goods.getAsString("money"))
-                .add("trade_name", goods.getAsString("good_name"))
+                .add("trade_name", goods.containsKey("good_name") ? goods.getAsString("good_name") : goods.getAsString("trade_name"))
                 .add("num", goods.getAsInteger("num") + "")
                 .add("shid", String.valueOf(goods.getAsInteger("uid")))
                 .add("address", String.valueOf(addr.getAsInteger("id")))
@@ -166,7 +166,7 @@ public class PayTool {
     private static void PayForWeixin(final Activity activity, ContentValues goods) {
         String allPrice = "";
         if (goods.containsKey("price")) {
-            allPrice = "" + (Double.valueOf(goods.getAsString("price")) * goods.getAsInteger("num")) + Double.valueOf(goods.getAsString("ship"));
+            allPrice = "" + ((Double.valueOf(goods.getAsString("price")) * goods.getAsInteger("num")) + Double.valueOf(goods.getAsString("ship")));
         } else {
             allPrice = "" + goods.getAsInteger("totalmoney");
         }

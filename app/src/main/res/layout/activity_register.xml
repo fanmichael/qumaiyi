@@ -74,7 +74,8 @@
                     android:layout_height="@dimen/font_hight_title"
                     android:layout_marginLeft="20dp"
                     android:background="@null"
-                    android:hint="@string/password"
+                    android:hint="@string/password_s"
+                    android:inputType="textPassword"
                     android:maxLines="1"
                     android:textSize="16dp" />
 
@@ -90,8 +91,10 @@
                     android:layout_marginLeft="20dp"
                     android:background="@null"
                     android:hint="@string/regs_paw"
+                    android:inputType="textPassword"
                     android:maxLines="1"
                     android:textSize="16dp" />
+
 
                 <View
                     android:layout_width="match_parent"
@@ -176,8 +179,8 @@
                     android:id="@+id/imaghe_layout"
                     android:layout_width="fill_parent"
                     android:layout_height="fill_parent"
-                    android:gravity="center"
                     android:layout_marginTop="10dp"
+                    android:gravity="center"
                     android:orientation="horizontal"></LinearLayout>
 
                 <View
@@ -219,8 +222,8 @@
                     android:id="@+id/tags_layout"
                     android:layout_width="fill_parent"
                     android:layout_height="fill_parent"
-                    android:gravity="center"
                     android:layout_marginTop="10dp"
+                    android:gravity="center"
                     android:orientation="horizontal"></LinearLayout>
             </LinearLayout>
 

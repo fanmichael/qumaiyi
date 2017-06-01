@@ -213,7 +213,7 @@
                 <cn.com.shequnew.pages.view.NumberAddSub
                     android:id="@+id/nb_addsub_view"
                     android:layout_width="0dp"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
                     android:layout_weight="1"
                     app:maxValue="100"
                     app:minValue="1"

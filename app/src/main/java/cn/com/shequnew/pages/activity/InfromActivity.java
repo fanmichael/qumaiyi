@@ -9,6 +9,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.json.JSONObject;
+
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -37,6 +40,7 @@ public class InfromActivity extends BaseActivity {
     private Context context;
     private String type;
     private String rid;
+    private int error;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,6 +70,7 @@ public class InfromActivity extends BaseActivity {
         }
     }
 
+
     private void httpUpdatePwd() {
         try {
             HashMap<String, String> hashMap = new HashMap<>();
@@ -73,8 +78,12 @@ public class InfromActivity extends BaseActivity {
             hashMap.put("uid", AppContext.cv.getAsInteger("id") + "");
             hashMap.put("rid", rid);
             hashMap.put("type", type);
-            hashMap.put("content", infoContent.getText().toString().trim());
+            hashMap.put("content", URLEncoder.encode(infoContent.getText().toString().trim(), "UTF-8") + "");
             String json = HttpConnectTool.post(hashMap);
+            if (!json.equals("")) {
+                JSONObject jsonObject = new JSONObject(json);
+                error = jsonObject.getInt("error");
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -88,6 +97,7 @@ public class InfromActivity extends BaseActivity {
             switch (params[0]) {
                 case 1:
                     httpUpdatePwd();
+                    bundle.putInt("what", 1);
                     break;
 
             }
@@ -100,7 +110,12 @@ public class InfromActivity extends BaseActivity {
             // removeLoading();
             switch (what) {
                 case 1:
-                    destroyActitity();
+                    if (error == 0) {
+                        Toast.makeText(context, "提交成功！", Toast.LENGTH_SHORT).show();
+                        destroyActitity();
+                    } else {
+                        Toast.makeText(context, "参数提交有误！", Toast.LENGTH_SHORT).show();
+                    }
                     break;
 
             }

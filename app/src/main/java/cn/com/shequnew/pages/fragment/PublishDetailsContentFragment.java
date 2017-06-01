@@ -4,6 +4,7 @@ package cn.com.shequnew.pages.fragment;
  * Created by Administrator on 2017/5/9 0009.
  */
 
+import android.app.Dialog;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -16,11 +17,13 @@ import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
+import android.util.DisplayMetrics;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -40,6 +43,7 @@ import butterknife.ButterKnife;
 import butterknife.Unbinder;
 import cn.com.shequnew.R;
 import cn.com.shequnew.pages.activity.ContentFileDetailsActivity;
+import cn.com.shequnew.pages.activity.InstallDetailsActivity;
 import cn.com.shequnew.pages.activity.LoginActivity;
 import cn.com.shequnew.pages.adapter.ContentApapter;
 import cn.com.shequnew.pages.config.AppContext;
@@ -147,8 +151,8 @@ public class PublishDetailsContentFragment extends BasicFragment implements Swip
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent();
                 Bundle bundle = new Bundle();
-                bundle.putInt("id", contentValuesCon.get(position).getAsInteger("id"));
-                bundle.putInt("uid", contentValuesCon.get(position).getAsInteger("uid"));
+                bundle.putInt("id", contentValuesCon.get(position-1).getAsInteger("id"));
+                bundle.putInt("uid", contentValuesCon.get(position-1).getAsInteger("uid"));
                 intent.putExtras(bundle);
                 intent.setClass(context, ContentFileDetailsActivity.class);
                 context.startActivity(intent);
@@ -169,29 +173,35 @@ public class PublishDetailsContentFragment extends BasicFragment implements Swip
     }
 
     private void deleteData() {
-        View view = (LinearLayout) LayoutInflater.from(context).inflate(R.layout.back_login, null);
-        final android.app.AlertDialog alertDialog = new android.app.AlertDialog.Builder(context).create();
-        alertDialog.setView(view);
-        TextView title = (TextView) view.findViewById(R.id.title_con);
-        TextView name = (TextView) view.findViewById(R.id.title_name);
+        DisplayMetrics dm = new DisplayMetrics();
+        getActivity().getWindowManager().getDefaultDisplay().getMetrics(dm);
+        final Dialog dialog = new Dialog(getActivity(), R.style.AlertDialog);
+        dialog.setContentView(R.layout.back_login);
+        dialog.show();
+        // 设置对话框大小
+        WindowManager.LayoutParams layoutParams = dialog.getWindow().getAttributes();
+        layoutParams.width = dm.widthPixels;
+        layoutParams.height = dm.heightPixels;
+        dialog.getWindow().setAttributes(layoutParams);
+        TextView title = (TextView) dialog.findViewById(R.id.title_con);
+        TextView name = (TextView) dialog.findViewById(R.id.title_name);
         name.setVisibility(View.VISIBLE);
         title.setText("删除后将不可查看！你确定要删除吗？");
-        Button cal = (Button) view.findViewById(R.id.calen);
-        Button sure = (Button) view.findViewById(R.id.sure);
+        Button cal = (Button) dialog.findViewById(R.id.calen);
+        Button sure = (Button) dialog.findViewById(R.id.sure);
         cal.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                alertDialog.dismiss();
+                dialog.dismiss();
             }
         });
         sure.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 new asyncTask().execute(3);
-                alertDialog.dismiss();
+                dialog.dismiss();
             }
         });
-        alertDialog.show();
     }
 
 
@@ -305,7 +315,7 @@ public class PublishDetailsContentFragment extends BasicFragment implements Swip
             HashMap<String, String> hashMap = new HashMap<>();
             hashMap.put("action", "Community.note_updeta");
             hashMap.put("uid", AppContext.cv.getAsInteger("id") + "");
-            hashMap.put("id", page + "");
+            hashMap.put("id", id + "");
             String json = HttpConnectTool.post(hashMap);
             if (!json.equals("")) {
 //                listXml(json);
@@ -351,7 +361,7 @@ public class PublishDetailsContentFragment extends BasicFragment implements Swip
                         note.put("uid", jsonObj.getInt("uid"));
                         note.put("file_type", jsonObj.getInt("file_type"));
                         note.put("subject", jsonObj.getString("subject"));
-                        if(jsonObj.has("video_img")){
+                        if (jsonObj.has("video_img")) {
                             note.put("video_img", jsonObj.getString("video_img"));
                         }
                         note.put("title", jsonObj.getString("title"));

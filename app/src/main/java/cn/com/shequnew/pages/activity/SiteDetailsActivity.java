@@ -85,7 +85,6 @@ public class SiteDetailsActivity extends BaseActivity implements SiteDetailsAdap
         if (resultCode == 1) {
             new asyncTask().execute(1);
         }
-
     }
 
     @OnClick(R.id.image_back)
@@ -103,6 +102,20 @@ public class SiteDetailsActivity extends BaseActivity implements SiteDetailsAdap
     public void delete(int posit, int id) {
         deleteid = id;
         new asyncTask().execute(2);
+    }
+
+    @Override
+    public void update(int posit, int id, int uid, String name, String mobile, String address) {
+        Intent intent = new Intent(context, NewSiteActivity.class);
+        Bundle bundle = new Bundle();
+        bundle.putString("type", "edit");
+        bundle.putInt("id", id);
+        bundle.putInt("uid", uid);
+        bundle.putString("name", name);
+        bundle.putString("mobile", mobile);
+        bundle.putString("address", address);
+        intent.putExtras(bundle);
+        startActivityForResult(intent, 1);
     }
 
 

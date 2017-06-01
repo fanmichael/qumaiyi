@@ -108,7 +108,7 @@ public class ShopDetailsActivity extends BaseActivity implements UserGoodsShopAd
     private int typeatt;
     private boolean isSart = false;//是否出售
     private boolean isCancal = false;//是否关注
-    private boolean isSoll = false;//是否收藏
+    private boolean isSoll;//是否收藏
 
     private UserGoodsShopAdapter goodsAdapter;//喜欢的商品
     private ShopImagesAdapter shopImagesAdapter;//图片介绍
@@ -123,13 +123,14 @@ public class ShopDetailsActivity extends BaseActivity implements UserGoodsShopAd
         Bundle bundle = this.getIntent().getExtras();
         id = bundle.getInt("id");
         uid = bundle.getInt("uid");
-//        if (uid == AppContext.cv.getAsInteger("id")) {
-        if (String.valueOf(uid).equals(AppContext.cv.get("id"))) {
+        if (uid == AppContext.cv.getAsInteger("id")) {
+//        if (String.valueOf(uid).equals(AppContext.cv.get("id"))) {
             lan.setVisibility(View.GONE);
             shopDetailsAttention.setVisibility(View.GONE);
             shopDetailsAttentionNo.setVisibility(View.GONE);
             collect.setVisibility(View.GONE);
             collectRe.setVisibility(View.GONE);
+            btnShopDetails.setVisibility(View.GONE);
         }
         topTitleColl.setText("商品详情");
         initDelay();
@@ -150,6 +151,9 @@ public class ShopDetailsActivity extends BaseActivity implements UserGoodsShopAd
 
     }
 
+    /**
+     * 图片点击放大
+     */
     @OnClick(R.id.shop_details_sim_title)
     void clikeBig() {
         ArrayList<String> imgUrl = new ArrayList<String>();
@@ -192,12 +196,17 @@ public class ShopDetailsActivity extends BaseActivity implements UserGoodsShopAd
         destroyActitity();
     }
 
+    /**
+     * 分享
+     */
     @OnClick(R.id.share_coll)
     void shareColl() {
-        UtilsUmeng.share(ShopDetailsActivity.this, Ini.ShareGood_Url+id,values.getAsString("content"));
+        UtilsUmeng.share(ShopDetailsActivity.this, Ini.ShareGood_Url + id, values.getAsString("content"));
     }
 
-
+    /**
+     * 个人主页
+     */
     @OnClick(R.id.shop_user_info_icon)
     void userInfo() {
         Intent intent = new Intent(context, UserInfoActivity.class);
@@ -263,6 +272,9 @@ public class ShopDetailsActivity extends BaseActivity implements UserGoodsShopAd
         setDelayMessage(5, 100);
     }
 
+    /**
+     * 评价详情
+     */
     @OnClick(R.id.linayout_estimate)
     void shopEstimate() {
         Intent intent = new Intent(context, EstimateActivity.class);
@@ -355,7 +367,9 @@ public class ShopDetailsActivity extends BaseActivity implements UserGoodsShopAd
             switch (what) {
                 case 1:
                     initView();
-                    isColl();
+                    if (uid != AppContext.cv.getAsInteger("id")) {
+                        isColl();
+                    }
                     initGoods();
                     initImages();
                     scrollview.smoothScrollTo(0, 0);
@@ -420,12 +434,13 @@ public class ShopDetailsActivity extends BaseActivity implements UserGoodsShopAd
         }
     }
 
-    private void httpCollesStatuscollection() {//判断收藏状态Community.collection
+    //判断收藏状态Community.collection
+    private void httpCollesStatuscollection() {
         try {
             HashMap<String, String> map = new HashMap<>();
             map.put("action", "Community.collection");
             map.put("uid", AppContext.cv.getAsInteger("id") + "");
-            map.put("type", "0");
+            map.put("type", "1");
             map.put("type_id", id + "");
             String json = HttpConnectTool.post(map);
             if (!json.equals("")) {
@@ -437,6 +452,8 @@ public class ShopDetailsActivity extends BaseActivity implements UserGoodsShopAd
                     } else if (typeatt == 3) {
                         isSoll = false;
                     }
+                } else if (error == 131) {
+                    //失败
                 }
             }
 
@@ -445,7 +462,8 @@ public class ShopDetailsActivity extends BaseActivity implements UserGoodsShopAd
         }
     }
 
-    private void httpFollowStatus() {//判断关注状态
+    //判断关注状态
+    private void httpFollowStatus() {
         try {
             HashMap<String, String> map = new HashMap<>();
             map.put("action", "Community.checkFollowStatus");
@@ -468,13 +486,14 @@ public class ShopDetailsActivity extends BaseActivity implements UserGoodsShopAd
         }
     }
 
-    private void httpCollesStatus() {//判断收藏状态
+    //判断收藏状态
+    private void httpCollesStatus() {
         try {
             HashMap<String, String> map = new HashMap<>();
             map.put("action", "Community.checkCollectStatus");
             map.put("uid", AppContext.cv.getAsInteger("id") + "");
             map.put("type", "1");
-            map.put("type_id", uid + "");
+            map.put("type_id", id + "");
             String json = HttpConnectTool.post(map);
             if (!json.equals("")) {
                 JSONObject obj = new JSONObject(json);
@@ -491,7 +510,8 @@ public class ShopDetailsActivity extends BaseActivity implements UserGoodsShopAd
         }
     }
 
-    private void httpShop() {//商品详情
+    //商品详情
+    private void httpShop() {
         try {
             HashMap<String, String> map = new HashMap<>();
             map.put("action", "Trade.goodInfo");
@@ -525,7 +545,8 @@ public class ShopDetailsActivity extends BaseActivity implements UserGoodsShopAd
         shopDetailsTags.setText(values.getAsString("personalized"));
         shopDetailsParameter.setText(values.getAsString("description"));
         shopDetailsIntro.setText(values.getAsString("good_intro"));
-        shopDetailsEstimate.setText("评价（" + values.getAsInteger("comment_count") + ")");
+        shopDetailsEstimate.setText("评价(" + values.getAsInteger("comment_count") + ")");
+
 
         if (values.getAsInteger("state") == 1) {
             shopDetailsSollSell.setVisibility(View.VISIBLE);

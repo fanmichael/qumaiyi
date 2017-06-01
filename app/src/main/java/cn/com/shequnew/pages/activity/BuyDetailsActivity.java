@@ -339,7 +339,7 @@ public class BuyDetailsActivity extends BaseActivity implements SwipeRefreshLayo
                     break;
                 case 3:
                     calBuy(shopId);
-                    bundle.putInt("what", 2);
+                    bundle.putInt("what", 4);
                     break;
                 case 4:
                     htttpOrder();
@@ -388,6 +388,9 @@ public class BuyDetailsActivity extends BaseActivity implements SwipeRefreshLayo
                 case 3:
                     /**待付款-取消订单*/
                     page = 1;
+                    new asyncTask().execute(1);
+                    break;
+                case 4:
                     new asyncTask().execute(1);
                     break;
             }
@@ -502,10 +505,10 @@ public class BuyDetailsActivity extends BaseActivity implements SwipeRefreshLayo
      */
     @Override
     public void cal(int posit, int id, String ddid) {
-        if (state.equals("6")) {
+//        if (state.equals("6")) {
             shopId = buyLists.get(posit).getAsInteger("id");
             new asyncTask().execute(3);//待付款取消订单
-        }
+//        }
     }
 
     /**

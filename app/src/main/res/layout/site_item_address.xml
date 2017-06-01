@@ -21,7 +21,8 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:paddingLeft="5dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -36,7 +37,7 @@
                     android:layout_weight="1"
                     android:gravity="left"
                     android:textColor="@color/col_bg"
-                    android:textSize="15dp" />
+                    android:textSize="16dp" />
 
                 <TextView
                     android:id="@+id/address_phone"
@@ -44,7 +45,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:gravity="right"
-
+                    android:textColor="@color/col_bg"
                     android:textSize="15dp" />
 
             </LinearLayout>
@@ -53,6 +54,7 @@
                 android:id="@+id/address_details"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
                 android:gravity="right"
                 android:textColor="@color/col_bg"
                 android:textSize="15dp" />
@@ -68,7 +70,8 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="1dp"
         android:background="@color/white"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:padding="5dp">
 
         <CheckBox
             android:id="@+id/address_box"
@@ -108,7 +111,8 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
             android:gravity="right"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:paddingRight="10dp">
 
             <ImageView
                 android:layout_width="wrap_content"
@@ -119,6 +123,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
+
                 android:text="删除"
                 android:textSize="14dp" />
 

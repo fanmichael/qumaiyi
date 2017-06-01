@@ -368,7 +368,7 @@ public class UserInfoActivity extends BaseActivity {
                     userGroup();
                     dynamicAdapter();
                     goodsAdapter();
-                    if (isCancal == true) {
+                    if (isCancal == false) {
                         userAttention.setVisibility(View.GONE);
                         userAttentionNo.setVisibility(View.VISIBLE);
                     } else {
@@ -496,6 +496,7 @@ public class UserInfoActivity extends BaseActivity {
                         cv.put("video_img", jsonObj.getString("video_img"));
                     }
                     cv.put("id", jsonObj.getInt("id"));
+                    cv.put("uid", jsonObj.getInt("uid"));
                     cv.put("title", jsonObj.getString("title"));
                     cv.put("tags", jsonObj.getString("tags"));
                     cv.put("file_type", jsonObj.getInt("file_type"));

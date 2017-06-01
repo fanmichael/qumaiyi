@@ -48,6 +48,7 @@
                             android:background="@drawable/dynamic_title"
                             android:button="@null"
                             android:checked="true"
+                            android:typeface="monospace"
                             android:textColor="@drawable/selector_dynamic_tab" />
 
                         <RadioButton
@@ -58,6 +59,7 @@
                             android:layout_weight="1"
                             android:button="@null"
                             android:checked="false"
+                            android:typeface="normal"
                             android:textColor="@drawable/selector_dynamic_tab" />
 
                         <RadioButton
@@ -68,6 +70,7 @@
                             android:layout_weight="1"
                             android:button="@null"
                             android:checked="false"
+                            android:typeface="sans"
                             android:textColor="@drawable/selector_dynamic_tab" />
 
                         <RadioButton
@@ -78,6 +81,7 @@
                             android:layout_weight="1"
                             android:button="@null"
                             android:checked="false"
+                            android:typeface="serif"
                             android:textColor="@drawable/selector_dynamic_tab" />
                     </RadioGroup>
 

@@ -105,7 +105,7 @@ public class UserDynamicAdapter extends BaseAdapter {
                 holder.dynamicM.setVisibility(View.GONE);
                 holder.vidoImage.setVisibility(View.GONE);
             } else {
-                if(user.containsKey("video_img")){
+                if (user.containsKey("video_img")) {
                     Uri image = Uri.parse(user.getAsString("video_img"));
                     ValidData.load(image, holder.dynamicImages, 100, 80);
                     holder.dynamicF.setVisibility(View.GONE);
@@ -130,7 +130,6 @@ public class UserDynamicAdapter extends BaseAdapter {
             @Override
             public void onClick(View v) {
                 if (user.containsKey("file_type")) {
-
                     if (user.getAsInteger("file_type") == 0) {
                         Intent intent = new Intent();
                         Bundle bundle = new Bundle();

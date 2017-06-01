@@ -112,7 +112,7 @@ public class WalletPriceActivity extends BaseActivity {
     private void httpWallet() {
         try {
             HashMap<String, String> hashMap = new HashMap<>();
-            hashMap.put("action", "Enchashment");
+            hashMap.put("action", "User.Enchashment");
             hashMap.put("uid", AppContext.cv.getAsInteger("id") + "");
             hashMap.put("name", walletName.getText().toString().trim());
             hashMap.put("mobile", walletPhone.getText().toString().trim());

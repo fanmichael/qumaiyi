@@ -60,6 +60,10 @@
         "source": "E:\\huayi\\qumaiyi\\ShequNew\\easeui\\build\\intermediates\\bundles\\debug\\res\\drawable\\ease_btn_cancel_pressed_shape.xml"
     },
     {
+        "merged": "E:\\huayi\\qumaiyi\\ShequNew\\easeui\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable\\voice_to_icon.xml",
+        "source": "E:\\huayi\\qumaiyi\\ShequNew\\easeui\\build\\intermediates\\bundles\\debug\\res\\drawable\\voice_to_icon.xml"
+    },
+    {
         "merged": "E:\\huayi\\qumaiyi\\ShequNew\\easeui\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable\\ease_chat_press_speak_btn.xml",
         "source": "E:\\huayi\\qumaiyi\\ShequNew\\easeui\\build\\intermediates\\bundles\\debug\\res\\drawable\\ease_chat_press_speak_btn.xml"
     },
@@ -94,6 +98,10 @@
     {
         "merged": "E:\\huayi\\qumaiyi\\ShequNew\\easeui\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable\\ease_timestampe_bg.xml",
         "source": "E:\\huayi\\qumaiyi\\ShequNew\\easeui\\build\\intermediates\\bundles\\debug\\res\\drawable\\ease_timestampe_bg.xml"
+    },
+    {
+        "merged": "E:\\huayi\\qumaiyi\\ShequNew\\easeui\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable\\voice_from_icon.xml",
+        "source": "E:\\huayi\\qumaiyi\\ShequNew\\easeui\\build\\intermediates\\bundles\\debug\\res\\drawable\\voice_from_icon.xml"
     },
     {
         "merged": "E:\\huayi\\qumaiyi\\ShequNew\\easeui\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable\\ease_sidebar_background_pressed.xml",

@@ -217,6 +217,7 @@ public class InstallDetailsActivity extends BaseActivity {
                 if (SharedPreferenceUtil.hasKey("mobile") && SharedPreferenceUtil.hasKey("password")) {
                     SharedPreferenceUtil.remove("mobile");
                     SharedPreferenceUtil.remove("password");
+                    AppContext.cv.clear();
                 }
                 if (EMClient.getInstance().isLoggedInBefore())
                     EMClient.getInstance().logout(true);

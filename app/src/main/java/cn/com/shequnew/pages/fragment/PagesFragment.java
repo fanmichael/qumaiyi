@@ -111,6 +111,7 @@ public class PagesFragment extends BasicFragment implements SwipeRefreshLayout.O
             "http://www.tudou.com"};
     private List<Map<String, String>> imageList = new ArrayList<Map<String, String>>();
     private MyAdapter myAdapter;
+    private int typeNum = 0;
 
     @Nullable
     @Override
@@ -220,18 +221,26 @@ public class PagesFragment extends BasicFragment implements SwipeRefreshLayout.O
             public void onCheckedChanged(RadioGroup group, @IdRes int checkedId) {
                 switch (checkedId) {
                     case R.id.rad_dynamic_wu:
+                        type = "1";
+                        typeNum = 0;
                         btnTextFo();
                         setDelayMessage(1, 1000);
                         break;
                     case R.id.rad_dynamic_gu:
+                        type = "2";
+                        typeNum = 1;
                         btnTextOne();
                         setDelayMessage(2, 1000);
                         break;
                     case R.id.rad_dynamic_yang:
+                        type = "3";
+                        typeNum = 2;
                         btnTextTwo();
                         setDelayMessage(3, 1000);
                         break;
                     case R.id.rad_dynamic_jue:
+                        type = "4";
+                        typeNum = 3;
                         btnTextSe();
                         setDelayMessage(4, 1000);
                         break;
@@ -307,7 +316,16 @@ public class PagesFragment extends BasicFragment implements SwipeRefreshLayout.O
 
     @Override
     public void onRefresh() {
-//        setDelayMessage(1, 100);
+
+        if (typeNum == 0) {
+            setDelayMessage(1, 100);
+        } else if (typeNum == 1) {
+            setDelayMessage(2, 100);
+        } else if (typeNum == 2) {
+            setDelayMessage(3, 100);
+        } else if (typeNum == 3) {
+            setDelayMessage(4, 100);
+        }
         swipeRefreshLayout.setRefreshing(false);//刷新完成
     }
 
@@ -329,26 +347,26 @@ public class PagesFragment extends BasicFragment implements SwipeRefreshLayout.O
             if (imageList != null && imageList.size() > 0) {
                 imageList.clear();
             }
-
             switch (params[0]) {
                 case 1:
+                    if (imagesList != null && imagesList.size() > 0) {
+                        imagesList.clear();
+                    }
+
                     //首次加载数据
                     httpPages();
                     httpInfo();
                     bundle.putInt("what", 1);
                     break;
                 case 2:
-                    type = "2";
                     httpPages();
                     bundle.putInt("what", 2);
                     break;
                 case 3:
-                    type = "3";
                     httpPages();
                     bundle.putInt("what", 3);
                     break;
                 case 4:
-                    type = "4";
                     httpPages();
                     bundle.putInt("what", 4);
                     break;
@@ -362,13 +380,16 @@ public class PagesFragment extends BasicFragment implements SwipeRefreshLayout.O
             int what = bundle.containsKey("what") ? bundle.getInt("what") : -1;
             removeLoading();
             imageUrls = null;
+
             switch (what) {
                 case 1:
+                    infoPages.removeAllViews();
+                    pagesNewsLayout.removeAllViews();
+                    pagesHotLayout.removeAllViews();
                     info();
-                    swipeRefreshLayout.setRefreshing(false);//刷新完成
+                    btnText(namesList);
                     newsList();
                     hotList();
-                    btnText(namesList);
                     if (imagesUrls.size() > 0) {
                         slideshowView.setVisibility(View.VISIBLE);
                     } else {
@@ -386,8 +407,12 @@ public class PagesFragment extends BasicFragment implements SwipeRefreshLayout.O
                         imageList.add(image_uri);
                     }
                     slideshowView.setImageUrls(imageList);
+                    swipeRefreshLayout.setRefreshing(false);//刷新完成
                     break;
                 case 2:
+
+                    pagesNewsLayout.removeAllViews();
+                    pagesHotLayout.removeAllViews();
                     newsList();
                     hotList();
                     if (imagesUrls.size() > 0) {
@@ -406,8 +431,12 @@ public class PagesFragment extends BasicFragment implements SwipeRefreshLayout.O
                         imageList.add(image_uri);
                     }
                     slideshowView.setImageUrls(imageList);
+                    swipeRefreshLayout.setRefreshing(false);//刷新完成
                     break;
                 case 3:
+
+                    pagesNewsLayout.removeAllViews();
+                    pagesHotLayout.removeAllViews();
                     newsList();
                     hotList();
                     if (imagesUrls.size() > 0) {
@@ -426,8 +455,11 @@ public class PagesFragment extends BasicFragment implements SwipeRefreshLayout.O
                         imageList.add(image_uri);
                     }
                     slideshowView.setImageUrls(imageList);
+                    swipeRefreshLayout.setRefreshing(false);//刷新完成
                     break;
                 case 4:
+                    pagesNewsLayout.removeAllViews();
+                    pagesHotLayout.removeAllViews();
                     newsList();
                     hotList();
                     if (imagesUrls.size() > 0) {
@@ -446,6 +478,7 @@ public class PagesFragment extends BasicFragment implements SwipeRefreshLayout.O
                         imageList.add(image_uri);
                     }
                     slideshowView.setImageUrls(imageList);
+                    swipeRefreshLayout.setRefreshing(false);//刷新完成
                     break;
 
             }
@@ -575,7 +608,7 @@ public class PagesFragment extends BasicFragment implements SwipeRefreshLayout.O
                     cv.put("file_type", jsonObj.getInt("file_type"));//文件类型 0是文件1是视频
                     cv.put("cid", jsonObj.getInt("cid"));
                     cv.put("subject", jsonObj.getString("subject"));//右侧图像或者视频预览？
-                    if(jsonObj.has("video_img")){
+                    if (jsonObj.has("video_img")) {
                         cv.put("video_img", jsonObj.getString("video_img"));
                     }
                     cv.put("subject_type", jsonObj.getString("subject_type"));
@@ -769,6 +802,7 @@ public class PagesFragment extends BasicFragment implements SwipeRefreshLayout.O
     public void onDestroyView() {
         super.onDestroyView();
         unbinder.unbind();
+        System.gc();
     }
 
     /**

@@ -13,7 +13,7 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-public class EaseChatRowVoice extends EaseChatRowFile{
+public class EaseChatRowVoice extends EaseChatRowFile {
 
     private ImageView voiceImageView;
     private TextView voiceLengthView;
@@ -40,19 +40,19 @@ public class EaseChatRowVoice extends EaseChatRowFile{
     protected void onSetUpView() {
         EMVoiceMessageBody voiceBody = (EMVoiceMessageBody) message.getBody();
         int len = voiceBody.getLength();
-        if(len>0){
+        if (len > 0) {
             voiceLengthView.setText(voiceBody.getLength() + "\"");
             voiceLengthView.setVisibility(View.VISIBLE);
-        }else{
+        } else {
             voiceLengthView.setVisibility(View.INVISIBLE);
         }
         if (EaseChatRowVoicePlayClickListener.playMsgId != null
                 && EaseChatRowVoicePlayClickListener.playMsgId.equals(message.getMsgId()) && EaseChatRowVoicePlayClickListener.isPlaying) {
             AnimationDrawable voiceAnimation;
             if (message.direct() == EMMessage.Direct.RECEIVE) {
-                voiceImageView.setImageResource(R.anim.voice_from_icon);
+                voiceImageView.setImageResource(R.drawable.voice_from_icon);
             } else {
-                voiceImageView.setImageResource(R.anim.voice_to_icon);
+                voiceImageView.setImageResource(R.drawable.voice_to_icon);
             }
             voiceAnimation = (AnimationDrawable) voiceImageView.getDrawable();
             voiceAnimation.start();
@@ -63,7 +63,7 @@ public class EaseChatRowVoice extends EaseChatRowFile{
                 voiceImageView.setImageResource(R.drawable.ease_chatto_voice_playing);
             }
         }
-        
+
         if (message.direct() == EMMessage.Direct.RECEIVE) {
             if (message.isListened()) {
                 // hide the unread icon
@@ -96,7 +96,7 @@ public class EaseChatRowVoice extends EaseChatRowFile{
     protected void onBubbleClick() {
         new EaseChatRowVoicePlayClickListener(message, voiceImageView, readStatusView, adapter, activity).onClick(bubbleLayout);
     }
-    
+
     @Override
     protected void onDetachedFromWindow() {
         super.onDetachedFromWindow();
@@ -104,5 +104,5 @@ public class EaseChatRowVoice extends EaseChatRowFile{
             EaseChatRowVoicePlayClickListener.currentPlayListener.stopPlayVoice();
         }
     }
-    
+
 }

@@ -24,8 +24,6 @@ public final class R {
         public static int slide_in_from_right=0x7f04000c;
         public static int slide_out_to_left=0x7f04000d;
         public static int slide_out_to_right=0x7f04000e;
-        public static int voice_from_icon=0x7f04000f;
-        public static int voice_to_icon=0x7f040010;
     }
     public static final class attr {
         /** <p>Must be one of the following constant values.</p>
@@ -787,6 +785,8 @@ containing a value of this type.
         public static int ic_launcher=0x7f0200a8;
         public static int qunzu=0x7f0200a9;
         public static int searchviewstroke=0x7f0200aa;
+        public static int voice_from_icon=0x7f0200ab;
+        public static int voice_to_icon=0x7f0200ac;
     }
     public static final class id {
         public static int add_member=0x7f090073;

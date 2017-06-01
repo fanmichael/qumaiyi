@@ -3,7 +3,7 @@
     <string name="login">登录</string>
     <string name="register">注册</string>
     <string name="phone">请输入手机号</string>
-    <string name="password">请输入密码</string>
+    <string name="password_s">请输入密码</string>
     <string name="regs_paw">请再次输入密码</string>
     <string name="verification_code">请输入验证码</string>
     <string name="ver_code">获取验证码</string>

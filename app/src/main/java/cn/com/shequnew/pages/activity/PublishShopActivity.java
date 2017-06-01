@@ -108,6 +108,7 @@ public class PublishShopActivity extends BaseActivity {
     private int type = 1;
     private File sellImagesFile;
     private File file;
+    private boolean choseBtn = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -305,7 +306,11 @@ public class PublishShopActivity extends BaseActivity {
      */
     @OnClick(R.id.publish_shop_sumit)
     void sumbit() {
-        initData();
+        if (choseBtn) {
+            initData();
+        } else {
+            Toast.makeText(context, "请阅读，勾选只是产权承诺！", Toast.LENGTH_LONG).show();
+        }
     }
 
     /**
@@ -392,22 +397,23 @@ public class PublishShopActivity extends BaseActivity {
         }
 
         if (requestCode == 1) {
-            Uri uri = data.getData();
-            switch (type) {
-                case 1:
-                    ValidData.load(uri, publishShop, 90, 90);
-                    sellImagesFile = uri2File(uri);
-                    break;
-                case 2:
-                    file = uri2File(uri);
-                    files.add(file);
-                    ContentValues cv = new ContentValues();
-                    cv.put("image", uri.toString());
-                    contentValues.add(cv);
-                    appraiesimgeAdapter.notifyDataSetChanged();
-                    break;
+            if (resultCode == RESULT_OK) {
+                Uri uri = data.getData();
+                switch (type) {
+                    case 1:
+                        ValidData.load(uri, publishShop, 90, 90);
+                        sellImagesFile = uri2File(uri);
+                        break;
+                    case 2:
+                        file = uri2File(uri);
+                        files.add(file);
+                        ContentValues cv = new ContentValues();
+                        cv.put("image", uri.toString());
+                        contentValues.add(cv);
+                        appraiesimgeAdapter.notifyDataSetChanged();
+                        break;
+                }
             }
-
         }
 
         if (requestCode == 2) {
@@ -441,6 +447,7 @@ public class PublishShopActivity extends BaseActivity {
         }
     }
 
+
     private void dealView() {
         DisplayMetrics dm = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(dm);
@@ -454,14 +461,23 @@ public class PublishShopActivity extends BaseActivity {
         layoutParams.height = (int) (dm.heightPixels * 0.9);
         dialog.getWindow().setAttributes(layoutParams);
         TextView content = (TextView) dialog.findViewById(R.id.deal_content);
-        CheckBox chose = (CheckBox) dialog.findViewById(R.id.deal_chose);
+        final CheckBox chose = (CheckBox) dialog.findViewById(R.id.deal_chose);
+        chose.setChecked(choseBtn);
         TextContent textContent = new TextContent();
         content.setText(textContent.equities);
         chose.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                choseBtn = chose.isChecked();
                 dialog.dismiss();
-                publishShopSumit.setClickable(true);
+                if (choseBtn) {
+                    publishShopSumit.setClickable(true);
+                    publishShopSumit.setBackgroundDrawable(getResources().getDrawable(R.drawable.login_btn));
+                } else {
+                    publishShopSumit.setClickable(false);
+                    publishShopSumit.setBackgroundDrawable(getResources().getDrawable(R.drawable.chose_no));
+                }
+
 
             }
         });

@@ -140,8 +140,8 @@ public class IndentActivity extends BaseActivity {
                 switch (msg.what) {
                     //支付宝支付回调
                     case Ini.SDK_PAY_FLAG:
-                        Toast.makeText(getApplicationContext(), "支付成功", Toast.LENGTH_LONG).show();
-                        finish();
+                        Intent buyIntent = new Intent(context, BuyDetailsActivity.class);
+                        context.startActivity(buyIntent);
                         break;
                     case Ini.SDK_PAY_FLAG2:
                         PayTool.payZFB(IndentActivity.this, msg.obj.toString(), mHandler);
