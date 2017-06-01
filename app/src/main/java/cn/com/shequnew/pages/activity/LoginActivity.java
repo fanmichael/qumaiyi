@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.annotation.IdRes;
 import android.text.Editable;
 import android.text.TextUtils;
@@ -41,8 +43,10 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.com.shequnew.R;
 import cn.com.shequnew.chat.util.ObjectSaveUtils;
+import cn.com.shequnew.inc.Ini;
 import cn.com.shequnew.pages.config.AppContext;
 import cn.com.shequnew.pages.http.HttpConnectTool;
+import cn.com.shequnew.tools.PayTool;
 import cn.com.shequnew.tools.SharedPreferenceUtil;
 import cn.com.shequnew.tools.UtilsUmeng;
 import cn.com.shequnew.tools.ValidData;
@@ -89,7 +93,7 @@ public class LoginActivity extends BaseActivity {
     //注册成功之后的REDIRECT_URL
     public static final String SINA_REDIRECT_URL = "https://api.weibo.com/oauth2/default.html";
     public static final String SINA_SCOPE = "all";
-
+    Handler mHandler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -115,7 +119,6 @@ public class LoginActivity extends BaseActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         UMShareAPI.get(this).onActivityResult(requestCode, resultCode, data);
-//        new asyncTask().execute(2);
     }
 
     private void groupLogin() {
@@ -126,19 +129,19 @@ public class LoginActivity extends BaseActivity {
                     case R.id.weixin:
                         is = false;
                         typeLogin = "weixin";
-                        UtilsUmeng.Login(LoginActivity.this, getApplicationContext(), SHARE_MEDIA.WEIXIN);
+                        UtilsUmeng.Login(LoginActivity.this, getApplicationContext(), SHARE_MEDIA.WEIXIN,mHandler);
                         weixin.setChecked(false);
                         break;
                     case R.id.qq:
                         is = false;
                         typeLogin = "qq";
-                        UtilsUmeng.Login(LoginActivity.this, getApplicationContext(), SHARE_MEDIA.QQ);
+                        UtilsUmeng.Login(LoginActivity.this, getApplicationContext(), SHARE_MEDIA.QQ,mHandler);
                         qq.setChecked(false);
                         break;
                     case R.id.weibo:
                         is = false;
                         typeLogin = "sina";
-                        UtilsUmeng.Login(LoginActivity.this, getApplicationContext(), SHARE_MEDIA.SINA);
+                        UtilsUmeng.Login(LoginActivity.this, getApplicationContext(), SHARE_MEDIA.SINA,mHandler);
                         weibo.setChecked(false);
                         break;
                 }
@@ -243,6 +246,16 @@ public class LoginActivity extends BaseActivity {
                 }
             }
         });
+
+        mHandler = new Handler() {
+            public void handleMessage(Message msg) {
+                switch (msg.what) {
+                    case Ini.SDK_PAY_FLAG3:
+                       new asyncTask().execute(2);
+                      break;
+                }
+            }
+        };
     }
 
 
@@ -253,7 +266,7 @@ public class LoginActivity extends BaseActivity {
         try {
             HashMap<String, String> hashMap = new HashMap<>();
             hashMap.put("action", "User.oAuthLogin");
-            hashMap.put("openid", AppContext.cv.getAsInteger("id") + "");
+            hashMap.put("openid", AppContext.cv.getAsString("id"));
             hashMap.put("name", AppContext.cv.getAsString("nick"));
             hashMap.put("avatar", AppContext.cv.getAsString("icon"));
             hashMap.put("oauthtype", typeLogin);
@@ -285,11 +298,6 @@ public class LoginActivity extends BaseActivity {
                 AppContext.cv.put("personalized", "");//个性签名
                 AppContext.cv.put("sign", "");//是否签约
                 AppContext.cv.put("merchant", jsonLogin.getString("merchant"));//卖家识别'0'否'1'是
-                if (is) {
-                    SharedPreferenceUtil.insert("mobile", jsonLogin.getString("mobile"));
-                    SharedPreferenceUtil.insert("password", pwd);
-                }
-
             }
         } catch (JSONException e) {
             e.printStackTrace();
@@ -311,7 +319,7 @@ public class LoginActivity extends BaseActivity {
                     break;
                 case 2:
                     SanhttpLogin();
-                    bundle.putInt("what", 1);
+                    bundle.putInt("what", 2);
                     break;
 
             }
@@ -333,6 +341,10 @@ public class LoginActivity extends BaseActivity {
                     }
                     break;
                 case 2:
+                    Intent intent = new Intent(context, MainActivity.class);
+                    context.startActivity(intent);
+                    destroyActitity();
+                    break;
 
             }
         }

@@ -6,6 +6,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Build;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v4.app.ActivityCompat;
 import android.util.Log;
 import android.widget.Toast;
@@ -24,6 +26,7 @@ import com.umeng.socialize.utils.ShareBoardlistener;
 import java.util.Map;
 
 import cn.com.shequnew.R;
+import cn.com.shequnew.inc.Ini;
 import cn.com.shequnew.pages.activity.MainActivity;
 import cn.com.shequnew.pages.config.AppContext;
 
@@ -45,7 +48,7 @@ public class UtilsUmeng {
      * @param context  上下文
      * @param whereTag   SHARE_MEDIA是分享的平台标志，如微信是SHARE_MEDIA.WEIXIN
      */
-    public  static  void  Login(final Activity activity , final Context context, SHARE_MEDIA whereTag){
+    public  static  void  Login(final Activity activity , final Context context, SHARE_MEDIA whereTag,final Handler mHandler){
         //授权回调
 
          UMAuthListener umAuthListener = new UMAuthListener() {
@@ -73,6 +76,9 @@ public class UtilsUmeng {
                 }else {
                     AppContext.cv.put("location", data.get("province")+data.get("city"));//地址
                 }
+                Message msg = new Message();
+                msg.what = Ini.SDK_PAY_FLAG3;
+                mHandler.sendMessage(msg);
             }
 
             @Override

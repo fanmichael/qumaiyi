@@ -36,6 +36,7 @@ public final class Ini {
     public static final int PAY_TYPE_ZFB = 0x00002;
     public static final int SDK_PAY_FLAG = 0x00003;
     public static final int SDK_PAY_FLAG2 = 0x00004;
+    public static final int SDK_PAY_FLAG3 = 0x00005;
 
     public static String Url_ROOT="http://qumai.51edn.com/";
     public static String Url=Url_ROOT + "index.php/app";
