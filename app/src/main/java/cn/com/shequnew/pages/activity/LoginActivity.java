@@ -115,7 +115,7 @@ public class LoginActivity extends BaseActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         UMShareAPI.get(this).onActivityResult(requestCode, resultCode, data);
-        new asyncTask().execute(2);
+//        new asyncTask().execute(2);
     }
 
     private void groupLogin() {
@@ -137,7 +137,7 @@ public class LoginActivity extends BaseActivity {
                         break;
                     case R.id.weibo:
                         is = false;
-                        typeLogin = "san";
+                        typeLogin = "sina";
                         UtilsUmeng.Login(LoginActivity.this, getApplicationContext(), SHARE_MEDIA.SINA);
                         weibo.setChecked(false);
                         break;

@@ -1049,7 +1049,7 @@ public class LocalVideoActivity extends BaseActivity implements CommentAdapter.s
 
     @OnClick(R.id.share_coll)
     void shareColl() {
-        UtilsUmeng.share(LocalVideoActivity.this, Ini.ShareGood_Url + id, values.getAsString("content"));
+        UtilsUmeng.share(LocalVideoActivity.this, Ini.ShareCommunity_Url + id, values.getAsString("content"));
     }
 
 }
