@@ -383,9 +383,15 @@ public class PagesFragment extends BasicFragment implements SwipeRefreshLayout.O
 
             switch (what) {
                 case 1:
-                    infoPages.removeAllViews();
-                    pagesNewsLayout.removeAllViews();
-                    pagesHotLayout.removeAllViews();
+                    if (infoPages != null) {
+                        infoPages.removeAllViews();
+                    }
+                    if (pagesNewsLayout != null) {
+                        pagesNewsLayout.removeAllViews();
+                    }
+                    if (pagesHotLayout != null) {
+                        pagesHotLayout.removeAllViews();
+                    }
                     info();
                     btnText(namesList);
                     newsList();
@@ -410,9 +416,12 @@ public class PagesFragment extends BasicFragment implements SwipeRefreshLayout.O
                     swipeRefreshLayout.setRefreshing(false);//刷新完成
                     break;
                 case 2:
-
-                    pagesNewsLayout.removeAllViews();
-                    pagesHotLayout.removeAllViews();
+                    if (pagesNewsLayout != null) {
+                        pagesNewsLayout.removeAllViews();
+                    }
+                    if (pagesHotLayout != null) {
+                        pagesHotLayout.removeAllViews();
+                    }
                     newsList();
                     hotList();
                     if (imagesUrls.size() > 0) {
@@ -434,9 +443,12 @@ public class PagesFragment extends BasicFragment implements SwipeRefreshLayout.O
                     swipeRefreshLayout.setRefreshing(false);//刷新完成
                     break;
                 case 3:
-
-                    pagesNewsLayout.removeAllViews();
-                    pagesHotLayout.removeAllViews();
+                    if (pagesNewsLayout != null) {
+                        pagesNewsLayout.removeAllViews();
+                    }
+                    if (pagesHotLayout != null) {
+                        pagesHotLayout.removeAllViews();
+                    }
                     newsList();
                     hotList();
                     if (imagesUrls.size() > 0) {
@@ -458,8 +470,12 @@ public class PagesFragment extends BasicFragment implements SwipeRefreshLayout.O
                     swipeRefreshLayout.setRefreshing(false);//刷新完成
                     break;
                 case 4:
-                    pagesNewsLayout.removeAllViews();
-                    pagesHotLayout.removeAllViews();
+                    if (pagesNewsLayout != null) {
+                        pagesNewsLayout.removeAllViews();
+                    }
+                    if (pagesHotLayout != null) {
+                        pagesHotLayout.removeAllViews();
+                    }
                     newsList();
                     hotList();
                     if (imagesUrls.size() > 0) {

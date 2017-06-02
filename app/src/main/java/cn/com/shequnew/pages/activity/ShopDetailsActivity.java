@@ -123,8 +123,8 @@ public class ShopDetailsActivity extends BaseActivity implements UserGoodsShopAd
         Bundle bundle = this.getIntent().getExtras();
         id = bundle.getInt("id");
         uid = bundle.getInt("uid");
-        if (uid == AppContext.cv.getAsInteger("id")) {
-//        if (String.valueOf(uid).equals(AppContext.cv.get("id"))) {
+//        if (uid == AppContext.cv.getAsInteger("id")) {
+        if (String.valueOf(uid).equals(AppContext.cv.getAsInteger("id"))) {
             lan.setVisibility(View.GONE);
             shopDetailsAttention.setVisibility(View.GONE);
             shopDetailsAttentionNo.setVisibility(View.GONE);
@@ -367,7 +367,7 @@ public class ShopDetailsActivity extends BaseActivity implements UserGoodsShopAd
             switch (what) {
                 case 1:
                     initView();
-                    if (uid != AppContext.cv.getAsInteger("id")) {
+                    if (String.valueOf(uid).equals(AppContext.cv.getAsInteger("id")))  {
                         isColl();
                     }
                     initGoods();

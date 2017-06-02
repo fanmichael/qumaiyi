@@ -213,8 +213,8 @@ public class LocalVideoActivity extends BaseActivity implements CommentAdapter.s
         Bundle bundle = this.getIntent().getExtras();
         id = bundle.getInt("id");
         uid = bundle.getInt("uid");
-//        if (String.valueOf(uid).equals(AppContext.cv.get("id"))) {
-        if (uid == AppContext.cv.getAsInteger("id")) {
+        if (String.valueOf(uid).equals(AppContext.cv.getAsInteger("id"))) {
+//        if (uid == AppContext.cv.getAsInteger("id")) {
 //            videoLan.setVisibility(View.GONE);
             videoFaith.setVisibility(View.GONE);
             videoDetailsAttention.setVisibility(View.GONE);
@@ -664,7 +664,7 @@ public class LocalVideoActivity extends BaseActivity implements CommentAdapter.s
             switch (what) {
                 case 1:
                     initView();
-                    if (uid != AppContext.cv.getAsInteger("id")) {
+                    if (String.valueOf(uid).equals(AppContext.cv.getAsInteger("id"))) {
                         isColl();
                     }
                     imgsList();

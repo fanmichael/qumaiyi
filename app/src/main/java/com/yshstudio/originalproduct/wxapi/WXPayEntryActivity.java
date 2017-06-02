@@ -35,14 +35,14 @@ import static android.R.attr.type;
 public class WXPayEntryActivity implements IWXAPIEventHandler {
     @Override
     public void onReq(BaseReq baseReq) {
-
+        Log.e("aa", "sssssssssssssssssssssssssssssssssssssssssssssssssssssss");
     }
 
     @Override
     public void onResp(BaseResp baseResp) {
         OkHttpClient client = new OkHttpClient();
         RequestBody requestBody = new FormBody.Builder()
-                .add("out_trade_no",SharedPreferenceUtil.read("orderid","")).build();
+                .add("out_trade_no", SharedPreferenceUtil.read("orderid", "")).build();
         Request request = new Request.Builder()
                 .url(Ini.RequestPayCallBack_Weixin)
                 .post(requestBody)
@@ -50,12 +50,12 @@ public class WXPayEntryActivity implements IWXAPIEventHandler {
         client.newCall(request).enqueue(new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
-
+                Log.e("aa", "sssssssssssssssssssssssssssssssssss");
             }
 
             @Override
             public void onResponse(Call call, Response response) throws IOException {
-                Log.e("aa","aa");
+                Log.e("aa", "sssssssssssssssssssssssssssssssssssssssssssssssssssssss");
             }
         });
     }

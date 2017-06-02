@@ -442,9 +442,15 @@
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.NoTitleBar"></activity>
-        <activity android:name=".chat.activity.PersonDetailsActivity"></activity>
-        <activity android:name=".chat.activity.GroupDetailsAcitivity"></activity>
-        <activity android:name=".chat.activity.GroupDeleteMember"></activity>
+        <activity android:name=".chat.activity.PersonDetailsActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"
+            ></activity>
+        <activity android:name=".chat.activity.GroupDetailsAcitivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"
+            ></activity>
+        <activity android:name=".chat.activity.GroupDeleteMember"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"
+            ></activity>
         <activity
             android:name=".chat.activity.ChatActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar"></activity>

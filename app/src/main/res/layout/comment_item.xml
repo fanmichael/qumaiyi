@@ -75,10 +75,9 @@
         android:id="@+id/comm_content_details"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/s"
         android:layout_marginLeft="60dp"
-        android:orientation="vertical">
-    </LinearLayout>
+        android:background="@drawable/s"
+        android:orientation="vertical" />
 
 
 </LinearLayout>

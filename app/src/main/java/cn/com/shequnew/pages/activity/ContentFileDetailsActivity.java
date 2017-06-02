@@ -1,5 +1,6 @@
 package cn.com.shequnew.pages.activity;
 
+import android.Manifest;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
@@ -56,10 +57,12 @@ import cn.com.shequnew.pages.adapter.ShopImagesAdapter;
 import cn.com.shequnew.pages.config.AppContext;
 import cn.com.shequnew.pages.http.HttpConnectTool;
 import cn.com.shequnew.pages.prompt.Loading;
+import cn.com.shequnew.tools.ImageToools;
 import cn.com.shequnew.tools.ListTools;
 import cn.com.shequnew.tools.SharedPreferenceUtil;
 import cn.com.shequnew.tools.UtilsUmeng;
 import cn.com.shequnew.tools.ValidData;
+import cn.com.shequnew.tools.XPermissionUtils;
 
 
 /**
@@ -180,8 +183,8 @@ public class ContentFileDetailsActivity extends BaseActivity implements CommentA
         Bundle bundle = this.getIntent().getExtras();
         id = bundle.getInt("id");
         uid = bundle.getInt("uid");
-        if (uid == AppContext.cv.getAsInteger("id")) {
-//        if (String.valueOf(uid).equals(AppContext.cv.getAsInteger("id"))) {
+//        if (uid == AppContext.cv.getAsInteger("id")) {
+        if (String.valueOf(uid).equals(AppContext.cv.getAsInteger("id"))) {
 //            lan.setVisibility(View.GONE);
             faith.setVisibility(View.GONE);
             fileDetailsAttention.setVisibility(View.GONE);
@@ -481,38 +484,6 @@ public class ContentFileDetailsActivity extends BaseActivity implements CommentA
         };
     }
 
-    /**
-     * 延迟加载
-     * <p>
-     * private void initDelay() {
-     * mDelay = new Handler() {
-     *
-     * @Override public void handleMessage(Message msg) {
-     * switch (msg.what) {
-     * case 1:
-     * mLoading = new Loading(
-     * context, fileDetailsNick);
-     * mLoading.setText("正在加载......");
-     * mLoading.show();
-     * new asyncTask().execute(1);
-     * break;
-     * case 2:
-     * new asyncTask().execute(2);
-     * break;
-     * case 3:
-     * new asyncTask().execute(5);
-     * break;
-     * case 4:
-     * new asyncTask().execute(6);
-     * break;
-     * }
-     * }
-     * };
-     * }
-     * <p>
-     * /**
-     * 回复
-     */
     @Override
     public void content(int posit, int nid, int uid, int parent) {
         //回复
@@ -578,7 +549,7 @@ public class ContentFileDetailsActivity extends BaseActivity implements CommentA
             switch (what) {
                 case 1:
                     initData();
-                    if (uid != AppContext.cv.getAsInteger("id")) {
+                    if (String.valueOf(uid).equals(AppContext.cv.getAsInteger("id"))) {
                         isColl();
                     }
                     imgsList();
