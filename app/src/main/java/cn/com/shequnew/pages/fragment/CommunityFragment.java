@@ -198,6 +198,9 @@ public class CommunityFragment extends BasicFragment implements SwipeRefreshLayo
                 case 1:
                     commend();
                     allcate();
+                    if(swDeal==null){
+                        return;
+                    }
                     swDeal.setRefreshing(false);//刷新完成
                     break;
             }
@@ -207,6 +210,10 @@ public class CommunityFragment extends BasicFragment implements SwipeRefreshLayo
 
 
     private void allcate() {
+        if(linAllCate==null){
+            return;
+        }
+
         if (allcateList.size() > 0) {
             for (int i = 0; i < 5; i++) {
                 View view = LayoutInflater.from(context).inflate(R.layout.chose_allcate, null);
@@ -233,6 +240,9 @@ public class CommunityFragment extends BasicFragment implements SwipeRefreshLayo
 
 
     private void commend() {
+        if(moreRecommend==null){
+            return;
+        }
         if (recommendList.size() > 8) {
             moreRecommend.setVisibility(View.VISIBLE);
         } else {

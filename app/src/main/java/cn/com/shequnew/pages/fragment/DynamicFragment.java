@@ -223,6 +223,9 @@ public class DynamicFragment extends BasicFragment implements SwipeRefreshLayout
             // removeLoading();
             switch (what) {
                 case 1:
+                    if(swipeRefreshLayout==null){
+                        return;
+                    }
                     swipeRefreshLayout.setRefreshing(false);//刷新完成
                     hideProgress();
                     if (dyList.size() > 0) {

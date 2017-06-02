@@ -392,6 +392,9 @@ public class PagesFragment extends BasicFragment implements SwipeRefreshLayout.O
                     if (pagesHotLayout != null) {
                         pagesHotLayout.removeAllViews();
                     }
+                    if(infoPages == null){
+                        return;
+                    }
                     info();
                     btnText(namesList);
                     newsList();
@@ -411,6 +414,9 @@ public class PagesFragment extends BasicFragment implements SwipeRefreshLayout.O
                         image_uri.put("imageUrls", imageUrls[i]);
                         image_uri.put("imageUris", imageUris[i]);
                         imageList.add(image_uri);
+                    }
+                    if(swipeRefreshLayout==null){
+                        return;
                     }
                     slideshowView.setImageUrls(imageList);
                     swipeRefreshLayout.setRefreshing(false);//刷新完成
@@ -651,6 +657,10 @@ public class PagesFragment extends BasicFragment implements SwipeRefreshLayout.O
      * 最新内容
      */
     private void newsList() {
+        if(pagesNewsLayout==null){
+            return;
+        }
+
         if (newaList.size() > 8) {
             pagseNewsTextMore.setVisibility(View.VISIBLE);
         } else {
@@ -733,6 +743,10 @@ public class PagesFragment extends BasicFragment implements SwipeRefreshLayout.O
      * 最新内容
      */
     private void hotList() {
+        if(pagesHotLayout==null){
+            return;
+        }
+
         if (hotList.size() > 8) {
             pagesHotTextMore.setVisibility(View.VISIBLE);
         } else {
