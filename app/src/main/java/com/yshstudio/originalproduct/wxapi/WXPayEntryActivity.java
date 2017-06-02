@@ -40,6 +40,7 @@ public class WXPayEntryActivity implements IWXAPIEventHandler {
 
     @Override
     public void onResp(BaseResp baseResp) {
+
         OkHttpClient client = new OkHttpClient();
         RequestBody requestBody = new FormBody.Builder()
                 .add("out_trade_no",SharedPreferenceUtil.read("orderid","")).build();
