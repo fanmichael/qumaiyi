@@ -217,10 +217,19 @@ public class InstallDetailsActivity extends BaseActivity {
                 if (SharedPreferenceUtil.hasKey("mobile") && SharedPreferenceUtil.hasKey("password")) {
                     SharedPreferenceUtil.remove("mobile");
                     SharedPreferenceUtil.remove("password");
+                    AppContext.cv.clear();
+                }
+                if (SharedPreferenceUtil.hasKey("id")) {
+                    SharedPreferenceUtil.remove("type");
+                    SharedPreferenceUtil.remove("id");
+                    SharedPreferenceUtil.remove("nick");
+                    SharedPreferenceUtil.remove("icon");
+                    AppContext.cv.clear();
                 }
                 if (EMClient.getInstance().isLoggedInBefore())
                     EMClient.getInstance().logout(true);
                 ObjectSaveUtils.saveObject(InstallDetailsActivity.this, "USERICON", UserInfo.getInstance());
+                dialog.dismiss();
                 AppContext.getInstance().logoutApp();
                 Intent intent = new Intent(InstallDetailsActivity.this, FristAdvActivity.class);
                 startActivity(intent);

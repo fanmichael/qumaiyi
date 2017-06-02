@@ -12,7 +12,7 @@
         android:layout_centerInParent="true"
         fresco:roundBottomLeft="true"
         fresco:roundBottomRight="true"
-        fresco:roundedCornerRadius="15dp"
+        fresco:roundedCornerRadius="35dp"
         fresco:roundingBorderColor="@color/white"
         fresco:roundingBorderWidth="1dp" />
 

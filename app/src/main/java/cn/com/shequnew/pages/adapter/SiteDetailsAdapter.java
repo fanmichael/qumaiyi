@@ -28,10 +28,10 @@ public class SiteDetailsAdapter extends BaseAdapter {
     private LayoutInflater mInflater;
     private setOnClickLoction setOnClickLoction;
 
-    public SiteDetailsAdapter(List<ContentValues> contentValues, Context mContext,setOnClickLoction setOnClickLoction) {
+    public SiteDetailsAdapter(List<ContentValues> contentValues, Context mContext, setOnClickLoction setOnClickLoction) {
         this.mContext = mContext;
         this.contentValues = contentValues;
-        this.setOnClickLoction=setOnClickLoction;
+        this.setOnClickLoction = setOnClickLoction;
         mInflater = LayoutInflater.from(mContext);
     }
 
@@ -86,31 +86,22 @@ public class SiteDetailsAdapter extends BaseAdapter {
         holder.choseAddress.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                setOnClickLoction.radio(position,cv.getAsInteger("id"));
+                setOnClickLoction.radio(position, cv.getAsInteger("id"));
             }
         });
 
         holder.edit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(mContext, NewSiteActivity.class);
-                Bundle bundle = new Bundle();
-                bundle.putString("type", "edit");
-                bundle.putInt("id", cv.getAsInteger("id"));
-                bundle.putInt("uid", cv.getAsInteger("uid"));
+                setOnClickLoction.update(position, cv.getAsInteger("id"),cv.getAsInteger("uid"), cv.getAsString("name"), cv.getAsString("mobile"), cv.getAsString("address"));
 
-                bundle.putString("name", cv.getAsString("name"));
-                bundle.putString("mobile", cv.getAsString("mobile"));
-                bundle.putString("address", cv.getAsString("address"));
-                intent.putExtras(bundle);
-                mContext.startActivity(intent);
             }
         });
 
         holder.delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                setOnClickLoction.delete(position,cv.getAsInteger("id"));
+                setOnClickLoction.delete(position, cv.getAsInteger("id"));
             }
         });
 
@@ -126,10 +117,12 @@ public class SiteDetailsAdapter extends BaseAdapter {
         public LinearLayout delete;
     }
 
-    public   interface  setOnClickLoction
-    {
-        public  void  radio(int posit, int id );
-        public  void  delete(int posit, int id );
+    public interface setOnClickLoction {
+        public void radio(int posit, int id);
+
+        public void delete(int posit, int id);
+
+        public void update(int posit, int id, int uid, String name, String mobile, String address);
 
     }
 

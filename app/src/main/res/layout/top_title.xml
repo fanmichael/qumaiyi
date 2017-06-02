@@ -14,8 +14,8 @@
 
         <ImageView
             android:id="@+id/image_back"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_gravity="left|center"
             android:layout_marginLeft="15dp"
             android:background="@drawable/arrowleft"
@@ -48,7 +48,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="right|center"
-            android:layout_marginRight="5dp"
+            android:layout_marginRight="15dp"
             android:text="@string/register"
             android:textColor="@color/col_green"
             android:textSize="18dp"

@@ -46,10 +46,6 @@ public class EaseConversationListFragment extends EaseBaseFragment {
     protected boolean hidden;
 
 
-
-
-
-
     protected List<EMConversation> conversationList = new ArrayList<EMConversation>();
     protected EaseConversationList conversationListView;
     protected FrameLayout errorItemContainer;
@@ -171,6 +167,7 @@ public class EaseConversationListFragment extends EaseBaseFragment {
                 } else {
                     clearSearch.setVisibility(View.INVISIBLE);
                 }
+                /*refresh();*/
             }
 
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {

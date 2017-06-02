@@ -38,7 +38,7 @@
             android:layout_marginTop="10dp"
             fresco:roundBottomLeft="true"
             fresco:roundBottomRight="true"
-            fresco:roundedCornerRadius="25dp"
+            fresco:roundedCornerRadius="35dp"
             fresco:roundingBorderColor="@color/white"
             fresco:roundingBorderWidth="1dp" />
     </RelativeLayout>

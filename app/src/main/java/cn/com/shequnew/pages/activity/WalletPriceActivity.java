@@ -112,7 +112,7 @@ public class WalletPriceActivity extends BaseActivity {
     private void httpWallet() {
         try {
             HashMap<String, String> hashMap = new HashMap<>();
-            hashMap.put("action", "Enchashment");
+            hashMap.put("action", "User.Enchashment");
             hashMap.put("uid", AppContext.cv.getAsInteger("id") + "");
             hashMap.put("name", walletName.getText().toString().trim());
             hashMap.put("mobile", walletPhone.getText().toString().trim());
@@ -152,6 +152,7 @@ public class WalletPriceActivity extends BaseActivity {
                 case 1:
                     if (error == 0) {
                         Toast.makeText(context, "提交成功！", Toast.LENGTH_SHORT).show();
+                        setResult(1);
                         destroyActitity();
                     } else {
                         Toast.makeText(context, "输入金额大于余额！", Toast.LENGTH_SHORT).show();

@@ -86,7 +86,7 @@ public class AppStartActivity extends BaseActivity implements ViewPager.OnPageCh
 
 
     private void initView() {
-        imgIdArray = new int[]{R.drawable.background, R.drawable.background, R.drawable.background};
+        imgIdArray = new int[]{R.drawable.background, R.drawable.start1, R.drawable.start22};
         tips = new ImageView[imgIdArray.length];
         for (int i = 0; i < tips.length; i++) {
             ImageView imageView = new ImageView(this);

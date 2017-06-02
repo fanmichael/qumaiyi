@@ -3,6 +3,7 @@ package cn.com.shequnew.pages.activity;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.graphics.Color;
 import android.media.MediaPlayer;
 import android.net.Uri;
@@ -13,7 +14,6 @@ import android.os.Message;
 import android.support.annotation.IdRes;
 import android.util.DisplayMetrics;
 import android.util.Log;
-import android.view.SurfaceView;
 import android.view.View;
 import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
@@ -24,10 +24,11 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.MediaController;
+import android.widget.ProgressBar;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.RelativeLayout;
 import android.widget.ScrollView;
-import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -48,22 +49,27 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.com.shequnew.R;
-import cn.com.shequnew.inc.Ini;
 import cn.com.shequnew.chat.activity.ChatActivity;
 import cn.com.shequnew.chat.util.ObjectSaveUtils;
+import cn.com.shequnew.inc.Ini;
 import cn.com.shequnew.pages.adapter.CommentAdapter;
+import cn.com.shequnew.pages.adapter.ConGoodsAdapter;
 import cn.com.shequnew.pages.adapter.ShopImagesAdapter;
 import cn.com.shequnew.pages.config.AppContext;
-import cn.com.shequnew.pages.config.PlayVideo;
+import cn.com.shequnew.pages.config.CustomMediaController;
 import cn.com.shequnew.pages.http.HttpConnectTool;
 import cn.com.shequnew.pages.prompt.Loading;
 import cn.com.shequnew.pages.view.MyVideoView;
 import cn.com.shequnew.tools.ListTools;
+import cn.com.shequnew.tools.SharedPreferenceUtil;
 import cn.com.shequnew.tools.UtilsUmeng;
 import cn.com.shequnew.tools.ValidData;
+import io.vov.vitamio.LibsChecker;
+import io.vov.vitamio.Vitamio;
+import io.vov.vitamio.widget.VideoView;
 
 /**
- * 播放视频
+ * 播放视频, MediaPlayer.OnInfoListener, MediaPlayer.OnBufferingUpdateListener
  */
 public class LocalVideoActivity extends BaseActivity implements CommentAdapter.setOnClickLoction {
     @BindView(R.id.image_back_coll)
@@ -136,18 +142,19 @@ public class LocalVideoActivity extends BaseActivity implements CommentAdapter.s
     LinearLayout videoDetailsInfoFrom;
     @BindView(R.id.video_ln)
     FrameLayout videoLn;
-    @BindView(R.id.surfaceView1)
-    SurfaceView surfaceView;
-    @BindView(R.id.btnPause)
-    Button btnPause;
-    @BindView(R.id.btnStop)
-    Button btnStop;
-    @BindView(R.id.skbProgress)
-    SeekBar skbProgress;
-    @BindView(R.id.frm_video)
-    FrameLayout frmVideo;
-    @BindView(R.id.video_video)
-    MyVideoView videoVideo;
+
+    @BindView(R.id.buffer)
+    VideoView mVideoView;
+    @BindView(R.id.probar)
+    ProgressBar pb;
+    @BindView(R.id.download_rate)
+    TextView downloadRateView;
+    @BindView(R.id.load_rate)
+    TextView loadRateView;
+    @BindView(R.id.video_play_re)
+    RelativeLayout videoPlayRe;
+    @BindView(R.id.video_play)
+    MyVideoView videoPlay;
 
     private Context context;
     //主题
@@ -158,6 +165,8 @@ public class LocalVideoActivity extends BaseActivity implements CommentAdapter.s
     //商品
     private List<ContentValues> goodsList = new ArrayList<>();
     private List<ContentValues> imgs = new ArrayList<>();
+
+    private List<ContentValues> shopList = new ArrayList<>();
     //评价内容
     private String contentDetails = "";
     public int id;
@@ -171,12 +180,28 @@ public class LocalVideoActivity extends BaseActivity implements CommentAdapter.s
     //评论
     private CommentAdapter commentAdapter;
     private ShopImagesAdapter shopImagesAdapter;//图片介绍
-    ////
-    private PlayVideo player;
+    private ConGoodsAdapter conGoodsAdapter;
+
+
+    //视频地址
+    private MediaController mMediaController;
+//    private CustomMediaController mCustomMediaController;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //定义全屏参数
+//        int flag = WindowManager.LayoutParams.FLAG_FULLSCREEN;
+//        //获得当前窗体对象
+//        Window window = LocalVideoActivity.this.getWindow();
+//        //设置当前窗体为全屏显示
+//        window.setFlags(flag, flag);
+        // 必须写这个，初始化加载库文件
+//        Vitamio.initialize(this);
+//        //设置视频解码监听
+//        if (!LibsChecker.checkVitamioLibs(this)) {
+//            return;
+//        }
         setContentView(R.layout.activity_local_video);
         ButterKnife.bind(this);
         context = this;
@@ -188,9 +213,10 @@ public class LocalVideoActivity extends BaseActivity implements CommentAdapter.s
         Bundle bundle = this.getIntent().getExtras();
         id = bundle.getInt("id");
         uid = bundle.getInt("uid");
-        if (String.valueOf(uid).equals(AppContext.cv.get("id")) ) {
+        if (String.valueOf(uid).equals(AppContext.cv.getAsInteger("id"))) {
 //        if (uid == AppContext.cv.getAsInteger("id")) {
-            videoLan.setVisibility(View.GONE);
+//            videoLan.setVisibility(View.GONE);
+            videoFaith.setVisibility(View.GONE);
             videoDetailsAttention.setVisibility(View.GONE);
             videoDetailsAttentionNo.setVisibility(View.GONE);
             collect.setVisibility(View.GONE);
@@ -211,13 +237,14 @@ public class LocalVideoActivity extends BaseActivity implements CommentAdapter.s
             }
         });
 
-        videoVideo.setVisibility(View.GONE);
-        frmVideo.setVisibility(View.GONE);
+        videoPlayRe.setVisibility(View.GONE);
+
+
     }
 
 
     /**
-     * 评价
+     * 举报
      */
     @OnClick(R.id.video_details_info_from)
     void inFrom() {
@@ -229,41 +256,6 @@ public class LocalVideoActivity extends BaseActivity implements CommentAdapter.s
         context.startActivity(intent);
     }
 
-    /**
-     * 播放视频
-     */
-    @OnClick(R.id.video_images_play)
-    void videoPlay() {
-        Uri uri = Uri.parse("http://qumaiyi.oss-cn-shenzhen.aliyuncs.com/video/2726248584.mp4");
-        videoVideo.setMediaController(new MediaController(this));
-        videoVideo.setOnCompletionListener(new MyPlayerOnCompletionListener());
-        videoVideo.setVideoURI(uri);
-        //开始播放视频
-        videoLn.setVisibility(View.GONE);
-        videoVideo.setVisibility(View.VISIBLE);
-        videoVideo.start();
-//        skbProgress.setOnSeekBarChangeListener(new SeekBarChangeEvent());
-//        player = new PlayVideo(surfaceView, skbProgress);
-//        videoLn.setVisibility(View.GONE);
-//        frmVideo.setVisibility(View.VISIBLE);
-//        String url = "http://baobab.wdjcdn.com/145076769089714.mp4";
-//        player.playUrl(url);
-
-        videoVideo.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
-            @Override
-            public void onPrepared(MediaPlayer mp) {
-                mp.setOnInfoListener(new MediaPlayer.OnInfoListener() {
-                    @Override
-                    public boolean onInfo(MediaPlayer mp, int what, int extra) {
-                        if (what == MediaPlayer.MEDIA_INFO_VIDEO_RENDERING_START)
-                            videoVideo.setBackgroundColor(Color.TRANSPARENT);
-                        return true;
-                    }
-                });
-            }
-        });
-
-    }
 
     class MyPlayerOnCompletionListener implements MediaPlayer.OnCompletionListener {
 
@@ -271,44 +263,102 @@ public class LocalVideoActivity extends BaseActivity implements CommentAdapter.s
         public void onCompletion(MediaPlayer mp) {
             Toast.makeText(LocalVideoActivity.this, "播放完成了", Toast.LENGTH_SHORT).show();
             videoLn.setVisibility(View.VISIBLE);
-            videoVideo.setVisibility(View.GONE);
+            videoPlay.setVisibility(View.GONE);
         }
     }
 
-    @OnClick(R.id.btnPause)
-    void btnPause() {
-        player.pause();
+    /**
+     * 播放视频
+     */
+    @OnClick(R.id.video_images_play)
+    void videoPlay() {
+        videoLn.setVisibility(View.GONE);
+        videoPlay.setVisibility(View.VISIBLE);
+        Uri uri = Uri.parse(values.getAsString("subject"));
+        videoPlay.setMediaController(new MediaController(this));
+        videoPlay.setOnCompletionListener(new MyPlayerOnCompletionListener());
+        videoPlay.setVideoURI(uri);
+        //开始播放视频
+        videoLn.setVisibility(View.GONE);
+        videoPlay.setVisibility(View.VISIBLE);
+        videoPlay.start();
+
+        videoPlay.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+            @Override
+            public void onPrepared(MediaPlayer mp) {
+                mp.setOnInfoListener(new MediaPlayer.OnInfoListener() {
+                    @Override
+                    public boolean onInfo(MediaPlayer mp, int what, int extra) {
+                        if (what == MediaPlayer.MEDIA_INFO_VIDEO_RENDERING_START)
+                            videoPlay.setBackgroundColor(Color.TRANSPARENT);
+                        return true;
+                    }
+                });
+            }
+        });
+
+
+//        //开始播放视频
+//        videoLn.setVisibility(View.GONE);
+//        videoPlayRe.setVisibility(View.VISIBLE);
+//        Uri uri = Uri.parse(values.getAsString("subject"));
+//        mMediaController = new MediaController(this);
+//        mCustomMediaController = new CustomMediaController(this, mVideoView, this);
+//        mCustomMediaController.setVideoName("白火锅 x 红火锅");
+//        mVideoView.setVideoURI(uri);//设置视频播放地址
+//        mVideoView.setMediaController(mCustomMediaController);
+//        mVideoView.setVideoQuality(MediaPlayer.VIDEOQUALITY_HIGH);//高画质
+//        mMediaController.show(5000);
+//        mVideoView.requestFocus();
+//        mVideoView.setOnInfoListener(this);
+//        mVideoView.setOnBufferingUpdateListener(this);
+//        mVideoView.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+//            @Override
+//            public void onPrepared(MediaPlayer mediaPlayer) {
+//                mediaPlayer.setPlaybackSpeed(1.0f);
+//            }
+//        });
     }
-
-    @OnClick(R.id.btnStop)
-    void stopVideo() {
-        player.stop();
-    }
-
-
-    class SeekBarChangeEvent implements SeekBar.OnSeekBarChangeListener {
-        int progress;
-
-        @Override
-        public void onProgressChanged(SeekBar seekBar, int progress,
-                                      boolean fromUser) {
-            // 原本是(progress/seekBar.getMax())*player.mediaPlayer.getDuration()
-            this.progress = progress * player.mediaPlayer.getDuration()
-                    / seekBar.getMax();
-        }
-
-        @Override
-        public void onStartTrackingTouch(SeekBar seekBar) {
-
-        }
-
-        @Override
-        public void onStopTrackingTouch(SeekBar seekBar) {
-            // seekTo()的参数是相对与影片时间的数字，而不是与seekBar.getMax()相对的数字
-            player.mediaPlayer.seekTo(progress);
-        }
-    }
-
+//
+//    @Override
+//    public void onBufferingUpdate(MediaPlayer mp, int percent) {
+//        loadRateView.setText(percent + "%");
+//    }
+//
+//    @Override
+//    public boolean onInfo(MediaPlayer mp, int what, int extra) {
+//        switch (what) {
+//            case MediaPlayer.MEDIA_INFO_BUFFERING_START:
+//                if (mVideoView.isPlaying()) {
+//                    mVideoView.pause();
+//                    pb.setVisibility(View.VISIBLE);
+//                    downloadRateView.setText("");
+//                    loadRateView.setText("");
+//                    downloadRateView.setVisibility(View.VISIBLE);
+//                    loadRateView.setVisibility(View.VISIBLE);
+//                }
+//                break;
+//            case MediaPlayer.MEDIA_INFO_BUFFERING_END:
+//                mVideoView.start();
+//                pb.setVisibility(View.GONE);
+//                downloadRateView.setVisibility(View.GONE);
+//                loadRateView.setVisibility(View.GONE);
+//                break;
+//            case MediaPlayer.MEDIA_INFO_DOWNLOAD_RATE_CHANGED:
+//                downloadRateView.setText("" + extra + "kb/s" + "  ");
+//                break;
+//        }
+//        return true;
+//    }
+//
+//    @Override
+//    public void onConfigurationChanged(Configuration newConfig) {
+//        //屏幕切换时，设置全屏
+//        if (mVideoView != null) {
+//            mVideoView.setVideoLayout(VideoView.VIDEO_LAYOUT_SCALE, 0);
+//        }
+//        super.onConfigurationChanged(newConfig);
+//    }
 
     /**
      * 数据
@@ -322,7 +372,9 @@ public class LocalVideoActivity extends BaseActivity implements CommentAdapter.s
         Uri imageUri = Uri.parse(values.getAsString("icon"));
         ValidData.load(imageUri, videoUserInfoIcon, 60, 60);
         videoDetailsNick.setText(values.getAsString("nick"));
-        videoDetailsTags.setText(values.getAsString("tags"));
+        videoDetailsTags.setText(values.getAsString("personalized"));
+        videoTags.setText(values.getAsString("tags"));
+        videoTitle.setText(values.getAsString("title"));
         Uri videoImage = Uri.parse(values.getAsString("video_img"));
         ValidData.load(videoImage, videoTest, width, 150);
         videoName.setText(values.getAsString("content"));
@@ -345,6 +397,15 @@ public class LocalVideoActivity extends BaseActivity implements CommentAdapter.s
         } else {
             new asyncTask().execute(6);
         }
+    }
+
+    @OnClick(R.id.video_user_info_icon)
+    void userInfo() {
+        Intent intent = new Intent(context, UserInfoActivity.class);
+        Bundle bundle = new Bundle();
+        bundle.putInt("uid", uid);
+        intent.putExtras(bundle);
+        startActivity(intent);
     }
 
     /**
@@ -382,7 +443,7 @@ public class LocalVideoActivity extends BaseActivity implements CommentAdapter.s
             videDetailsGoods.setVisibility(View.GONE);
         }
 
-        if (list.size() > 0) {
+        if (shopList.size() > 0) {
             videoDetailsTip.setVisibility(View.GONE);
             videoDetailsComment.setVisibility(View.VISIBLE);
         } else {
@@ -421,6 +482,16 @@ public class LocalVideoActivity extends BaseActivity implements CommentAdapter.s
         videoDetailsImages.setAdapter(shopImagesAdapter);
         ListTools.setListViewHeightBasedOnChildren(videoDetailsImages);
     }
+
+    /**
+     * 相关商品
+     */
+    private void conAdapter() {
+        conGoodsAdapter = new ConGoodsAdapter(shopList, context);
+        videDetailsGoods.setAdapter(conGoodsAdapter);
+        ListTools.setListViewHeightBasedOnChildren(videDetailsGoods);
+    }
+
 
     /**
      * 返回
@@ -478,11 +549,12 @@ public class LocalVideoActivity extends BaseActivity implements CommentAdapter.s
                         //加入群聊
                         Intent intent = new Intent(context, ElcyGroupDeActivity.class);
                         context.startActivity(intent);
+                        videoChat.setChecked(false);
                         break;
                     case R.id.video_faith:
                         //私聊群主
                         sendMessage();
-                        videoFaith.setClickable(false);
+                        videoFaith.setChecked(false);
                         break;
                     case R.id.video_dis:
                         //评论
@@ -499,15 +571,21 @@ public class LocalVideoActivity extends BaseActivity implements CommentAdapter.s
     }
 
     private void sendMessage() {
-        if (String.valueOf(AppContext.cv.getAsInteger("id")).trim().isEmpty()) {
-            return;
+        if (SharedPreferenceUtil.hasKey("id")) {
+            if (SharedPreferenceUtil.read("id", "").isEmpty()) {
+                return;
+            }
+        } else {
+            if (AppContext.cv.getAsString("mobile").trim().isEmpty()) {
+                return;
+            }
         }
         Intent intent = new Intent(LocalVideoActivity.this, ChatActivity.class);
-        intent.putExtra(EaseConstant.EXTRA_USER_ID, values.getAsInteger("id") + "").putExtra(EaseConstant.EXTRA_CHAT_TYPE, EaseConstant.CHATTYPE_SINGLE).putExtra("NICK", values.getAsString("nick"));
-        if (UserInfo.getInstance().getInfo() == null || UserInfo.getInstance().getInfo().get(String.valueOf(values.getAsInteger("id"))) == null) {
-            UserInfo.getInstance().addInfo(new UserInfo.User().setUid(String.valueOf(values.getAsInteger("id"))).setNick(values.getAsString("nick")).setIcon(values.getAsString("icon")));
+        intent.putExtra(EaseConstant.EXTRA_USER_ID, values.getAsString("mobile")).putExtra(EaseConstant.EXTRA_CHAT_TYPE, EaseConstant.CHATTYPE_SINGLE).putExtra("NICK", values.getAsString("nick"));
+        if (UserInfo.getInstance().getInfo() == null || UserInfo.getInstance().getInfo().get(values.getAsString("mobile")) == null) {
+            UserInfo.getInstance().addInfo(new UserInfo.User().setUid(values.getAsString("mobile")).setNick(values.getAsString("nick")).setIcon(values.getAsString("icon")));
         } else {
-            UserInfo.getInstance().getInfo().get(String.valueOf(values.getAsInteger("id"))).setNick(values.getAsString("nick")).setIcon(values.getAsString("icon"));
+            UserInfo.getInstance().getInfo().get(values.getAsString("mobile")).setNick(values.getAsString("nick")).setIcon(values.getAsString("icon"));
         }
         new Thread() {
             @Override
@@ -518,6 +596,7 @@ public class LocalVideoActivity extends BaseActivity implements CommentAdapter.s
         }.start();
         startActivity(intent);
     }
+
     /**
      * 延迟加载
      */
@@ -585,11 +664,11 @@ public class LocalVideoActivity extends BaseActivity implements CommentAdapter.s
             switch (what) {
                 case 1:
                     initView();
-                    if (String.valueOf(uid).equals(AppContext.cv.get("id")) ) {
-          //        if (uid == AppContext.cv.getAsInteger("id")) {
+                    if (String.valueOf(uid).equals(AppContext.cv.getAsInteger("id"))) {
                         isColl();
                     }
                     imgsList();
+                    conAdapter();
                     commAdapter();
                     (new Handler()).post(new Runnable() {
                         @Override
@@ -864,7 +943,7 @@ public class LocalVideoActivity extends BaseActivity implements CommentAdapter.s
             values.put("personalized", objnote.getString("personalized"));
             values.put("nick", objnote.getString("nick"));
             values.put("icon", objnote.getString("icon"));
-
+            values.put("mobile", objnote.getString("mobile"));
             JSONArray imagesJson = new JSONArray(objnote.getString("content_imgs"));//图片介绍
             if (imagesJson.length() > 0) {
                 for (int i = 0; i < imagesJson.length(); i++) {
@@ -918,24 +997,18 @@ public class LocalVideoActivity extends BaseActivity implements CommentAdapter.s
             }
 
 
-//            JSONArray goodsJson = new JSONArray(objData.getString("goods"));//g感兴趣的商品
-//            if (goodsJson.length() > 0) {
-//                for (int i = 0; i < goodsJson.length(); i++) {
-//                    JSONObject jsonObj = goodsJson.getJSONObject(i);
-//                    ContentValues cv = new ContentValues();
-//                    cv.put("id", jsonObj.getInt("id"));//id
-//                    cv.put("uid", jsonObj.getInt("uid"));
-//                    cv.put("cid", jsonObj.getInt("cid"));
-//                    cv.put("maf_time", jsonObj.getInt("maf_time"));//天数
-//                    cv.put("good_name", jsonObj.getString("good_name"));//标题
-//                    cv.put("good_image", jsonObj.getString("good_image"));//图
-//                    cv.put("price", jsonObj.getString("price"));//价格
-//                    cv.put("icon", jsonObj.getString("icon"));//价格
-//                    cv.put("nick", jsonObj.getString("nick"));//价格
-//                    shopsList.add(cv);
-//                }
-//
-//            }
+            JSONArray goodsJson = new JSONArray(objData.getString("goods"));//g感兴趣的商品
+            if (goodsJson.length() > 0) {
+                for (int i = 0; i < goodsJson.length(); i++) {
+                    JSONObject jsonObj = goodsJson.getJSONObject(i);
+                    ContentValues cv = new ContentValues();
+                    cv.put("id", jsonObj.getInt("id"));//id
+                    cv.put("good_name", jsonObj.getString("good_name"));//标题
+                    cv.put("good_image", jsonObj.getString("good_image"));//图
+                    cv.put("price", jsonObj.getString("price"));//价格
+                    shopList.add(cv);
+                }
+            }
 
 
         } catch (JSONException er) {
@@ -984,7 +1057,7 @@ public class LocalVideoActivity extends BaseActivity implements CommentAdapter.s
 
     @OnClick(R.id.share_coll)
     void shareColl() {
-        UtilsUmeng.share(LocalVideoActivity.this, Ini.ShareGood_Url+id,values.getAsString("content"));
+        UtilsUmeng.share(LocalVideoActivity.this, Ini.ShareCommunity_Url + id, values.getAsString("content"));
     }
 
 }

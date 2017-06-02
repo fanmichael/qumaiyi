@@ -30,8 +30,8 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.READ_LOGS" />
     <uses-permission android:name="android.permission.CALL_PHONE" />
@@ -250,10 +250,10 @@
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" />
         <!--<activity-->
-            <!--android:name="com.sina.weibo.sdk.share.WbShareTransActivity"-->
-            <!--android:configChanges="keyboardHidden|orientation"-->
-            <!--android:screenOrientation="portrait"-->
-            <!--android:windowSoftInputMode="adjustResize" />-->
+        <!--android:name="com.sina.weibo.sdk.share.WbShareTransActivity"-->
+        <!--android:configChanges="keyboardHidden|orientation"-->
+        <!--android:screenOrientation="portrait"-->
+        <!--android:windowSoftInputMode="adjustResize" />-->
         <activity
             android:name=".pages.activity.ShareAllActivity"
             android:configChanges="keyboardHidden|orientation"
@@ -284,11 +284,11 @@
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:exported="true"
             android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar"/>
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
         <activity
             android:name="com.umeng.qq.tencent.AuthActivity"
             android:launchMode="singleTask"
-            android:noHistory="true" >
+            android:noHistory="true">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
 
@@ -300,18 +300,17 @@
         </activity>
         <activity
             android:name="com.umeng.qq.tencent.AssistActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
             android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar"
-            android:configChanges="orientation|keyboardHidden|screenSize"/>
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
         <activity
             android:name="com.umeng.socialize.editorpage.ShareActivity"
-            android:theme="@style/Theme.UMDefault"
             android:excludeFromRecents="true"
-            />
+            android:theme="@style/Theme.UMDefault" />
         <activity
             android:name="com.yshstudio.originalproduct.WBShareActivity"
             android:configChanges="keyboardHidden|orientation"
-            android:screenOrientation="portrait" >
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="com.sina.weibo.sdk.action.ACTION_SDK_REQ_ACTIVITY" />
                 <category android:name="android.intent.category.DEFAULT" />
@@ -320,25 +319,19 @@
         <!-- 添加友盟appkey -->
         <meta-data
             android:name="UMENG_APPKEY"
-            android:value="591124d1a40fa30de100128d" >
-        </meta-data>
+            android:value="591124d1a40fa30de100128d"></meta-data>
         <!-- 友盟 登录与分享终点-->
-//支付宝支付
+        //支付宝支付
         <activity
             android:name="com.alipay.sdk.app.H5PayActivity"
             android:configChanges="orientation|keyboardHidden|navigation"
             android:exported="false"
-            android:screenOrientation="behind" >
-        </activity>
+            android:screenOrientation="behind"></activity>
         <activity
             android:name="com.alipay.sdk.auth.AuthActivity"
             android:configChanges="orientation|keyboardHidden|navigation"
             android:exported="false"
-            android:screenOrientation="behind" >
-        </activity>
-
-
-
+            android:screenOrientation="behind"></activity>
 
 
         <activity
@@ -449,9 +442,15 @@
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.NoTitleBar"></activity>
-        <activity android:name=".chat.activity.PersonDetailsActivity"></activity>
-        <activity android:name=".chat.activity.GroupDetailsAcitivity"></activity>
-        <activity android:name=".chat.activity.GroupDeleteMember"></activity>
+        <activity android:name=".chat.activity.PersonDetailsActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"
+            ></activity>
+        <activity android:name=".chat.activity.GroupDetailsAcitivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"
+            ></activity>
+        <activity android:name=".chat.activity.GroupDeleteMember"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"
+            ></activity>
         <activity
             android:name=".chat.activity.ChatActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar"></activity>
@@ -468,7 +467,9 @@
         <activity
             android:name=".chat.activity.GroupListActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar"></activity>
-        <activity android:name=".chat.activity.AdminActivity"></activity>
+        <activity
+            android:name=".chat.activity.AdminActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"></activity>
         <activity
             android:name="com.hyphenate.easeui.ui.EaseBaiduMapActivity"
             android:screenOrientation="portrait"
@@ -584,10 +585,16 @@
                 <action android:name="android.intent.action.USER_PRESENT" />
             </intent-filter>
         </receiver>
-            android:theme="@android:style/Theme.NoTitleBar" />
+        android:theme="@android:style/Theme.NoTitleBar" />
         <activity android:name=".pages.activity.ElcyGroupDeActivity" />
         <activity android:name=".pages.activity.DeclareActivity" />
         <activity android:name=".pages.activity.PictureDisplayActivity"></activity>
+        <activity
+            android:name="io.vov.vitamio.activity.InitActivity"
+            android:configChanges="orientation|screenSize|smallestScreenSize|keyboard|keyboardHidden|navigation"
+            android:launchMode="singleTop"
+            android:theme="@android:style/Theme.NoTitleBar"
+            android:windowSoftInputMode="stateAlwaysHidden" />
     </application>
 
 </manifest>

@@ -74,8 +74,15 @@ public class WalletActivity extends BaseActivity {
         Bundle bundle = new Bundle();
         bundle.putString("allPrice", allMoney);
         intent.putExtras(bundle);
-        context.startActivity(intent);
+        startActivityForResult(intent,1);
 
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (resultCode == 1) {
+            new asyncTask().execute(1);
+        }
     }
 
     /**

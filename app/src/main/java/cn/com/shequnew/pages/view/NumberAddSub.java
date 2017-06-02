@@ -26,7 +26,7 @@ public class NumberAddSub extends LinearLayout implements View.OnClickListener {
     private Context mContext;
     private int value = 1;
     private int minValue = 1;
-    private int maxValue = 5;
+    private int maxValue = 100;
 
 
     public NumberAddSub(Context context) {
@@ -120,13 +120,13 @@ public class NumberAddSub extends LinearLayout implements View.OnClickListener {
     public void onClick(View v) {
 
         if (v.getId() == R.id.btn_sub) {
-            Toast.makeText(mContext, "减", Toast.LENGTH_SHORT).show();
+//            Toast.makeText(mContext, "减", Toast.LENGTH_SHORT).show();
             subNum();
             if (onButtonClickListenter != null) {
                 onButtonClickListenter.onButtonSubClick(v, value);
             }
         } else if (v.getId() == R.id.btn_add) {
-            Toast.makeText(mContext, "加", Toast.LENGTH_SHORT).show();
+//            Toast.makeText(mContext, "加", Toast.LENGTH_SHORT).show();
             addNum();
             if (onButtonClickListenter != null) {
                 onButtonClickListenter.onButtonAddClick(v, value);

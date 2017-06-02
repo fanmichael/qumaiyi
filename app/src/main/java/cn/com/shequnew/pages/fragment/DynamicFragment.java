@@ -252,7 +252,7 @@ public class DynamicFragment extends BasicFragment implements SwipeRefreshLayout
             HashMap<String, String> hashMap = new HashMap<>();
             hashMap.put("action", "Dynamic.index");
             hashMap.put("uid", AppContext.cv.getAsInteger("id") + "");
-            hashMap.put("page", "1");
+            hashMap.put("page", page + "");
             String json = HttpConnectTool.post(hashMap);
             if (!json.equals("")) {
                 listXml(json);

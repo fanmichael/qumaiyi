@@ -39,6 +39,7 @@ import butterknife.OnClick;
 import cn.com.shequnew.R;
 import cn.com.shequnew.pages.adapter.AppraiesimgeAdapter;
 import cn.com.shequnew.pages.http.HttpConnectTool;
+import cn.com.shequnew.pages.prompt.Loading;
 import cn.com.shequnew.tools.ImageToools;
 
 /**
@@ -139,7 +140,7 @@ public class AppraiseActivity extends BaseActivity {
         Bundle bundle = this.getIntent().getExtras();
         ddid = bundle.getString("ddid");
         contentValues.add(0, null);
-        appraiesimgeAdapter = new AppraiesimgeAdapter(contentValues, context,1,true);
+        appraiesimgeAdapter = new AppraiesimgeAdapter(contentValues, context, 1, true);
         advBoardGridView.setAdapter(appraiesimgeAdapter);
         advBoardGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -224,14 +225,16 @@ public class AppraiseActivity extends BaseActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == 1) {
-            Uri uri = data.getData();
-            file = uri2File(uri);
-            ContentValues cv = new ContentValues();
-            cv.put("image", uri.toString());
-            contentValues.add(i, cv);
-            i++;
-            appraiesimgeAdapter.notifyDataSetChanged();
-            new asyncTask().execute(2);
+            if (resultCode == RESULT_OK) {
+                Uri uri = data.getData();
+                file = uri2File(uri);
+                ContentValues cv = new ContentValues();
+                cv.put("image", uri.toString());
+                contentValues.add(i, cv);
+                i++;
+                appraiesimgeAdapter.notifyDataSetChanged();
+                new asyncTask().execute(2);
+            }
         }
 
         if (requestCode == 2) {
@@ -323,6 +326,9 @@ public class AppraiseActivity extends BaseActivity {
             isit = false;
         }
         if (isit) {
+            mLoading = new Loading(context, topRegitTitle);
+            mLoading.setText("正在提交......");
+            mLoading.show();
             new asyncTask().execute(1);
         }
 
@@ -355,7 +361,7 @@ public class AppraiseActivity extends BaseActivity {
         @Override
         protected void onPostExecute(Bundle bundle) {
             int what = bundle.containsKey("what") ? bundle.getInt("what") : -1;
-//            removeLoading();
+            removeLoading();
             switch (what) {
                 case 1:
                     destroyActitity();

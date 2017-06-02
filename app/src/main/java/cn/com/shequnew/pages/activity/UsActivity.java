@@ -195,9 +195,25 @@ public class UsActivity extends BaseActivity {
                 holder = (ViewHolder) convertView.getTag();
             }
             ContentValues cv = textContent.setData().get(position);
-            holder.adv.setText(cv.getAsString("a"));
-            holder.adv_s.setText(cv.getAsString("c"));
-            holder.adv_e.setText(cv.getAsString("b"));
+
+            if (cv.getAsString("a").equals("")) {
+                holder.adv.setVisibility(View.GONE);
+            } else {
+                holder.adv.setVisibility(View.VISIBLE);
+                holder.adv.setText(cv.getAsString("a"));
+            }
+            if (cv.getAsString("c").equals("")) {
+                holder.adv_s.setVisibility(View.GONE);
+            } else {
+                holder.adv_s.setVisibility(View.VISIBLE);
+                holder.adv_s.setText(cv.getAsString("c"));
+            }
+            if (cv.getAsString("b").equals("")) {
+                holder.adv_e.setVisibility(View.GONE);
+            } else {
+                holder.adv_e.setVisibility(View.VISIBLE);
+                holder.adv_e.setText(cv.getAsString("b"));
+            }
             return convertView;
         }
 

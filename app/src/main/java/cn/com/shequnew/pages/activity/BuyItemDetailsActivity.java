@@ -6,6 +6,8 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -24,7 +26,9 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.com.shequnew.R;
+import cn.com.shequnew.inc.Ini;
 import cn.com.shequnew.pages.http.HttpConnectTool;
+import cn.com.shequnew.tools.PayTool;
 import cn.com.shequnew.tools.ValidData;
 
 /**
@@ -76,14 +80,18 @@ public class BuyItemDetailsActivity extends BaseActivity {
     CheckBox indentZhibaoDetails;
     @BindView(R.id.lin_zhifu_pay)
     LinearLayout linZhifuPay;
+    @BindView(R.id.top_all)
+    TextView topAll;
 
     private String ddid;
     private ContentValues order = new ContentValues();
+    private ContentValues addr = new ContentValues();
     private String orderAddress = "";
     private int state;
     private int status;
     private int id;
     private Context context;
+    Handler mHandler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,6 +100,25 @@ public class BuyItemDetailsActivity extends BaseActivity {
         ButterKnife.bind(this);
         context = this;
         initData();
+
+        indentWeixinDetails.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (indentZhibaoDetails.isChecked()) {
+                    indentZhibaoDetails.setChecked(false);
+                }
+            }
+        });
+
+        indentZhibaoDetails.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (indentWeixinDetails.isChecked()) {
+                    indentWeixinDetails.setChecked(false);
+                }
+            }
+        });
+
     }
 
 
@@ -104,7 +131,7 @@ public class BuyItemDetailsActivity extends BaseActivity {
 
     /**
      * 加载视图
-     * */
+     */
     private void initData() {
         Bundle bundle = this.getIntent().getExtras();
         ddid = bundle.getString("ddid");
@@ -151,6 +178,20 @@ public class BuyItemDetailsActivity extends BaseActivity {
             btmCol();
         }
         new asyncTask().execute(1);
+        mHandler = new Handler() {
+            public void handleMessage(Message msg) {
+                switch (msg.what) {
+                    //支付宝支付回调
+                    case Ini.SDK_PAY_FLAG:
+                        Toast.makeText(getApplicationContext(), "支付成功", Toast.LENGTH_LONG).show();
+                        finish();
+                        break;
+                    case Ini.SDK_PAY_FLAG2:
+                        PayTool.payZFB(BuyItemDetailsActivity.this, msg.obj.toString(), mHandler);
+                        break;
+                }
+            }
+        };
     }
 
 
@@ -167,6 +208,13 @@ public class BuyItemDetailsActivity extends BaseActivity {
         if (state == 0 && status == 0
                 || state == 6 && status == 0) {
             //付款
+            if (indentWeixinDetails.isChecked()) {
+                PayTool.pay(BuyItemDetailsActivity.this, order, addr, Ini.PAY_TYPE_WEIXIN, mHandler);
+            } else if (indentZhibaoDetails.isChecked()) {
+                PayTool.pay(BuyItemDetailsActivity.this, order, addr, Ini.PAY_TYPE_ZFB, mHandler);
+            } else {
+                Toast.makeText(context, "请选择支付方式", Toast.LENGTH_LONG).show();
+            }
 
         }
         if (state == 1 && status == 1) {
@@ -195,9 +243,10 @@ public class BuyItemDetailsActivity extends BaseActivity {
         }
     }
 
+
     /**
      * 申请退款
-     * */
+     */
     private void htttpOrder() {
         try {
             HashMap<String, String> hashMap = new HashMap<>();
@@ -222,7 +271,7 @@ public class BuyItemDetailsActivity extends BaseActivity {
 
     /**
      * 确认收货
-     * */
+     */
     private void htttpOrd() {
         try {
             HashMap<String, String> hashMap = new HashMap<>();
@@ -320,11 +369,12 @@ public class BuyItemDetailsActivity extends BaseActivity {
             if (jsonArrNote.getString("addr") == null || jsonArrNote.getString("addr").equals("null") || jsonArrNote.getString("addr").equals("")) {
                 orderAddress = "没有添加地址";
             } else {
-                JSONObject jsonAddr = new JSONObject(obj.getString("addr"));
-                order.put("maf_time", jsonAddr.getString("maf_time"));
-                order.put("maf_time", jsonAddr.getString("maf_time"));
-                order.put("maf_time", jsonAddr.getString("maf_time"));
-                order.put("maf_time", jsonAddr.getString("maf_time"));
+                JSONObject jsonAddr = new JSONObject(jsonArrNote.getString("addr"));
+                addr.put("id", jsonAddr.getInt("id"));
+                addr.put("uid", jsonAddr.getInt("uid"));
+                addr.put("name", jsonAddr.getString("name"));
+                addr.put("mobile", jsonAddr.getString("mobile"));
+                addr.put("address", jsonAddr.getString("address"));
             }
             order.put("id", jsonOrder.getInt("id"));
             order.put("num", jsonOrder.getInt("num"));
@@ -349,7 +399,9 @@ public class BuyItemDetailsActivity extends BaseActivity {
     private void initViewData() {
         buyDdid.setText(ddid);
         if (orderAddress.equals("")) {
-
+            buyDaddressName.setText(addr.getAsString("name"));
+            buyDaddressPhone.setText(addr.getAsString("mobile"));
+            buyDaddressDetails.setText(addr.getAsString("address"));
         } else {
             buyDaddressName.setText(orderAddress);
             buyDaddressPhone.setVisibility(View.GONE);
@@ -362,7 +414,7 @@ public class BuyItemDetailsActivity extends BaseActivity {
         buyDetailsNick.setText(order.getAsString("nick"));
         buyDetailsTitle.setText(order.getAsString("trade_name"));
         buyDetailsGrd.setText("工期：" + order.getAsInteger("maf_time") + "天");
-        buyDetailsPrice.setText("￥" + order.getAsInteger("money"));
+        buyDetailsPrice.setText("￥" + order.getAsString("money"));
         buyDetailsTime.setText("x" + order.getAsInteger("num"));
         buyOrderPrice.setText("合计：" + order.getAsInteger("totalmoney"));
     }

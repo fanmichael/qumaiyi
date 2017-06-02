@@ -275,7 +275,9 @@ public class EaseConversationAdapter extends ArrayAdapter<EMConversation> {
 //                        if(user != null && user.getNick() != null)
 //                            username = user.getNick();
                     }
-
+                    if (username.trim().isEmpty()) {
+                        newValues.clear();
+                    }
                     // First match against the whole ,non-splitted value
                     if (username.startsWith(StringHelper.getPingYin(prefixString))) {
                         newValues.add(value);

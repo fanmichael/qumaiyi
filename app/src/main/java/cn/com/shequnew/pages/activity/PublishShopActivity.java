@@ -29,6 +29,8 @@ import android.widget.Toast;
 
 import com.facebook.drawee.view.SimpleDraweeView;
 
+import org.json.JSONObject;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -106,6 +108,7 @@ public class PublishShopActivity extends BaseActivity {
     private int type = 1;
     private File sellImagesFile;
     private File file;
+    private boolean choseBtn = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -303,7 +306,11 @@ public class PublishShopActivity extends BaseActivity {
      */
     @OnClick(R.id.publish_shop_sumit)
     void sumbit() {
-        initData();
+        if (choseBtn) {
+            initData();
+        } else {
+            Toast.makeText(context, "请阅读，勾选只是产权承诺！", Toast.LENGTH_LONG).show();
+        }
     }
 
     /**
@@ -316,7 +323,6 @@ public class PublishShopActivity extends BaseActivity {
             Bundle bundle = new Bundle();
             switch (params[0]) {
                 case 1:
-
                     httpShop();
                     bundle.putInt("what", 1);
                     break;
@@ -363,11 +369,16 @@ public class PublishShopActivity extends BaseActivity {
             file.put("cover", sellImagesFile);
             if (files.size() > 0) {
                 for (int i = 0; i < files.size(); i++) {
-                    file.put("show[]", files.get(i));
+                    file.put("show[" + i + "]", files.get(i));
                 }
             }
             String json = HttpConnectTool.post(map, file);
             if (!json.equals("")) {
+                JSONObject jsonObject = new JSONObject(json);
+                if (jsonObject.getInt("error") == 0) {
+                    Toast.makeText(context, "提交成功！", Toast.LENGTH_SHORT).show();
+                    destroyActitity();
+                }
 //            xmlComm(json);
             }
         } catch (Exception e) {
@@ -381,27 +392,28 @@ public class PublishShopActivity extends BaseActivity {
 
         if (resultCode == 14) {
             String ts = data.getStringExtra("name");
-            String tagsId = data.getStringExtra("num");
+            tagsId = data.getStringExtra("num");
             publishShopTagsName.setText(ts);
         }
 
         if (requestCode == 1) {
-            Uri uri = data.getData();
-            switch (type) {
-                case 1:
-                    ValidData.load(uri, publishShop, 90, 90);
-                    sellImagesFile = uri2File(uri);
-                    break;
-                case 2:
-                    file = uri2File(uri);
-                    files.add(file);
-                    ContentValues cv = new ContentValues();
-                    cv.put("image", uri.toString());
-                    contentValues.add(cv);
-                    appraiesimgeAdapter.notifyDataSetChanged();
-                    break;
+            if (resultCode == RESULT_OK) {
+                Uri uri = data.getData();
+                switch (type) {
+                    case 1:
+                        ValidData.load(uri, publishShop, 90, 90);
+                        sellImagesFile = uri2File(uri);
+                        break;
+                    case 2:
+                        file = uri2File(uri);
+                        files.add(file);
+                        ContentValues cv = new ContentValues();
+                        cv.put("image", uri.toString());
+                        contentValues.add(cv);
+                        appraiesimgeAdapter.notifyDataSetChanged();
+                        break;
+                }
             }
-
         }
 
         if (requestCode == 2) {
@@ -435,6 +447,7 @@ public class PublishShopActivity extends BaseActivity {
         }
     }
 
+
     private void dealView() {
         DisplayMetrics dm = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(dm);
@@ -448,14 +461,23 @@ public class PublishShopActivity extends BaseActivity {
         layoutParams.height = (int) (dm.heightPixels * 0.9);
         dialog.getWindow().setAttributes(layoutParams);
         TextView content = (TextView) dialog.findViewById(R.id.deal_content);
-        CheckBox chose = (CheckBox) dialog.findViewById(R.id.deal_chose);
+        final CheckBox chose = (CheckBox) dialog.findViewById(R.id.deal_chose);
+        chose.setChecked(choseBtn);
         TextContent textContent = new TextContent();
         content.setText(textContent.equities);
         chose.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                choseBtn = chose.isChecked();
                 dialog.dismiss();
-                publishShopSumit.setClickable(true);
+                if (choseBtn) {
+                    publishShopSumit.setClickable(true);
+                    publishShopSumit.setBackgroundDrawable(getResources().getDrawable(R.drawable.login_btn));
+                } else {
+                    publishShopSumit.setClickable(false);
+                    publishShopSumit.setBackgroundDrawable(getResources().getDrawable(R.drawable.chose_no));
+                }
+
 
             }
         });

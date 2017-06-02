@@ -6,6 +6,7 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.os.Handler;
 import android.os.Message;
 import android.text.Editable;
@@ -94,6 +95,7 @@ public class RegisterActivity extends BaseActivity {
     private int error;
     private String desc = "";
     private Dialog dialog;
+    private MyCountDownTimer mc;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -108,12 +110,34 @@ public class RegisterActivity extends BaseActivity {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
                     register.setClickable(true);
+                    register.setBackgroundDrawable(getResources().getDrawable(R.drawable.login_btn));
                 } else {
                     register.setClickable(false);
+                    register.setBackgroundDrawable(getResources().getDrawable(R.drawable.chose_no));
                 }
             }
         });
+        mc = new MyCountDownTimer(60000, 1000);
     }
+
+    class MyCountDownTimer extends CountDownTimer {
+        public MyCountDownTimer(long millisInFuture, long countDownInterval) {
+            super(millisInFuture, countDownInterval);
+        }
+
+        @Override
+        public void onTick(long millisUntilFinished) {
+            btnIssue.setText("  " + millisUntilFinished / 1000 + "秒  ");
+            btnIssue.setClickable(false);
+        }
+
+        @Override
+        public void onFinish() {
+            btnIssue.setText("获取验证码");
+            btnIssue.setClickable(true);
+        }
+    }
+
 
     @OnClick(R.id.regs_tip)
     void regsTip() {
@@ -201,6 +225,7 @@ public class RegisterActivity extends BaseActivity {
     void issue() {
         phone = regsPhone.getText().toString().trim();
         if (ValidData.validMobile(phone)) {
+            mc.start();
             setDelayMessage(2, 100);
         } else {
             Toast.makeText(mContext, "请输入正确的手机号", Toast.LENGTH_SHORT).show();
@@ -221,8 +246,11 @@ public class RegisterActivity extends BaseActivity {
         } else if (!pwd.equals(newPwd)) {
             msg = "两次密码输入不一样";
             is = false;
-        } else if (pwd.isEmpty() || newPwd.isEmpty() || tag.isEmpty()) {
-            msg = "输入不能为空";
+        } else if (pwd.isEmpty() || newPwd.isEmpty()) {
+            msg = "密码不能为空";
+            is = false;
+        } else if (tag.isEmpty()) {
+            msg = "验证码不能为空";
             is = false;
         } else if (!ValidData.validPaw(pwd)) {
             msg = "密码6~18位字母和数字";
@@ -376,13 +404,8 @@ public class RegisterActivity extends BaseActivity {
     public void listData(String data) {
         try {
             JSONObject obj = new JSONObject(data);
-
             if (obj.has("error")) {
-                if (obj.getInt("error") == 0) {
-                    error = obj.getInt("error");
-                } else {
-                    desc = obj.getString("desc");
-                }
+                error = obj.getInt("error");
             } else {
                 Toast.makeText(mContext, "数据有误！", Toast.LENGTH_SHORT).show();
                 return;
@@ -403,6 +426,9 @@ public class RegisterActivity extends BaseActivity {
             hashMap.put("password", pwd);
             hashMap.put("code", tag);
             String json = HttpConnectTool.post(hashMap);
+            if (!json.equals("")) {
+                Toast.makeText(mContext, "密码找回成功！", Toast.LENGTH_LONG).show();
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -471,9 +497,14 @@ public class RegisterActivity extends BaseActivity {
                     break;
                 case 3:
                     if (error == 0) {
+                        Toast.makeText(mContext, "注册成功！", Toast.LENGTH_SHORT).show();
                         destroyActitity();
-                    } else {
-                        Toast.makeText(mContext, desc, Toast.LENGTH_SHORT).show();
+                    } else if (error == 103) {
+                        Toast.makeText(mContext, "该号码已被注册", Toast.LENGTH_SHORT).show();
+                    } else if (error == 104) {
+                        Toast.makeText(mContext, "注册失败", Toast.LENGTH_SHORT).show();
+                    } else if (error == 110) {
+                        Toast.makeText(mContext, "验证码错误", Toast.LENGTH_SHORT).show();
                     }
                     break;
                 case 4:

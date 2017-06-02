@@ -51,24 +51,24 @@ import static com.umeng.socialize.utils.DeviceConfig.context;
 
 public class PayTool {
 
-    public  static  void pay(final Activity activity, final ContentValues goods, ContentValues addr, final int type, final Handler mHandler){
+    public static void pay(final Activity activity, final ContentValues goods, ContentValues addr, final int type, final Handler mHandler) {
         OkHttpClient client = new OkHttpClient();
         String channel = "0";
-        if (type== Ini.PAY_TYPE_WEIXIN){
+        if (type == Ini.PAY_TYPE_WEIXIN) {
             channel = "1";
-        }else if(type== Ini.PAY_TYPE_ZFB){
+        } else if (type == Ini.PAY_TYPE_ZFB) {
             channel = "0";
         }
         RequestBody requestBody = new FormBody.Builder()
-                .add("action","Orderid.payChannel")
+                .add("action", "Orderid.payChannel")
                 .add("uid", AppContext.cv.getAsString("id"))
-                .add("channel",channel)
-                .add("money",goods.getAsString("price"))
-                .add("trade_name",goods.getAsString("good_name"))
-                .add("num","1")
-                .add("shid",String.valueOf(goods.getAsInteger("uid")))
-                .add("address",String.valueOf(addr.getAsInteger("id")))
-                .add("goodsid",goods.getAsString("id")).build();
+                .add("channel", channel)
+                .add("money", goods.containsKey("price") ? goods.getAsString("price") : goods.getAsString("money"))
+                .add("trade_name", goods.containsKey("good_name") ? goods.getAsString("good_name") : goods.getAsString("trade_name"))
+                .add("num", goods.getAsInteger("num") + "")
+                .add("shid", String.valueOf(goods.getAsInteger("uid")))
+                .add("address", String.valueOf(addr.getAsInteger("id")))
+                .add("goodsid", goods.getAsString("id")).build();
         Request request = new Request.Builder()
                 .url(Ini.Url)
                 .post(requestBody)
@@ -82,15 +82,15 @@ public class PayTool {
             @Override
             public void onResponse(Call call, Response response) throws IOException {
                 try {
-                    JSONObject  jsonObject = new JSONObject(response.body().string());
-                    if (0==jsonObject.getInt("error")){
+                    JSONObject jsonObject = new JSONObject(response.body().string());
+                    if (0 == jsonObject.getInt("error")) {
                         //微信支付
                         JSONObject jsonobject = new JSONObject(jsonObject.get("data").toString());
-                        SharedPreferenceUtil.insert("orderid",jsonobject.get("ddid"));
-                        if (type== Ini.PAY_TYPE_WEIXIN){
-                            PayForWeixin(activity,goods);
-                        }else if(type== Ini.PAY_TYPE_ZFB){
-                            PayForZFB(activity,goods,mHandler);
+                        SharedPreferenceUtil.insert("orderid", jsonobject.get("ddid"));
+                        if (type == Ini.PAY_TYPE_WEIXIN) {
+                            PayForWeixin(activity, goods);
+                        } else if (type == Ini.PAY_TYPE_ZFB) {
+                            PayForZFB(activity, goods, mHandler);
                         }
                     }
 
@@ -103,22 +103,30 @@ public class PayTool {
 
     }
 
-    /** 支付宝支付
+    /**
+     * 支付宝支付
+     *
      * @param
      * @param goods
      * @param mHandler
      */
     private static void PayForZFB(final Activity activity, final ContentValues goods, final Handler mHandler) {
+        String allPrice = "";
+        if (goods.containsKey("price")) {
+            allPrice = "" + (Double.valueOf(goods.getAsString("price")) * goods.getAsInteger("num")) + Double.valueOf(goods.getAsString("ship"));
+        } else {
+            allPrice = "" + goods.getAsInteger("totalmoney");
+        }
 
         final OkHttpClient client = new OkHttpClient();
-        String url =  Ini.RequestPay_Alipay + "?price=" + goods.getAsString("price") +
-                "&orderid=" +  SharedPreferenceUtil.read("orderid","") +
+        String url = Ini.RequestPay_Alipay + "?price=" + allPrice +
+                "&orderid=" + SharedPreferenceUtil.read("orderid", "") +
                 "&trade_name=" + goods.getAsString("good_name");
         Request request = new Request.Builder().url(url).build();
         client.newCall(request).enqueue(new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
-                Log.e("erro",e.toString());
+                Log.e("erro", e.toString());
             }
 
             @Override
@@ -132,7 +140,7 @@ public class PayTool {
         });
     }
 
-    public  static void  payZFB(final Activity activity, final String orderInfo, final Handler mHandler) {
+    public static void payZFB(final Activity activity, final String orderInfo, final Handler mHandler) {
         Runnable payRunnable = new Runnable() {
 
             @Override
@@ -149,38 +157,46 @@ public class PayTool {
         payThread.start();
     }
 
-    /** 微信支付
+    /**
+     * 微信支付
+     *
      * @param
      * @param goods
      */
     private static void PayForWeixin(final Activity activity, ContentValues goods) {
+        String allPrice = "";
+        if (goods.containsKey("price")) {
+            allPrice = "" + ((Double.valueOf(goods.getAsString("price")) * goods.getAsInteger("num")) + Double.valueOf(goods.getAsString("ship")));
+        } else {
+            allPrice = "" + goods.getAsInteger("totalmoney");
+        }
         OkHttpClient client = new OkHttpClient();
-        String url =  Ini.RequestPay_Weixin + "?price=" + goods.getAsString("price") +
-        "&orderid=" +  SharedPreferenceUtil.read("orderid","") +
+        String url = Ini.RequestPay_Weixin + "?price=" + allPrice +
+                "&orderid=" + SharedPreferenceUtil.read("orderid", "") +
                 "&trade_name=" + goods.getAsString("good_name");
         Request request = new Request.Builder().url(url).build();
         client.newCall(request).enqueue(new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
-                Log.e("erro",e.toString());
+                Log.e("erro", e.toString());
             }
 
             @Override
             public void onResponse(Call call, Response response) throws IOException {
                 try {
-                    String test =  response.body().string();
+                    String test = response.body().string();
                     JSONObject object = new JSONObject(test);
                     final IWXAPI msgApi = WXAPIFactory.createWXAPI(activity, null);
-                   // 将该app注册到微信
+                    // 将该app注册到微信
                     msgApi.registerApp(object.getString("appid"));
                     PayReq request = new PayReq();
                     request.appId = object.getString("appid");
                     request.partnerId = object.getString("partnerid");
-                    request.prepayId= object.getString("prepayid");
+                    request.prepayId = object.getString("prepayid");
                     request.packageValue = "Sign=WXPay";
-                    request.nonceStr= object.getString("noncestr");
-                    request.timeStamp= String.valueOf(object.getInt("timestamp"));
-                    request.sign= object.getString("sign");
+                    request.nonceStr = object.getString("noncestr");
+                    request.timeStamp = String.valueOf(object.getInt("timestamp"));
+                    request.sign = object.getString("sign");
                     msgApi.sendReq(request);
                 } catch (JSONException e) {
                     e.printStackTrace();

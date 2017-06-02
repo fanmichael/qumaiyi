@@ -16,6 +16,8 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.facebook.drawee.view.SimpleDraweeView;
+import com.hyphenate.easeui.EaseConstant;
+import com.hyphenate.easeui.model.UserInfo;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -29,12 +31,15 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.com.shequnew.R;
+import cn.com.shequnew.chat.activity.ChatActivity;
+import cn.com.shequnew.chat.util.ObjectSaveUtils;
 import cn.com.shequnew.pages.adapter.UserDynamicAdapter;
 import cn.com.shequnew.pages.adapter.UserGoodsAdapter;
 import cn.com.shequnew.pages.config.AppContext;
 import cn.com.shequnew.pages.http.HttpConnectTool;
 import cn.com.shequnew.pages.prompt.Loading;
 import cn.com.shequnew.tools.ListTools;
+import cn.com.shequnew.tools.SharedPreferenceUtil;
 import cn.com.shequnew.tools.ValidData;
 
 /**
@@ -87,6 +92,8 @@ public class UserInfoActivity extends BaseActivity {
     TextView userAttentionTextone;
     @BindView(R.id.user_attention_no)
     LinearLayout userAttentionNo;
+    @BindView(R.id.lan)
+    LinearLayout lan;
     private Context context;
     private int uid;
     private boolean isCancal = false;
@@ -108,6 +115,11 @@ public class UserInfoActivity extends BaseActivity {
         Bundle bundle = this.getIntent().getExtras();
         uid = bundle.getInt("uid");
         initDelay();
+
+        if (AppContext.cv.getAsInteger("id") == uid) {
+            lan.setVisibility(View.GONE);
+        }
+
         setDelayMessage(1, 100);
     }
 
@@ -266,6 +278,41 @@ public class UserInfoActivity extends BaseActivity {
     }
 
     /**
+     * 聊天
+     */
+    @OnClick(R.id.user_take)
+    void userMsg() {
+        sendMessage();
+    }
+
+    private void sendMessage() {
+        if (SharedPreferenceUtil.hasKey("id")) {
+            if (SharedPreferenceUtil.read("id", "").isEmpty()) {
+                return;
+            }
+        } else {
+            if (AppContext.cv.getAsString("mobile").trim().isEmpty()) {
+                return;
+            }
+        }
+        Intent intent = new Intent(UserInfoActivity.this, ChatActivity.class);
+        intent.putExtra(EaseConstant.EXTRA_USER_ID, cvUser.getAsString("mobile")).putExtra(EaseConstant.EXTRA_CHAT_TYPE, EaseConstant.CHATTYPE_SINGLE).putExtra("NICK", cvUser.getAsString("nick"));
+        if (UserInfo.getInstance().getInfo() == null || UserInfo.getInstance().getInfo().get(cvUser.getAsString("mobile")) == null) {
+            UserInfo.getInstance().addInfo(new UserInfo.User().setUid(cvUser.getAsString("mobile")).setNick(cvUser.getAsString("nick")).setIcon(cvUser.getAsString("icon")));
+        } else {
+            UserInfo.getInstance().getInfo().get(cvUser.getAsString("mobile")).setNick(cvUser.getAsString("nick")).setIcon(cvUser.getAsString("icon"));
+        }
+        new Thread() {
+            @Override
+            public void run() {
+                super.run();
+                ObjectSaveUtils.saveObject(UserInfoActivity.this, "USERICON", UserInfo.getInstance());
+            }
+        }.start();
+        startActivity(intent);
+    }
+
+    /**
      * 延迟线程消息
      */
     private void initDelay() {
@@ -328,7 +375,7 @@ public class UserInfoActivity extends BaseActivity {
                     userGroup();
                     dynamicAdapter();
                     goodsAdapter();
-                    if (isCancal == true) {
+                    if (isCancal == false) {
                         userAttention.setVisibility(View.GONE);
                         userAttentionNo.setVisibility(View.VISIBLE);
                     } else {
@@ -409,6 +456,7 @@ public class UserInfoActivity extends BaseActivity {
             JSONObject objUserInfo = new JSONObject(objData.getString("user"));//个人信息
             cvUser.put("id", objUserInfo.getInt("id"));
             cvUser.put("nick", objUserInfo.getString("nick"));
+            cvUser.put("mobile", objUserInfo.getString("mobile"));
             cvUser.put("icon", objUserInfo.getString("icon"));
             cvUser.put("gender", objUserInfo.getInt("gender"));
             cvUser.put("location", objUserInfo.getString("location"));
@@ -451,10 +499,11 @@ public class UserInfoActivity extends BaseActivity {
                     JSONObject jsonObj = dynamicsList.getJSONObject(i);
                     ContentValues cv = new ContentValues();
                     cv.put("subject", jsonObj.getString("subject"));
-                    if(jsonObj.has("video_img")){
+                    if (jsonObj.has("video_img")) {
                         cv.put("video_img", jsonObj.getString("video_img"));
                     }
                     cv.put("id", jsonObj.getInt("id"));
+                    cv.put("uid", jsonObj.getInt("uid"));
                     cv.put("title", jsonObj.getString("title"));
                     cv.put("tags", jsonObj.getString("tags"));
                     cv.put("file_type", jsonObj.getInt("file_type"));

@@ -74,7 +74,8 @@
                     android:layout_height="@dimen/font_hight_title"
                     android:layout_marginLeft="20dp"
                     android:background="@null"
-                    android:hint="@string/password"
+                    android:hint="@string/password_s"
+                    android:inputType="textPassword"
                     android:maxLines="1"
                     android:textSize="16dp" />
 
@@ -90,8 +91,10 @@
                     android:layout_marginLeft="20dp"
                     android:background="@null"
                     android:hint="@string/regs_paw"
+                    android:inputType="textPassword"
                     android:maxLines="1"
                     android:textSize="16dp" />
+
 
                 <View
                     android:layout_width="match_parent"
@@ -151,6 +154,7 @@
                     <TextView
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
                         android:layout_weight="1"
                         android:text="@string/interest_man"
                         android:textColor="@color/col_bg"
@@ -176,6 +180,7 @@
                     android:layout_width="fill_parent"
                     android:layout_height="fill_parent"
                     android:layout_marginTop="10dp"
+                    android:gravity="center"
                     android:orientation="horizontal"></LinearLayout>
 
                 <View
@@ -192,6 +197,7 @@
                     <TextView
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
                         android:layout_weight="1"
                         android:text="@string/interest_thing"
                         android:textColor="@color/col_bg"
@@ -217,6 +223,7 @@
                     android:layout_width="fill_parent"
                     android:layout_height="fill_parent"
                     android:layout_marginTop="10dp"
+                    android:gravity="center"
                     android:orientation="horizontal"></LinearLayout>
             </LinearLayout>
 

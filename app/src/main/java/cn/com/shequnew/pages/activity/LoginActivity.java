@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.annotation.IdRes;
 import android.text.Editable;
 import android.text.TextUtils;
@@ -16,6 +18,7 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import com.facebook.imagepipeline.listener.RequestListener;
 import com.hyphenate.EMCallBack;
 import com.hyphenate.chat.EMClient;
@@ -40,8 +43,11 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.com.shequnew.R;
 import cn.com.shequnew.chat.util.ObjectSaveUtils;
+import cn.com.shequnew.inc.Ini;
 import cn.com.shequnew.pages.config.AppContext;
 import cn.com.shequnew.pages.http.HttpConnectTool;
+import cn.com.shequnew.pages.prompt.Loading;
+import cn.com.shequnew.tools.PayTool;
 import cn.com.shequnew.tools.SharedPreferenceUtil;
 import cn.com.shequnew.tools.UtilsUmeng;
 import cn.com.shequnew.tools.ValidData;
@@ -80,25 +86,15 @@ public class LoginActivity extends BaseActivity {
     private String pwd = "";
     private String msg = "";
     private int tag;
+    private boolean is = true;
 
-//    /**
-//     * san
-//     */
-//    private Tencent mTencent;
-//    private IUiListener loginListener;
-//    private IUiListener userInfoListener; //获取用户信息监听器
-//    private UserInfo userInfo; //qq用户信息
-//    private QQAuth mQQAuth;
     private IWXAPI api;
-
+    private String typeLogin;
     public static final String SINA_APPKEY = "3287794514";//3287794514
     //注册成功之后的REDIRECT_URL
     public static final String SINA_REDIRECT_URL = "https://api.weibo.com/oauth2/default.html";
     public static final String SINA_SCOPE = "all";
-//    private SsoHandler mSsoHandler;
-//    private AuthInfo mAuthInfo;
-//    private Oauth2AccessToken mAccessToken;
-
+    Handler mHandler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -111,77 +107,13 @@ public class LoginActivity extends BaseActivity {
         groupLogin();
     }
 
-    private void getCode() {
-        String uuid = UUID.randomUUID().toString();
-        SendAuth.Req req = new SendAuth.Req();
-        req.scope = "snsapi_userinfo";
-        req.state = uuid;
-        api.sendReq(req);
-    }
+
     //第三方登录登录
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         UMShareAPI.get(this).onActivityResult(requestCode, resultCode, data);
-
     }
-
-
-
-//    @Override
-//    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-//        if (requestCode == Constants.REQUEST_API) {
-//            if (resultCode == Constants.RESULT_LOGIN) {
-//                Tencent.handleResultData(data, loginListener);
-//                userInfo = new UserInfo(LoginActivity.this, mTencent.getQQToken());
-//                userInfo.getUserInfo(userInfoListener);
-//                userInfoListener = new IUiListener() {
-//                    @Override
-//                    public void onComplete(final Object arg0) {
-//                        if (arg0 == null) {
-//                            return;
-//                        }
-//                        try {
-//                            JSONObject jo = (JSONObject) arg0;
-//                            int ret = jo.getInt("ret");
-//                            System.out.println("json=" + String.valueOf(jo));
-//                            String nickName = jo.getString("nickname");
-//                            String gender = jo.getString("gender");
-//                            Toast.makeText(LoginActivity.this, "你好，" + nickName,
-//                                    Toast.LENGTH_LONG).show();
-//
-//                        } catch (Exception e) {
-//                            e.printStackTrace();
-//                            // TODO: handle exception
-//                        }
-//
-//                    }
-//
-//                    @Override
-//                    public void onError(UiError uiError) {
-//                        Toast.makeText(LoginActivity.this, "onError2", Toast.LENGTH_SHORT).show();
-//                    }
-//
-//                    @Override
-//                    public void onCancel() {
-//                        Toast.makeText(LoginActivity.this, "onCancel2", Toast.LENGTH_SHORT).show();
-//                    }
-//                };
-//            }
-//        }
-//
-//        if (resultCode == Constants.ACTIVITY_OK) {
-//            // SSO 授权回调
-//            // 重要：发起 SSO 登陆的 Activity 必须重写 onActivityResults
-//            if (mSsoHandler != null) {
-//                Toast.makeText(LoginActivity.this, "新浪微博登陆返回", Toast.LENGTH_LONG).show();
-//                //不能少
-//                mSsoHandler.authorizeCallBack(requestCode, resultCode, data);
-//            }
-//        }
-//
-//        super.onActivityResult(requestCode, resultCode, data);
-//    }
 
     private void groupLogin() {
         groupLogin.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
@@ -189,23 +121,26 @@ public class LoginActivity extends BaseActivity {
             public void onCheckedChanged(RadioGroup group, @IdRes int checkedId) {
                 switch (checkedId) {
                     case R.id.weixin:
-//                        loginToWeiXin();
-                        UtilsUmeng.Login(LoginActivity.this,getApplicationContext(),SHARE_MEDIA.WEIXIN);
+                        is = false;
+                        typeLogin = "weixin";
+                        SharedPreferenceUtil.insert("type", "weixin");
+                        UtilsUmeng.Login(LoginActivity.this, getApplicationContext(), SHARE_MEDIA.WEIXIN, mHandler);
+                        weixin.setChecked(false);
                         break;
                     case R.id.qq:
-                        UtilsUmeng.Login(LoginActivity.this,getApplicationContext(),SHARE_MEDIA.QQ);
-//                        qqLogin();
+                        is = false;
+                        typeLogin = "qq";
+                        SharedPreferenceUtil.insert("type", "qq");
+                        UtilsUmeng.Login(LoginActivity.this, getApplicationContext(), SHARE_MEDIA.QQ, mHandler);
+                        qq.setChecked(false);
                         break;
                     case R.id.weibo:
-                        UtilsUmeng.Login(LoginActivity.this,getApplicationContext(),SHARE_MEDIA.SINA);
-//                        weibo();
-                        //  Oauth2AccessToken mAccessToken = AccessTokenKeeper.readAccessToken(getApplication());
-//                        UsersAPI mUsersAPI = new UsersAPI(LoginActivity.this, SINA_APPKEY, mAccessToken);
-//                        long uid = Long.parseLong(mAccessToken.getUid());
-//                        mUsersAPI.show(uid, mListener);
+                        is = false;
+                        typeLogin = "sina";
+                        SharedPreferenceUtil.insert("type", "sina");
+                        UtilsUmeng.Login(LoginActivity.this, getApplicationContext(), SHARE_MEDIA.SINA, mHandler);
+                        weibo.setChecked(false);
                         break;
-
-
                 }
             }
         });
@@ -229,6 +164,9 @@ public class LoginActivity extends BaseActivity {
             is = false;
         }
         if (is) {
+            mLoading = new Loading(context, login);
+            mLoading.setText("正在加载......");
+            mLoading.show();
             new asyncTask().execute(1);
         } else {
             Toast.makeText(context, msg, Toast.LENGTH_SHORT).show();
@@ -308,6 +246,67 @@ public class LoginActivity extends BaseActivity {
                 }
             }
         });
+
+        mHandler = new Handler() {
+            public void handleMessage(Message msg) {
+                switch (msg.what) {
+                    case Ini.SDK_PAY_FLAG3:
+                        mLoading = new Loading(context, login);
+                        mLoading.setText("正在加载......");
+                        mLoading.show();
+                        new asyncTask().execute(2);
+                        break;
+                }
+            }
+        };
+    }
+
+
+    /**
+     * 请求登录
+     */
+    private void SanhttpLogin() {
+        try {
+            HashMap<String, String> hashMap = new HashMap<>();
+            hashMap.put("action", "User.oAuthLogin");
+            hashMap.put("openid", SharedPreferenceUtil.read("id", ""));
+            hashMap.put("name", SharedPreferenceUtil.read("nick", ""));
+            hashMap.put("avatar", SharedPreferenceUtil.read("icon", ""));
+            hashMap.put("oauthtype", SharedPreferenceUtil.read("type", ""));
+            String json = HttpConnectTool.post(hashMap);
+            if (!json.equals("")) {
+                xmlJsonData(json);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    private void xmlJsonData(String data) {
+        try {
+            JSONObject obj = new JSONObject(data);
+            tag = obj.getInt("error");
+            if (tag == 100) {
+                msg = obj.getString("desc");
+            } else {
+                JSONObject jsonLogin = new JSONObject(obj.getString("data"));
+                AppContext.cv.put("id", jsonLogin.getInt("id"));//标记
+                AppContext.cv.put("mobile", jsonLogin.getString("mobile"));//手机号
+                AppContext.cv.put("password", "");//md5加密密码
+                AppContext.cv.put("nick", jsonLogin.getString("nick"));//昵称
+                AppContext.cv.put("icon", jsonLogin.getString("icon"));//头像
+                // AppContext.cv.put("gender", jsonLogin.getInt("gender"));//性别
+                //AppContext.cv.put("location", "");//地址
+                AppContext.cv.put("personalized", "");//个性签名
+                AppContext.cv.put("sign", "");//是否签约
+                AppContext.cv.put("merchant", jsonLogin.getString("merchant"));//卖家识别'0'否'1'是
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+        }
     }
 
 
@@ -321,6 +320,10 @@ public class LoginActivity extends BaseActivity {
                     httpLogin();
                     bundle.putInt("what", 1);
                     break;
+                case 2:
+                    SanhttpLogin();
+                    bundle.putInt("what", 1);
+                    break;
 
             }
             return bundle;
@@ -329,6 +332,7 @@ public class LoginActivity extends BaseActivity {
         @Override
         protected void onPostExecute(Bundle bundle) {
             int what = bundle.containsKey("what") ? bundle.getInt("what") : -1;
+            removeLoading();
             switch (what) {
                 case 1:
                     if (tag == 100) {
@@ -339,10 +343,7 @@ public class LoginActivity extends BaseActivity {
                         context.startActivity(intent);
                         destroyActitity();
                     }
-
                     break;
-                case 2:
-
             }
         }
     }
@@ -351,38 +352,10 @@ public class LoginActivity extends BaseActivity {
         UserLodingInFo.getInstance().setIcon(AppContext.cv.getAsString("icon")).
                 setId(AppContext.cv.getAsInteger("id") + "").
                 setNick(AppContext.cv.getAsString("nick")).
-                setMobile(AppContext.cv.getAsString("mobile"));
+                setMobile(AppContext.cv.getAsString("mobile").equals("") ? SharedPreferenceUtil.read("id", "") : AppContext.cv.getAsString("mobile"));
         ObjectSaveUtils.saveObject(LoginActivity.this, "USERINFO", UserLodingInFo.getInstance());
         loginIM("");
     }
-
-//    /**
-//     * 获取微博登陆信息
-//     */
-//    private RequestListener mListener = new RequestListener() {
-//        @Override
-//        public void onComplete(String response) {
-//            if (!TextUtils.isEmpty(response)) {
-//                //LogUtil.i(TAG, response);
-//                // 调用 User#parse 将JSON串解析成User对象
-////                User user = User.parse(response);
-////                if (user != null) {
-////                    Toast.makeText(LoginActivity.this,
-////                            "获取User信息成功，用户昵称：" + user.screen_name,
-////                            Toast.LENGTH_LONG).show();
-////                } else {
-////                    Toast.makeText(LoginActivity.this, response, Toast.LENGTH_LONG).show();
-////                }
-//            }
-//        }
-//
-//        @Override
-//        public void onWeiboException(WeiboException e) {
-//            //LogUtil.e(TAG, e.getMessage());
-//            Toast.makeText(LoginActivity.this, e.getMessage(), Toast.LENGTH_LONG).show();
-//        }
-//    };
-
 
     /**
      * 请求登录
@@ -418,10 +391,10 @@ public class LoginActivity extends BaseActivity {
                 AppContext.cv.put("personalized", jsonLogin.getString("personalized"));//个性签名
                 AppContext.cv.put("sign", jsonLogin.getInt("sign"));//是否签约
                 AppContext.cv.put("merchant", jsonLogin.getString("merchant"));//卖家识别'0'否'1'是
-//                AppContext.cv.put("sessionid", jsonLogin.getString("sessionid"));
-
-                SharedPreferenceUtil.insert("mobile", jsonLogin.getString("mobile"));
-                SharedPreferenceUtil.insert("password", pwd);
+                if (is) {
+                    SharedPreferenceUtil.insert("mobile", jsonLogin.getString("mobile"));
+                    SharedPreferenceUtil.insert("password", pwd);
+                }
 
             }
         } catch (JSONException e) {
@@ -435,9 +408,19 @@ public class LoginActivity extends BaseActivity {
         if (SharedPreferenceUtil.hasKey("mobile") && SharedPreferenceUtil.hasKey("password")) {
             phone = SharedPreferenceUtil.read("mobile", "");
             pwd = SharedPreferenceUtil.read("password", "");
+            is = true;
             new asyncTask().execute(1);
         }
 
+        if (SharedPreferenceUtil.hasKey("id")) {
+            if (SharedPreferenceUtil.read("type", "").equals("sina")) {
+                UtilsUmeng.Login(LoginActivity.this, getApplicationContext(), SHARE_MEDIA.SINA, mHandler);
+            } else if (SharedPreferenceUtil.read("type", "").equals("qq")) {
+                UtilsUmeng.Login(LoginActivity.this, getApplicationContext(), SHARE_MEDIA.QQ, mHandler);
+            } else if (SharedPreferenceUtil.read("type", "").equals("weixin")) {
+                UtilsUmeng.Login(LoginActivity.this, getApplicationContext(), SHARE_MEDIA.WEIXIN, mHandler);
+            }
+        }
     }
 
     private void loginIM(final String username) {

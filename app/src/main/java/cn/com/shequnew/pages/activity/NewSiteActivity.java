@@ -201,8 +201,11 @@ public class NewSiteActivity extends BaseActivity {
             switch (what) {
                 case 1:
                     if (error == 0) {
+                        Toast.makeText(context, "提交成功！", Toast.LENGTH_LONG).show();
+                        setResult(1);
                         destroyActitity();
                     } else {
+                        Toast.makeText(context, "提交参数错误！", Toast.LENGTH_LONG).show();
                         return;
                     }
                     break;
@@ -222,23 +225,26 @@ public class NewSiteActivity extends BaseActivity {
             mess = "收货人不能为空";
             is = false;
         }
-
-        if (sitePhone.getText().toString().trim().equals("")) {
-            mess = "手机号不能为空";
+        if (!ValidData.validMobile(sitePhone.getText().toString().trim())) {
+            mess = "请填写正确手机号";
+            is = false;
+        }
+        if (siteAddress.getText().toString().trim().equals("")) {
+            mess = "所在地址不能为空";
             is = false;
         }
         if (siteDailesAddress.getText().toString().trim().equals("")) {
             mess = "详细地址不能为空";
             is = false;
         }
+
+
         if (is == true) {
             if (type.equals("add")) {
                 new asyncTask().execute(1);
             } else if (type.equals("edit")) {
                 new asyncTask().execute(2);
             }
-
-
         } else {
             Toast.makeText(context, "" + mess, Toast.LENGTH_SHORT).show();
         }
@@ -265,7 +271,7 @@ public class NewSiteActivity extends BaseActivity {
         map.put("uid", AppContext.cv.getAsInteger("id") + "");
         map.put("name", sitePop.getText().toString().trim());
         map.put("type", "edit");
-        map.put("type", id + "");
+        map.put("id", id + "");
         map.put("mobile", sitePhone.getText().toString().trim());
         map.put("address", siteAddress.getText().toString().trim() + siteDailesAddress.getText().toString().trim());
         String json = HttpConnectTool.post(map);

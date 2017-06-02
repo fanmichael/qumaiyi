@@ -142,6 +142,8 @@ public class VideoContentFragment extends BasicFragment {
      */
     private File fristFile;
 
+    private boolean choseBtn = false;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
@@ -393,15 +395,22 @@ public class VideoContentFragment extends BasicFragment {
         layoutParams.height = (int) (dm.heightPixels * 0.9);
         dialog.getWindow().setAttributes(layoutParams);
         TextView content = (TextView) dialog.findViewById(R.id.deal_content);
-        CheckBox chose = (CheckBox) dialog.findViewById(R.id.deal_chose);
+        final CheckBox chose = (CheckBox) dialog.findViewById(R.id.deal_chose);
+        chose.setChecked(choseBtn);
         TextContent textContent = new TextContent();
         content.setText(textContent.equities);
         chose.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                choseBtn = chose.isChecked();
                 dialog.dismiss();
-                publishVideo.setClickable(true);
-
+                if (choseBtn) {
+                    publishVideo.setClickable(true);
+                    publishVideo.setBackgroundDrawable(getResources().getDrawable(R.drawable.login_btn));
+                } else {
+                    publishVideo.setClickable(false);
+                    publishVideo.setBackgroundDrawable(getResources().getDrawable(R.drawable.chose_no));
+                }
             }
         });
 
@@ -412,7 +421,12 @@ public class VideoContentFragment extends BasicFragment {
      */
     @OnClick(R.id.publish_video)
     void sumit() {
-        initData();
+        if (choseBtn) {
+            initData();
+        } else {
+            Toast.makeText(context, "请阅读，勾选只是产权承诺！", Toast.LENGTH_LONG).show();
+        }
+
     }
 
     /**
@@ -428,12 +442,16 @@ public class VideoContentFragment extends BasicFragment {
      */
     @OnClick(R.id.voide_pu)
     void videoPu() {
-        pd = new ProgressDialog(context);
-        pd.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
-        pd.setMessage("上传视频中。。。");
-        pd.setCancelable(false);
-        pd.show();
-        uploadVideo(videoFile);
+        if (videoFile.length() < 0) {
+            Toast.makeText(context, "请选择视频！", Toast.LENGTH_LONG).show();
+        } else {
+            pd = new ProgressDialog(context);
+            pd.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+            pd.setMessage("上传视频中。。。");
+            pd.setCancelable(false);
+            pd.show();
+            uploadVideo(videoFile);
+        }
     }
 
     /**
@@ -558,7 +576,7 @@ public class VideoContentFragment extends BasicFragment {
             file.put("video_img", fristFile);
             if (files.size() > 0) {
                 for (int i = 0; i < files.size(); i++) {
-                    file.put("show[]", files.get(i));
+                    file.put("show[" + i + "]", files.get(i));
                 }
             }
             String json = HttpConnectTool.post(map, file);
