@@ -58,8 +58,8 @@ public class EstimateAdapter extends BaseAdapter {
         if (contentValues == null) {
             return convertView;
         }
-        ViewHolder holder;
-        if (convertView == null) {
+       ViewHolder holder;
+//        if (convertView == null) {
             holder = new ViewHolder();
             convertView = mInflater.inflate(R.layout.estimate_layout, null);
             holder.simpleDraweeView = (SimpleDraweeView) convertView.findViewById(R.id.estimes_details_icon);
@@ -68,10 +68,11 @@ public class EstimateAdapter extends BaseAdapter {
             holder.sta = (LinearLayout) convertView.findViewById(R.id.estimes_sta_lin);
             holder.content = (TextView) convertView.findViewById(R.id.estimes_content);
             holder.images = (LinearLayout) convertView.findViewById(R.id.estimes_images_lin);
-            convertView.setTag(holder);
-        } else {
-            holder = (ViewHolder) convertView.getTag();
-        }
+//            convertView.setTag(holder);
+//        }
+//        else {
+//            holder = (ViewHolder) convertView.getTag();
+//        }
         if (contentValues == null || contentValues.size() <= position) {
             return convertView;
         }

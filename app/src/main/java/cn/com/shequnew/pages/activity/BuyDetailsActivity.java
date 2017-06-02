@@ -478,7 +478,7 @@ public class BuyDetailsActivity extends BaseActivity implements SwipeRefreshLayo
                     }
                 }
             } else {
-                Toast.makeText(context, "没有数据了！", Toast.LENGTH_SHORT).show();
+
             }
         } catch (Exception e) {
             e.printStackTrace();

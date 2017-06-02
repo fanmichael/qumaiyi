@@ -196,9 +196,9 @@ public class CommunityFragment extends BasicFragment implements SwipeRefreshLayo
             removeLoading();
             switch (what) {
                 case 1:
-                    swDeal.setRefreshing(false);//刷新完成
                     commend();
                     allcate();
+                    swDeal.setRefreshing(false);//刷新完成
                     break;
             }
 

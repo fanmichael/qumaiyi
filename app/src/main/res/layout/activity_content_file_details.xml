@@ -361,7 +361,7 @@
                         android:id="@+id/file_details_images"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:divider="#b5b5b5"
+                        android:divider="@color/bg"
                         android:dividerHeight="1dp"
                         android:focusable="false"></ListView>
 

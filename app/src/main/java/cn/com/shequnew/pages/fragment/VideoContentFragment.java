@@ -70,6 +70,7 @@ import cn.com.shequnew.pages.config.AppContext;
 import cn.com.shequnew.pages.http.HttpConnectTool;
 import cn.com.shequnew.pages.prompt.Loading;
 import cn.com.shequnew.pages.view.MyGridView;
+import cn.com.shequnew.pages.view.MyProgressDialog;
 import cn.com.shequnew.tools.ImageToools;
 import cn.com.shequnew.tools.TextContent;
 
@@ -136,7 +137,7 @@ public class VideoContentFragment extends BasicFragment {
      */
     private String videoAddress = "";
     private int error;
-    private ProgressDialog pd;
+    private MyProgressDialog pd;
     /**
      * 视频的第一帧
      */
@@ -445,8 +446,8 @@ public class VideoContentFragment extends BasicFragment {
         if (videoFile.length() < 0) {
             Toast.makeText(context, "请选择视频！", Toast.LENGTH_LONG).show();
         } else {
-            pd = new ProgressDialog(context);
-            pd.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+            pd = new MyProgressDialog(context);
+            pd.setProgressStyle(MyProgressDialog.STYLE_HORIZONTAL);
             pd.setMessage("上传视频中。。。");
             pd.setCancelable(false);
             pd.show();

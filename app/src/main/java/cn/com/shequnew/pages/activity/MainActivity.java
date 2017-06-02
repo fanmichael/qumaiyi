@@ -320,6 +320,9 @@ public class MainActivity extends FragmentActivity {
                             @Override
                             public void run() {
                                 for (EMMessage e : list) {
+                                    if(publishFragment==null){
+                                        return;
+                                    }
                                     publishFragment.refresh();
                                 }
                             }

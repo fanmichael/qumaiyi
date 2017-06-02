@@ -419,7 +419,9 @@ public class ContentFileDetailsActivity extends BaseActivity implements CommentA
                         faith.setChecked(false);
                         break;
                     case R.id.dis:
+                        contectText.setText("");
                         parentnum = 0;
+                        coid=id;
                         left();
                         dis.setChecked(false);
                         break;
@@ -487,6 +489,7 @@ public class ContentFileDetailsActivity extends BaseActivity implements CommentA
     @Override
     public void content(int posit, int nid, int uid, int parent) {
         //回复
+        contectText.setText("");
         coid = nid;
         parentnum = parent;
         left();

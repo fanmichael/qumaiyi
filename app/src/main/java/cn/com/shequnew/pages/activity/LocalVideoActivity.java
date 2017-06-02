@@ -3,8 +3,6 @@ package cn.com.shequnew.pages.activity;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
-import android.content.res.Configuration;
-import android.graphics.Color;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -56,7 +54,6 @@ import cn.com.shequnew.pages.adapter.CommentAdapter;
 import cn.com.shequnew.pages.adapter.ConGoodsAdapter;
 import cn.com.shequnew.pages.adapter.ShopImagesAdapter;
 import cn.com.shequnew.pages.config.AppContext;
-import cn.com.shequnew.pages.config.CustomMediaController;
 import cn.com.shequnew.pages.http.HttpConnectTool;
 import cn.com.shequnew.pages.prompt.Loading;
 import cn.com.shequnew.pages.view.MyVideoView;
@@ -64,8 +61,6 @@ import cn.com.shequnew.tools.ListTools;
 import cn.com.shequnew.tools.SharedPreferenceUtil;
 import cn.com.shequnew.tools.UtilsUmeng;
 import cn.com.shequnew.tools.ValidData;
-import io.vov.vitamio.LibsChecker;
-import io.vov.vitamio.Vitamio;
 import io.vov.vitamio.widget.VideoView;
 
 /**
@@ -290,7 +285,8 @@ public class LocalVideoActivity extends BaseActivity implements CommentAdapter.s
                     @Override
                     public boolean onInfo(MediaPlayer mp, int what, int extra) {
                         if (what == MediaPlayer.MEDIA_INFO_VIDEO_RENDERING_START)
-                            videoPlay.setBackgroundColor(Color.TRANSPARENT);
+//                            videoPlay.setBackgroundColor(Color.TRANSPARENT);
+                        videoTest.setVisibility(View.VISIBLE);
                         return true;
                     }
                 });
@@ -459,6 +455,7 @@ public class LocalVideoActivity extends BaseActivity implements CommentAdapter.s
      */
     @Override
     public void content(int posit, int nid, int uid, int parent) {
+        videoContectText.setText("");
         coid = nid;
         parentnum = parent;
         left();
@@ -558,6 +555,8 @@ public class LocalVideoActivity extends BaseActivity implements CommentAdapter.s
                         break;
                     case R.id.video_dis:
                         //评论
+                        videoContectText.setText("");
+                        coid=id;
                         parentnum = 0;
                         left();
                         videoDis.setChecked(false);
@@ -607,7 +606,7 @@ public class LocalVideoActivity extends BaseActivity implements CommentAdapter.s
                 switch (msg.what) {
                     case 1:
                         mLoading = new Loading(
-                                context, null);
+                                context, videoTest);
                         mLoading.setText("正在加载......");
                         mLoading.show();
                         new asyncTask().execute(1);

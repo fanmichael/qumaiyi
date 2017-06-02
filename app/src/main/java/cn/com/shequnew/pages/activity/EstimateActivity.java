@@ -151,7 +151,6 @@ public class EstimateActivity extends BaseActivity {
                     if (esList.size() > 0) {
                         estimateList.addAll(esList);
                     }
-
                     estimateAdapter.notifyDataSetChanged();
                     buyList.onRefreshComplete();
                     buyList.setMode(PullToRefreshBase.Mode.DISABLED);
