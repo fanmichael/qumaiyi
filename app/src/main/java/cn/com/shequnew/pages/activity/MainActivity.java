@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.annotation.IdRes;
+import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentActivity;
 import android.view.View;
 import android.widget.AdapterView;
@@ -45,6 +46,7 @@ import cn.com.shequnew.pages.fragment.NewsFragment;
 import cn.com.shequnew.pages.fragment.PageCommFragment;
 import cn.com.shequnew.tools.AppManager;
 import cn.com.shequnew.tools.SharedPreferenceUtil;
+import cn.com.shequnew.tools.XPermissionUtils;
 
 /**
  * 主页
@@ -98,6 +100,13 @@ public class MainActivity extends FragmentActivity {
                                     if (SharedPreferenceUtil.hasKey("mobile") && SharedPreferenceUtil.hasKey("password")) {
                                         SharedPreferenceUtil.remove("mobile");
                                         SharedPreferenceUtil.remove("password");
+                                        AppContext.cv.clear();
+                                    }
+                                    if(SharedPreferenceUtil.hasKey("id")){
+                                        SharedPreferenceUtil.remove("type");
+                                        SharedPreferenceUtil.remove("id");
+                                        SharedPreferenceUtil.remove("nick");
+                                        SharedPreferenceUtil.remove("icon");
                                         AppContext.cv.clear();
                                     }
                                     if (EMClient.getInstance().isLoggedInBefore())
@@ -339,6 +348,11 @@ public class MainActivity extends FragmentActivity {
 
             }
         });
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        XPermissionUtils.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
 
     @Override

@@ -46,6 +46,7 @@ import cn.com.shequnew.chat.util.ObjectSaveUtils;
 import cn.com.shequnew.inc.Ini;
 import cn.com.shequnew.pages.config.AppContext;
 import cn.com.shequnew.pages.http.HttpConnectTool;
+import cn.com.shequnew.pages.prompt.Loading;
 import cn.com.shequnew.tools.PayTool;
 import cn.com.shequnew.tools.SharedPreferenceUtil;
 import cn.com.shequnew.tools.UtilsUmeng;
@@ -106,13 +107,6 @@ public class LoginActivity extends BaseActivity {
         groupLogin();
     }
 
-    private void getCode() {
-        String uuid = UUID.randomUUID().toString();
-        SendAuth.Req req = new SendAuth.Req();
-        req.scope = "snsapi_userinfo";
-        req.state = uuid;
-        api.sendReq(req);
-    }
 
     //第三方登录登录
     @Override
@@ -129,19 +123,22 @@ public class LoginActivity extends BaseActivity {
                     case R.id.weixin:
                         is = false;
                         typeLogin = "weixin";
-                        UtilsUmeng.Login(LoginActivity.this, getApplicationContext(), SHARE_MEDIA.WEIXIN,mHandler);
+                        SharedPreferenceUtil.insert("type", "weixin");
+                        UtilsUmeng.Login(LoginActivity.this, getApplicationContext(), SHARE_MEDIA.WEIXIN, mHandler);
                         weixin.setChecked(false);
                         break;
                     case R.id.qq:
                         is = false;
                         typeLogin = "qq";
-                        UtilsUmeng.Login(LoginActivity.this, getApplicationContext(), SHARE_MEDIA.QQ,mHandler);
+                        SharedPreferenceUtil.insert("type", "qq");
+                        UtilsUmeng.Login(LoginActivity.this, getApplicationContext(), SHARE_MEDIA.QQ, mHandler);
                         qq.setChecked(false);
                         break;
                     case R.id.weibo:
                         is = false;
                         typeLogin = "sina";
-                        UtilsUmeng.Login(LoginActivity.this, getApplicationContext(), SHARE_MEDIA.SINA,mHandler);
+                        SharedPreferenceUtil.insert("type", "sina");
+                        UtilsUmeng.Login(LoginActivity.this, getApplicationContext(), SHARE_MEDIA.SINA, mHandler);
                         weibo.setChecked(false);
                         break;
                 }
@@ -167,6 +164,9 @@ public class LoginActivity extends BaseActivity {
             is = false;
         }
         if (is) {
+            mLoading = new Loading(context, login);
+            mLoading.setText("正在加载......");
+            mLoading.show();
             new asyncTask().execute(1);
         } else {
             Toast.makeText(context, msg, Toast.LENGTH_SHORT).show();
@@ -251,8 +251,11 @@ public class LoginActivity extends BaseActivity {
             public void handleMessage(Message msg) {
                 switch (msg.what) {
                     case Ini.SDK_PAY_FLAG3:
-                       new asyncTask().execute(2);
-                      break;
+                        mLoading = new Loading(context, login);
+                        mLoading.setText("正在加载......");
+                        mLoading.show();
+                        new asyncTask().execute(2);
+                        break;
                 }
             }
         };
@@ -266,10 +269,10 @@ public class LoginActivity extends BaseActivity {
         try {
             HashMap<String, String> hashMap = new HashMap<>();
             hashMap.put("action", "User.oAuthLogin");
-            hashMap.put("openid", AppContext.cv.getAsString("id"));
-            hashMap.put("name", AppContext.cv.getAsString("nick"));
-            hashMap.put("avatar", AppContext.cv.getAsString("icon"));
-            hashMap.put("oauthtype", typeLogin);
+            hashMap.put("openid", SharedPreferenceUtil.read("id", ""));
+            hashMap.put("name", SharedPreferenceUtil.read("nick", ""));
+            hashMap.put("avatar", SharedPreferenceUtil.read("icon", ""));
+            hashMap.put("oauthtype", SharedPreferenceUtil.read("type", ""));
             String json = HttpConnectTool.post(hashMap);
             if (!json.equals("")) {
                 xmlJsonData(json);
@@ -293,8 +296,8 @@ public class LoginActivity extends BaseActivity {
                 AppContext.cv.put("password", "");//md5加密密码
                 AppContext.cv.put("nick", jsonLogin.getString("nick"));//昵称
                 AppContext.cv.put("icon", jsonLogin.getString("icon"));//头像
-                AppContext.cv.put("gender", jsonLogin.getInt("gender"));//性别
-                AppContext.cv.put("location", "");//地址
+                // AppContext.cv.put("gender", jsonLogin.getInt("gender"));//性别
+                //AppContext.cv.put("location", "");//地址
                 AppContext.cv.put("personalized", "");//个性签名
                 AppContext.cv.put("sign", "");//是否签约
                 AppContext.cv.put("merchant", jsonLogin.getString("merchant"));//卖家识别'0'否'1'是
@@ -319,7 +322,7 @@ public class LoginActivity extends BaseActivity {
                     break;
                 case 2:
                     SanhttpLogin();
-                    bundle.putInt("what", 2);
+                    bundle.putInt("what", 1);
                     break;
 
             }
@@ -329,6 +332,7 @@ public class LoginActivity extends BaseActivity {
         @Override
         protected void onPostExecute(Bundle bundle) {
             int what = bundle.containsKey("what") ? bundle.getInt("what") : -1;
+            removeLoading();
             switch (what) {
                 case 1:
                     if (tag == 100) {
@@ -340,12 +344,6 @@ public class LoginActivity extends BaseActivity {
                         destroyActitity();
                     }
                     break;
-                case 2:
-                    Intent intent = new Intent(context, MainActivity.class);
-                    context.startActivity(intent);
-                    destroyActitity();
-                    break;
-
             }
         }
     }
@@ -354,7 +352,7 @@ public class LoginActivity extends BaseActivity {
         UserLodingInFo.getInstance().setIcon(AppContext.cv.getAsString("icon")).
                 setId(AppContext.cv.getAsInteger("id") + "").
                 setNick(AppContext.cv.getAsString("nick")).
-                setMobile(AppContext.cv.getAsString("mobile"));
+                setMobile(AppContext.cv.getAsString("mobile").equals("") ? SharedPreferenceUtil.read("id", "") : AppContext.cv.getAsString("mobile"));
         ObjectSaveUtils.saveObject(LoginActivity.this, "USERINFO", UserLodingInFo.getInstance());
         loginIM("");
     }
@@ -414,6 +412,15 @@ public class LoginActivity extends BaseActivity {
             new asyncTask().execute(1);
         }
 
+        if (SharedPreferenceUtil.hasKey("id")) {
+            if (SharedPreferenceUtil.read("type", "").equals("sina")) {
+                UtilsUmeng.Login(LoginActivity.this, getApplicationContext(), SHARE_MEDIA.SINA, mHandler);
+            } else if (SharedPreferenceUtil.read("type", "").equals("qq")) {
+                UtilsUmeng.Login(LoginActivity.this, getApplicationContext(), SHARE_MEDIA.QQ, mHandler);
+            } else if (SharedPreferenceUtil.read("type", "").equals("weixin")) {
+                UtilsUmeng.Login(LoginActivity.this, getApplicationContext(), SHARE_MEDIA.WEIXIN, mHandler);
+            }
+        }
     }
 
     private void loginIM(final String username) {

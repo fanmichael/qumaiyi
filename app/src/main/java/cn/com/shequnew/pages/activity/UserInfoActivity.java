@@ -39,6 +39,7 @@ import cn.com.shequnew.pages.config.AppContext;
 import cn.com.shequnew.pages.http.HttpConnectTool;
 import cn.com.shequnew.pages.prompt.Loading;
 import cn.com.shequnew.tools.ListTools;
+import cn.com.shequnew.tools.SharedPreferenceUtil;
 import cn.com.shequnew.tools.ValidData;
 
 /**
@@ -285,8 +286,14 @@ public class UserInfoActivity extends BaseActivity {
     }
 
     private void sendMessage() {
-        if (cvUser.getAsString("mobile").trim().isEmpty()) {
-            return;
+        if (SharedPreferenceUtil.hasKey("id")) {
+            if (SharedPreferenceUtil.read("id", "").isEmpty()) {
+                return;
+            }
+        } else {
+            if (AppContext.cv.getAsString("mobile").trim().isEmpty()) {
+                return;
+            }
         }
         Intent intent = new Intent(UserInfoActivity.this, ChatActivity.class);
         intent.putExtra(EaseConstant.EXTRA_USER_ID, cvUser.getAsString("mobile")).putExtra(EaseConstant.EXTRA_CHAT_TYPE, EaseConstant.CHATTYPE_SINGLE).putExtra("NICK", cvUser.getAsString("nick"));

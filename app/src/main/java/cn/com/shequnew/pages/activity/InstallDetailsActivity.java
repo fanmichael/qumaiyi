@@ -219,6 +219,13 @@ public class InstallDetailsActivity extends BaseActivity {
                     SharedPreferenceUtil.remove("password");
                     AppContext.cv.clear();
                 }
+                if (SharedPreferenceUtil.hasKey("id")) {
+                    SharedPreferenceUtil.remove("type");
+                    SharedPreferenceUtil.remove("id");
+                    SharedPreferenceUtil.remove("nick");
+                    SharedPreferenceUtil.remove("icon");
+                    AppContext.cv.clear();
+                }
                 if (EMClient.getInstance().isLoggedInBefore())
                     EMClient.getInstance().logout(true);
                 ObjectSaveUtils.saveObject(InstallDetailsActivity.this, "USERICON", UserInfo.getInstance());

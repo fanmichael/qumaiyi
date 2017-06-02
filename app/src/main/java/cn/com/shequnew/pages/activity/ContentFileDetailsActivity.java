@@ -57,6 +57,7 @@ import cn.com.shequnew.pages.config.AppContext;
 import cn.com.shequnew.pages.http.HttpConnectTool;
 import cn.com.shequnew.pages.prompt.Loading;
 import cn.com.shequnew.tools.ListTools;
+import cn.com.shequnew.tools.SharedPreferenceUtil;
 import cn.com.shequnew.tools.UtilsUmeng;
 import cn.com.shequnew.tools.ValidData;
 
@@ -181,7 +182,8 @@ public class ContentFileDetailsActivity extends BaseActivity implements CommentA
         uid = bundle.getInt("uid");
         if (uid == AppContext.cv.getAsInteger("id")) {
 //        if (String.valueOf(uid).equals(AppContext.cv.getAsInteger("id"))) {
-            lan.setVisibility(View.GONE);
+//            lan.setVisibility(View.GONE);
+            faith.setVisibility(View.GONE);
             fileDetailsAttention.setVisibility(View.GONE);
             fileDetailsAttentionNo.setVisibility(View.GONE);
             collect.setVisibility(View.GONE);
@@ -427,8 +429,14 @@ public class ContentFileDetailsActivity extends BaseActivity implements CommentA
     }
 
     private void sendMessage() {
-        if (AppContext.cv.getAsString("mobile").trim().isEmpty()) {
-            return;
+        if (SharedPreferenceUtil.hasKey("id")) {
+            if (SharedPreferenceUtil.read("id", "").isEmpty()) {
+                return;
+            }
+        } else {
+            if (AppContext.cv.getAsString("mobile").trim().isEmpty()) {
+                return;
+            }
         }
         Intent intent = new Intent(ContentFileDetailsActivity.this, ChatActivity.class);
         intent.putExtra(EaseConstant.EXTRA_USER_ID, values.getAsString("mobile")).putExtra(EaseConstant.EXTRA_CHAT_TYPE, EaseConstant.CHATTYPE_SINGLE).putExtra("NICK", values.getAsString("nick"));

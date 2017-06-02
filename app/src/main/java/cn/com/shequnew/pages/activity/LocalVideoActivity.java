@@ -61,6 +61,7 @@ import cn.com.shequnew.pages.http.HttpConnectTool;
 import cn.com.shequnew.pages.prompt.Loading;
 import cn.com.shequnew.pages.view.MyVideoView;
 import cn.com.shequnew.tools.ListTools;
+import cn.com.shequnew.tools.SharedPreferenceUtil;
 import cn.com.shequnew.tools.UtilsUmeng;
 import cn.com.shequnew.tools.ValidData;
 import io.vov.vitamio.LibsChecker;
@@ -214,7 +215,8 @@ public class LocalVideoActivity extends BaseActivity implements CommentAdapter.s
         uid = bundle.getInt("uid");
 //        if (String.valueOf(uid).equals(AppContext.cv.get("id"))) {
         if (uid == AppContext.cv.getAsInteger("id")) {
-            videoLan.setVisibility(View.GONE);
+//            videoLan.setVisibility(View.GONE);
+            videoFaith.setVisibility(View.GONE);
             videoDetailsAttention.setVisibility(View.GONE);
             videoDetailsAttentionNo.setVisibility(View.GONE);
             collect.setVisibility(View.GONE);
@@ -569,8 +571,14 @@ public class LocalVideoActivity extends BaseActivity implements CommentAdapter.s
     }
 
     private void sendMessage() {
-        if (values.getAsString("mobile").trim().isEmpty()) {
-            return;
+        if (SharedPreferenceUtil.hasKey("id")) {
+            if (SharedPreferenceUtil.read("id", "").isEmpty()) {
+                return;
+            }
+        } else {
+            if (AppContext.cv.getAsString("mobile").trim().isEmpty()) {
+                return;
+            }
         }
         Intent intent = new Intent(LocalVideoActivity.this, ChatActivity.class);
         intent.putExtra(EaseConstant.EXTRA_USER_ID, values.getAsString("mobile")).putExtra(EaseConstant.EXTRA_CHAT_TYPE, EaseConstant.CHATTYPE_SINGLE).putExtra("NICK", values.getAsString("nick"));
