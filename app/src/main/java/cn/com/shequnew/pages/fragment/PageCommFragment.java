@@ -124,5 +124,6 @@ public class PageCommFragment extends BasicFragment {
     public void onDestroyView() {
         super.onDestroyView();
         unbinder.unbind();
+        System.gc();
     }
 }

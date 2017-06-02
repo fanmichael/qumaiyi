@@ -533,5 +533,6 @@ public class CommunityFragment extends BasicFragment implements SwipeRefreshLayo
     public void onDestroyView() {
         super.onDestroyView();
         unbinder.unbind();
+        System.gc();
     }
 }

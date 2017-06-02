@@ -83,6 +83,7 @@ public class PublishDetailsShopBuyFragment extends BasicFragment implements Swip
     public void onDestroyView() {
         super.onDestroyView();
         unbinder.unbind();
+        System.gc();
     }
 
     @Override

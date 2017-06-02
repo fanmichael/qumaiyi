@@ -195,6 +195,7 @@ public class DynamicFragment extends BasicFragment implements SwipeRefreshLayout
     public void onDestroyView() {
         super.onDestroyView();
         unbinder.unbind();
+        System.gc();
     }
 
 

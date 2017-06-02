@@ -85,6 +85,7 @@ public class PublishDetailsShopDetailsFragment extends BasicFragment implements 
     public void onDestroyView() {
         super.onDestroyView();
         unbinder.unbind();
+        System.gc();
     }
 
     @Override

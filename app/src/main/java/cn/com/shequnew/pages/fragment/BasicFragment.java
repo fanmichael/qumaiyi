@@ -40,4 +40,9 @@ public class BasicFragment extends Fragment {
         }
     }
 
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        System.gc();
+    }
 }
