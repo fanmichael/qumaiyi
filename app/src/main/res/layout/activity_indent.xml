@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:background="@color/bg"
     android:orientation="vertical"
-    tools:context="cn.com.shequnew.pages.activity.IndentActivity">
+    tools:context="cn.yshstudio.originalproduct.pages.activity.IndentActivity">
 
     <include layout="@layout/top_title"></include>
 
@@ -210,7 +210,7 @@
                     android:textColor="@color/col_red"
                     android:textSize="14dp" />
 
-                <cn.com.shequnew.pages.view.NumberAddSub
+                <cn.yshstudio.originalproduct.pages.view.NumberAddSub
                     android:id="@+id/nb_addsub_view"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"

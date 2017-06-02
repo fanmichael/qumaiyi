@@ -9,13 +9,13 @@
     <!--layout="@layout/top_title"-->
     <!--&gt;-->
     <!--</include>-->
-    <cn.com.shequnew.pages.view.SlideShowView
+    <cn.yshstudio.originalproduct.pages.view.SlideShowView
         android:id="@+id/slideshowView"
         android:layout_width="match_parent"
         android:layout_height="200dp"
         android:layout_centerHorizontal="true">
 
-    </cn.com.shequnew.pages.view.SlideShowView>
+    </cn.yshstudio.originalproduct.pages.view.SlideShowView>
 
 
 </LinearLayout>

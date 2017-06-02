@@ -1,19 +1,15 @@
 package com.yshstudio.originalproduct.wxapi;
 
 import android.util.Log;
-import android.widget.Toast;
 
 import com.tencent.mm.opensdk.modelbase.BaseReq;
 import com.tencent.mm.opensdk.modelbase.BaseResp;
 import com.tencent.mm.opensdk.openapi.IWXAPIEventHandler;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.io.IOException;
 
-import cn.com.shequnew.inc.Ini;
-import cn.com.shequnew.tools.SharedPreferenceUtil;
+import cn.yshstudio.originalproduct.inc.Ini;
+import cn.yshstudio.originalproduct.tools.SharedPreferenceUtil;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.FormBody;
@@ -21,8 +17,6 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
-
-import static android.R.attr.type;
 
 /**
  * 版 权：方直科技

@@ -16,7 +16,7 @@
             android:layout_height="wrap_content"
             android:background="@color/white"
             android:orientation="vertical">
-            <cn.com.shequnew.pages.view.PullToRefreshSwipeMenuListView
+            <cn.yshstudio.originalproduct.pages.view.PullToRefreshSwipeMenuListView
                 android:id="@+id/shop_list_pull_cal"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"

@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@color/bg"
     android:orientation="vertical"
-    tools:context="cn.com.shequnew.pages.activity.WalletPriceActivity">
+    tools:context="cn.yshstudio.originalproduct.pages.activity.WalletPriceActivity">
 
     <include layout="@layout/top_title"></include>
 

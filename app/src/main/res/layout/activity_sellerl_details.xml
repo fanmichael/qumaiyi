@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@color/white"
     android:orientation="vertical"
-    tools:context="cn.com.shequnew.pages.activity.SellerlDetailsActivity">
+    tools:context="cn.yshstudio.originalproduct.pages.activity.SellerlDetailsActivity">
 
     <include layout="@layout/top_title"></include>
 
@@ -267,7 +267,7 @@
                     android:textSize="@dimen/text_title" />
 
 
-                <cn.com.shequnew.pages.view.MyGridView
+                <cn.yshstudio.originalproduct.pages.view.MyGridView
                     android:id="@+id/sell_card_gridView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -278,7 +278,7 @@
                     android:numColumns="4"
                     android:scrollbarSize="1px"
                     android:stretchMode="columnWidth"
-                    android:verticalSpacing="10dp"></cn.com.shequnew.pages.view.MyGridView>
+                    android:verticalSpacing="10dp"></cn.yshstudio.originalproduct.pages.view.MyGridView>
             </LinearLayout>
 
 
