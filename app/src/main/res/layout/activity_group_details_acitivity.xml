@@ -11,7 +11,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:weightSum="10"
-    tools:context="com.yshstudio.originalproduct.activity.GroupDetailsAcitivity">
+    tools:context="com.yshstudio.originalproduct.chat.activity.GroupDetailsAcitivity">
 
     <com.hyphenate.easeui.widget.EaseTitleBar
         android:id="@+id/title_bar"

@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@color/bg"
     android:orientation="vertical"
-    tools:context="cn.yshstudio.originalproduct.pages.adapter.SellerDaetailsActivity">
+    tools:context="com.yshstudio.originalproduct.pages.adapter.SellerDaetailsActivity">
 
     <include layout="@layout/top_title"></include>
 

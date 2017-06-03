@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
     android:orientation="vertical"
-    tools:context="com.yshstudio.originalproduct.activity.GroupListActivity">
+    tools:context="com.yshstudio.originalproduct.chat.activity.GroupListActivity">
 
     <com.hyphenate.easeui.widget.EaseTitleBar
         android:id="@+id/title_bar"

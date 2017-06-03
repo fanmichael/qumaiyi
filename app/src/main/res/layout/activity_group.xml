@@ -8,7 +8,7 @@
     android:fitsSystemWindows="true"
     android:orientation="vertical"
     android:weightSum="10"
-    tools:context="com.yshstudio.originalproduct.activity.GroupAddMemberActivity">
+    tools:context="com.yshstudio.originalproduct.chat.activity.GroupAddMemberActivity">
 
     <LinearLayout
         android:layout_width="match_parent"

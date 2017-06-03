@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/bg"
-    tools:context="cn.yshstudio.originalproduct.pages.activity.LocalVideoActivity">
+    tools:context="com.yshstudio.originalproduct.pages.activity.LocalVideoActivity">
 
 
     <include
@@ -205,7 +205,7 @@
                     </RelativeLayout>
 
 
-                    <cn.yshstudio.originalproduct.pages.view.MyVideoView
+                    <com.yshstudio.originalproduct.pages.view.MyVideoView
                         android:id="@+id/video_play"
                         android:layout_width="match_parent"
                         android:layout_height="200dp"

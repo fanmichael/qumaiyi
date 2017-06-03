@@ -94,7 +94,7 @@
                     android:background="#FFFFFF"
                     android:orientation="vertical">
 
-                    <cn.yshstudio.originalproduct.pages.view.SlideShowView
+                    <com.yshstudio.originalproduct.pages.view.SlideShowView
                         android:id="@+id/slideshowView"
                         android:layout_width="match_parent"
                         android:layout_height="160dp"
@@ -107,7 +107,7 @@
                             android:layout_weight="1"
                             android:text="最新内容"
                             android:textSize="14dp" />
-                    </cn.yshstudio.originalproduct.pages.view.SlideShowView>
+                    </com.yshstudio.originalproduct.pages.view.SlideShowView>
                 </LinearLayout>
 
 

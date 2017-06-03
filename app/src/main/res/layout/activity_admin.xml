@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.yshstudio.originalproduct.activity.AdminActivity">
+    tools:context="com.yshstudio.originalproduct.chat.activity.AdminActivity">
 
     <com.hyphenate.easeui.widget.EaseTitleBar
         android:id="@+id/title_bar"

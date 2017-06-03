@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:background="@color/bg"
     android:orientation="vertical"
-    tools:context="cn.yshstudio.originalproduct.pages.activity.CollectDetailsActivity">
+    tools:context="com.yshstudio.originalproduct.pages.activity.CollectDetailsActivity">
 
     <include layout="@layout/top_title"></include>
 
