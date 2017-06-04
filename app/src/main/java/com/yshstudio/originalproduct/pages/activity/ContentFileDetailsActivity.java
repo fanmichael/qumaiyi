@@ -189,6 +189,8 @@ public class ContentFileDetailsActivity extends BaseActivity implements CommentA
             fileDetailsAttentionNo.setVisibility(View.GONE);
             collect.setVisibility(View.GONE);
             collectRe.setVisibility(View.GONE);
+            collCon.setVisibility(View.GONE);
+            collConNo.setVisibility(View.GONE);
         }
 //        commentAdapter = new CommentAdapter(context, list, lists, this);
 //        contentFileDetailsAdapter=new ContentFileDetailsAdapter(context,list,lists,this);
@@ -552,7 +554,7 @@ public class ContentFileDetailsActivity extends BaseActivity implements CommentA
             switch (what) {
                 case 1:
                     initData();
-                    if (String.valueOf(uid).equals(String.valueOf(AppContext.cv.getAsInteger("id")))) {
+                    if (!String.valueOf(uid).equals(String.valueOf(AppContext.cv.getAsInteger("id")))) {
                         isColl();
                     }
                     imgsList();

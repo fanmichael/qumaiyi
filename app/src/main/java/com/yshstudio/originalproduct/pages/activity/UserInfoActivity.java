@@ -321,10 +321,10 @@ public class UserInfoActivity extends BaseActivity {
             public void handleMessage(Message msg) {
                 switch (msg.what) {
                     case 1:
-                        mLoading = new Loading(
-                                context, imageBack);
-                        mLoading.setText("正在加载......");
-                        mLoading.show();
+//                        mLoading = new Loading(
+//                                context, imageBack);
+//                        mLoading.setText("正在加载......");
+//                        mLoading.show();
                         new asyncTask().execute(1);
                         break;
                     case 2:
@@ -368,7 +368,7 @@ public class UserInfoActivity extends BaseActivity {
         @Override
         protected void onPostExecute(Bundle bundle) {
             int what = bundle.containsKey("what") ? bundle.getInt("what") : -1;
-            removeLoading();
+//            removeLoading();
             switch (what) {
                 case 1:
                     initView();

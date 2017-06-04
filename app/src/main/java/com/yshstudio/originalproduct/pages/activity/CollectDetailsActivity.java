@@ -6,6 +6,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.View;
+import android.widget.AbsListView;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -75,6 +76,21 @@ public class CollectDetailsActivity extends BaseActivity implements SwipeRefresh
         ButterKnife.bind(this);
         context = this;
         initView();
+        collectList.setOnScrollListener(new AbsListView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(AbsListView view, int scrollState) {
+
+            }
+
+            @Override
+            public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+                if (firstVisibleItem == 0)
+                    collectSwi.setEnabled(true);
+                else
+                    collectSwi.setEnabled(false);
+            }
+        });
+
         new asyncTask().execute(1);
     }
 
@@ -224,10 +240,10 @@ public class CollectDetailsActivity extends BaseActivity implements SwipeRefresh
                     break;
                 case 2:
                     collectSwi.setRefreshing(false);//刷新完成
-                    if(listNote.size()>0){
+                    if (listNote.size() > 0) {
                         listNote.clear();
                     }
-                    if(listGood.size()>0){
+                    if (listGood.size() > 0) {
                         listGood.clear();
                     }
                     if (listNoteCate.size() > 0) {
@@ -259,7 +275,7 @@ public class CollectDetailsActivity extends BaseActivity implements SwipeRefresh
                         }
                         collectList.onRefreshComplete();
                         collectList.setMode(PullToRefreshBase.Mode.DISABLED);
-                        Toast.makeText(context,"没有更多数据了！",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(context, "没有更多数据了！", Toast.LENGTH_SHORT).show();
                     }
                     if (listGoodCate.size() > 0) {
                         listGood.addAll(listGoodCate);
@@ -277,7 +293,7 @@ public class CollectDetailsActivity extends BaseActivity implements SwipeRefresh
                         }
                         collectList.onRefreshComplete();
                         collectList.setMode(PullToRefreshBase.Mode.DISABLED);
-                        Toast.makeText(context,"没有更多数据了！",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(context, "没有更多数据了！", Toast.LENGTH_SHORT).show();
                     }
 
                     break;
@@ -338,7 +354,7 @@ public class CollectDetailsActivity extends BaseActivity implements SwipeRefresh
                     note.put("uid", jsonObj.getInt("uid"));
                     note.put("file_type", jsonObj.getInt("file_type"));
                     note.put("subject", jsonObj.getString("subject"));
-                    if(jsonObj.has("video_img")){
+                    if (jsonObj.has("video_img")) {
                         note.put("video_img", jsonObj.getString("video_img"));
                     }
                     note.put("title", jsonObj.getString("title"));

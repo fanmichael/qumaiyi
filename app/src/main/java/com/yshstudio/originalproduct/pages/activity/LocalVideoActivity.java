@@ -217,6 +217,8 @@ public class LocalVideoActivity extends BaseActivity implements CommentAdapter.s
             videoDetailsAttentionNo.setVisibility(View.GONE);
             collect.setVisibility(View.GONE);
             collectRe.setVisibility(View.GONE);
+            videoCollCon.setVisibility(View.GONE);
+            videoCollConNo.setVisibility(View.GONE);
         }
         setDelayMessage(1, 100);
         videoDetailsImages.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -664,7 +666,7 @@ public class LocalVideoActivity extends BaseActivity implements CommentAdapter.s
             switch (what) {
                 case 1:
                     initView();
-                    if (String.valueOf(uid).equals(String.valueOf(AppContext.cv.getAsInteger("id")))) {
+                    if (!String.valueOf(uid).equals(String.valueOf(AppContext.cv.getAsInteger("id")))) {
                         isColl();
                     }
                     imgsList();

@@ -11,6 +11,7 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.chat.EMGroup;
@@ -87,12 +88,12 @@ public class CreateGroupActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (imageUri == null) {
-                    /*runOnUiThread(new Runnable() {
+                    runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
                             Toast.makeText(CreateGroupActivity.this, "请选择图片", Toast.LENGTH_SHORT).show();
                         }
-                    });*/
+                    });
                     return;
                 }
                 showProg("正在上传");

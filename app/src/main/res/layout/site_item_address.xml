@@ -101,6 +101,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:text="编辑"
+                android:textColor="@color/col_bg"
                 android:textSize="14dp" />
 
         </LinearLayout>
@@ -123,7 +124,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-
+                android:textColor="@color/col_bg"
                 android:text="删除"
                 android:textSize="14dp" />
 

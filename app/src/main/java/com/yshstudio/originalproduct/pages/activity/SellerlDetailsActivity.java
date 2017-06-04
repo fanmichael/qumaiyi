@@ -38,6 +38,7 @@ import java.util.Map;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+
 import com.yshstudio.originalproduct.R;
 import com.yshstudio.originalproduct.pages.adapter.AppraiesimgeAdapter;
 import com.yshstudio.originalproduct.pages.config.AppContext;
@@ -116,7 +117,12 @@ public class SellerlDetailsActivity extends BaseActivity {
     @OnClick(R.id.top_regit_title)
     void submit() {
         /**提交资料*/
-        initData();
+        if (choseBtn) {
+            initData();
+        } else {
+            Toast.makeText(context, "请阅读、勾选条例及隐私协议", Toast.LENGTH_LONG).show();
+            return;
+        }
     }
 
 
@@ -151,10 +157,8 @@ public class SellerlDetailsActivity extends BaseActivity {
                 choseBtn = chose.isChecked();
                 dialog.dismiss();
                 if (choseBtn) {
-                    topRegitTitle.setClickable(true);
                     topRegitTitle.setTextColor(getResources().getColor(R.color.bd_top));
                 } else {
-                    topRegitTitle.setClickable(false);
                     topRegitTitle.setTextColor(getResources().getColor(R.color.bd_top_chose));
                 }
             }
@@ -167,7 +171,6 @@ public class SellerlDetailsActivity extends BaseActivity {
         topTitle.setText("申请卖主");
         topRegitTitle.setText("提交");
         topRegitTitle.setVisibility(View.VISIBLE);
-        topRegitTitle.setClickable(false);
         topRegitTitle.setTextColor(getResources().getColor(R.color.bd_top_chose));
         contentValues.add(0, null);
         appraiesimgeAdapter = new AppraiesimgeAdapter(contentValues, context, 2, true);

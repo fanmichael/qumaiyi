@@ -23,6 +23,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.facebook.drawee.view.SimpleDraweeView;
+import com.yshstudio.originalproduct.R;
+import com.yshstudio.originalproduct.pages.http.HttpConnectTool;
+import com.yshstudio.originalproduct.tools.TextContent;
+import com.yshstudio.originalproduct.tools.ValidData;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -36,10 +40,6 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import com.yshstudio.originalproduct.R;
-import com.yshstudio.originalproduct.pages.http.HttpConnectTool;
-import com.yshstudio.originalproduct.tools.TextContent;
-import com.yshstudio.originalproduct.tools.ValidData;
 
 /**
  * 注册
@@ -181,6 +181,9 @@ public class RegisterActivity extends BaseActivity {
                     case 3:
                         new asyncTask().execute(3);
                         break;
+                    case 4:
+                        new asyncTask().execute(4);
+                        break;
                 }
             }
         };
@@ -255,7 +258,11 @@ public class RegisterActivity extends BaseActivity {
             is = false;
         }
         if (is) {
-            setDelayMessage(3, 100);
+            if (type.equals("register")) {
+                setDelayMessage(3, 100);
+            } else if (type.equals("paw")) {
+                setDelayMessage(4, 100);
+            }
         } else {
             Toast.makeText(mContext, msg, Toast.LENGTH_SHORT).show();
         }
@@ -425,7 +432,8 @@ public class RegisterActivity extends BaseActivity {
             hashMap.put("code", tag);
             String json = HttpConnectTool.post(hashMap);
             if (!json.equals("")) {
-                Toast.makeText(mContext, "密码找回成功！", Toast.LENGTH_LONG).show();
+                JSONObject jsonObject = new JSONObject(json);
+                error = jsonObject.getInt("error");
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -506,7 +514,12 @@ public class RegisterActivity extends BaseActivity {
                     }
                     break;
                 case 4:
-
+                    if (error == 0) {
+                        Toast.makeText(mContext, "密码找回成功！", Toast.LENGTH_LONG).show();
+                        destroyActitity();
+                    } else if (error == 110) {
+                        Toast.makeText(mContext, "验证码错误", Toast.LENGTH_SHORT).show();
+                    }
                     break;
 
             }

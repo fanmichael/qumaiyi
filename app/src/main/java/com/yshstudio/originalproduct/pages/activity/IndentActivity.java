@@ -103,11 +103,13 @@ public class IndentActivity extends BaseActivity {
             @Override
             public void onButtonAddClick(View view, int value) {
                 goods.put("num", value);
+                allPrice.setText(allMoneyStr()+"元");
             }
 
             @Override
             public void onButtonSubClick(View view, int value) {
                 goods.put("num", value);
+                allPrice.setText(allMoneyStr()+"元");
             }
         });
         weixinPay.setOnClickListener(new View.OnClickListener() {
@@ -128,6 +130,13 @@ public class IndentActivity extends BaseActivity {
         });
         new asyncTask().execute(1);
     }
+
+
+    private String allMoneyStr(){
+        String allPrices = "" + ((Double.valueOf(goods.getAsString("price")) * goods.getAsInteger("num")) + Double.valueOf(goods.getAsString("ship")));
+        return allPrices;
+    }
+
 
     private void initView() {
         topTitle.setText("我的订单");
@@ -172,7 +181,7 @@ public class IndentActivity extends BaseActivity {
         indntTitle.setText(goods.getAsString("good_name"));
         indentGrd.setText("工期：" + goods.getAsInteger("maf_time") + "天");
         indentPrice.setText("￥" + goods.getAsString("price"));
-        allPrice.setText(goods.getAsString("price") + "元");
+        allPrice.setText(allMoneyStr()+"元");
     }
 
 

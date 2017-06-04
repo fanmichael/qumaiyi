@@ -6,11 +6,13 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.hardware.Camera;
 import android.media.MediaMetadataRetriever;
 import android.media.ThumbnailUtils;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
@@ -50,6 +52,8 @@ import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -59,6 +63,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
+
 import com.yshstudio.originalproduct.R;
 import com.yshstudio.originalproduct.pages.activity.ElcyGroupActivity;
 import com.yshstudio.originalproduct.pages.activity.ElevancyShopActivity;
@@ -72,6 +77,8 @@ import com.yshstudio.originalproduct.pages.view.MyGridView;
 import com.yshstudio.originalproduct.pages.view.MyProgressDialog;
 import com.yshstudio.originalproduct.tools.ImageToools;
 import com.yshstudio.originalproduct.tools.TextContent;
+
+import static com.umeng.socialize.utils.Log.TAG;
 
 /**
  * 视频
@@ -242,6 +249,7 @@ public class VideoContentFragment extends BasicFragment {
                 Log.e("v_size=", v_size);
                 Log.e("v_name=", v_name);
                 videoImage(v_path);
+//                retriveVideoFrameFromVideo(v_path);
                 videoFile = new File(v_path);
             }
         }
@@ -287,7 +295,7 @@ public class VideoContentFragment extends BasicFragment {
      * 获取视频图
      */
     private void videoImage(String path) {
-        Bitmap bitmap = getVideoThumb(path);
+        Bitmap bitmap = createVideoThumbnail(path);
         Bitmap bit = ThumbnailUtils.extractThumbnail(bitmap, 100, 80);
         videoImages.setImageBitmap(bit);
         saveBitmapFile(bit);
@@ -301,6 +309,82 @@ public class VideoContentFragment extends BasicFragment {
         media.setDataSource(path);
         return media.getFrameAtTime();
     }
+
+    public Bitmap retriveVideoFrameFromVideo(String videoPath) {
+        Bitmap bitmap = null;
+        MediaMetadataRetriever mediaMetadataRetriever = null;
+        int kind = MediaStore.Video.Thumbnails.MINI_KIND;
+        try {
+            mediaMetadataRetriever = new MediaMetadataRetriever();
+            if (Build.VERSION.SDK_INT >= 14) {
+                mediaMetadataRetriever.setDataSource(videoPath, new HashMap<String, String>());
+            } else {
+                mediaMetadataRetriever.setDataSource(videoPath);
+            }
+            bitmap = mediaMetadataRetriever.getFrameAtTime();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (mediaMetadataRetriever != null) {
+                mediaMetadataRetriever.release();
+            }
+        }
+        if (kind == MediaStore.Images.Thumbnails.MICRO_KIND && bitmap != null) {
+            bitmap = ThumbnailUtils.extractThumbnail(bitmap, 100, 80,
+                    ThumbnailUtils.OPTIONS_RECYCLE_INPUT);
+        }
+        videoImages.setImageBitmap(bitmap);
+        saveBitmapFile(bitmap);
+        return bitmap;
+    }
+
+
+    public static Bitmap createVideoThumbnail(String filePath) {
+        // MediaMetadataRetriever is available on API Level 8
+        // but is hidden until API Level 10
+        Class<?> clazz = null;
+        Object instance = null;
+        try {
+            clazz = Class.forName("android.media.MediaMetadataRetriever");
+            instance = clazz.newInstance();
+            Method method = clazz.getMethod("setDataSource", String.class);
+            method.invoke(instance, filePath);
+            // The method name changes between API Level 9 and 10.
+            if (Build.VERSION.SDK_INT <= 9) {
+                return (Bitmap) clazz.getMethod("captureFrame").invoke(instance);
+            } else {
+                byte[] data = (byte[]) clazz.getMethod("getEmbeddedPicture").invoke(instance);
+                if (data != null) {
+                    Bitmap bitmap = BitmapFactory.decodeByteArray(data, 0, data.length);
+                    if (bitmap != null) return bitmap;
+                }
+                return (Bitmap) clazz.getMethod("getFrameAtTime").invoke(instance);
+            }
+        } catch (IllegalArgumentException ex) {
+            // Assume this is a corrupt video file
+        } catch (RuntimeException ex) {
+            // Assume this is a corrupt video file.
+        } catch (java.lang.InstantiationException e) {
+            Log.e(TAG, "createVideoThumbnail", e);
+        } catch (InvocationTargetException e) {
+            Log.e(TAG, "createVideoThumbnail", e);
+        } catch (ClassNotFoundException e) {
+            Log.e(TAG, "createVideoThumbnail", e);
+        } catch (NoSuchMethodException e) {
+            Log.e(TAG, "createVideoThumbnail", e);
+        } catch (IllegalAccessException e) {
+            Log.e(TAG, "createVideoThumbnail", e);
+        } finally {
+            try {
+                if (instance != null) {
+                    clazz.getMethod("release").invoke(instance);
+                }
+            } catch (Exception ignored) {
+            }
+        }
+        return null;
+    }
+
 
     /**
      * 提交判断

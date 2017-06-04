@@ -27,10 +27,12 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+
 import com.yshstudio.originalproduct.R;
 import com.yshstudio.originalproduct.pages.adapter.BuyGoodsAdapter;
 import com.yshstudio.originalproduct.pages.config.AppContext;
 import com.yshstudio.originalproduct.pages.http.HttpConnectTool;
+import com.yshstudio.originalproduct.pages.view.LoadingDialog;
 
 /**
  * 购买记录--我的订单
@@ -79,7 +81,7 @@ public class BuyDetailsActivity extends BaseActivity implements SwipeRefreshLayo
 
     private List<ContentValues> contentValues = new ArrayList<>();
     private List<ContentValues> buyLists = new ArrayList<>();
-
+    private LoadingDialog mDialog = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -356,9 +358,9 @@ public class BuyDetailsActivity extends BaseActivity implements SwipeRefreshLayo
         @Override
         protected void onPostExecute(Bundle bundle) {
             int what = bundle.containsKey("what") ? bundle.getInt("what") : -1;
-//            removeLoading();
             switch (what) {
                 case 1:
+                    removeLoadings();
                     collectSwiContent.setRefreshing(false);//刷新完成
                     if (buyLists == null) {
                         buyLists = new ArrayList<>();
@@ -500,15 +502,28 @@ public class BuyDetailsActivity extends BaseActivity implements SwipeRefreshLayo
         context.startActivity(intent);
     }
 
+    private void appendLoading() {
+        mDialog = new LoadingDialog(context);
+        mDialog.setText("正在取消订单");
+        mDialog.show();
+    }
+
+    // 关闭loading
+    private void removeLoadings() {
+        if (mDialog != null) {
+            mDialog.dismiss();
+            mDialog = null;
+        }
+    }
+
     /**
      * 取消订单
      */
     @Override
     public void cal(int posit, int id, String ddid) {
-//        if (state.equals("6")) {
-            shopId = buyLists.get(posit).getAsInteger("id");
-            new asyncTask().execute(3);//待付款取消订单
-//        }
+        appendLoading();
+        shopId = buyLists.get(posit).getAsInteger("id");
+        new asyncTask().execute(3);//待付款取消订单
     }
 
     /**

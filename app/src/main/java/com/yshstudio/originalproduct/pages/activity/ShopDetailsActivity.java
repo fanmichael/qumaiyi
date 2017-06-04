@@ -370,7 +370,7 @@ public class ShopDetailsActivity extends BaseActivity implements UserGoodsShopAd
             switch (what) {
                 case 1:
                     initView();
-                    if (String.valueOf(uid).equals(String.valueOf(AppContext.cv.getAsInteger("id"))))  {
+                    if (!String.valueOf(uid).equals(String.valueOf(AppContext.cv.getAsInteger("id"))))  {
                         isColl();
                     }
                     initGoods();

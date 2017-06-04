@@ -33,6 +33,7 @@ import butterknife.OnClick;
 import com.yshstudio.originalproduct.R;
 import com.yshstudio.originalproduct.pages.http.HttpConnectTool;
 import com.yshstudio.originalproduct.pages.prompt.Loading;
+import com.yshstudio.originalproduct.pages.view.LoadingDialog;
 import com.yshstudio.originalproduct.tools.ValidData;
 
 /**
@@ -114,10 +115,6 @@ public class ChoseNewsActivity extends BaseActivity {
         if (content.equals("")) {
             Toast.makeText(context, "请输入搜索内容", Toast.LENGTH_SHORT).show();
         } else {
-            mLoading = new Loading(
-                    context, choseText);
-            mLoading.setText("正在加载......");
-            mLoading.show();
             new asyncTask().execute(1);
         }
     }
@@ -140,9 +137,12 @@ public class ChoseNewsActivity extends BaseActivity {
         @Override
         protected void onPostExecute(Bundle bundle) {
             int what = bundle.containsKey("what") ? bundle.getInt("what") : -1;
-            removeLoading();
             switch (what) {
                 case 1:
+                    if(contentNote.size()<=0 && contentUser.size()<=0 && contentGood.size()<=0){
+                        Toast.makeText(context,"没有数据！",Toast.LENGTH_LONG).show();
+                    }
+
                     if (contentNote.size() > 0) {
                         choseContent.setVisibility(View.VISIBLE);
                     } else {

@@ -90,6 +90,7 @@ public class ElcyGroupDeActivity extends BaseActivity implements UserGroupAdapte
             context.startActivity(intent);
         }
     }
+
     @Override
     public void onClick(int pos, boolean is) {
         if (is) {
@@ -126,15 +127,15 @@ public class ElcyGroupDeActivity extends BaseActivity implements UserGroupAdapte
             // removeLoading();
             switch (what) {
                 case 1:
+                    if (contentValues.size() <= 0) {
+                        Toast.makeText(context, "还没有群组！", Toast.LENGTH_LONG).show();
+                    }
                     userGroupAdapter.notifyDataSetChanged();
                     //初始加载数据
                     break;
-
             }
-
         }
     }
-
 
     private void httpGoodsInfo() {
         try {

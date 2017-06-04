@@ -45,6 +45,7 @@ import com.yshstudio.originalproduct.pages.activity.LocalVideoActivity;
 import com.yshstudio.originalproduct.pages.activity.MoreActivity;
 import com.yshstudio.originalproduct.pages.activity.SpecialNoteActivity;
 import com.yshstudio.originalproduct.pages.http.HttpConnectTool;
+import com.yshstudio.originalproduct.pages.view.LoadingDialog;
 import com.yshstudio.originalproduct.pages.view.SlideShowView;
 import com.yshstudio.originalproduct.tools.ValidData;
 
@@ -112,6 +113,7 @@ public class PagesFragment extends BasicFragment implements SwipeRefreshLayout.O
     private MyAdapter myAdapter;
     private int typeNum = 0;
 
+    private LoadingDialog mDialog = null;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -214,30 +216,48 @@ public class PagesFragment extends BasicFragment implements SwipeRefreshLayout.O
     }
 
 
+    private void appendLoading() {
+        mDialog = new LoadingDialog(context);
+        mDialog.setText("正在加载");
+        mDialog.show();
+    }
+
+    // 关闭loading
+    private void removeLoadings() {
+        if(mDialog!=null) {
+            mDialog.dismiss();
+            mDialog = null;
+        }
+    }
+
     private void radioDynamicChose() {
         radioDynamic.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, @IdRes int checkedId) {
                 switch (checkedId) {
                     case R.id.rad_dynamic_wu:
+                        appendLoading();
                         type = "1";
                         typeNum = 0;
                         btnTextFo();
                         setDelayMessage(1, 1000);
                         break;
                     case R.id.rad_dynamic_gu:
+                        appendLoading();
                         type = "2";
                         typeNum = 1;
                         btnTextOne();
                         setDelayMessage(2, 1000);
                         break;
                     case R.id.rad_dynamic_yang:
+                        appendLoading();
                         type = "3";
                         typeNum = 2;
                         btnTextTwo();
                         setDelayMessage(3, 1000);
                         break;
                     case R.id.rad_dynamic_jue:
+                        appendLoading();
                         type = "4";
                         typeNum = 3;
                         btnTextSe();
@@ -281,31 +301,15 @@ public class PagesFragment extends BasicFragment implements SwipeRefreshLayout.O
             public void handleMessage(Message msg) {
                 switch (msg.what) {
                     case 1:
-//                        mLoading = new Loading(
-//                                getActivity(), pagseHotMore);
-//                        mLoading.setText("正在加载......");
-//                        mLoading.show();
                         new asyncTask().execute(1);
                         break;
                     case 2:
-//                        mLoading = new Loading(
-//                                getActivity(), pagseHotMore);
-//                        mLoading.setText("正在加载......");
-//                        mLoading.show();
                         new asyncTask().execute(2);
                         break;
                     case 3:
-//                        mLoading = new Loading(
-//                                getActivity(), pagseHotMore);
-//                        mLoading.setText("正在加载......");
-//                        mLoading.show();
                         new asyncTask().execute(3);
                         break;
                     case 4:
-//                        mLoading = new Loading(
-//                                getActivity(), pagseHotMore);
-//                        mLoading.setText("正在加载......");
-//                        mLoading.show();
                         new asyncTask().execute(4);
                         break;
                 }
@@ -315,7 +319,6 @@ public class PagesFragment extends BasicFragment implements SwipeRefreshLayout.O
 
     @Override
     public void onRefresh() {
-
         if (typeNum == 0) {
             setDelayMessage(1, 100);
         } else if (typeNum == 1) {
@@ -325,6 +328,7 @@ public class PagesFragment extends BasicFragment implements SwipeRefreshLayout.O
         } else if (typeNum == 3) {
             setDelayMessage(4, 100);
         }
+        appendLoading();
         swipeRefreshLayout.setRefreshing(false);//刷新完成
     }
 
@@ -377,7 +381,7 @@ public class PagesFragment extends BasicFragment implements SwipeRefreshLayout.O
         @Override
         protected void onPostExecute(Bundle bundle) {
             int what = bundle.containsKey("what") ? bundle.getInt("what") : -1;
-            removeLoading();
+            removeLoadings();
             imageUrls = null;
 
             switch (what) {
@@ -394,6 +398,10 @@ public class PagesFragment extends BasicFragment implements SwipeRefreshLayout.O
                     if(infoPages == null){
                         return;
                     }
+                    if(slideshowView==null){
+                        return;
+                    }
+
                     info();
                     btnText(namesList);
                     newsList();
@@ -427,6 +435,9 @@ public class PagesFragment extends BasicFragment implements SwipeRefreshLayout.O
                     if (pagesHotLayout != null) {
                         pagesHotLayout.removeAllViews();
                     }
+                    if(slideshowView==null){
+                        return;
+                    }
                     newsList();
                     hotList();
                     if (imagesUrls.size() > 0) {
@@ -454,6 +465,9 @@ public class PagesFragment extends BasicFragment implements SwipeRefreshLayout.O
                     if (pagesHotLayout != null) {
                         pagesHotLayout.removeAllViews();
                     }
+                    if(slideshowView==null){
+                        return;
+                    }
                     newsList();
                     hotList();
                     if (imagesUrls.size() > 0) {
@@ -480,6 +494,9 @@ public class PagesFragment extends BasicFragment implements SwipeRefreshLayout.O
                     }
                     if (pagesHotLayout != null) {
                         pagesHotLayout.removeAllViews();
+                    }
+                    if(slideshowView==null){
+                        return;
                     }
                     newsList();
                     hotList();

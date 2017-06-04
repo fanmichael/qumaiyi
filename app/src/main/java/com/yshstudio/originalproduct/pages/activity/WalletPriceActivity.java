@@ -56,7 +56,6 @@ public class WalletPriceActivity extends BaseActivity {
         topTitle.setText("提现");
         Bundle bundle = this.getIntent().getExtras();
         allPrice = bundle.getString("allPrice");
-
     }
 
     @OnClick(R.id.image_back)
@@ -150,7 +149,7 @@ public class WalletPriceActivity extends BaseActivity {
             // removeLoading();
             switch (what) {
                 case 1:
-                    if (error == 0) {
+                    if (error == 115) {
                         Toast.makeText(context, "提交成功！", Toast.LENGTH_SHORT).show();
                         setResult(1);
                         destroyActitity();

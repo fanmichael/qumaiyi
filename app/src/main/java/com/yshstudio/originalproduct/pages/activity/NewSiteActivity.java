@@ -26,6 +26,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+
 import com.yshstudio.originalproduct.R;
 import com.yshstudio.originalproduct.pages.config.AppContext;
 import com.yshstudio.originalproduct.pages.http.HttpConnectTool;
@@ -90,8 +91,7 @@ public class NewSiteActivity extends BaseActivity {
         topRegitTitle.setText("保存");
         topRegitTitle.setVisibility(View.VISIBLE);
         siteAddress.setText("广东省 深圳市 宝安区");
-        jsonTxt();
-        initOptionPicker();
+        new asyncTask().execute(3);
     }
 
     private void jsonTxt() {
@@ -190,6 +190,10 @@ public class NewSiteActivity extends BaseActivity {
                     httpEditAddress();
                     bundle.putInt("what", 1);
                     break;
+                case 3:
+                    jsonTxt();
+                    bundle.putInt("what", 3);
+                    break;
             }
             return bundle;
         }
@@ -209,7 +213,9 @@ public class NewSiteActivity extends BaseActivity {
                         return;
                     }
                     break;
-
+                case 3:
+                    initOptionPicker();
+                    break;
 
             }
 
@@ -253,19 +259,19 @@ public class NewSiteActivity extends BaseActivity {
 
     private void httpAddress() {
         try {
-            String addrRess=siteAddress.getText().toString().trim() + siteDailesAddress.getText().toString().trim();
+            String addrRess = siteAddress.getText().toString().trim() + siteDailesAddress.getText().toString().trim();
             HashMap<String, String> map = new HashMap<>();
             map.put("action", "Address.action");
             map.put("uid", AppContext.cv.getAsInteger("id") + "");
             map.put("name", sitePop.getText().toString().trim());
             map.put("type", "add");
             map.put("mobile", sitePhone.getText().toString().trim());
-            map.put("address", URLEncoder.encode(addrRess, "UTF-8") + "" );
+            map.put("address", URLEncoder.encode(addrRess, "UTF-8") + "");
             String json = HttpConnectTool.post(map);
             if (!json.equals("")) {
                 xmlComm(json);
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
