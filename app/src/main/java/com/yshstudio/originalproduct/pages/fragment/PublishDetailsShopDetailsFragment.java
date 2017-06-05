@@ -82,7 +82,6 @@ public class PublishDetailsShopDetailsFragment extends BasicFragment implements 
     public void onDestroyView() {
         super.onDestroyView();
         unbinder.unbind();
-        System.gc();
     }
 
     @Override
@@ -306,6 +305,9 @@ public class PublishDetailsShopDetailsFragment extends BasicFragment implements 
                         contentShopList.addAll(contentShop);
                     }
                     goodsAdapter.notifyDataSetChanged();
+                    if(collectSwiDeta==null){
+                        return;
+                    }
                     collectSwiDeta.setRefreshing(false);//刷新完成
                     break;
                 case 2:

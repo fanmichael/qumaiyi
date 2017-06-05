@@ -105,7 +105,6 @@ public class PublishDetailsContentFragment extends BasicFragment implements Swip
     public void onDestroyView() {
         super.onDestroyView();
         unbinder.unbind();
-        System.gc();
     }
 
 
@@ -154,18 +153,6 @@ public class PublishDetailsContentFragment extends BasicFragment implements Swip
                 context.startActivity(intent);
             }
         });
-    }
-
-
-    private void constart() {
-        collectListContent.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                return true;
-            }
-        });
-
-
     }
 
     private void deleteData() {

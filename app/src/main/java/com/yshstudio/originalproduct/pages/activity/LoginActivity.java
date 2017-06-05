@@ -402,7 +402,7 @@ public class LoginActivity extends BaseActivity {
             new asyncTask().execute(1);
         }
 
-        if (SharedPreferenceUtil.hasKey("id")) {
+        if (SharedPreferenceUtil.hasKey("id") && SharedPreferenceUtil.hasKey("type")) {
             if (SharedPreferenceUtil.read("type", "").equals("sina")) {
                 UtilsUmeng.Login(LoginActivity.this, getApplicationContext(), SHARE_MEDIA.SINA, mHandler);
             } else if (SharedPreferenceUtil.read("type", "").equals("qq")) {

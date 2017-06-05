@@ -348,7 +348,7 @@ public class PullToRefreshSwipeMenuListView extends ListView implements AbsListV
      * @param enable
      */
     public void setPullLoadEnable(boolean enable) {
-        mEnablePullLoad = enable;
+        mEnablePullLoad = true;
         if (!mEnablePullLoad) {
             mFooterView.hide();
             mFooterView.setOnClickListener(null);

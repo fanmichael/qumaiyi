@@ -675,7 +675,7 @@ public class LocalVideoActivity extends BaseActivity implements CommentAdapter.s
                     (new Handler()).post(new Runnable() {
                         @Override
                         public void run() {
-                            videoScrollview.fullScroll(ScrollView.FOCUS_UP);
+                            videoScrollview.scrollTo(10, 10) ;
                         }
                     });
                     break;
