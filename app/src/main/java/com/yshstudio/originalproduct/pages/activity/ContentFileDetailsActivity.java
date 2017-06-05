@@ -563,7 +563,7 @@ public class ContentFileDetailsActivity extends BaseActivity implements CommentA
                     (new Handler()).post(new Runnable() {
                         @Override
                         public void run() {
-                            scrollview.fullScroll(ScrollView.FOCUS_UP);
+                            scrollview.scrollTo(10, 10) ;
                         }
                     });
                     break;
