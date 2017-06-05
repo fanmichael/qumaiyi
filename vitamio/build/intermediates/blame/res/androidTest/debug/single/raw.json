@@ -1,5 +1,9 @@
 [
     {
+        "merged": "E:\\wbProject\\project\\qumaiyigit\\qumaiyi\\vitamio\\build\\intermediates\\res\\merged\\androidTest\\debug\\raw\\libarm.so",
+        "source": "E:\\wbProject\\project\\qumaiyigit\\qumaiyi\\vitamio\\build\\intermediates\\bundles\\debug\\res\\raw\\libarm.so"
+    },
+    {
         "merged": "E:\\huayi\\qumaiyi\\ShequNew\\vitamio\\build\\intermediates\\res\\merged\\androidTest\\debug\\raw\\libarm.so",
         "source": "E:\\huayi\\qumaiyi\\ShequNew\\vitamio\\build\\intermediates\\bundles\\debug\\res\\raw\\libarm.so"
     }

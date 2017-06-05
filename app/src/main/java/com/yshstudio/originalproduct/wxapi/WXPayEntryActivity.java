@@ -1,6 +1,9 @@
 package com.yshstudio.originalproduct.wxapi;
 
+import android.app.Activity;
+import android.os.Bundle;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.tencent.mm.opensdk.modelbase.BaseReq;
 import com.tencent.mm.opensdk.modelbase.BaseResp;
@@ -26,15 +29,15 @@ import okhttp3.Response;
  */
 
 
-public class WXPayEntryActivity implements IWXAPIEventHandler {
+public class WXPayEntryActivity extends Activity implements IWXAPIEventHandler {
     @Override
-    public void onReq(BaseReq baseReq) {
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
         Log.e("aa", "sssssssssssssssssssssssssssssssssssssssssssssssssssssss");
+        chaxunjieguo();
     }
 
-    @Override
-    public void onResp(BaseResp baseResp) {
-
+    private void chaxunjieguo() {
         OkHttpClient client = new OkHttpClient();
         RequestBody requestBody = new FormBody.Builder()
                 .add("out_trade_no", SharedPreferenceUtil.read("orderid", "")).build();
@@ -45,13 +48,26 @@ public class WXPayEntryActivity implements IWXAPIEventHandler {
         client.newCall(request).enqueue(new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
-                Log.e("aa", "sssssssssssssssssssssssssssssssssss");
+                finish();
             }
 
             @Override
             public void onResponse(Call call, Response response) throws IOException {
-                Log.e("aa", "sssssssssssssssssssssssssssssssssssssssssssssssssssssss");
+                String result = response.body().string();
+                //根据这个result结果做你们需求的操作，result实际就是支付的结果json数据
+                finish();
             }
         });
+    }
+
+    @Override
+    public void onReq(BaseReq baseReq) {
+        chaxunjieguo();
+    }
+
+    @Override
+    public void onResp(BaseResp baseResp) {
+
+
     }
 }
