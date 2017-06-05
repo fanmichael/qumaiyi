@@ -163,10 +163,7 @@ public class VideoContentFragment extends BasicFragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         context = getActivity();
-        publishVideo.setClickable(false);
         ImageToools.verifyStoragePermissions(getActivity());
-//        contentValues = new ArrayList<>();
-//        contentValues.add(0, null);
         appraiesimgeAdapter = new AppraiesimgeAdapter(contentValues, context, 2, false);
         videoGridView.setAdapter(appraiesimgeAdapter);
     }
@@ -490,10 +487,8 @@ public class VideoContentFragment extends BasicFragment {
                 choseBtn = chose.isChecked();
                 dialog.dismiss();
                 if (choseBtn) {
-                    publishVideo.setClickable(true);
                     publishVideo.setBackgroundDrawable(getResources().getDrawable(R.drawable.login_btn));
                 } else {
-                    publishVideo.setClickable(false);
                     publishVideo.setBackgroundDrawable(getResources().getDrawable(R.drawable.chose_no));
                 }
             }
@@ -509,7 +504,8 @@ public class VideoContentFragment extends BasicFragment {
         if (choseBtn) {
             initData();
         } else {
-            Toast.makeText(context, "请阅读，勾选只是产权承诺！", Toast.LENGTH_LONG).show();
+            Toast.makeText(context, "请阅读，勾选知识产权承诺！", Toast.LENGTH_LONG).show();
+            return;
         }
 
     }

@@ -127,7 +127,6 @@ public class ContentFragment extends BasicFragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         context = getActivity();
-        contentAddSumit.setClickable(false);
         ImageToools.verifyStoragePermissions(getActivity());
         appraiesimgeAdapter = new AppraiesimgeAdapter(contentValues, context, 2, false);
         contectGridView.setAdapter(appraiesimgeAdapter);
@@ -191,7 +190,8 @@ public class ContentFragment extends BasicFragment {
         if (choseBtn) {
             initData();
         } else {
-            Toast.makeText(context, "请阅读，勾选只是产权承诺！", Toast.LENGTH_LONG).show();
+            Toast.makeText(context, "请阅读，勾选知识产权承诺！", Toast.LENGTH_LONG).show();
+            return;
         }
     }
 
@@ -224,10 +224,8 @@ public class ContentFragment extends BasicFragment {
                 choseBtn = chose.isChecked();
                 dialog.dismiss();
                 if (choseBtn) {
-                    contentAddSumit.setClickable(true);
                     contentAddSumit.setBackgroundDrawable(getResources().getDrawable(R.drawable.login_btn));
                 } else {
-                    contentAddSumit.setClickable(false);
                     contentAddSumit.setBackgroundDrawable(getResources().getDrawable(R.drawable.chose_no));
                 }
 

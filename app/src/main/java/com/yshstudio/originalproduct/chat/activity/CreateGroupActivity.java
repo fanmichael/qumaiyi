@@ -151,12 +151,13 @@ public class CreateGroupActivity extends AppCompatActivity {
                                             }
                                         });
                                     }
-                            /*runOnUiThread(new Runnable() {
+                            runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
-                                    Toast.makeText(CreateGroupActivity.this, "" + loadUpResponse.toString(), Toast.LENGTH_SHORT).show();
+//                                    Toast.makeText(CreateGroupActivity.this, "" + loadUpResponse.toString(), Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(CreateGroupActivity.this, "建群成功！", Toast.LENGTH_SHORT).show();
                                 }
-                            });*/
+                            });
                                 }
                             });
                         }

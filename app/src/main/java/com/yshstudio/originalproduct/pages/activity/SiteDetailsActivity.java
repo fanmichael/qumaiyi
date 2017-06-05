@@ -89,6 +89,7 @@ public class SiteDetailsActivity extends BaseActivity implements SiteDetailsAdap
 
     @OnClick(R.id.image_back)
     void back() {
+        setResult(1);
         destroyActitity();
     }
 

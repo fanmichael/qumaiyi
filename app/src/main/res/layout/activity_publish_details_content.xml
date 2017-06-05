@@ -21,6 +21,7 @@
                 android:layout_height="match_parent"
                 android:background="@color/white"
                 android:divider="@color/bg"
+                android:scrollbars="none"
                 android:paddingLeft="2px"
                 android:paddingRight="2px"
                 android:paddingTop="2px">

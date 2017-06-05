@@ -117,7 +117,6 @@ public class PublishShopActivity extends BaseActivity {
         ButterKnife.bind(this);
         context = this;
         topTitle.setText("发布商品");
-        publishShopSumit.setClickable(false);
         ImageToools.verifyStoragePermissions(PublishShopActivity.this);
         contentValues.add(0, null);
         appraiesimgeAdapter = new AppraiesimgeAdapter(contentValues, context, 2, true);
@@ -175,6 +174,9 @@ public class PublishShopActivity extends BaseActivity {
     private void initData() {
         boolean isit = true;
         String msg = "";
+        double price=Double.valueOf(publishShopPrice.getText().toString().trim());
+        double shipMon=Double.valueOf(publishShopExpPrice.getText().toString().trim());
+        double time=Double.valueOf(publishShopTime.getText().toString().trim());
         if (publishShopName.getText().toString().trim().equals("")) {
             msg = "商品名字不能为空！";
             isit = false;
@@ -187,16 +189,28 @@ public class PublishShopActivity extends BaseActivity {
             msg = "商品价格不能为空！";
             isit = false;
         }
-//        if (tagsId.equals("")) {
-//            msg = "请选择所属分类！";
-//            isit = false;
-//        }
+        if(price<=0){
+            msg = "商品价格要大于零！";
+            isit = false;
+        }
+        if (tagsId.equals("")) {
+            msg = "请选择所属分类！";
+            isit = false;
+        }
         if (publishShopExpPrice.getText().toString().trim().equals("")) {
             msg = "商品运费不能为空！";
             isit = false;
         }
+        if(shipMon <=0){
+            msg = "商品运费要大于零！";
+            isit = false;
+        }
         if (publishShopTime.getText().toString().trim().equals("")) {
             msg = "商品工期不能为空！";
+            isit = false;
+        }
+        if(time<0){
+            msg = "商品工期不能为负！";
             isit = false;
         }
         if (publishShopTile.getText().toString().trim().equals("")) {
@@ -309,7 +323,8 @@ public class PublishShopActivity extends BaseActivity {
         if (choseBtn) {
             initData();
         } else {
-            Toast.makeText(context, "请阅读，勾选只是产权承诺！", Toast.LENGTH_LONG).show();
+            Toast.makeText(context, "请阅读，勾选知识产权承诺！", Toast.LENGTH_LONG).show();
+            return;
         }
     }
 
@@ -471,13 +486,10 @@ public class PublishShopActivity extends BaseActivity {
                 choseBtn = chose.isChecked();
                 dialog.dismiss();
                 if (choseBtn) {
-                    publishShopSumit.setClickable(true);
                     publishShopSumit.setBackgroundDrawable(getResources().getDrawable(R.drawable.login_btn));
                 } else {
-                    publishShopSumit.setClickable(false);
                     publishShopSumit.setBackgroundDrawable(getResources().getDrawable(R.drawable.chose_no));
                 }
-
 
             }
         });
