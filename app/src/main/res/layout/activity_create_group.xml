@@ -9,7 +9,7 @@
     android:fitsSystemWindows="true"
     android:background="@color/white"
     android:orientation="vertical"
-    tools:context="com.yshstudio.originalproduct.activity.CreateGroupActivity">
+    tools:context="com.yshstudio.originalproduct.chat.activity.CreateGroupActivity">
 
     <com.hyphenate.easeui.widget.EaseTitleBar
         android:id="@+id/title_bar"

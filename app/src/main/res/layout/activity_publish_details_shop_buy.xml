@@ -16,11 +16,12 @@
             android:layout_height="wrap_content"
             android:background="@color/white"
             android:orientation="vertical">
-            <cn.com.shequnew.pages.view.PullToRefreshSwipeMenuListView
+            <com.yshstudio.originalproduct.pages.view.PullToRefreshSwipeMenuListView
                 android:id="@+id/shop_list_pull_buy"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@color/white"
+                android:scrollbars="none"
                 android:divider="@color/bg"
                 android:paddingLeft="2px"
                 android:paddingRight="2px"

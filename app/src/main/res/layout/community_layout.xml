@@ -29,11 +29,11 @@
                     android:background="#FFFFFF"
                     android:orientation="vertical">
 
-                    <cn.com.shequnew.pages.view.SlideShowView
+                    <com.yshstudio.originalproduct.pages.view.SlideShowView
                         android:id="@+id/sli_deal"
                         android:layout_width="match_parent"
                         android:layout_height="160dp"
-                        android:layout_centerHorizontal="true"></cn.com.shequnew.pages.view.SlideShowView>
+                        android:layout_centerHorizontal="true"></com.yshstudio.originalproduct.pages.view.SlideShowView>
                 </LinearLayout>
 
                 <LinearLayout

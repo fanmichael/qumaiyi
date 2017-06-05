@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/bg"
-    tools:context="cn.com.shequnew.pages.activity.LocalVideoActivity">
+    tools:context="com.yshstudio.originalproduct.pages.activity.LocalVideoActivity">
 
 
     <include
@@ -205,7 +205,7 @@
                     </RelativeLayout>
 
 
-                    <cn.com.shequnew.pages.view.MyVideoView
+                    <com.yshstudio.originalproduct.pages.view.MyVideoView
                         android:id="@+id/video_play"
                         android:layout_width="match_parent"
                         android:layout_height="200dp"
@@ -446,7 +446,7 @@
                         android:id="@+id/video_details_images"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:divider="#b5b5b5"
+                        android:divider="@color/bg"
                         android:dividerHeight="1dp"
                         android:focusable="false"></ListView>
 

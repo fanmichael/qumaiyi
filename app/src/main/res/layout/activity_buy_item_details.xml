@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/bg"
-    tools:context="cn.com.shequnew.pages.activity.BuyItemDetailsActivity">
+    tools:context="com.yshstudio.originalproduct.pages.activity.BuyItemDetailsActivity">
 
     <include
         android:id="@+id/inl"
@@ -79,6 +79,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:gravity="left"
+                        android:textColor="@color/col_bg"
                         android:text="" />
 
                     <TextView
@@ -87,6 +88,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:gravity="right"
+                        android:textColor="@color/col_bg"
                         android:text="" />
 
                 </LinearLayout>
@@ -96,6 +98,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="right"
+                    android:textColor="@color/col_bg"
                     android:text="" />
 
 

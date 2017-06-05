@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.yshstudio.originalproduct.activity.GroupDeleteMember">
+    tools:context="com.yshstudio.originalproduct.chat.activity.GroupDeleteMember">
 
     <com.hyphenate.easeui.widget.EaseTitleBar
         android:id="@+id/title_bar"

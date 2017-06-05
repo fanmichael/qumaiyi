@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@color/bg"
     android:orientation="vertical"
-    tools:context="cn.com.shequnew.pages.activity.InfromActivity">
+    tools:context="com.yshstudio.originalproduct.pages.activity.InfromActivity">
 
 
     <include layout="@layout/top_title"></include>
