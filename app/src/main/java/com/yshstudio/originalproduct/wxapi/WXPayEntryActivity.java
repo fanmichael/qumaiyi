@@ -3,6 +3,7 @@ package com.yshstudio.originalproduct.wxapi;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Message;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -15,6 +16,7 @@ import java.io.IOException;
 
 import com.tencent.mm.opensdk.openapi.WXAPIFactory;
 import com.yshstudio.originalproduct.inc.Ini;
+import com.yshstudio.originalproduct.pages.activity.BuyDetailsActivity;
 import com.yshstudio.originalproduct.tools.Constants;
 import com.yshstudio.originalproduct.tools.SharedPreferenceUtil;
 
@@ -48,7 +50,6 @@ public class WXPayEntryActivity extends Activity implements IWXAPIEventHandler {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        Log.e("aa", "sssssssssssssssssssssssssssssssssssssssssssssssssssssss");
 //        chaxunjieguo();
     }
 
@@ -89,8 +90,6 @@ public class WXPayEntryActivity extends Activity implements IWXAPIEventHandler {
 
     @Override
     public void onReq(BaseReq baseReq) {
-        Log.e("aa", "sssssssssssssssssssssssssssssssssssssssssssssssssssssss");
-
         chaxunjieguo();
     }
 
@@ -99,10 +98,16 @@ public class WXPayEntryActivity extends Activity implements IWXAPIEventHandler {
         finish();
         if (baseResp.errCode==0){
             Toast.makeText(getApplicationContext(),"支付成功",Toast.LENGTH_LONG).show();
+            Intent buyIntent = new Intent(WXPayEntryActivity.this, BuyDetailsActivity.class);
+            startActivity(buyIntent);
         }else if(baseResp.errCode==-1){
             Toast.makeText(getApplicationContext(),"支付失败",Toast.LENGTH_LONG).show();
+            Intent buyIntent = new Intent(WXPayEntryActivity.this, BuyDetailsActivity.class);
+            startActivity(buyIntent);
         }else if(baseResp.errCode==-2){
             Toast.makeText(getApplicationContext(),"取消支付",Toast.LENGTH_LONG).show();
+            Intent buyIntent = new Intent(WXPayEntryActivity.this, BuyDetailsActivity.class);
+            startActivity(buyIntent);
         }
 
     }

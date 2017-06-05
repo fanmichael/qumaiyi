@@ -1,5 +1,7 @@
 package com.yshstudio.originalproduct.chat.net;
 
+import com.yshstudio.originalproduct.inc.Ini;
+
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -11,7 +13,7 @@ public class ComUnityRequest {
     private ComUnityRequest() {
     }
 
-    private static String ACCOUNTURL = "http://qmy.51edn.com/";
+    private static String ACCOUNTURL = Ini.Url_ROOT;
 
     /*private static ComUnityRequest zkTecoRequest;
 

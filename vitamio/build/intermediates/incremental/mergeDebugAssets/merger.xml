@@ -1,2 +1,2 @@
 <?xml version="1.0" encoding="utf-8"?>
-<merger version="3"><dataSet config="main"><source path="E:\wbProject\project\qumaiyigit\qumaiyi\vitamio\src\main\assets"/><source path="E:\wbProject\project\qumaiyigit\qumaiyi\vitamio\build\generated\assets\shaders\debug"/></dataSet><dataSet config="debug"><source path="E:\wbProject\project\qumaiyigit\qumaiyi\vitamio\src\debug\assets"/></dataSet></merger>
+<merger version="3"><dataSet config="main"><source path="E:\huayi\qumaiyi\ShequNew\vitamio\src\main\assets"/><source path="E:\huayi\qumaiyi\ShequNew\vitamio\build\generated\assets\shaders\debug"/></dataSet><dataSet config="debug"><source path="E:\huayi\qumaiyi\ShequNew\vitamio\src\debug\assets"/></dataSet></merger>
