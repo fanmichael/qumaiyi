@@ -4,28 +4,28 @@
         "source": "E:\\huayi\\qumaiyi\\ShequNew\\easeui\\res\\drawable-hdpi\\ease_video_play_btn_small_nor.png"
     },
     {
-        "merged": "E:\\huayi\\qumaiyi\\ShequNew\\easeui\\build\\intermediates\\res\\merged\\release\\drawable-hdpi-v4\\ease_record_animate_01.png",
-        "source": "E:\\huayi\\qumaiyi\\ShequNew\\easeui\\res\\drawable-hdpi\\ease_record_animate_01.png"
+        "merged": "E:\\wbProject\\project\\qumaiyigit\\qumaiyi\\easeui\\build\\intermediates\\res\\merged\\release\\drawable-hdpi-v4\\ease_record_animate_10.png",
+        "source": "E:\\wbProject\\project\\qumaiyigit\\qumaiyi\\easeui\\res\\drawable-hdpi\\ease_record_animate_10.png"
     },
     {
         "merged": "E:\\huayi\\qumaiyi\\ShequNew\\easeui\\build\\intermediates\\res\\merged\\release\\drawable-hdpi-v4\\ease_search_clear_normal.png",
         "source": "E:\\huayi\\qumaiyi\\ShequNew\\easeui\\res\\drawable-hdpi\\ease_search_clear_normal.png"
     },
     {
-        "merged": "E:\\wbProject\\project\\qumaiyigit\\qumaiyi\\easeui\\build\\intermediates\\res\\merged\\release\\drawable-hdpi-v4\\ease_record_animate_10.png",
-        "source": "E:\\wbProject\\project\\qumaiyigit\\qumaiyi\\easeui\\res\\drawable-hdpi\\ease_record_animate_10.png"
+        "merged": "E:\\huayi\\qumaiyi\\ShequNew\\easeui\\build\\intermediates\\res\\merged\\release\\drawable-hdpi-v4\\ease_record_animate_01.png",
+        "source": "E:\\huayi\\qumaiyi\\ShequNew\\easeui\\res\\drawable-hdpi\\ease_record_animate_01.png"
     },
     {
         "merged": "E:\\huayi\\qumaiyi\\ShequNew\\easeui\\build\\intermediates\\res\\merged\\release\\drawable-hdpi-v4\\ee_5.png",
         "source": "E:\\huayi\\qumaiyi\\ShequNew\\easeui\\res\\drawable-hdpi\\ee_5.png"
     },
     {
-        "merged": "E:\\huayi\\qumaiyi\\ShequNew\\easeui\\build\\intermediates\\res\\merged\\release\\drawable-hdpi-v4\\ease_chatfrom_bg_normal.9.png",
-        "source": "E:\\huayi\\qumaiyi\\ShequNew\\easeui\\res\\drawable-hdpi\\ease_chatfrom_bg_normal.9.png"
-    },
-    {
         "merged": "E:\\wbProject\\project\\qumaiyigit\\qumaiyi\\easeui\\build\\intermediates\\res\\merged\\release\\drawable-hdpi-v4\\ease_default_avatar.png",
         "source": "E:\\wbProject\\project\\qumaiyigit\\qumaiyi\\easeui\\res\\drawable-hdpi\\ease_default_avatar.png"
+    },
+    {
+        "merged": "E:\\huayi\\qumaiyi\\ShequNew\\easeui\\build\\intermediates\\res\\merged\\release\\drawable-hdpi-v4\\ease_chatfrom_bg_normal.9.png",
+        "source": "E:\\huayi\\qumaiyi\\ShequNew\\easeui\\res\\drawable-hdpi\\ease_chatfrom_bg_normal.9.png"
     },
     {
         "merged": "E:\\wbProject\\project\\qumaiyigit\\qumaiyi\\easeui\\build\\intermediates\\res\\merged\\release\\drawable-hdpi-v4\\ease_dx_checkbox_off.png",
@@ -96,12 +96,12 @@
         "source": "E:\\huayi\\qumaiyi\\ShequNew\\easeui\\res\\drawable-hdpi\\ee_7.png"
     },
     {
-        "merged": "E:\\wbProject\\project\\qumaiyigit\\qumaiyi\\easeui\\build\\intermediates\\res\\merged\\release\\drawable-hdpi-v4\\ee_2.png",
-        "source": "E:\\wbProject\\project\\qumaiyigit\\qumaiyi\\easeui\\res\\drawable-hdpi\\ee_2.png"
-    },
-    {
         "merged": "E:\\wbProject\\project\\qumaiyigit\\qumaiyi\\easeui\\build\\intermediates\\res\\merged\\release\\drawable-hdpi-v4\\ease_chatfrom_voice_playing.png",
         "source": "E:\\wbProject\\project\\qumaiyigit\\qumaiyi\\easeui\\res\\drawable-hdpi\\ease_chatfrom_voice_playing.png"
+    },
+    {
+        "merged": "E:\\wbProject\\project\\qumaiyigit\\qumaiyi\\easeui\\build\\intermediates\\res\\merged\\release\\drawable-hdpi-v4\\ee_2.png",
+        "source": "E:\\wbProject\\project\\qumaiyigit\\qumaiyi\\easeui\\res\\drawable-hdpi\\ee_2.png"
     },
     {
         "merged": "E:\\wbProject\\project\\qumaiyigit\\qumaiyi\\easeui\\build\\intermediates\\res\\merged\\release\\drawable-hdpi-v4\\ease_record_animate_05.png",
@@ -148,12 +148,12 @@
         "source": "E:\\huayi\\qumaiyi\\ShequNew\\easeui\\res\\drawable-hdpi\\ease_record_animate_13.png"
     },
     {
-        "merged": "E:\\wbProject\\project\\qumaiyigit\\qumaiyi\\easeui\\build\\intermediates\\res\\merged\\release\\drawable-hdpi-v4\\ee_13.png",
-        "source": "E:\\wbProject\\project\\qumaiyigit\\qumaiyi\\easeui\\res\\drawable-hdpi\\ee_13.png"
-    },
-    {
         "merged": "E:\\wbProject\\project\\qumaiyigit\\qumaiyi\\easeui\\build\\intermediates\\res\\merged\\release\\drawable-hdpi-v4\\ease_seabar_input.9.png",
         "source": "E:\\wbProject\\project\\qumaiyigit\\qumaiyi\\easeui\\res\\drawable-hdpi\\ease_seabar_input.9.png"
+    },
+    {
+        "merged": "E:\\wbProject\\project\\qumaiyigit\\qumaiyi\\easeui\\build\\intermediates\\res\\merged\\release\\drawable-hdpi-v4\\ee_13.png",
+        "source": "E:\\wbProject\\project\\qumaiyigit\\qumaiyi\\easeui\\res\\drawable-hdpi\\ee_13.png"
     },
     {
         "merged": "E:\\wbProject\\project\\qumaiyigit\\qumaiyi\\easeui\\build\\intermediates\\res\\merged\\release\\drawable-hdpi-v4\\ease_dx_checkbox_gray_on.png",
@@ -180,12 +180,12 @@
         "source": "E:\\wbProject\\project\\qumaiyigit\\qumaiyi\\easeui\\res\\drawable-hdpi\\ease_chatting_setmode_keyboard_btn_normal.png"
     },
     {
-        "merged": "E:\\huayi\\qumaiyi\\ShequNew\\easeui\\build\\intermediates\\res\\merged\\release\\drawable-hdpi-v4\\ee_9.png",
-        "source": "E:\\huayi\\qumaiyi\\ShequNew\\easeui\\res\\drawable-hdpi\\ee_9.png"
-    },
-    {
         "merged": "E:\\wbProject\\project\\qumaiyigit\\qumaiyi\\easeui\\build\\intermediates\\res\\merged\\release\\drawable-hdpi-v4\\ee_7.png",
         "source": "E:\\wbProject\\project\\qumaiyigit\\qumaiyi\\easeui\\res\\drawable-hdpi\\ee_7.png"
+    },
+    {
+        "merged": "E:\\huayi\\qumaiyi\\ShequNew\\easeui\\build\\intermediates\\res\\merged\\release\\drawable-hdpi-v4\\ee_9.png",
+        "source": "E:\\huayi\\qumaiyi\\ShequNew\\easeui\\res\\drawable-hdpi\\ee_9.png"
     },
     {
         "merged": "E:\\huayi\\qumaiyi\\ShequNew\\easeui\\build\\intermediates\\res\\merged\\release\\drawable-hdpi-v4\\ease_msg_state_fail_resend.png",
@@ -204,16 +204,16 @@
         "source": "E:\\wbProject\\project\\qumaiyigit\\qumaiyi\\easeui\\res\\drawable-hdpi\\ease_chatto_voice_playing_f2.png"
     },
     {
-        "merged": "E:\\wbProject\\project\\qumaiyigit\\qumaiyi\\easeui\\build\\intermediates\\res\\merged\\release\\drawable-hdpi-v4\\ease_contact_list_normal.png",
-        "source": "E:\\wbProject\\project\\qumaiyigit\\qumaiyi\\easeui\\res\\drawable-hdpi\\ease_contact_list_normal.png"
+        "merged": "E:\\huayi\\qumaiyi\\ShequNew\\easeui\\build\\intermediates\\res\\merged\\release\\drawable-hdpi-v4\\ee_32.png",
+        "source": "E:\\huayi\\qumaiyi\\ShequNew\\easeui\\res\\drawable-hdpi\\ee_32.png"
     },
     {
         "merged": "E:\\wbProject\\project\\qumaiyigit\\qumaiyi\\easeui\\build\\intermediates\\res\\merged\\release\\drawable-hdpi-v4\\ee_23.png",
         "source": "E:\\wbProject\\project\\qumaiyigit\\qumaiyi\\easeui\\res\\drawable-hdpi\\ee_23.png"
     },
     {
-        "merged": "E:\\huayi\\qumaiyi\\ShequNew\\easeui\\build\\intermediates\\res\\merged\\release\\drawable-hdpi-v4\\ee_32.png",
-        "source": "E:\\huayi\\qumaiyi\\ShequNew\\easeui\\res\\drawable-hdpi\\ee_32.png"
+        "merged": "E:\\wbProject\\project\\qumaiyigit\\qumaiyi\\easeui\\build\\intermediates\\res\\merged\\release\\drawable-hdpi-v4\\ease_contact_list_normal.png",
+        "source": "E:\\wbProject\\project\\qumaiyigit\\qumaiyi\\easeui\\res\\drawable-hdpi\\ease_contact_list_normal.png"
     },
     {
         "merged": "E:\\huayi\\qumaiyi\\ShequNew\\easeui\\build\\intermediates\\res\\merged\\release\\drawable-hdpi-v4\\ee_35.png",
@@ -264,12 +264,12 @@
         "source": "E:\\wbProject\\project\\qumaiyigit\\qumaiyi\\easeui\\res\\drawable-hdpi\\ease_chatfrom_bg_focused.9.png"
     },
     {
-        "merged": "E:\\huayi\\qumaiyi\\ShequNew\\easeui\\build\\intermediates\\res\\merged\\release\\drawable-hdpi-v4\\ease_ic_launcher.png",
-        "source": "E:\\huayi\\qumaiyi\\ShequNew\\easeui\\res\\drawable-hdpi\\ease_ic_launcher.png"
-    },
-    {
         "merged": "E:\\huayi\\qumaiyi\\ShequNew\\easeui\\build\\intermediates\\res\\merged\\release\\drawable-hdpi-v4\\ease_icon_marka.png",
         "source": "E:\\huayi\\qumaiyi\\ShequNew\\easeui\\res\\drawable-hdpi\\ease_icon_marka.png"
+    },
+    {
+        "merged": "E:\\huayi\\qumaiyi\\ShequNew\\easeui\\build\\intermediates\\res\\merged\\release\\drawable-hdpi-v4\\ease_ic_launcher.png",
+        "source": "E:\\huayi\\qumaiyi\\ShequNew\\easeui\\res\\drawable-hdpi\\ease_ic_launcher.png"
     },
     {
         "merged": "E:\\huayi\\qumaiyi\\ShequNew\\easeui\\build\\intermediates\\res\\merged\\release\\drawable-hdpi-v4\\ease_default_image.png",

@@ -20,12 +20,12 @@
         "source": "E:\\wbProject\\project\\qumaiyigit\\qumaiyi\\easeui\\res\\anim\\slide_out_to_right.xml"
     },
     {
-        "merged": "E:\\huayi\\qumaiyi\\ShequNew\\easeui\\build\\intermediates\\res\\merged\\release\\anim\\push_bottom_out.xml",
-        "source": "E:\\huayi\\qumaiyi\\ShequNew\\easeui\\res\\anim\\push_bottom_out.xml"
-    },
-    {
         "merged": "E:\\wbProject\\project\\qumaiyigit\\qumaiyi\\easeui\\build\\intermediates\\res\\merged\\release\\anim\\slide_in_from_right.xml",
         "source": "E:\\wbProject\\project\\qumaiyigit\\qumaiyi\\easeui\\res\\anim\\slide_in_from_right.xml"
+    },
+    {
+        "merged": "E:\\huayi\\qumaiyi\\ShequNew\\easeui\\build\\intermediates\\res\\merged\\release\\anim\\push_bottom_out.xml",
+        "source": "E:\\huayi\\qumaiyi\\ShequNew\\easeui\\res\\anim\\push_bottom_out.xml"
     },
     {
         "merged": "E:\\wbProject\\project\\qumaiyigit\\qumaiyi\\easeui\\build\\intermediates\\res\\merged\\release\\anim\\hold.xml",
