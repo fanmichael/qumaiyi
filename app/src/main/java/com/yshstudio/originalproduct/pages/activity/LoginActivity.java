@@ -399,6 +399,9 @@ public class LoginActivity extends BaseActivity {
             phone = SharedPreferenceUtil.read("mobile", "");
             pwd = SharedPreferenceUtil.read("password", "");
             is = true;
+            mLoading = new Loading(context, login);
+            mLoading.setText("正在加载......");
+            mLoading.show();
             new asyncTask().execute(1);
         }
 

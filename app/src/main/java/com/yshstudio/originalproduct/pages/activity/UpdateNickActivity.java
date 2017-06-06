@@ -9,11 +9,13 @@ import android.widget.TextView;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.net.URLEncoder;
 import java.util.HashMap;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+
 import com.yshstudio.originalproduct.R;
 import com.yshstudio.originalproduct.pages.config.AppContext;
 import com.yshstudio.originalproduct.pages.http.HttpConnectTool;
@@ -90,14 +92,18 @@ public class UpdateNickActivity extends BaseActivity {
 
 
     private void httpNick() {
-        HashMap<String, String> map = new HashMap<>();
-        map.put("action", "User.update");
-        map.put("uid", AppContext.cv.getAsInteger("id") + "");
-        map.put("nick", srtNick);
-        map.put("name", "nick");
-        String json = HttpConnectTool.post(map);
-        if (!json.equals("")) {
-            xmlComm(json);
+        try {
+            HashMap<String, String> map = new HashMap<>();
+            map.put("action", "User.update");
+            map.put("uid", AppContext.cv.getAsInteger("id") + "");
+            map.put("nick", URLEncoder.encode(srtNick, "UTF-8") + "");
+            map.put("name", "nick");
+            String json = HttpConnectTool.post(map);
+            if (!json.equals("")) {
+                xmlComm(json);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 

@@ -90,11 +90,10 @@ public class FristAdvActivity extends BaseActivity {
                     getWindowManager().getDefaultDisplay().getMetrics(dm);
                     int height = dm.heightPixels;
                     int width = dm.widthPixels;
-                    if (imag.equals("")) {
-                        return;
+                    if (!imag.equals("")) {
+                        Uri imageUri = Uri.parse(imag);
+                        ValidData.load(imageUri, simAdv, width, height);
                     }
-                    Uri imageUri = Uri.parse(imag);
-                    ValidData.load(imageUri, simAdv, width, height);
                     break;
             }
 
