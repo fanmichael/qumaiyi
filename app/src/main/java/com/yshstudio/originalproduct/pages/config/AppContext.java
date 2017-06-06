@@ -61,7 +61,7 @@ public class AppContext extends Application implements UncaughtExceptionHandler 
     public void uncaughtException(Thread t, Throwable e) {
         if (!handleException(e) && mDefaultHandler != null) {
             mDefaultHandler.uncaughtException(t, e);
-            logoutApp();
+            AppManager.getAppManager().AppExit(mContext);
             SharedPreferenceUtil.clear();
             SharedPreferenceUtil.insert("is", true);
         }
