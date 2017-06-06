@@ -1,6 +1,7 @@
 package com.yshstudio.originalproduct.pages.fragment;
 
 import android.app.Dialog;
+import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
@@ -75,6 +76,7 @@ import com.yshstudio.originalproduct.pages.http.HttpConnectTool;
 import com.yshstudio.originalproduct.pages.prompt.Loading;
 import com.yshstudio.originalproduct.pages.view.MyGridView;
 import com.yshstudio.originalproduct.pages.view.MyProgressDialog;
+import com.yshstudio.originalproduct.tools.GetPathVideo;
 import com.yshstudio.originalproduct.tools.ImageToools;
 import com.yshstudio.originalproduct.tools.TextContent;
 
@@ -233,28 +235,21 @@ public class VideoContentFragment extends BasicFragment {
             }
         }
         if (requestCode == 3) {
-            //
             if (resultCode == getActivity().RESULT_OK) {
                 Uri uri = data.getData();
-                Cursor cursor = getActivity().getContentResolver().query(uri, null, null, null, null);
-                cursor.moveToFirst();
-                // String imgNo = cursor.getString(0); // 图片编号
-                String v_path = cursor.getString(1); // 图片文件路径
-                String v_size = cursor.getString(2); // 图片大小
-                String v_name = cursor.getString(3); // 图片文件名
-                Log.e("v_path=", v_path);
-                Log.e("v_size=", v_size);
-                Log.e("v_name=", v_name);
-                videoImage(v_path);
-//                retriveVideoFrameFromVideo(v_path);
-                videoFile = new File(v_path);
+                Log.e("videoMent", "uri: " + uri);
+                String path = GetPathVideo.getPath(context, uri);
+                Log.e("videoMent", "path: " + path);
+                videoImage(path);
+                videoFile = new File(path);
             }
         }
-        super.onActivityResult(requestCode, resultCode, data);
 
     }
 
-
+    /**
+     * 视频第一帧转换成本地图片
+     */
     public void saveBitmapFile(Bitmap bitmap) {
         File file = new File(Environment.getExternalStorageDirectory(), "拍照");
         if (!file.exists()) {
@@ -301,41 +296,6 @@ public class VideoContentFragment extends BasicFragment {
     /**
      * 视频第一帧
      */
-    public static Bitmap getVideoThumb(String path) {
-        MediaMetadataRetriever media = new MediaMetadataRetriever();
-        media.setDataSource(path);
-        return media.getFrameAtTime();
-    }
-
-    public Bitmap retriveVideoFrameFromVideo(String videoPath) {
-        Bitmap bitmap = null;
-        MediaMetadataRetriever mediaMetadataRetriever = null;
-        int kind = MediaStore.Video.Thumbnails.MINI_KIND;
-        try {
-            mediaMetadataRetriever = new MediaMetadataRetriever();
-            if (Build.VERSION.SDK_INT >= 14) {
-                mediaMetadataRetriever.setDataSource(videoPath, new HashMap<String, String>());
-            } else {
-                mediaMetadataRetriever.setDataSource(videoPath);
-            }
-            bitmap = mediaMetadataRetriever.getFrameAtTime();
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            if (mediaMetadataRetriever != null) {
-                mediaMetadataRetriever.release();
-            }
-        }
-        if (kind == MediaStore.Images.Thumbnails.MICRO_KIND && bitmap != null) {
-            bitmap = ThumbnailUtils.extractThumbnail(bitmap, 100, 80,
-                    ThumbnailUtils.OPTIONS_RECYCLE_INPUT);
-        }
-        videoImages.setImageBitmap(bitmap);
-        saveBitmapFile(bitmap);
-        return bitmap;
-    }
-
-
     public static Bitmap createVideoThumbnail(String filePath) {
         // MediaMetadataRetriever is available on API Level 8
         // but is hidden until API Level 10

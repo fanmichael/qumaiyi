@@ -33,6 +33,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
+
 import com.yshstudio.originalproduct.R;
 import com.yshstudio.originalproduct.pages.activity.ShopDetailsActivity;
 import com.yshstudio.originalproduct.pages.adapter.UserGoodsPullAdapter;
@@ -46,18 +47,15 @@ import com.yshstudio.originalproduct.pages.view.swipemenu.interfaces.OnMenuItemC
 import com.yshstudio.originalproduct.pages.view.swipemenu.interfaces.SwipeMenuCreator;
 
 /**
- * Created by Administrator on 2017/5/9 0009.
+ * Created by Administrator on 2017/5/9 0009.SwipeRefreshLayout.OnRefreshListener,
  */
 
-public class PublishDetailsShopCalFragment extends BasicFragment implements SwipeRefreshLayout.OnRefreshListener, IXListViewListener {
+public class PublishDetailsShopCalFragment extends BasicFragment implements IXListViewListener {
 
 
     Unbinder unbinder;
     @BindView(R.id.shop_list_pull_cal)
     PullToRefreshSwipeMenuListView shopListPullCal;
-    @BindView(R.id.collect_swi_cal)
-    SwipeRefreshLayout collectSwiCal;
-
     private List<ContentValues> contentShop = new ArrayList<>();
     private List<ContentValues> contentCol = new ArrayList<>();
     private UserGoodsPullAdapter goodsAdapter;//商品
@@ -91,29 +89,14 @@ public class PublishDetailsShopCalFragment extends BasicFragment implements Swip
         context = getActivity();
         page = 1;
         initView();
-        shopListPullCal.setOnScrollListener(new AbsListView.OnScrollListener() {
-            @Override
-            public void onScrollStateChanged(AbsListView view, int scrollState) {
-
-            }
-
-            @Override
-            public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
-                if (firstVisibleItem == 0)
-                    collectSwiCal.setEnabled(true);
-                else
-                    collectSwiCal.setEnabled(false);
-            }
-        });
         new asyncTask().execute(1);
     }
 
     private void initView() {
-        collectSwiCal.setOnRefreshListener(this);
         goodsAdapter = new UserGoodsPullAdapter(context, contentCol);
         shopListPullCal.setAdapter(goodsAdapter);
         shopListPullCal.setPullLoadEnable(true);
-        shopListPullCal.setPullRefreshEnable(false);
+        shopListPullCal.setPullRefreshEnable(true);
         shopListPullCal.setXListViewListener(this);
         mHandler = new Handler();
         final SwipeMenuCreator creator = new SwipeMenuCreator() {
@@ -192,14 +175,9 @@ public class PublishDetailsShopCalFragment extends BasicFragment implements Swip
     }
 
     @Override
-    public void onRefresh() {
+    public void onRefresha() {
         page = 1;
         new asyncTask().execute(1);
-    }
-
-    @Override
-    public void onRefresha() {
-
     }
 
     @Override
@@ -246,7 +224,7 @@ public class PublishDetailsShopCalFragment extends BasicFragment implements Swip
                         contentCol.addAll(contentShop);
                     }
                     goodsAdapter.notifyDataSetChanged();
-                    collectSwiCal.setRefreshing(false);//刷新完成
+                    shopListPullCal.stopRefresh();
                     break;
                 case 2:
                     if (contentShop != null && contentShop.size() > 0) {

@@ -46,17 +46,14 @@ import com.yshstudio.originalproduct.pages.view.swipemenu.interfaces.OnMenuItemC
 import com.yshstudio.originalproduct.pages.view.swipemenu.interfaces.SwipeMenuCreator;
 
 /**
- * Created by Administrator on 2017/5/9 0009.
+ * Created by Administrator on 2017/5/9 0009.SwipeRefreshLayout.OnRefreshListener,
  */
 
-public class PublishDetailsShopBuyFragment extends BasicFragment implements SwipeRefreshLayout.OnRefreshListener, IXListViewListener {
+public class PublishDetailsShopBuyFragment extends BasicFragment implements  IXListViewListener {
 
     Unbinder unbinder;
     @BindView(R.id.shop_list_pull_buy)
     PullToRefreshSwipeMenuListView shopListPullBuy;
-    @BindView(R.id.collect_swi_buy)
-    SwipeRefreshLayout collectSwiBuy;
-
     private List<ContentValues> contentShop = new ArrayList<>();
     private List<ContentValues> contentBuy = new ArrayList<>();
     private UserGoodsPullAdapter goodsAdapter;//商品
@@ -90,29 +87,14 @@ public class PublishDetailsShopBuyFragment extends BasicFragment implements Swip
         context = getActivity();
         page = 1;
         initView();
-        shopListPullBuy.setOnScrollListener(new AbsListView.OnScrollListener() {
-            @Override
-            public void onScrollStateChanged(AbsListView view, int scrollState) {
-
-            }
-
-            @Override
-            public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
-                if (firstVisibleItem == 0)
-                    collectSwiBuy.setEnabled(true);
-                else
-                    collectSwiBuy.setEnabled(false);
-            }
-        });
         new asyncTask().execute(1);
     }
 
     private void initView() {
-        collectSwiBuy.setOnRefreshListener(this);
         goodsAdapter = new UserGoodsPullAdapter(context, contentBuy);
         shopListPullBuy.setAdapter(goodsAdapter);
         shopListPullBuy.setPullLoadEnable(true);
-        shopListPullBuy.setPullRefreshEnable(false);
+        shopListPullBuy.setPullRefreshEnable(true);
         shopListPullBuy.setXListViewListener(this);
         mHandler = new Handler();
         final SwipeMenuCreator creator = new SwipeMenuCreator() {
@@ -189,16 +171,10 @@ public class PublishDetailsShopBuyFragment extends BasicFragment implements Swip
         return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp,
                 getResources().getDisplayMetrics());
     }
-
-    @Override
-    public void onRefresh() {
-        page = 1;
-        new asyncTask().execute(1);
-    }
-
     @Override
     public void onRefresha() {
-
+        page = 1;
+        new asyncTask().execute(1);
     }
 
     @Override
@@ -245,7 +221,7 @@ public class PublishDetailsShopBuyFragment extends BasicFragment implements Swip
                         contentBuy.addAll(contentShop);
                     }
                     goodsAdapter.notifyDataSetChanged();
-                    collectSwiBuy.setRefreshing(false);//刷新完成
+                    shopListPullBuy.stopRefresh();
                     break;
                 case 2:
                     if (contentShop != null && contentShop.size() > 0) {

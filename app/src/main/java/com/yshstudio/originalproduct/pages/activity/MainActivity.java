@@ -32,6 +32,7 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+
 import com.yshstudio.originalproduct.R;
 import com.yshstudio.originalproduct.chat.activity.AdminActivity;
 import com.yshstudio.originalproduct.chat.activity.ChatActivity;
@@ -46,6 +47,7 @@ import com.yshstudio.originalproduct.pages.fragment.NewsFragment;
 import com.yshstudio.originalproduct.pages.fragment.PageCommFragment;
 import com.yshstudio.originalproduct.tools.AppManager;
 import com.yshstudio.originalproduct.tools.SharedPreferenceUtil;
+import com.yshstudio.originalproduct.tools.Util;
 import com.yshstudio.originalproduct.tools.XPermissionUtils;
 
 /**
@@ -102,7 +104,7 @@ public class MainActivity extends FragmentActivity {
                                         SharedPreferenceUtil.remove("password");
                                         AppContext.cv.clear();
                                     }
-                                    if(SharedPreferenceUtil.hasKey("id")){
+                                    if (SharedPreferenceUtil.hasKey("id")) {
                                         SharedPreferenceUtil.remove("type");
                                         SharedPreferenceUtil.remove("id");
                                         SharedPreferenceUtil.remove("nick");
@@ -320,7 +322,7 @@ public class MainActivity extends FragmentActivity {
                             @Override
                             public void run() {
                                 for (EMMessage e : list) {
-                                    if(publishFragment==null){
+                                    if (publishFragment == null) {
                                         return;
                                     }
                                     publishFragment.refresh();

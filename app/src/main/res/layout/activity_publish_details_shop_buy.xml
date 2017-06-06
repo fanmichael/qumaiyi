@@ -5,17 +5,6 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
   >
-
-    <android.support.v4.widget.SwipeRefreshLayout
-        android:id="@+id/collect_swi_buy"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/white"
-            android:orientation="vertical">
             <com.yshstudio.originalproduct.pages.view.PullToRefreshSwipeMenuListView
                 android:id="@+id/shop_list_pull_buy"
                 android:layout_width="match_parent"
@@ -26,6 +15,4 @@
                 android:paddingLeft="2px"
                 android:paddingRight="2px"
                 android:paddingTop="2px" />
-        </LinearLayout>
-    </android.support.v4.widget.SwipeRefreshLayout>
 </LinearLayout>

@@ -65,12 +65,13 @@
             android:layout_alignParentBottom="true"
             android:background="@color/white"
             android:orientation="horizontal"
+            android:layout_gravity="center"
             android:visibility="visible">
 
             <RadioButton
                 android:id="@+id/coll_con_no"
                 style="@style/text_blue_min"
-                android:layout_width="0dip"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:button="@null"
@@ -81,7 +82,7 @@
             <RadioButton
                 android:id="@+id/coll_con"
                 style="@style/text_blue_min"
-                android:layout_width="0dip"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:button="@null"
@@ -93,10 +94,11 @@
             <RadioButton
                 android:id="@+id/chat"
                 style="@style/text_blue_min"
-                android:layout_width="0dip"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:button="@null"
+                android:gravity="left|center"
                 android:drawableLeft="@drawable/chat"
                 android:text="加入群聊"
                 android:textColor="@color/col_bg" />
@@ -104,7 +106,7 @@
             <RadioButton
                 android:id="@+id/faith"
                 style="@style/text_blue_min"
-                android:layout_width="0dip"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:button="@null"
@@ -115,10 +117,11 @@
             <RadioButton
                 android:id="@+id/dis"
                 style="@style/text_blue_min"
-                android:layout_width="0dip"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:button="@null"
+                android:gravity="left|center"
                 android:drawableLeft="@drawable/dis"
                 android:text="评论"
                 android:textColor="@color/col_bg" />

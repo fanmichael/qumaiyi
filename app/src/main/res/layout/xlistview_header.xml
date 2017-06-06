@@ -60,7 +60,8 @@
             android:layout_alignLeft="@id/xlistview_header_text"
             android:layout_centerVertical="true"
             android:layout_marginLeft="-40dp"
-            android:visibility="invisible" />
+            android:visibility="invisible"
+            />
     </RelativeLayout>
 
 </LinearLayout>

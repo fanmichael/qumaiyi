@@ -45,8 +45,8 @@ android {
             applicationId "com.yshstudio.originalproduct"
             minSdkVersion 15
             targetSdkVersion 21
-            versionCode 30
-            versionName "30.0"
+            versionCode 35
+            versionName "35.0.5"
             testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         }
         buildTypes {
@@ -100,7 +100,4 @@ android {
         apt 'com.jakewharton:butterknife-compiler:8.4.0'
         compile 'com.yanzhenjie:permission:1.0.7'
     }
-}
-dependencies {
-    compile project(':vitamio')
 }

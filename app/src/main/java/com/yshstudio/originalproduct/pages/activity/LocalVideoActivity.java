@@ -12,6 +12,7 @@ import android.os.Message;
 import android.support.annotation.IdRes;
 import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
@@ -33,19 +34,6 @@ import android.widget.Toast;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.hyphenate.easeui.EaseConstant;
 import com.hyphenate.easeui.model.UserInfo;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.net.URLEncoder;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
 import com.yshstudio.originalproduct.R;
 import com.yshstudio.originalproduct.chat.activity.ChatActivity;
 import com.yshstudio.originalproduct.chat.util.ObjectSaveUtils;
@@ -62,12 +50,24 @@ import com.yshstudio.originalproduct.tools.ListTools;
 import com.yshstudio.originalproduct.tools.SharedPreferenceUtil;
 import com.yshstudio.originalproduct.tools.UtilsUmeng;
 import com.yshstudio.originalproduct.tools.ValidData;
-import io.vov.vitamio.widget.VideoView;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.net.URLEncoder;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 /**
  * 播放视频, MediaPlayer.OnInfoListener, MediaPlayer.OnBufferingUpdateListener
  */
-public class LocalVideoActivity extends BaseActivity implements CommentAdapter.setOnClickLoction {
+public class LocalVideoActivity extends BaseActivity implements CommentAdapter.setOnClickLoction, MediaPlayer.OnCompletionListener, MediaPlayer.OnErrorListener, MediaPlayer.OnPreparedListener, View.OnTouchListener {
     @BindView(R.id.image_back_coll)
     ImageView imageBackColl;
     @BindView(R.id.top_title_coll)
@@ -138,19 +138,12 @@ public class LocalVideoActivity extends BaseActivity implements CommentAdapter.s
     LinearLayout videoDetailsInfoFrom;
     @BindView(R.id.video_ln)
     FrameLayout videoLn;
-
-    @BindView(R.id.buffer)
-    VideoView mVideoView;
-    @BindView(R.id.probar)
-    ProgressBar pb;
-    @BindView(R.id.download_rate)
-    TextView downloadRateView;
-    @BindView(R.id.load_rate)
-    TextView loadRateView;
-    @BindView(R.id.video_play_re)
-    RelativeLayout videoPlayRe;
     @BindView(R.id.video_play)
     MyVideoView videoPlay;
+    @BindView(R.id.progressBar)
+    ProgressBar progressBar;
+    @BindView(R.id.video_ln_Play)
+    FrameLayout videoLnPlay;
 
     private Context context;
     //主题
@@ -178,26 +171,19 @@ public class LocalVideoActivity extends BaseActivity implements CommentAdapter.s
     private ShopImagesAdapter shopImagesAdapter;//图片介绍
     private ConGoodsAdapter conGoodsAdapter;
 
+    /**
+     * 设置view播放控制条
+     */
+    private MediaController mediaController;
+    /**
+     * 标记当视频暂停时播放位置
+     */
+    private int intPositionWhenPause = -1;
 
-    //视频地址
-    private MediaController mMediaController;
-//    private CustomMediaController mCustomMediaController;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //定义全屏参数
-//        int flag = WindowManager.LayoutParams.FLAG_FULLSCREEN;
-//        //获得当前窗体对象
-//        Window window = LocalVideoActivity.this.getWindow();
-//        //设置当前窗体为全屏显示
-//        window.setFlags(flag, flag);
-        // 必须写这个，初始化加载库文件
-//        Vitamio.initialize(this);
-//        //设置视频解码监听
-//        if (!LibsChecker.checkVitamioLibs(this)) {
-//            return;
-//        }
         setContentView(R.layout.activity_local_video);
         ButterKnife.bind(this);
         context = this;
@@ -210,8 +196,6 @@ public class LocalVideoActivity extends BaseActivity implements CommentAdapter.s
         id = bundle.getInt("id");
         uid = bundle.getInt("uid");
         if (String.valueOf(uid).equals(String.valueOf(AppContext.cv.getAsInteger("id")))) {
-//        if (uid == AppContext.cv.getAsInteger("id")) {
-//            videoLan.setVisibility(View.GONE);
             videoFaith.setVisibility(View.GONE);
             videoDetailsAttention.setVisibility(View.GONE);
             videoDetailsAttentionNo.setVisibility(View.GONE);
@@ -234,10 +218,7 @@ public class LocalVideoActivity extends BaseActivity implements CommentAdapter.s
                 startActivity(intent1);
             }
         });
-
-        videoPlayRe.setVisibility(View.GONE);
-
-
+        videoLnPlay.setVisibility(View.GONE);
     }
 
 
@@ -254,15 +235,85 @@ public class LocalVideoActivity extends BaseActivity implements CommentAdapter.s
         context.startActivity(intent);
     }
 
+    @Override
+    public void onCompletion(MediaPlayer mp) {
 
-    class MyPlayerOnCompletionListener implements MediaPlayer.OnCompletionListener {
+    }
 
-        @Override
-        public void onCompletion(MediaPlayer mp) {
-            Toast.makeText(LocalVideoActivity.this, "播放完成了", Toast.LENGTH_SHORT).show();
-            videoLn.setVisibility(View.VISIBLE);
-            videoPlay.setVisibility(View.GONE);
+    @Override
+    public boolean onError(MediaPlayer mp, int what, int extra) {
+        switch (what) {
+            case MediaPlayer.MEDIA_ERROR_UNKNOWN:
+                Log.e("text", "发生未知错误");
+
+                break;
+            case MediaPlayer.MEDIA_ERROR_SERVER_DIED:
+                Log.e("text", "媒体服务器死机");
+                break;
+            default:
+                Log.e("text", "onError+" + what);
+                break;
         }
+        switch (extra) {
+            case MediaPlayer.MEDIA_ERROR_IO:
+                //io读写错误
+                Log.e("text", "文件或网络相关的IO操作错误");
+                break;
+            case MediaPlayer.MEDIA_ERROR_MALFORMED:
+                //文件格式不支持
+                Log.e("text", "比特流编码标准或文件不符合相关规范");
+                break;
+            case MediaPlayer.MEDIA_ERROR_TIMED_OUT:
+                //一些操作需要太长时间来完成,通常超过3 - 5秒。
+                Log.e("text", "操作超时");
+                break;
+            case MediaPlayer.MEDIA_ERROR_UNSUPPORTED:
+                //比特流编码标准或文件符合相关规范,但媒体框架不支持该功能
+                Log.e("text", "比特流编码标准或文件符合相关规范,但媒体框架不支持该功能");
+                break;
+            default:
+                Log.e("text", "onError+" + extra);
+                break;
+        }
+        return false;
+    }
+
+    @Override
+    public void onPrepared(MediaPlayer mp) {
+        progressBar.setVisibility(View.GONE);
+    }
+
+    @Override
+    public boolean onTouch(View v, MotionEvent event) {
+        return false;
+    }
+
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        intPositionWhenPause = videoPlay.getCurrentPosition();
+        //停止回放视频文件
+        videoPlay.stopPlayback();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (intPositionWhenPause >= 0) {
+            videoPlay.seekTo(intPositionWhenPause);
+            //初始播放位置
+            intPositionWhenPause = -1;
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (null != videoPlay) {
+            videoPlay = null;
+        }
+
     }
 
     /**
@@ -270,94 +321,25 @@ public class LocalVideoActivity extends BaseActivity implements CommentAdapter.s
      */
     @OnClick(R.id.video_images_play)
     void videoPlay() {
-        videoLn.setVisibility(View.GONE);
-        videoPlay.setVisibility(View.VISIBLE);
         Uri uri = Uri.parse(values.getAsString("subject"));
-        videoPlay.setMediaController(new MediaController(this));
-        videoPlay.setOnCompletionListener(new MyPlayerOnCompletionListener());
+        mediaController = new MediaController(this);
+        //设置videoview的控制条
+        videoPlay.setMediaController(mediaController);
+        //设置显示控制条
+        mediaController.show(0);
+        videoPlay.setOnCompletionListener(this);
+        videoPlay.setOnErrorListener(this);
+        //设置在视频文件在加载完毕以后的回调函数
+        videoPlay.setOnPreparedListener(this);
+        //设置videoView的点击监听
+        videoPlay.setOnTouchListener(this);
         videoPlay.setVideoURI(uri);
         //开始播放视频
         videoLn.setVisibility(View.GONE);
-        videoPlay.setVisibility(View.VISIBLE);
+        videoLnPlay.setVisibility(View.VISIBLE);
         videoPlay.start();
-
-        videoPlay.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
-            @Override
-            public void onPrepared(MediaPlayer mp) {
-                mp.setOnInfoListener(new MediaPlayer.OnInfoListener() {
-                    @Override
-                    public boolean onInfo(MediaPlayer mp, int what, int extra) {
-                        if (what == MediaPlayer.MEDIA_INFO_VIDEO_RENDERING_START)
-//                            videoPlay.setBackgroundColor(Color.TRANSPARENT);
-                        videoTest.setVisibility(View.VISIBLE);
-                        return true;
-                    }
-                });
-            }
-        });
-
-
-//        //开始播放视频
-//        videoLn.setVisibility(View.GONE);
-//        videoPlayRe.setVisibility(View.VISIBLE);
-//        Uri uri = Uri.parse(values.getAsString("subject"));
-//        mMediaController = new MediaController(this);
-//        mCustomMediaController = new CustomMediaController(this, mVideoView, this);
-//        mCustomMediaController.setVideoName("白火锅 x 红火锅");
-//        mVideoView.setVideoURI(uri);//设置视频播放地址
-//        mVideoView.setMediaController(mCustomMediaController);
-//        mVideoView.setVideoQuality(MediaPlayer.VIDEOQUALITY_HIGH);//高画质
-//        mMediaController.show(5000);
-//        mVideoView.requestFocus();
-//        mVideoView.setOnInfoListener(this);
-//        mVideoView.setOnBufferingUpdateListener(this);
-//        mVideoView.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
-//            @Override
-//            public void onPrepared(MediaPlayer mediaPlayer) {
-//                mediaPlayer.setPlaybackSpeed(1.0f);
-//            }
-//        });
+        videoPlay.setFocusable(true);
     }
-//
-//    @Override
-//    public void onBufferingUpdate(MediaPlayer mp, int percent) {
-//        loadRateView.setText(percent + "%");
-//    }
-//
-//    @Override
-//    public boolean onInfo(MediaPlayer mp, int what, int extra) {
-//        switch (what) {
-//            case MediaPlayer.MEDIA_INFO_BUFFERING_START:
-//                if (mVideoView.isPlaying()) {
-//                    mVideoView.pause();
-//                    pb.setVisibility(View.VISIBLE);
-//                    downloadRateView.setText("");
-//                    loadRateView.setText("");
-//                    downloadRateView.setVisibility(View.VISIBLE);
-//                    loadRateView.setVisibility(View.VISIBLE);
-//                }
-//                break;
-//            case MediaPlayer.MEDIA_INFO_BUFFERING_END:
-//                mVideoView.start();
-//                pb.setVisibility(View.GONE);
-//                downloadRateView.setVisibility(View.GONE);
-//                loadRateView.setVisibility(View.GONE);
-//                break;
-//            case MediaPlayer.MEDIA_INFO_DOWNLOAD_RATE_CHANGED:
-//                downloadRateView.setText("" + extra + "kb/s" + "  ");
-//                break;
-//        }
-//        return true;
-//    }
-//
-//    @Override
-//    public void onConfigurationChanged(Configuration newConfig) {
-//        //屏幕切换时，设置全屏
-//        if (mVideoView != null) {
-//            mVideoView.setVideoLayout(VideoView.VIDEO_LAYOUT_SCALE, 0);
-//        }
-//        super.onConfigurationChanged(newConfig);
-//    }
 
     /**
      * 数据
@@ -559,7 +541,7 @@ public class LocalVideoActivity extends BaseActivity implements CommentAdapter.s
                     case R.id.video_dis:
                         //评论
                         videoContectText.setText("");
-                        coid=id;
+                        coid = id;
                         parentnum = 0;
                         left();
                         videoDis.setChecked(false);
@@ -675,7 +657,7 @@ public class LocalVideoActivity extends BaseActivity implements CommentAdapter.s
                     (new Handler()).post(new Runnable() {
                         @Override
                         public void run() {
-                            videoScrollview.scrollTo(10, 10) ;
+                            videoScrollview.scrollTo(10, 10);
                         }
                     });
                     break;

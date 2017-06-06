@@ -33,6 +33,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
+
 import com.yshstudio.originalproduct.R;
 import com.yshstudio.originalproduct.pages.activity.ShopDetailsActivity;
 import com.yshstudio.originalproduct.pages.adapter.UserGoodsPullAdapter;
@@ -46,16 +47,13 @@ import com.yshstudio.originalproduct.pages.view.swipemenu.interfaces.OnMenuItemC
 import com.yshstudio.originalproduct.pages.view.swipemenu.interfaces.SwipeMenuCreator;
 
 /**
- * Created by Administrator on 2017/5/9 0009.
+ * Created by Administrator on 2017/5/9 0009.SwipeRefreshLayout.OnRefreshListener,
  */
 
-public class PublishDetailsShopDetailsFragment extends BasicFragment implements SwipeRefreshLayout.OnRefreshListener, IXListViewListener {
+public class PublishDetailsShopDetailsFragment extends BasicFragment implements IXListViewListener {
     Unbinder unbinder;
     @BindView(R.id.shop_list_pull_deta)
     PullToRefreshSwipeMenuListView shopListPullDeta;
-    @BindView(R.id.collect_swi_deta)
-    SwipeRefreshLayout collectSwiDeta;
-
 
     private List<ContentValues> contentShop = new ArrayList<>();
     private List<ContentValues> contentShopList = new ArrayList<>();
@@ -90,29 +88,14 @@ public class PublishDetailsShopDetailsFragment extends BasicFragment implements 
         context = getActivity();
         page = 1;
         initView();
-        shopListPullDeta.setOnScrollListener(new AbsListView.OnScrollListener() {
-            @Override
-            public void onScrollStateChanged(AbsListView view, int scrollState) {
-
-            }
-
-            @Override
-            public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
-                if (firstVisibleItem == 0)
-                    collectSwiDeta.setEnabled(true);
-                else
-                    collectSwiDeta.setEnabled(false);
-            }
-        });
         new asyncTask().execute(1);
     }
 
     private void initView() {
-        collectSwiDeta.setOnRefreshListener(this);
         goodsAdapter = new UserGoodsPullAdapter(context, contentShopList);
         shopListPullDeta.setAdapter(goodsAdapter);
         shopListPullDeta.setPullLoadEnable(true);
-        shopListPullDeta.setPullRefreshEnable(false);
+        shopListPullDeta.setPullRefreshEnable(true);
         shopListPullDeta.setXListViewListener(this);
         mHandler = new Handler();
         final SwipeMenuCreator creator = new SwipeMenuCreator() {
@@ -247,14 +230,9 @@ public class PublishDetailsShopDetailsFragment extends BasicFragment implements 
     }
 
     @Override
-    public void onRefresh() {
+    public void onRefresha() {
         page = 1;
         new asyncTask().execute(1);
-    }
-
-    @Override
-    public void onRefresha() {
-
     }
 
     @Override
@@ -305,10 +283,7 @@ public class PublishDetailsShopDetailsFragment extends BasicFragment implements 
                         contentShopList.addAll(contentShop);
                     }
                     goodsAdapter.notifyDataSetChanged();
-                    if(collectSwiDeta==null){
-                        return;
-                    }
-                    collectSwiDeta.setRefreshing(false);//刷新完成
+                    shopListPullDeta.stopRefresh();
                     break;
                 case 2:
                     if (contentShop != null && contentShop.size() > 0) {
@@ -383,15 +358,6 @@ public class PublishDetailsShopDetailsFragment extends BasicFragment implements 
         }
     }
 
-//    private void constart() {
-//        shopListPull.setOnTouchListener(new View.OnTouchListener() {
-//            @Override
-//            public boolean onTouch(View v, MotionEvent event) {
-//                return false;
-//            }
-//        });
-//
-//    }
 
     /**
      * 解析数据

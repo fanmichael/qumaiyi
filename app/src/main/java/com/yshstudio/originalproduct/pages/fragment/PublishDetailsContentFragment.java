@@ -51,13 +51,10 @@ import com.yshstudio.originalproduct.pages.view.swipemenu.interfaces.OnMenuItemC
 import com.yshstudio.originalproduct.pages.view.swipemenu.interfaces.SwipeMenuCreator;
 
 /**
- * 我的发布-内容
+ * 我的发布-内容SwipeRefreshLayout.OnRefreshListener,
  */
-public class PublishDetailsContentFragment extends BasicFragment implements SwipeRefreshLayout.OnRefreshListener, IXListViewListener {
+public class PublishDetailsContentFragment extends BasicFragment implements  IXListViewListener {
 
-
-    @BindView(R.id.collect_swi_content)
-    SwipeRefreshLayout collectSwiContent;
     Unbinder unbinder;
     @BindView(R.id.collect_list_content)
     PullToRefreshSwipeMenuListView collectListContent;
@@ -84,20 +81,6 @@ public class PublishDetailsContentFragment extends BasicFragment implements Swip
         context = getActivity();
         initView();
         page = 1;
-        collectListContent.setOnScrollListener(new AbsListView.OnScrollListener() {
-            @Override
-            public void onScrollStateChanged(AbsListView view, int scrollState) {
-
-            }
-
-            @Override
-            public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
-                if (firstVisibleItem == 0)
-                    collectSwiContent.setEnabled(true);
-                else
-                    collectSwiContent.setEnabled(false);
-            }
-        });
         new asyncTask().execute(1);
     }
 
@@ -112,11 +95,10 @@ public class PublishDetailsContentFragment extends BasicFragment implements Swip
      * 加载视图
      */
     private void initView() {
-        collectSwiContent.setOnRefreshListener(this);
         contentApapter = new ContentApapter(context, contentValuesCon);
         collectListContent.setAdapter(contentApapter);
         collectListContent.setPullLoadEnable(true);
-        collectListContent.setPullRefreshEnable(false);
+        collectListContent.setPullRefreshEnable(true);
         collectListContent.setXListViewListener(this);
         mHandler = new Handler();
         final SwipeMenuCreator creator = new SwipeMenuCreator() {
@@ -194,23 +176,14 @@ public class PublishDetailsContentFragment extends BasicFragment implements Swip
     }
 
     @Override
-    public void onRefresh() {
+    public void onRefresha() {
         page = 1;
         new asyncTask().execute(1);
     }
 
     @Override
-    public void onRefresha() {
-    }
-
-    @Override
     public void onLoadMore() {
-        collectListContent.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                load();
-            }
-        }, 100);
+        load();
     }
 
     private void load() {
@@ -256,7 +229,7 @@ public class PublishDetailsContentFragment extends BasicFragment implements Swip
                         contentValuesCon.addAll(contentValues);
                     }
                     contentApapter.notifyDataSetChanged();
-                    collectSwiContent.setRefreshing(false);//刷新完成
+                    collectListContent.stopRefresh();
                     break;
                 case 2:
                     if (contentValues != null && contentValues.size() > 0) {
@@ -330,7 +303,6 @@ public class PublishDetailsContentFragment extends BasicFragment implements Swip
                         Toast.makeText(context, "没有更多数据了", Toast.LENGTH_SHORT).show();
                         collectListContent.setPullLoadEnable(false);
                         collectListContent.stopLoadMore();
-//                        collectListContent.setFastScrollEnabled(false);
                     }
                 }, 100);
 

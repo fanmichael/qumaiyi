@@ -76,7 +76,7 @@ public class ElcyGroupDeActivity extends BaseActivity implements UserGroupAdapte
             StringBuffer stringBufferPop = new StringBuffer();
             if (strings.size() > 0) {
                 for (int i = 0; i < strings.size(); i++) {
-                    if (strings.size() == (i + 1)) {
+                    if (strings.size() == (i)) {
                         stringBufferPop.append(strings.get(i));
                     } else {
                         stringBufferPop.append(strings.get(i) + ",");
@@ -94,7 +94,7 @@ public class ElcyGroupDeActivity extends BaseActivity implements UserGroupAdapte
     @Override
     public void onClick(int pos, boolean is) {
         if (is) {
-            strings.add(contentValues.get(pos).getAsInteger("group_id") + "");
+            strings.add(contentValues.get(pos).getAsInteger("id") + "");
         } else {
             if (strings.size() == 1) {
                 strings.clear();

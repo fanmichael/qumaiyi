@@ -5,30 +5,15 @@
     android:background="@color/bg"
     android:orientation="vertical">
 
-    <android.support.v4.widget.SwipeRefreshLayout
-        android:id="@+id/collect_swi_content"
+    <com.yshstudio.originalproduct.pages.view.PullToRefreshSwipeMenuListView
+        android:id="@+id/collect_list_content"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-            <com.yshstudio.originalproduct.pages.view.PullToRefreshSwipeMenuListView
-                android:id="@+id/collect_list_content"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@color/white"
-                android:divider="@color/bg"
-                android:scrollbars="none"
-                android:paddingLeft="2px"
-                android:paddingRight="2px"
-                android:paddingTop="2px">
-            </com.yshstudio.originalproduct.pages.view.PullToRefreshSwipeMenuListView>
-        </LinearLayout>
-
-    </android.support.v4.widget.SwipeRefreshLayout>
-
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        android:divider="@color/bg"
+        android:paddingLeft="2px"
+        android:paddingRight="2px"
+        android:paddingTop="2px"
+        android:scrollbars="none"></com.yshstudio.originalproduct.pages.view.PullToRefreshSwipeMenuListView>
 
 </LinearLayout>

@@ -2,10 +2,12 @@ package com.yshstudio.originalproduct.pages.activity;
 
 import android.os.Bundle;
 import android.os.Handler;
+import android.widget.Toast;
 
 import com.trello.rxlifecycle.components.RxActivity;
 
 import com.yshstudio.originalproduct.pages.prompt.Loading;
+import com.yshstudio.originalproduct.tools.Util;
 
 /**
  * 父类
@@ -22,6 +24,10 @@ public class BaseActivity extends RxActivity{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 //        setContentView(R.layout.activity_base);
+        if (!Util.isNetworkAvailable(BaseActivity.this)) {
+            Toast.makeText(getApplicationContext(), "检查网络！", Toast.LENGTH_LONG).show();
+            return;
+        }
     }
 
     public void destroyActitity() {

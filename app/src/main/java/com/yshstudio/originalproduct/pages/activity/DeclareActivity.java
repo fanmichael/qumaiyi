@@ -3,6 +3,7 @@ package com.yshstudio.originalproduct.pages.activity;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -43,9 +44,8 @@ public class DeclareActivity extends BaseActivity {
         leftTitle.setText("取消");
         centerTitle.setText("申请说明");
         rightTitle.setText("提交");
-        Bundle bundle = new Bundle();
+        Bundle bundle = this.getIntent().getExtras();
         groupId = bundle.getString("groupId");
-
     }
 
 
