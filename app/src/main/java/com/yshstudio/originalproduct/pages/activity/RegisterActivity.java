@@ -506,11 +506,11 @@ public class RegisterActivity extends BaseActivity {
                         Toast.makeText(mContext, "注册成功！", Toast.LENGTH_SHORT).show();
                         destroyActitity();
                     } else if (error == 103) {
-                        Toast.makeText(mContext, "该号码已被注册", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(mContext, "该号码已被注册！", Toast.LENGTH_SHORT).show();
                     } else if (error == 104) {
-                        Toast.makeText(mContext, "注册失败", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(mContext, "注册失败！", Toast.LENGTH_SHORT).show();
                     } else if (error == 110) {
-                        Toast.makeText(mContext, "验证码错误", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(mContext, "验证码错误！", Toast.LENGTH_SHORT).show();
                     }
                     break;
                 case 4:
@@ -518,7 +518,7 @@ public class RegisterActivity extends BaseActivity {
                         Toast.makeText(mContext, "密码找回成功！", Toast.LENGTH_LONG).show();
                         destroyActitity();
                     } else if (error == 110) {
-                        Toast.makeText(mContext, "验证码错误", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(mContext, "验证码错误！", Toast.LENGTH_SHORT).show();
                     }
                     break;
 
