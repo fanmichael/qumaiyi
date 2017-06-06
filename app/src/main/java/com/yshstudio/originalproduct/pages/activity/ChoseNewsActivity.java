@@ -139,8 +139,8 @@ public class ChoseNewsActivity extends BaseActivity {
             int what = bundle.containsKey("what") ? bundle.getInt("what") : -1;
             switch (what) {
                 case 1:
-                    if(contentNote.size()<=0 && contentUser.size()<=0 && contentGood.size()<=0){
-                        Toast.makeText(context,"没有数据！",Toast.LENGTH_LONG).show();
+                    if (contentNote.size() <= 0 && contentUser.size() <= 0 && contentGood.size() <= 0) {
+                        Toast.makeText(context, "没有数据！", Toast.LENGTH_LONG).show();
                     }
 
                     if (contentNote.size() > 0) {
@@ -169,6 +169,15 @@ public class ChoseNewsActivity extends BaseActivity {
 
 
     private void initView() {
+        if (redactChose != null) {
+            redactChose.removeAllViews();
+        }
+        if (userChose != null) {
+            userChose.removeAllViews();
+        }
+        if (commChose != null) {
+            commChose.removeAllViews();
+        }
         for (int i = 0; i < contentNote.size(); i++) {
             View view = LayoutInflater.from(context).inflate(R.layout.pages_item_chose, null);
             LinearLayout lay = (LinearLayout) view.findViewById(R.id.pages_iten_layout);
@@ -317,6 +326,17 @@ public class ChoseNewsActivity extends BaseActivity {
 
 
     private void xmlChose(String data) {
+        if (contentUser != null && contentUser.size() > 0) {
+            contentUser.clear();
+        }
+        if (contentGood != null && contentGood.size() > 0) {
+            contentGood.clear();
+        }
+        if (contentNote != null && contentNote.size() > 0) {
+            contentNote.clear();
+        }
+
+
         try {
             JSONObject jsonObject = new JSONObject(data);
             JSONObject objData = new JSONObject(jsonObject.getString("data"));
@@ -369,7 +389,7 @@ public class ChoseNewsActivity extends BaseActivity {
                     cv.put("file_type", jsonObj.getInt("file_type"));
                     cv.put("title", jsonObj.getString("title"));
                     cv.put("subject", jsonObj.getString("subject"));
-                    if(jsonObj.has("video_img")){
+                    if (jsonObj.has("video_img")) {
                         cv.put("video_img", jsonObj.getString("video_img"));
                     }
                     cv.put("subject_type", jsonObj.getString("subject_type"));
