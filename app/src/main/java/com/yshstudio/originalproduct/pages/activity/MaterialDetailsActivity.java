@@ -367,10 +367,12 @@ public class MaterialDetailsActivity extends BaseActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == 8) {
-            Uri uri = data.getData();
-            jsonImage = uri;
-            file = uri2File(uri);
-            new asyncTask().execute(3);
+            if (resultCode == RESULT_OK) {
+                Uri uri = data.getData();
+                jsonImage = uri;
+                file = uri2File(uri);
+                new asyncTask().execute(3);
+            }
         }
         if (requestCode == 7) {
             if (resultCode == RESULT_OK) {

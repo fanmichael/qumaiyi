@@ -32,12 +32,14 @@ import java.util.HashMap;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+
 import com.yshstudio.originalproduct.R;
 import com.yshstudio.originalproduct.chat.util.ObjectSaveUtils;
 import com.yshstudio.originalproduct.inc.Ini;
 import com.yshstudio.originalproduct.pages.config.AppContext;
 import com.yshstudio.originalproduct.pages.http.HttpConnectTool;
 import com.yshstudio.originalproduct.pages.prompt.Loading;
+import com.yshstudio.originalproduct.pages.view.LoadingDialog;
 import com.yshstudio.originalproduct.tools.SharedPreferenceUtil;
 import com.yshstudio.originalproduct.tools.UtilsUmeng;
 import com.yshstudio.originalproduct.tools.ValidData;
@@ -85,6 +87,7 @@ public class LoginActivity extends BaseActivity {
     public static final String SINA_REDIRECT_URL = "https://api.weibo.com/oauth2/default.html";
     public static final String SINA_SCOPE = "all";
     Handler mHandler;
+    private LoadingDialog mDialog = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -155,7 +158,7 @@ public class LoginActivity extends BaseActivity {
         }
         if (is) {
             mLoading = new Loading(context, login);
-            mLoading.setText("正在加载......");
+            mLoading.setText("正在登录......");
             mLoading.show();
             new asyncTask().execute(1);
         } else {
@@ -242,7 +245,7 @@ public class LoginActivity extends BaseActivity {
                 switch (msg.what) {
                     case Ini.SDK_PAY_FLAG3:
                         mLoading = new Loading(context, login);
-                        mLoading.setText("正在加载......");
+                        mLoading.setText("正在登录......");
                         mLoading.show();
                         new asyncTask().execute(2);
                         break;
@@ -323,6 +326,7 @@ public class LoginActivity extends BaseActivity {
         protected void onPostExecute(Bundle bundle) {
             int what = bundle.containsKey("what") ? bundle.getInt("what") : -1;
             removeLoading();
+            removeLoadings();
             switch (what) {
                 case 1:
                     if (tag == 100) {
@@ -394,14 +398,31 @@ public class LoginActivity extends BaseActivity {
         }
     }
 
+    /**
+     * 提示加载框
+     */
+    private void appendLoading() {
+        mDialog = new LoadingDialog(context);
+        mDialog.setText("正在登录");
+        mDialog.show();
+    }
+
+    /**
+     * 关闭loading
+     */
+    private void removeLoadings() {
+        if (mDialog != null) {
+            mDialog.dismiss();
+            mDialog = null;
+        }
+    }
+
     private void setLogin() {
         if (SharedPreferenceUtil.hasKey("mobile") && SharedPreferenceUtil.hasKey("password")) {
             phone = SharedPreferenceUtil.read("mobile", "");
             pwd = SharedPreferenceUtil.read("password", "");
             is = true;
-            mLoading = new Loading(context, login);
-            mLoading.setText("正在加载......");
-            mLoading.show();
+            appendLoading();
             new asyncTask().execute(1);
         }
 

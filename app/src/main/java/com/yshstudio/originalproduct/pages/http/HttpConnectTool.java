@@ -46,6 +46,7 @@ public class HttpConnectTool {
             urlConnection.setDoOutput(true); // 发送POST请求必须设置允许输出
             urlConnection.setDoInput(true); // 发送POST请求必须设置允许输入
             //setDoInput的默认值就是true
+            urlConnection.setRequestProperty("Charsert", "UTF-8");
             //获取输出流
             // OutputStream os = urlConnection.getOutputStream();
             out = new DataOutputStream(urlConnection.getOutputStream());
