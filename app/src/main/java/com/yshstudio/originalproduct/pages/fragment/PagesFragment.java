@@ -4,6 +4,7 @@ package com.yshstudio.originalproduct.pages.fragment;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -25,6 +26,15 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import com.facebook.drawee.view.SimpleDraweeView;
+import com.yshstudio.originalproduct.R;
+import com.yshstudio.originalproduct.pages.activity.ContentFileDetailsActivity;
+import com.yshstudio.originalproduct.pages.activity.LocalVideoActivity;
+import com.yshstudio.originalproduct.pages.activity.MoreActivity;
+import com.yshstudio.originalproduct.pages.activity.SpecialNoteActivity;
+import com.yshstudio.originalproduct.pages.http.HttpConnectTool;
+import com.yshstudio.originalproduct.pages.view.LoadingDialog;
+import com.yshstudio.originalproduct.pages.view.SlideShowView;
+import com.yshstudio.originalproduct.tools.ValidData;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -39,15 +49,6 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
-import com.yshstudio.originalproduct.R;
-import com.yshstudio.originalproduct.pages.activity.ContentFileDetailsActivity;
-import com.yshstudio.originalproduct.pages.activity.LocalVideoActivity;
-import com.yshstudio.originalproduct.pages.activity.MoreActivity;
-import com.yshstudio.originalproduct.pages.activity.SpecialNoteActivity;
-import com.yshstudio.originalproduct.pages.http.HttpConnectTool;
-import com.yshstudio.originalproduct.pages.view.LoadingDialog;
-import com.yshstudio.originalproduct.pages.view.SlideShowView;
-import com.yshstudio.originalproduct.tools.ValidData;
 
 /**
  * Created by Administrator on 2017/4/15 0015.
@@ -114,6 +115,7 @@ public class PagesFragment extends BasicFragment implements SwipeRefreshLayout.O
     private int typeNum = 0;
 
     private LoadingDialog mDialog = null;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -224,7 +226,7 @@ public class PagesFragment extends BasicFragment implements SwipeRefreshLayout.O
 
     // 关闭loading
     private void removeLoadings() {
-        if(mDialog!=null) {
+        if (mDialog != null) {
             mDialog.dismiss();
             mDialog = null;
         }
@@ -332,30 +334,35 @@ public class PagesFragment extends BasicFragment implements SwipeRefreshLayout.O
         swipeRefreshLayout.setRefreshing(false);//刷新完成
     }
 
+
+    private void clearList() {
+
+        if (newaList != null && newaList.size() > 0) {
+            newaList.clear();
+        }
+        if (hotList != null && hotList.size() > 0) {
+            hotList.clear();
+        }
+        if (imagesUrls != null && imagesUrls.size() > 0) {
+            imagesUrls.clear();
+        }
+        if (imageList != null && imageList.size() > 0) {
+            imageList.clear();
+        }
+    }
+
+
     private class asyncTask extends AsyncTask<Integer, Integer, Bundle> {
 
         @Override
         protected Bundle doInBackground(Integer... params) {
             Bundle bundle = new Bundle();
-
-            if (newaList != null && newaList.size() > 0) {
-                newaList.clear();
-            }
-            if (hotList != null && hotList.size() > 0) {
-                hotList.clear();
-            }
-            if (imagesUrls != null && imagesUrls.size() > 0) {
-                imagesUrls.clear();
-            }
-            if (imageList != null && imageList.size() > 0) {
-                imageList.clear();
-            }
+            clearList();
             switch (params[0]) {
                 case 1:
                     if (imagesList != null && imagesList.size() > 0) {
                         imagesList.clear();
                     }
-
                     //首次加载数据
                     httpPages();
                     httpInfo();
@@ -389,19 +396,10 @@ public class PagesFragment extends BasicFragment implements SwipeRefreshLayout.O
                     if (infoPages != null) {
                         infoPages.removeAllViews();
                     }
-                    if (pagesNewsLayout != null) {
-                        pagesNewsLayout.removeAllViews();
-                    }
-                    if (pagesHotLayout != null) {
-                        pagesHotLayout.removeAllViews();
-                    }
-                    if(infoPages == null){
+                    if (infoPages == null) {
                         return;
                     }
-                    if(slideshowView==null){
-                        return;
-                    }
-
+                    clearViews();
                     info();
                     btnText(namesList);
                     newsList();
@@ -422,22 +420,14 @@ public class PagesFragment extends BasicFragment implements SwipeRefreshLayout.O
                         image_uri.put("imageUris", imageUris[i]);
                         imageList.add(image_uri);
                     }
-                    if(swipeRefreshLayout==null){
+                    if (swipeRefreshLayout == null) {
                         return;
                     }
                     slideshowView.setImageUrls(imageList);
                     swipeRefreshLayout.setRefreshing(false);//刷新完成
                     break;
                 case 2:
-                    if (pagesNewsLayout != null) {
-                        pagesNewsLayout.removeAllViews();
-                    }
-                    if (pagesHotLayout != null) {
-                        pagesHotLayout.removeAllViews();
-                    }
-                    if(slideshowView==null){
-                        return;
-                    }
+                    clearViews();
                     newsList();
                     hotList();
                     if (imagesUrls.size() > 0) {
@@ -459,15 +449,7 @@ public class PagesFragment extends BasicFragment implements SwipeRefreshLayout.O
                     swipeRefreshLayout.setRefreshing(false);//刷新完成
                     break;
                 case 3:
-                    if (pagesNewsLayout != null) {
-                        pagesNewsLayout.removeAllViews();
-                    }
-                    if (pagesHotLayout != null) {
-                        pagesHotLayout.removeAllViews();
-                    }
-                    if(slideshowView==null){
-                        return;
-                    }
+                    clearViews();
                     newsList();
                     hotList();
                     if (imagesUrls.size() > 0) {
@@ -489,15 +471,7 @@ public class PagesFragment extends BasicFragment implements SwipeRefreshLayout.O
                     swipeRefreshLayout.setRefreshing(false);//刷新完成
                     break;
                 case 4:
-                    if (pagesNewsLayout != null) {
-                        pagesNewsLayout.removeAllViews();
-                    }
-                    if (pagesHotLayout != null) {
-                        pagesHotLayout.removeAllViews();
-                    }
-                    if(slideshowView==null){
-                        return;
-                    }
+                    clearViews();
                     newsList();
                     hotList();
                     if (imagesUrls.size() > 0) {
@@ -523,6 +497,19 @@ public class PagesFragment extends BasicFragment implements SwipeRefreshLayout.O
 
         }
     }
+
+    private void clearViews() {
+        if (pagesNewsLayout != null) {
+            pagesNewsLayout.removeAllViews();
+        }
+        if (pagesHotLayout != null) {
+            pagesHotLayout.removeAllViews();
+        }
+        if (slideshowView == null) {
+            return;
+        }
+    }
+
 
     /**
      * 中间的图片
@@ -673,7 +660,7 @@ public class PagesFragment extends BasicFragment implements SwipeRefreshLayout.O
      * 最新内容
      */
     private void newsList() {
-        if(pagesNewsLayout==null){
+        if (pagesNewsLayout == null) {
             return;
         }
 
@@ -759,7 +746,7 @@ public class PagesFragment extends BasicFragment implements SwipeRefreshLayout.O
      * 最新内容
      */
     private void hotList() {
-        if(pagesHotLayout==null){
+        if (pagesHotLayout == null) {
             return;
         }
 
@@ -855,6 +842,7 @@ public class PagesFragment extends BasicFragment implements SwipeRefreshLayout.O
      * 加载最顶端的数据
      */
     private void btnText(List<ContentValues> namesList) {
+        Typeface typeface=Typeface.createFromAsset(getActivity().getAssets(),"fonts/UnidreamLED.ttf");
         if (namesList.size() > 0) {
             if (namesList.get(0).containsKey("name")) {
                 radDynamicWu.setText(namesList.get(0).getAsString("name"));
@@ -869,6 +857,10 @@ public class PagesFragment extends BasicFragment implements SwipeRefreshLayout.O
                 radDynamicJue.setText(namesList.get(3).getAsString("name"));
                 radDynamicJue.setTag(namesList.get(3).getAsInteger("id"));
                 radDynamicJue.setBackgroundColor(getResources().getColor(R.color.white));
+                radDynamicWu.getPaint().setTypeface(typeface);
+                radDynamicGu.getPaint().setTypeface(typeface);
+                radDynamicYang.getPaint().setTypeface(typeface);
+                radDynamicJue.getPaint().setTypeface(typeface);
             }
         }
     }

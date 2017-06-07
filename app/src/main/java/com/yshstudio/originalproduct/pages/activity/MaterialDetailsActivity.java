@@ -31,6 +31,7 @@ import org.json.JSONObject;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -39,6 +40,7 @@ import java.util.Map;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+
 import com.yshstudio.originalproduct.R;
 import com.yshstudio.originalproduct.pages.config.AppContext;
 import com.yshstudio.originalproduct.pages.http.HttpConnectTool;
@@ -318,7 +320,6 @@ public class MaterialDetailsActivity extends BaseActivity {
                 //返回的分别是三个级别的选中位置
                 grends = options1;
                 new asyncTask().execute(1);
-
             }
         })
                 .setSubmitText("确定")//确定按钮文字
@@ -411,6 +412,9 @@ public class MaterialDetailsActivity extends BaseActivity {
         topTitle.setText("个人资料");
         topRegitTitle.setText("保存");
         topRegitTitle.setVisibility(View.VISIBLE);
+        if (!AppContext.cv.containsKey("icon")) {
+            return;
+        }
         Uri imageUri = Uri.parse(AppContext.cv.getAsString("icon"));
         materialIconImage.setImageURI(imageUri);
         textMaterialNick.setText(AppContext.cv.getAsString("nick"));
@@ -495,15 +499,20 @@ public class MaterialDetailsActivity extends BaseActivity {
     }
 
     private void httpAddress() {
-        HashMap<String, String> map = new HashMap<>();
-        map.put("action", "User.update");
-        map.put("uid", AppContext.cv.getAsInteger("id") + "");
-        map.put("location", address);
-        map.put("name", "location");
-        String json = HttpConnectTool.post(map);
-        if (!json.equals("")) {
-            xmlComm(json);
+        try {
+            HashMap<String, String> map = new HashMap<>();
+            map.put("action", "User.update");
+            map.put("uid", AppContext.cv.getAsInteger("id") + "");
+            map.put("location", URLEncoder.encode(address.trim(), "UTF-8") + "");
+            map.put("name", "location");
+            String json = HttpConnectTool.post(map);
+            if (!json.equals("")) {
+                xmlComm(json);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
+
     }
 
     private void httpGender(int gender) {
@@ -533,8 +542,8 @@ public class MaterialDetailsActivity extends BaseActivity {
         try {
             HashMap<String, String> hashMap = new HashMap<>();
             hashMap.put("action", "User.update");
+            hashMap.put("uid", AppContext.cv.getAsInteger("id") + "");
             hashMap.put("name", "icon");
-            hashMap.put("uid  ", AppContext.cv.getAsInteger("id") + "");
             Map<String, File> files = new HashMap<String, File>();
             files.put("icon", file);
             String json = HttpConnectTool.post(hashMap, files);

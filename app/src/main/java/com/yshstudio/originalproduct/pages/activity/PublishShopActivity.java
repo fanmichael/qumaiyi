@@ -40,6 +40,7 @@ import java.util.Map;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+
 import com.yshstudio.originalproduct.R;
 import com.yshstudio.originalproduct.pages.adapter.AppraiesimgeAdapter;
 import com.yshstudio.originalproduct.pages.config.AppContext;
@@ -174,9 +175,9 @@ public class PublishShopActivity extends BaseActivity {
     private void initData() {
         boolean isit = true;
         String msg = "";
-        double price=Double.valueOf(publishShopPrice.getText().toString().trim());
-        double shipMon=Double.valueOf(publishShopExpPrice.getText().toString().trim());
-        double time=Double.valueOf(publishShopTime.getText().toString().trim());
+        double price = Double.valueOf(publishShopPrice.getText().toString().trim());
+        double shipMon = Double.valueOf(publishShopExpPrice.getText().toString().trim());
+        double time = Double.valueOf(publishShopTime.getText().toString().trim());
         if (publishShopName.getText().toString().trim().equals("")) {
             msg = "商品名字不能为空！";
             isit = false;
@@ -189,7 +190,7 @@ public class PublishShopActivity extends BaseActivity {
             msg = "商品价格不能为空！";
             isit = false;
         }
-        if(price<=0){
+        if (price <= 0) {
             msg = "商品价格要大于零！";
             isit = false;
         }
@@ -201,7 +202,7 @@ public class PublishShopActivity extends BaseActivity {
             msg = "商品运费不能为空！";
             isit = false;
         }
-        if(shipMon <=0){
+        if (shipMon <= 0) {
             msg = "商品运费要大于零！";
             isit = false;
         }
@@ -209,7 +210,7 @@ public class PublishShopActivity extends BaseActivity {
             msg = "商品工期不能为空！";
             isit = false;
         }
-        if(time<0){
+        if (time < 0) {
             msg = "商品工期不能为负！";
             isit = false;
         }
@@ -288,6 +289,13 @@ public class PublishShopActivity extends BaseActivity {
         type = 1;
         diabackLogin();
     }
+
+    @OnClick(R.id.publish_shop_img)
+    void addImages() {
+        type = 1;
+        diabackLogin();
+    }
+
 
     /**
      * 添加分类

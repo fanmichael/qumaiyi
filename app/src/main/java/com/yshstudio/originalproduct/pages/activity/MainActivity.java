@@ -114,6 +114,7 @@ public class MainActivity extends FragmentActivity {
                                     if (EMClient.getInstance().isLoggedInBefore())
                                         EMClient.getInstance().logout(true);
                                     AppContext.getInstance().logoutApp();
+                                    finish();
                                     Intent intent = new Intent(MainActivity.this, FristAdvActivity.class);
                                     startActivity(intent);
                                 }

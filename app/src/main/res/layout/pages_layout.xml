@@ -14,7 +14,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:fadingEdge="vertical"
-            android:scrollbars="vertical">
+            android:scrollbars="none">
 
 
             <LinearLayout
@@ -48,6 +48,7 @@
                             android:background="@drawable/dynamic_title"
                             android:button="@null"
                             android:checked="true"
+                            android:textSize="15dp"
                             android:typeface="monospace"
                             android:textColor="@drawable/selector_dynamic_tab" />
 
@@ -59,6 +60,7 @@
                             android:layout_weight="1"
                             android:button="@null"
                             android:checked="false"
+                            android:textSize="15dp"
                             android:typeface="normal"
                             android:textColor="@drawable/selector_dynamic_tab" />
 
@@ -71,6 +73,7 @@
                             android:button="@null"
                             android:checked="false"
                             android:typeface="sans"
+                            android:textSize="15dp"
                             android:textColor="@drawable/selector_dynamic_tab" />
 
                         <RadioButton
@@ -81,6 +84,7 @@
                             android:layout_weight="1"
                             android:button="@null"
                             android:checked="false"
+                            android:textSize="15dp"
                             android:typeface="serif"
                             android:textColor="@drawable/selector_dynamic_tab" />
                     </RadioGroup>

@@ -243,6 +243,11 @@ public class ContentFragment extends BasicFragment {
         diabackLogin();
     }
 
+    @OnClick(R.id.content_imag)
+    void addImages(){
+        type = 1;
+        diabackLogin();
+    }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {

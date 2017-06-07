@@ -478,6 +478,11 @@ public class VideoContentFragment extends BasicFragment {
         chooseVideo();
     }
 
+    @OnClick(R.id.video_images)
+    void choseVideosFile() {
+        chooseVideo();
+    }
+
     /**
      * 上传视频文件
      */

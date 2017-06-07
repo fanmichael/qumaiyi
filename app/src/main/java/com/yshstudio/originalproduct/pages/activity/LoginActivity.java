@@ -289,10 +289,10 @@ public class LoginActivity extends BaseActivity {
                 AppContext.cv.put("password", "");//md5加密密码
                 AppContext.cv.put("nick", jsonLogin.getString("nick"));//昵称
                 AppContext.cv.put("icon", jsonLogin.getString("icon"));//头像
-                // AppContext.cv.put("gender", jsonLogin.getInt("gender"));//性别
-                //AppContext.cv.put("location", "");//地址
-                AppContext.cv.put("personalized", "");//个性签名
-                AppContext.cv.put("sign", "");//是否签约
+                AppContext.cv.put("gender", jsonLogin.has("gender") ? jsonLogin.getInt("gender") : 0);//性别
+                AppContext.cv.put("location", jsonLogin.has("location") ? jsonLogin.getString("location") : "");//地址
+                AppContext.cv.put("personalized", jsonLogin.has("personalized") ? jsonLogin.getString("personalized") : "");//个性签名
+                AppContext.cv.put("sign", jsonLogin.has("sign") ? jsonLogin.getInt("sign") : 0);//是否签约
                 AppContext.cv.put("merchant", jsonLogin.getString("merchant"));//卖家识别'0'否'1'是
             }
         } catch (JSONException e) {
