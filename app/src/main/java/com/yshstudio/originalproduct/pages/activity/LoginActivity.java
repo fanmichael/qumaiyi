@@ -429,12 +429,13 @@ public class LoginActivity extends BaseActivity {
 
         if (SharedPreferenceUtil.hasKey("id") && SharedPreferenceUtil.hasKey("type")) {
             if (SharedPreferenceUtil.read("type", "").equals("sina")) {
-                UtilsUmeng.Login(LoginActivity.this, getApplicationContext(), SHARE_MEDIA.SINA, mHandler);
+//                UtilsUmeng.Login(LoginActivity.this, getApplicationContext(), SHARE_MEDIA.SINA, mHandler);
             } else if (SharedPreferenceUtil.read("type", "").equals("qq")) {
-                UtilsUmeng.Login(LoginActivity.this, getApplicationContext(), SHARE_MEDIA.QQ, mHandler);
+//                UtilsUmeng.Login(LoginActivity.this, getApplicationContext(), SHARE_MEDIA.QQ, mHandler);
             } else if (SharedPreferenceUtil.read("type", "").equals("weixin")) {
-                UtilsUmeng.Login(LoginActivity.this, getApplicationContext(), SHARE_MEDIA.WEIXIN, mHandler);
+//                UtilsUmeng.Login(LoginActivity.this, getApplicationContext(), SHARE_MEDIA.WEIXIN, mHandler);
             }
+            new asyncTask().execute(2);
         }
     }
 

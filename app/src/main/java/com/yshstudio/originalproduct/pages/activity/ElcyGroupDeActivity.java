@@ -47,6 +47,7 @@ public class ElcyGroupDeActivity extends BaseActivity implements UserGroupAdapte
     private List<ContentValues> contentValues = new ArrayList<>();
     private UserGroupAdapter userGroupAdapter;
     private List<String> strings = new ArrayList<>();
+    private String uid;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,6 +60,8 @@ public class ElcyGroupDeActivity extends BaseActivity implements UserGroupAdapte
         topRegitTitle.setVisibility(View.VISIBLE);
         userGroupAdapter = new UserGroupAdapter(context, contentValues, this);
         groupListDe.setAdapter(userGroupAdapter);
+        Bundle bundle=this.getIntent().getExtras();
+        uid=bundle.getString("uid");
         new asyncTask().execute(1);
     }
 
@@ -141,7 +144,7 @@ public class ElcyGroupDeActivity extends BaseActivity implements UserGroupAdapte
         try {
             HashMap<String, String> map = new HashMap<>();
             map.put("action", "Group.groupData");
-            map.put("uid", AppContext.cv.getAsInteger("id") + "");
+            map.put("uid", uid);
             String json = HttpConnectTool.post(map);
             if (!json.equals("")) {
                 listXml(json);

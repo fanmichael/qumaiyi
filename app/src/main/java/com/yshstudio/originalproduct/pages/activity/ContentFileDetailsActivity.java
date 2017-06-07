@@ -412,6 +412,9 @@ public class ContentFileDetailsActivity extends BaseActivity implements CommentA
                     case R.id.chat:
                         //加入群聊
                         Intent intent = new Intent(context, ElcyGroupDeActivity.class);
+                        Bundle bundle=new Bundle();
+                        bundle.putString("uid",values.getAsInteger("uid")+"");
+                        intent.putExtras(bundle);
                         context.startActivity(intent);
                         chat.setChecked(false);
                         break;
