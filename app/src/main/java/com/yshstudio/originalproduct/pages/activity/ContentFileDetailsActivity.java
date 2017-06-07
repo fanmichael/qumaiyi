@@ -343,7 +343,7 @@ public class ContentFileDetailsActivity extends BaseActivity implements CommentA
             ValidData.load(image, fileUserInfoIcon, 60, 60);
             fileDetailsTextContent.setText(values.getAsString("title"));
             fileTitle.setText(values.getAsString("tags"));
-            fileDetailsPrice.setText("" + values.getAsInteger("follow"));
+            fileDetailsPrice.setText("" + values.getAsInteger("collection"));
             fileDetailsNick.setText(values.getAsString("nick"));
             fileDetailsTags.setText(values.getAsString("personalized"));
             fileName.setText(values.getAsString("content"));
@@ -854,6 +854,7 @@ public class ContentFileDetailsActivity extends BaseActivity implements CommentA
             values.put("cid", objnote.getInt("cid"));
             values.put("follow", objnote.getInt("follow"));
             values.put("status", objnote.getInt("status"));
+            values.put("collection", objnote.getInt("collection"));
             values.put("subject", objnote.getString("subject"));
             values.put("title", objnote.getString("title"));
             values.put("content", objnote.getString("content"));
