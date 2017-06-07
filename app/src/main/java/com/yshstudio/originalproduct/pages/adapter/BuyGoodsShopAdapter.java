@@ -14,6 +14,7 @@ import android.widget.TextView;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.yshstudio.originalproduct.R;
 import com.yshstudio.originalproduct.tools.ValidData;
+
 import java.util.List;
 
 
@@ -91,7 +92,24 @@ public class BuyGoodsShopAdapter extends BaseAdapter {
         Double price = Double.parseDouble(good.getAsString("money"));
         Double numAll = good.getAsInteger("num") * price;
         holder.allPrice.setText("合计：" + numAll);
-
+        if (good.getAsInteger("state") == 3 && good.getAsInteger("status") == 0) {
+            holder.buySta.setVisibility(View.GONE);
+            holder.cal.setVisibility(View.INVISIBLE);
+            holder.buy.setText("等待退款...");
+            holder.buy.setBackgroundColor(context.getResources().getColor(R.color.white));
+            holder.buy.setTextColor(context.getResources().getColor(R.color.col_bg));
+            holder.buy.setClickable(false);
+            holder.buy.setEnabled(false);
+        }
+        if (good.getAsInteger("state") == 4 && good.getAsInteger("status") == 0) {
+            holder.buySta.setVisibility(View.GONE);
+            holder.cal.setVisibility(View.INVISIBLE);
+            holder.buy.setText("等待退款...");
+            holder.buy.setBackgroundColor(context.getResources().getColor(R.color.white));
+            holder.buy.setTextColor(context.getResources().getColor(R.color.col_bg));
+            holder.buy.setClickable(false);
+            holder.buy.setEnabled(false);
+        }
         if (good.getAsInteger("state") == 0 && good.getAsInteger("status") == 0) {
             holder.buySta.setVisibility(View.GONE);
             holder.cal.setVisibility(View.INVISIBLE);

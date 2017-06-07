@@ -35,6 +35,7 @@ import com.yshstudio.originalproduct.R;
 import com.yshstudio.originalproduct.pages.adapter.DynamicAdapter;
 import com.yshstudio.originalproduct.pages.config.AppContext;
 import com.yshstudio.originalproduct.pages.http.HttpConnectTool;
+import com.yshstudio.originalproduct.pages.view.LoadingDialog;
 
 /**
  * Created by Administrator on 2017/4/15 0015.
@@ -62,6 +63,7 @@ public class DynamicFragment extends BasicFragment implements SwipeRefreshLayout
     private List<ContentValues> dyList = new ArrayList<>();
     private List<ContentValues> cache = new ArrayList<>();
     private DynamicAdapter dynamicAdapter;
+    private LoadingDialog mDialog = null;
 
 
     @Nullable
@@ -81,7 +83,7 @@ public class DynamicFragment extends BasicFragment implements SwipeRefreshLayout
         initView();
         showProgress();
         setDelayMessage(1, 100);
-
+        appendLoading();
         listView.setOnScrollListener(new AbsListView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(AbsListView view, int scrollState) {
@@ -99,6 +101,19 @@ public class DynamicFragment extends BasicFragment implements SwipeRefreshLayout
 
     }
 
+    private void appendLoading() {
+        mDialog = new LoadingDialog(context);
+        mDialog.setText("正在加载");
+        mDialog.show();
+    }
+
+    // 关闭loading
+    private void removeLoadings() {
+        if (mDialog != null) {
+            mDialog.dismiss();
+            mDialog = null;
+        }
+    }
     private void initView() {
         imageBack.setVisibility(View.INVISIBLE);
         topTitle.setText("动态");
@@ -165,7 +180,6 @@ public class DynamicFragment extends BasicFragment implements SwipeRefreshLayout
     public void onRefresh() {
         page = 1;
         new asyncTask().execute(1);
-
     }
 
     /**
@@ -219,7 +233,7 @@ public class DynamicFragment extends BasicFragment implements SwipeRefreshLayout
         @Override
         protected void onPostExecute(Bundle bundle) {
             int what = bundle.containsKey("what") ? bundle.getInt("what") : -1;
-            // removeLoading();
+            removeLoadings();
             switch (what) {
                 case 1:
                     if(swipeRefreshLayout==null){

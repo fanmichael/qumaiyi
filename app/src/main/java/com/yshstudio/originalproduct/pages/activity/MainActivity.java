@@ -111,12 +111,14 @@ public class MainActivity extends FragmentActivity {
                                         SharedPreferenceUtil.remove("icon");
                                         AppContext.cv.clear();
                                     }
-                                    if (EMClient.getInstance().isLoggedInBefore())
+                                    if (EMClient.getInstance().isLoggedInBefore()) {
                                         EMClient.getInstance().logout(true);
-                                    AppContext.getInstance().logoutApp();
-                                    finish();
-                                    Intent intent = new Intent(MainActivity.this, FristAdvActivity.class);
-                                    startActivity(intent);
+                                        AppContext.getInstance().logoutApp();
+                                        finish();
+                                        Intent intent = new Intent(MainActivity.this, FristAdvActivity.class);
+                                        startActivity(intent);
+                                    }
+
                                 }
                             });
                         } catch (Exception e) {

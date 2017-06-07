@@ -100,7 +100,7 @@ public class BuyItemDetailsActivity extends BaseActivity {
         ButterKnife.bind(this);
         context = this;
         initData();
-
+        topTitle.setText("付款");
         indentWeixinDetails.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

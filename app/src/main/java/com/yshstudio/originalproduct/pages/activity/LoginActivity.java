@@ -336,6 +336,7 @@ public class LoginActivity extends BaseActivity {
                         Intent intent = new Intent(context, MainActivity.class);
                         context.startActivity(intent);
                         destroyActitity();
+                        Toast.makeText(context, "登录成功", Toast.LENGTH_SHORT).show();
                     }
                     break;
             }

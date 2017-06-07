@@ -263,7 +263,7 @@ public class NewSiteActivity extends BaseActivity {
             HashMap<String, String> map = new HashMap<>();
             map.put("action", "Address.action");
             map.put("uid", AppContext.cv.getAsInteger("id") + "");
-            map.put("name", sitePop.getText().toString().trim());
+            map.put("name",  URLEncoder.encode(sitePop.getText().toString().trim(), "UTF-8") + "");
             map.put("type", "add");
             map.put("mobile", sitePhone.getText().toString().trim());
             map.put("address", URLEncoder.encode(addrRess, "UTF-8") + "");
@@ -277,18 +277,24 @@ public class NewSiteActivity extends BaseActivity {
     }
 
     private void httpEditAddress() {
-        HashMap<String, String> map = new HashMap<>();
-        map.put("action", "Address.action");
-        map.put("uid", AppContext.cv.getAsInteger("id") + "");
-        map.put("name", sitePop.getText().toString().trim());
-        map.put("type", "edit");
-        map.put("id", id + "");
-        map.put("mobile", sitePhone.getText().toString().trim());
-        map.put("address", siteAddress.getText().toString().trim() + siteDailesAddress.getText().toString().trim());
-        String json = HttpConnectTool.post(map);
-        if (!json.equals("")) {
-            xmlComm(json);
+        try {
+            String addrRess = siteAddress.getText().toString().trim() + siteDailesAddress.getText().toString().trim();
+            HashMap<String, String> map = new HashMap<>();
+            map.put("action", "Address.action");
+            map.put("uid", AppContext.cv.getAsInteger("id") + "");
+            map.put("name",  URLEncoder.encode(sitePop.getText().toString().trim(), "UTF-8") + "");
+            map.put("type", "edit");
+            map.put("id", id + "");
+            map.put("mobile", sitePhone.getText().toString().trim());
+            map.put("address", URLEncoder.encode(addrRess, "UTF-8") + "");
+            String json = HttpConnectTool.post(map);
+            if (!json.equals("")) {
+                xmlComm(json);
+            }
+        }catch (Exception e){
+            e.printStackTrace();
         }
+
     }
 
 

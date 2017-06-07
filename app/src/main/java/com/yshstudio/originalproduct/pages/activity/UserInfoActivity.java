@@ -222,9 +222,9 @@ public class UserInfoActivity extends BaseActivity {
             isSigen.setVisibility(View.VISIBLE);
         }
         if (cvUser.getAsInteger("gender") == 0) {
-            userSex.setText("男");
-        } else if (cvUser.getAsInteger("gender") == 1) {
             userSex.setText("女");
+        } else if (cvUser.getAsInteger("gender") == 1) {
+            userSex.setText("男");
         }
         userAddress.setText(cvUser.getAsString("location"));
         userInfo.setText("粉丝  " + cvUser.getAsInteger("info"));
