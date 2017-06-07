@@ -196,7 +196,7 @@ public class LocalVideoActivity extends BaseActivity implements CommentAdapter.s
         id = bundle.getInt("id");
         uid = bundle.getInt("uid");
         if (String.valueOf(uid).equals(String.valueOf(AppContext.cv.getAsInteger("id")))) {
-            videoFaith.setVisibility(View.GONE);
+            videoRadioPagesFile.setVisibility(View.GONE);
             videoDetailsAttention.setVisibility(View.GONE);
             videoDetailsAttentionNo.setVisibility(View.GONE);
             collect.setVisibility(View.GONE);

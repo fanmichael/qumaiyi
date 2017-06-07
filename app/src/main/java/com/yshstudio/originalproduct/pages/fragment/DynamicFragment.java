@@ -31,6 +31,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
+
 import com.yshstudio.originalproduct.R;
 import com.yshstudio.originalproduct.pages.adapter.DynamicAdapter;
 import com.yshstudio.originalproduct.pages.config.AppContext;
@@ -114,6 +115,7 @@ public class DynamicFragment extends BasicFragment implements SwipeRefreshLayout
             mDialog = null;
         }
     }
+
     private void initView() {
         imageBack.setVisibility(View.INVISIBLE);
         topTitle.setText("动态");
@@ -236,8 +238,11 @@ public class DynamicFragment extends BasicFragment implements SwipeRefreshLayout
             removeLoadings();
             switch (what) {
                 case 1:
-                    if(swipeRefreshLayout==null){
+                    if (swipeRefreshLayout == null) {
                         return;
+                    }
+                    if (cache.size() <= 0) {
+                        Toast.makeText(context, "没有数据", Toast.LENGTH_SHORT).show();
                     }
                     swipeRefreshLayout.setRefreshing(false);//刷新完成
                     hideProgress();
@@ -291,7 +296,7 @@ public class DynamicFragment extends BasicFragment implements SwipeRefreshLayout
             JSONObject obj = new JSONObject(data);
             int tag = obj.getInt("error");
             if (tag == 199) {
-                Toast.makeText(context, "没有数据", Toast.LENGTH_SHORT).show();
+                return;
             } else {
                 JSONArray jsonArrNews = new JSONArray(obj.getString("data"));
                 for (int i = 0; i < jsonArrNews.length(); i++) {

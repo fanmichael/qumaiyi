@@ -54,7 +54,7 @@ public class PublishActivity extends BaseActivity {
     void publishShop() {
         if (AppContext.cv.getAsString("merchant").equals("0")) {
 
-            Toast.makeText(context, "您还不是卖主还不能发布商品，请申请卖主！", Toast.LENGTH_LONG).show();
+            Toast.makeText(context, "您还不是卖主，快去申请吧", Toast.LENGTH_LONG).show();
             //申请卖主
             Intent intent = new Intent(context, SellerlDetailsActivity.class);
             context.startActivity(intent);

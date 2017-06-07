@@ -488,8 +488,9 @@ public class VideoContentFragment extends BasicFragment {
      */
     @OnClick(R.id.voide_pu)
     void videoPu() {
-        if (videoFile.length() < 0) {
+        if (videoFile==null) {
             Toast.makeText(context, "请选择视频！", Toast.LENGTH_LONG).show();
+            return;
         } else {
             pd = new MyProgressDialog(context);
             pd.setProgressStyle(MyProgressDialog.STYLE_HORIZONTAL);

@@ -175,9 +175,6 @@ public class PublishShopActivity extends BaseActivity {
     private void initData() {
         boolean isit = true;
         String msg = "";
-        double price = Double.valueOf(publishShopPrice.getText().toString().trim());
-        double shipMon = Double.valueOf(publishShopExpPrice.getText().toString().trim());
-        double time = Double.valueOf(publishShopTime.getText().toString().trim());
         if (publishShopName.getText().toString().trim().equals("")) {
             msg = "商品名字不能为空！";
             isit = false;
@@ -190,7 +187,7 @@ public class PublishShopActivity extends BaseActivity {
             msg = "商品价格不能为空！";
             isit = false;
         }
-        if (price <= 0) {
+        if (ValidData.validPrice(publishShopPrice.getText().toString().trim())) {
             msg = "商品价格要大于零！";
             isit = false;
         }
@@ -202,7 +199,7 @@ public class PublishShopActivity extends BaseActivity {
             msg = "商品运费不能为空！";
             isit = false;
         }
-        if (shipMon <= 0) {
+        if (ValidData.validPrice(publishShopExpPrice.getText().toString().trim())) {
             msg = "商品运费要大于零！";
             isit = false;
         }
@@ -210,7 +207,7 @@ public class PublishShopActivity extends BaseActivity {
             msg = "商品工期不能为空！";
             isit = false;
         }
-        if (time < 0) {
+        if (ValidData.validPrice(publishShopTime.getText().toString().trim())) {
             msg = "商品工期不能为负！";
             isit = false;
         }

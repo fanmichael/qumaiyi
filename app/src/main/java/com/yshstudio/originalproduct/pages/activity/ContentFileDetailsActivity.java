@@ -184,7 +184,7 @@ public class ContentFileDetailsActivity extends BaseActivity implements CommentA
 //        if (uid == AppContext.cv.getAsInteger("id")) {
         if (String.valueOf(uid).equals(String.valueOf(AppContext.cv.getAsInteger("id")))) {
 //            lan.setVisibility(View.GONE);
-            faith.setVisibility(View.GONE);
+            radioPagesFile.setVisibility(View.GONE);
             fileDetailsAttention.setVisibility(View.GONE);
             fileDetailsAttentionNo.setVisibility(View.GONE);
             collect.setVisibility(View.GONE);

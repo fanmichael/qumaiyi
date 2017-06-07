@@ -237,10 +237,10 @@ public class ShopDetailsActivity extends BaseActivity implements UserGoodsShopAd
     @OnClick(R.id.collect)
     void imagseColl() {
         //收藏
-        mLoading = new Loading(
-                context, collect);
-        mLoading.setText("正在加载......");
-        mLoading.show();
+//        mLoading = new Loading(
+//                context, collect);
+//        mLoading.setText("正在加载......");
+//        mLoading.show();
         typeatt = 2;
         setDelayMessage(2, 100);
     }
@@ -248,10 +248,10 @@ public class ShopDetailsActivity extends BaseActivity implements UserGoodsShopAd
     @OnClick(R.id.collect_re)
     void cillRe() {
         //取消收藏
-        mLoading = new Loading(
-                context, collectRe);
-        mLoading.setText("正在加载......");
-        mLoading.show();
+//        mLoading = new Loading(
+//                context, collectRe);
+//        mLoading.setText("正在加载......");
+//        mLoading.show();
         typeatt = 3;
         setDelayMessage(3, 100);
     }
