@@ -43,6 +43,7 @@ import com.yshstudio.originalproduct.pages.activity.ContentFileDetailsActivity;
 import com.yshstudio.originalproduct.pages.adapter.ContentApapter;
 import com.yshstudio.originalproduct.pages.config.AppContext;
 import com.yshstudio.originalproduct.pages.http.HttpConnectTool;
+import com.yshstudio.originalproduct.pages.view.LoadingDialog;
 import com.yshstudio.originalproduct.pages.view.PullToRefreshSwipeMenuListView;
 import com.yshstudio.originalproduct.pages.view.pulltorefresh.interfaces.IXListViewListener;
 import com.yshstudio.originalproduct.pages.view.swipemenu.bean.SwipeMenu;
@@ -66,6 +67,8 @@ public class PublishDetailsContentFragment extends BasicFragment implements  IXL
     private List<ContentValues> contentValuesCon = new ArrayList<>();
     private Handler mHandler;
     private int id;
+    private int error;
+    private LoadingDialog mDialog = null;
 
     @Nullable
     @Override
@@ -80,6 +83,7 @@ public class PublishDetailsContentFragment extends BasicFragment implements  IXL
         super.onActivityCreated(savedInstanceState);
         context = getActivity();
         initView();
+        appendLoading();
         page = 1;
         new asyncTask().execute(1);
     }
@@ -187,10 +191,24 @@ public class PublishDetailsContentFragment extends BasicFragment implements  IXL
     }
 
     private void load() {
+        appendLoading();
         page = page + 1;
         new asyncTask().execute(2);
     }
 
+    private void appendLoading() {
+        mDialog = new LoadingDialog(context);
+        mDialog.setText("正在加载");
+        mDialog.show();
+    }
+
+    // 关闭loading
+    private void removeLoadings() {
+        if (mDialog != null) {
+            mDialog.dismiss();
+            mDialog = null;
+        }
+    }
 
     /**
      * 异步加载数据
@@ -220,6 +238,7 @@ public class PublishDetailsContentFragment extends BasicFragment implements  IXL
         @Override
         protected void onPostExecute(Bundle bundle) {
             int what = bundle.containsKey("what") ? bundle.getInt("what") : -1;
+            removeLoadings();
             switch (what) {
                 case 1:
                     if (contentValues != null && contentValues.size() > 0) {
@@ -228,6 +247,12 @@ public class PublishDetailsContentFragment extends BasicFragment implements  IXL
                         }
                         contentValuesCon.addAll(contentValues);
                     }
+                    if(error==101){
+                        Toast.makeText(context, "没有更多数据了", Toast.LENGTH_SHORT).show();
+                        collectListContent.setPullLoadEnable(false);
+                        collectListContent.stopLoadMore();
+                    }
+
                     contentApapter.notifyDataSetChanged();
                     collectListContent.stopRefresh();
                     break;
@@ -295,17 +320,8 @@ public class PublishDetailsContentFragment extends BasicFragment implements  IXL
 
         try {
             JSONObject obj = new JSONObject(data);
-            int error = obj.getInt("error");
+            error = obj.getInt("error");
             if (error == 101) {
-                mHandler.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        Toast.makeText(context, "没有更多数据了", Toast.LENGTH_SHORT).show();
-                        collectListContent.setPullLoadEnable(false);
-                        collectListContent.stopLoadMore();
-                    }
-                }, 100);
-
             } else {
                 JSONArray jsonArrGood = new JSONArray(obj.getString("data"));
                 if (jsonArrGood.length() > 0) {

@@ -91,6 +91,7 @@ public class GroupAddMemberActivity extends BaseActiviy {
                                         @Override
                                         public void run() {
                                             Toast.makeText(GroupAddMemberActivity.this, "添加成功", Toast.LENGTH_SHORT).show();
+                                            finish();
                                         }
                                     });
                                 } else {
@@ -98,6 +99,7 @@ public class GroupAddMemberActivity extends BaseActiviy {
                                         @Override
                                         public void run() {
                                             Toast.makeText(GroupAddMemberActivity.this, "添加失败", Toast.LENGTH_SHORT).show();
+                                            finish();
                                         }
                                     });
                                 }

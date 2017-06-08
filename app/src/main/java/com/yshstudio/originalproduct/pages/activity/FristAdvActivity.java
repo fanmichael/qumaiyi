@@ -33,8 +33,8 @@ public class FristAdvActivity extends BaseActivity {
     Button advGo;
     private Context context;
     private String imag;
-    private Handler handler = new Handler();
     private MyCountDownTimer mc;
+    private boolean isGo=true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,20 +45,11 @@ public class FristAdvActivity extends BaseActivity {
         new asyncTask().execute(1);
         mc = new MyCountDownTimer(5000, 1000);
         mc.start();
-        handler.postDelayed(new Runnable() {
-
-            @Override
-            public void run() {
-                Intent intent = new Intent(context, LoginActivity.class);
-                startActivity(intent);
-                destroyActitity();
-            }
-        }, 3000);
     }
 
     @OnClick(R.id.adv_go)
     void goLogin() {
-        mc = null;
+        isGo=false;
         Intent intent = new Intent(context, LoginActivity.class);
         startActivity(intent);
         destroyActitity();
@@ -142,6 +133,11 @@ public class FristAdvActivity extends BaseActivity {
         @Override
         public void onFinish() {
             advGo.setText("正在跳转");
+            if(isGo){
+                Intent intent = new Intent(context, LoginActivity.class);
+                startActivity(intent);
+                destroyActitity();
+            }
         }
     }
 
