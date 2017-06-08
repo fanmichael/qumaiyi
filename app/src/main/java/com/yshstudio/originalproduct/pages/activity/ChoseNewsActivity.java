@@ -22,6 +22,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -313,7 +314,7 @@ public class ChoseNewsActivity extends BaseActivity {
         try {
             HashMap<String, String> map = new HashMap<>();
             map.put("action", "User.searchUserAndGoodsAndNote");
-            map.put("content", content);
+            map.put("content", URLEncoder.encode(content, "UTF-8") + "");
             map.put("page", "1");
             String json = HttpConnectTool.post(map);
             if (!json.equals("")) {
