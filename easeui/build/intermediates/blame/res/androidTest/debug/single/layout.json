@@ -16,12 +16,12 @@
         "source": "E:\\wbProject\\project\\qumaiyigit\\qumaiyi\\easeui\\build\\intermediates\\bundles\\debug\\res\\layout\\ease_row_received_picture.xml"
     },
     {
-        "merged": "E:\\wbProject\\project\\qumaiyigit\\qumaiyi\\easeui\\build\\intermediates\\res\\merged\\androidTest\\debug\\layout\\ease_widget_emojicon.xml",
-        "source": "E:\\wbProject\\project\\qumaiyigit\\qumaiyi\\easeui\\build\\intermediates\\bundles\\debug\\res\\layout\\ease_widget_emojicon.xml"
-    },
-    {
         "merged": "E:\\huayi\\qumaiyi\\ShequNew\\easeui\\build\\intermediates\\res\\merged\\androidTest\\debug\\layout\\ease_row_received_location.xml",
         "source": "E:\\huayi\\qumaiyi\\ShequNew\\easeui\\build\\intermediates\\bundles\\debug\\res\\layout\\ease_row_received_location.xml"
+    },
+    {
+        "merged": "E:\\wbProject\\project\\qumaiyigit\\qumaiyi\\easeui\\build\\intermediates\\res\\merged\\androidTest\\debug\\layout\\ease_widget_emojicon.xml",
+        "source": "E:\\wbProject\\project\\qumaiyigit\\qumaiyi\\easeui\\build\\intermediates\\bundles\\debug\\res\\layout\\ease_widget_emojicon.xml"
     },
     {
         "merged": "E:\\huayi\\qumaiyi\\ShequNew\\easeui\\build\\intermediates\\res\\merged\\androidTest\\debug\\layout\\ease_scroll_tab_item.xml",
@@ -120,28 +120,28 @@
         "source": "E:\\huayi\\qumaiyi\\ShequNew\\easeui\\build\\intermediates\\bundles\\debug\\res\\layout\\ease_row_received_voice_call.xml"
     },
     {
-        "merged": "E:\\wbProject\\project\\qumaiyigit\\qumaiyi\\easeui\\build\\intermediates\\res\\merged\\androidTest\\debug\\layout\\ease_alert_dialog.xml",
-        "source": "E:\\wbProject\\project\\qumaiyigit\\qumaiyi\\easeui\\build\\intermediates\\bundles\\debug\\res\\layout\\ease_alert_dialog.xml"
+        "merged": "E:\\wbProject\\project\\qumaiyigit\\qumaiyi\\easeui\\build\\intermediates\\res\\merged\\androidTest\\debug\\layout\\ease_row_chat_history.xml",
+        "source": "E:\\wbProject\\project\\qumaiyigit\\qumaiyi\\easeui\\build\\intermediates\\bundles\\debug\\res\\layout\\ease_row_chat_history.xml"
     },
     {
         "merged": "E:\\wbProject\\project\\qumaiyigit\\qumaiyi\\easeui\\build\\intermediates\\res\\merged\\androidTest\\debug\\layout\\ease_widget_title_bar.xml",
         "source": "E:\\wbProject\\project\\qumaiyigit\\qumaiyi\\easeui\\build\\intermediates\\bundles\\debug\\res\\layout\\ease_widget_title_bar.xml"
     },
     {
-        "merged": "E:\\wbProject\\project\\qumaiyigit\\qumaiyi\\easeui\\build\\intermediates\\res\\merged\\androidTest\\debug\\layout\\ease_row_chat_history.xml",
-        "source": "E:\\wbProject\\project\\qumaiyigit\\qumaiyi\\easeui\\build\\intermediates\\bundles\\debug\\res\\layout\\ease_row_chat_history.xml"
+        "merged": "E:\\wbProject\\project\\qumaiyigit\\qumaiyi\\easeui\\build\\intermediates\\res\\merged\\androidTest\\debug\\layout\\ease_alert_dialog.xml",
+        "source": "E:\\wbProject\\project\\qumaiyigit\\qumaiyi\\easeui\\build\\intermediates\\bundles\\debug\\res\\layout\\ease_alert_dialog.xml"
     },
     {
         "merged": "E:\\wbProject\\project\\qumaiyigit\\qumaiyi\\easeui\\build\\intermediates\\res\\merged\\androidTest\\debug\\layout\\ease_row_received_video_call.xml",
         "source": "E:\\wbProject\\project\\qumaiyigit\\qumaiyi\\easeui\\build\\intermediates\\bundles\\debug\\res\\layout\\ease_row_received_video_call.xml"
     },
     {
-        "merged": "E:\\huayi\\qumaiyi\\ShequNew\\easeui\\build\\intermediates\\res\\merged\\androidTest\\debug\\layout\\ease_row_received_file.xml",
-        "source": "E:\\huayi\\qumaiyi\\ShequNew\\easeui\\build\\intermediates\\bundles\\debug\\res\\layout\\ease_row_received_file.xml"
-    },
-    {
         "merged": "E:\\wbProject\\project\\qumaiyigit\\qumaiyi\\easeui\\build\\intermediates\\res\\merged\\androidTest\\debug\\layout\\search_user_iteam.xml",
         "source": "E:\\wbProject\\project\\qumaiyigit\\qumaiyi\\easeui\\build\\intermediates\\bundles\\debug\\res\\layout\\search_user_iteam.xml"
+    },
+    {
+        "merged": "E:\\huayi\\qumaiyi\\ShequNew\\easeui\\build\\intermediates\\res\\merged\\androidTest\\debug\\layout\\ease_row_received_file.xml",
+        "source": "E:\\huayi\\qumaiyi\\ShequNew\\easeui\\build\\intermediates\\bundles\\debug\\res\\layout\\ease_row_received_file.xml"
     },
     {
         "merged": "E:\\wbProject\\project\\qumaiyigit\\qumaiyi\\easeui\\build\\intermediates\\res\\merged\\androidTest\\debug\\layout\\ease_search_bar_with_padding.xml",
@@ -156,16 +156,16 @@
         "source": "E:\\huayi\\qumaiyi\\ShequNew\\easeui\\build\\intermediates\\bundles\\debug\\res\\layout\\ease_row_sent_bigexpression.xml"
     },
     {
-        "merged": "E:\\huayi\\qumaiyi\\ShequNew\\easeui\\build\\intermediates\\res\\merged\\androidTest\\debug\\layout\\ease_widget_chat_input_menu.xml",
-        "source": "E:\\huayi\\qumaiyi\\ShequNew\\easeui\\build\\intermediates\\bundles\\debug\\res\\layout\\ease_widget_chat_input_menu.xml"
+        "merged": "E:\\huayi\\qumaiyi\\ShequNew\\easeui\\build\\intermediates\\res\\merged\\androidTest\\debug\\layout\\ease_row_received_bigexpression.xml",
+        "source": "E:\\huayi\\qumaiyi\\ShequNew\\easeui\\build\\intermediates\\bundles\\debug\\res\\layout\\ease_row_received_bigexpression.xml"
     },
     {
         "merged": "E:\\huayi\\qumaiyi\\ShequNew\\easeui\\build\\intermediates\\res\\merged\\androidTest\\debug\\layout\\ease_row_received_message.xml",
         "source": "E:\\huayi\\qumaiyi\\ShequNew\\easeui\\build\\intermediates\\bundles\\debug\\res\\layout\\ease_row_received_message.xml"
     },
     {
-        "merged": "E:\\huayi\\qumaiyi\\ShequNew\\easeui\\build\\intermediates\\res\\merged\\androidTest\\debug\\layout\\ease_row_received_bigexpression.xml",
-        "source": "E:\\huayi\\qumaiyi\\ShequNew\\easeui\\build\\intermediates\\bundles\\debug\\res\\layout\\ease_row_received_bigexpression.xml"
+        "merged": "E:\\huayi\\qumaiyi\\ShequNew\\easeui\\build\\intermediates\\res\\merged\\androidTest\\debug\\layout\\ease_widget_chat_input_menu.xml",
+        "source": "E:\\huayi\\qumaiyi\\ShequNew\\easeui\\build\\intermediates\\bundles\\debug\\res\\layout\\ease_widget_chat_input_menu.xml"
     },
     {
         "merged": "E:\\huayi\\qumaiyi\\ShequNew\\easeui\\build\\intermediates\\res\\merged\\androidTest\\debug\\layout\\ease_search_bar_with_padding.xml",

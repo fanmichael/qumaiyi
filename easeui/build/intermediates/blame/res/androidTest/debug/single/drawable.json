@@ -4,12 +4,12 @@
         "source": "E:\\huayi\\qumaiyi\\ShequNew\\easeui\\build\\intermediates\\bundles\\debug\\res\\drawable\\ease_chat_takepic_selector.xml"
     },
     {
-        "merged": "E:\\wbProject\\project\\qumaiyigit\\qumaiyi\\easeui\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable\\ease_edit_text_bg.xml",
-        "source": "E:\\wbProject\\project\\qumaiyigit\\qumaiyi\\easeui\\build\\intermediates\\bundles\\debug\\res\\drawable\\ease_edit_text_bg.xml"
-    },
-    {
         "merged": "E:\\huayi\\qumaiyi\\ShequNew\\easeui\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable\\ease_type_select_btn.xml",
         "source": "E:\\huayi\\qumaiyi\\ShequNew\\easeui\\build\\intermediates\\bundles\\debug\\res\\drawable\\ease_type_select_btn.xml"
+    },
+    {
+        "merged": "E:\\wbProject\\project\\qumaiyigit\\qumaiyi\\easeui\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable\\ease_edit_text_bg.xml",
+        "source": "E:\\wbProject\\project\\qumaiyigit\\qumaiyi\\easeui\\build\\intermediates\\bundles\\debug\\res\\drawable\\ease_edit_text_bg.xml"
     },
     {
         "merged": "E:\\wbProject\\project\\qumaiyigit\\qumaiyi\\easeui\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable\\ease_mm_listitem_grey.xml",
@@ -80,12 +80,12 @@
         "source": "E:\\wbProject\\project\\qumaiyigit\\qumaiyi\\easeui\\build\\intermediates\\bundles\\debug\\res\\drawable\\ease_chatting_setmode_voice_btn.xml"
     },
     {
-        "merged": "E:\\huayi\\qumaiyi\\ShequNew\\easeui\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable\\ease_btn_cancel_normal_shape.xml",
-        "source": "E:\\huayi\\qumaiyi\\ShequNew\\easeui\\build\\intermediates\\bundles\\debug\\res\\drawable\\ease_btn_cancel_normal_shape.xml"
-    },
-    {
         "merged": "E:\\huayi\\qumaiyi\\ShequNew\\easeui\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable\\ease_chat_press_speak_btn.xml",
         "source": "E:\\huayi\\qumaiyi\\ShequNew\\easeui\\build\\intermediates\\bundles\\debug\\res\\drawable\\ease_chat_press_speak_btn.xml"
+    },
+    {
+        "merged": "E:\\huayi\\qumaiyi\\ShequNew\\easeui\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable\\ease_btn_cancel_normal_shape.xml",
+        "source": "E:\\huayi\\qumaiyi\\ShequNew\\easeui\\build\\intermediates\\bundles\\debug\\res\\drawable\\ease_btn_cancel_normal_shape.xml"
     },
     {
         "merged": "E:\\huayi\\qumaiyi\\ShequNew\\easeui\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable\\ease_btn_blue_selector.xml",
