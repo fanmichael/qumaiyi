@@ -430,10 +430,18 @@ public class ContentFragment extends BasicFragment {
             msg = "请选择分类！";
             isit = false;
         }
-//        if (tag.equals("")) {
-//            msg = "请选择标签！";
-//            isit = false;
-//        }
+        if (tag.equals("")) {
+            msg = "请选择标签！";
+            isit = false;
+        }
+        if(files.size()<=0){
+            msg = "请载入图片！";
+            isit = false;
+        }
+        if(file==null){
+            msg = "请添加主题图片！";
+            isit = false;
+        }
 //        if (tagsId.equals("")) {
 //            msg = "请选择分类！";
 //            isit = false;

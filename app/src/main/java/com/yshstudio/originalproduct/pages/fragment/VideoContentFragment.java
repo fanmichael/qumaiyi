@@ -367,6 +367,14 @@ public class VideoContentFragment extends BasicFragment {
             msg = "请上传视频！";
             isIt = false;
         }
+        if(tag.equals("")){
+            msg = "请选择标签！";
+            isIt = false;
+        }
+        if(files.size()<=0){
+            msg = "请载入图片！";
+            isIt = false;
+        }
         if (isIt) {
             mLoading = new Loading(context, publishVideo);
             mLoading.setText("正在提交......");
