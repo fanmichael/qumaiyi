@@ -242,6 +242,12 @@ public class VideoContentFragment extends BasicFragment {
                 Log.e("videoMent", "path: " + path);
                 videoImage(path);
                 videoFile = new File(path);
+                pd = new MyProgressDialog(context);
+                pd.setProgressStyle(MyProgressDialog.STYLE_HORIZONTAL);
+                pd.setMessage("上传视频中。。。");
+                pd.setCancelable(false);
+                pd.show();
+                uploadVideo(videoFile);
             }
         }
 
@@ -359,6 +365,14 @@ public class VideoContentFragment extends BasicFragment {
         }
         if (videoAddress.equals("")) {
             msg = "请上传视频！";
+            isIt = false;
+        }
+        if(tag.equals("")){
+            msg = "请选择标签！";
+            isIt = false;
+        }
+        if(files.size()<=0){
+            msg = "请载入图片！";
             isIt = false;
         }
         if (isIt) {

@@ -20,6 +20,8 @@ import java.util.Map;
 
 import com.yshstudio.originalproduct.inc.Ini;
 import com.yshstudio.originalproduct.pages.config.AppContext;
+import com.yshstudio.originalproduct.pages.view.LoadingDialog;
+
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.FormBody;
@@ -43,6 +45,11 @@ public class PayTool {
     public static void pay(final Activity activity, final ContentValues goods, final ContentValues addr, final int type, final Handler mHandler  ) {
 
        if (goods.getAsString("ddid")!=null&&!"".equals(goods.getAsString("ddid"))){
+
+           final LoadingDialog mDialog = new LoadingDialog(activity);
+           mDialog.setText("正在加载");
+           mDialog.show();
+
            OkHttpClient client = new OkHttpClient();
            RequestBody requestBody = new FormBody.Builder()
                    .add("action", "Orderid.updateOrderCode")
@@ -54,11 +61,13 @@ public class PayTool {
            client.newCall(request).enqueue(new Callback() {
                @Override
                public void onFailure(Call call, IOException e) {
-                       Log.e("pay",e.toString());
+                   mDialog.dismiss();
+                   Log.e("pay",e.toString());
                }
 
                @Override
                public void onResponse(Call call, Response response) throws IOException {
+                   mDialog.dismiss();
                    try {
                        JSONObject jsonObject = new JSONObject(response.body().string());
                        if (0 == jsonObject.getInt("error")) {
@@ -84,6 +93,10 @@ public class PayTool {
     }
 
     private static void getUUID(final Activity activity, final ContentValues goods, ContentValues addr, final int type, final Handler mHandler) {
+        final LoadingDialog mDialog = new LoadingDialog(activity);
+        mDialog.setText("正在加载");
+        mDialog.show();
+
         OkHttpClient client = new OkHttpClient();
         String channel = "0";
         if (type == Ini.PAY_TYPE_WEIXIN) {
@@ -95,8 +108,8 @@ public class PayTool {
                 .add("action", "Orderid.payChannel")
                 .add("uid", AppContext.cv.getAsString("id"))
                 .add("channel", channel)
-//                .add("money", goods.containsKey("price") ? goods.getAsString("price") : goods.getAsString("money"))
-                .add("money", "0.01")
+                .add("money", goods.containsKey("price") ? goods.getAsString("price") : goods.getAsString("money"))
+//                .add("money", "0.01")
                 .add("trade_name", goods.containsKey("good_name") ? goods.getAsString("good_name") : goods.getAsString("trade_name"))
                 .add("num", goods.getAsInteger("num") + "")
                 .add("shid", String.valueOf(goods.getAsInteger("uid")))
@@ -109,11 +122,12 @@ public class PayTool {
         client.newCall(request).enqueue(new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
-
+                    mDialog.dismiss();
             }
 
             @Override
             public void onResponse(Call call, Response response) throws IOException {
+                 mDialog.dismiss();
                 try {
                     JSONObject jsonObject = new JSONObject(response.body().string());
                     if (0 == jsonObject.getInt("error")) {
@@ -146,6 +160,9 @@ public class PayTool {
      * @param mHandler
      */
     private static void PayForZFB(final Activity activity, final ContentValues goods, final Handler mHandler) {
+        final LoadingDialog mDialog = new LoadingDialog(activity);
+        mDialog.setText("正在加载");
+        mDialog.show();
         String allPrice = "";
         if (goods.containsKey("price")) {
             allPrice = "" + (Double.valueOf(goods.getAsString("price")) * goods.getAsInteger("num")) + Double.valueOf(goods.getAsString("ship"));
@@ -161,11 +178,13 @@ public class PayTool {
         client.newCall(request).enqueue(new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
+                mDialog.dismiss();
                 Log.e("erro", e.toString());
             }
 
             @Override
             public void onResponse(Call call, Response response) throws IOException {
+                mDialog.dismiss();
                 final String orderInfo = response.body().string();   // 订单信息
                 Message msg = new Message();
                 msg.what = Ini.SDK_PAY_FLAG2;
@@ -199,11 +218,14 @@ public class PayTool {
      * @param goods
      */
     private static void PayForWeixin(final Activity activity, ContentValues goods) {
+        final LoadingDialog mDialog = new LoadingDialog(activity);
+        mDialog.setText("正在加载");
+        mDialog.show();
         String allPrice = "";
         if (goods.containsKey("price")) {
             allPrice = "" + ((Double.valueOf(goods.getAsString("price")) * goods.getAsInteger("num")) + Double.valueOf(goods.getAsString("ship")));
         } else {
-            allPrice = 1+goods.getAsInteger("totalmoney")+"";
+            allPrice = goods.getAsInteger("totalmoney")+"";
         }
         OkHttpClient client = new OkHttpClient();
         String url = Ini.RequestPay_Weixin + "?price=" + allPrice +
@@ -213,11 +235,13 @@ public class PayTool {
         client.newCall(request).enqueue(new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
+                mDialog.dismiss();
                 Log.e("erro", e.toString());
             }
 
             @Override
             public void onResponse(Call call, Response response) throws IOException {
+                mDialog.dismiss();
                 try {
                     String test = response.body().string();
                     JSONObject object = new JSONObject(test);

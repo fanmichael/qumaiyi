@@ -195,6 +195,10 @@ public class IndentActivity extends BaseActivity {
      */
     @OnClick(R.id.indent_btn)
     void btnPay() {
+        if(addr.containsKey("id")){
+            Toast.makeText(context, "请选择地址！", Toast.LENGTH_LONG).show();
+            return;
+        }
         if (weixinPay.isChecked()) {
             PayTool.pay(IndentActivity.this, goods, addr, Ini.PAY_TYPE_WEIXIN, mHandler);
         } else if (baoPay.isChecked()) {

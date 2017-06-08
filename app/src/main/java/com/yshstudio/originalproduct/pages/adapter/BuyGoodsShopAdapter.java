@@ -92,7 +92,9 @@ public class BuyGoodsShopAdapter extends BaseAdapter {
         Double price = Double.parseDouble(good.getAsString("money"));
         Double numAll = good.getAsInteger("num") * price;
         holder.allPrice.setText("合计：" + numAll);
-        if (good.getAsInteger("state") == 3 && good.getAsInteger("status") == 0) {
+
+
+        if (good.getAsInteger("state") == 3 && good.getAsInteger("status") == 1) {
             holder.buySta.setVisibility(View.GONE);
             holder.cal.setVisibility(View.INVISIBLE);
             holder.buy.setText("等待退款...");
@@ -101,10 +103,19 @@ public class BuyGoodsShopAdapter extends BaseAdapter {
             holder.buy.setClickable(false);
             holder.buy.setEnabled(false);
         }
-        if (good.getAsInteger("state") == 4 && good.getAsInteger("status") == 0) {
+        if (good.getAsInteger("state") == 4 && good.getAsInteger("status") == 1) {
             holder.buySta.setVisibility(View.GONE);
             holder.cal.setVisibility(View.INVISIBLE);
-            holder.buy.setText("等待退款...");
+            holder.buy.setText("退款成功");
+            holder.buy.setBackgroundColor(context.getResources().getColor(R.color.white));
+            holder.buy.setTextColor(context.getResources().getColor(R.color.col_bg));
+            holder.buy.setClickable(false);
+            holder.buy.setEnabled(false);
+        }
+        if (good.getAsInteger("state") == 5 && good.getAsInteger("status") == 1) {
+            holder.buySta.setVisibility(View.GONE);
+            holder.cal.setVisibility(View.INVISIBLE);
+            holder.buy.setText("退款失败");
             holder.buy.setBackgroundColor(context.getResources().getColor(R.color.white));
             holder.buy.setTextColor(context.getResources().getColor(R.color.col_bg));
             holder.buy.setClickable(false);

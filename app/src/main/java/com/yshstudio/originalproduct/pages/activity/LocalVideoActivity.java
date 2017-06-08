@@ -1034,11 +1034,11 @@ public class LocalVideoActivity extends BaseActivity implements CommentAdapter.s
     //判断状态隐藏
     private void isColl() {
         if (isCancal == false) {
-            videoDetailsAttention.setVisibility(View.VISIBLE);
-            videoDetailsAttentionNo.setVisibility(View.GONE);
-        } else if (isCancal == true) {
             videoDetailsAttention.setVisibility(View.GONE);
             videoDetailsAttentionNo.setVisibility(View.VISIBLE);
+        } else if (isCancal == true) {
+            videoDetailsAttention.setVisibility(View.VISIBLE);
+            videoDetailsAttentionNo.setVisibility(View.GONE);
         }
 
         if (isSoll == false) {

@@ -8,7 +8,7 @@
               android:orientation="horizontal"
     >
 
-    <com.yshstudio.originalproduct.view.SelectView
+    <com.yshstudio.originalproduct.chat.view.SelectView
         android:id="@+id/delete_member"
         android:layout_width="24dp"
         android:layout_height="24dp"
