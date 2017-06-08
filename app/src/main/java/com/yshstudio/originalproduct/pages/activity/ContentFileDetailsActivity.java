@@ -494,7 +494,7 @@ public class ContentFileDetailsActivity extends BaseActivity implements CommentA
     @Override
     public void content(int posit, int nid, int uid, int parent) {
         //回复
-        contectText.setText("");
+//        contectText.setText("");
         coid = nid;
         parentnum = parent;
         left();
@@ -574,6 +574,7 @@ public class ContentFileDetailsActivity extends BaseActivity implements CommentA
                     isColl();
                     break;
                 case 6:
+                    contectText.setText("");
                     new asyncTask().execute(7);
                     break;
                 case 7:
@@ -603,11 +604,11 @@ public class ContentFileDetailsActivity extends BaseActivity implements CommentA
     //判断隐藏
     private void isColl() {
         if (isCancal == false) {
-            fileDetailsAttention.setVisibility(View.VISIBLE);
-            fileDetailsAttentionNo.setVisibility(View.GONE);
-        } else if (isCancal == true) {
             fileDetailsAttention.setVisibility(View.GONE);
             fileDetailsAttentionNo.setVisibility(View.VISIBLE);
+        } else if (isCancal == true) {
+            fileDetailsAttention.setVisibility(View.VISIBLE);
+            fileDetailsAttentionNo.setVisibility(View.GONE);
         }
 
         if (isSoll == false) {

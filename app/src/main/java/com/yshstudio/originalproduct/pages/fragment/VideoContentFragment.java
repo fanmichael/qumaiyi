@@ -607,6 +607,10 @@ public class VideoContentFragment extends BasicFragment {
      * 发布视频
      */
     private void httpVideo() {
+        Log.e("goods",""+goods);
+        Log.e("group",""+group);
+        Log.e("tag",""+tag);
+
         try {
             HashMap<String, String> map = new HashMap<>();
             map.put("action", "Community.addNote");

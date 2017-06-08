@@ -58,6 +58,7 @@ public class FristAdvActivity extends BaseActivity {
 
     @OnClick(R.id.adv_go)
     void goLogin() {
+        mc = null;
         Intent intent = new Intent(context, LoginActivity.class);
         startActivity(intent);
         destroyActitity();

@@ -110,6 +110,8 @@ public class PublishShopActivity extends BaseActivity {
     private File sellImagesFile;
     private File file;
     private boolean choseBtn = false;
+    private int error;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -187,7 +189,7 @@ public class PublishShopActivity extends BaseActivity {
             msg = "商品价格不能为空！";
             isit = false;
         }
-        if (ValidData.validPrice(publishShopPrice.getText().toString().trim())) {
+        if (!ValidData.validPrice(publishShopPrice.getText().toString().trim())) {
             msg = "商品价格要大于零！";
             isit = false;
         }
@@ -199,7 +201,7 @@ public class PublishShopActivity extends BaseActivity {
             msg = "商品运费不能为空！";
             isit = false;
         }
-        if (ValidData.validPrice(publishShopExpPrice.getText().toString().trim())) {
+        if (!ValidData.validPrice(publishShopExpPrice.getText().toString().trim())) {
             msg = "商品运费要大于零！";
             isit = false;
         }
@@ -207,7 +209,7 @@ public class PublishShopActivity extends BaseActivity {
             msg = "商品工期不能为空！";
             isit = false;
         }
-        if (ValidData.validPrice(publishShopTime.getText().toString().trim())) {
+        if (!ValidData.validPrice(publishShopTime.getText().toString().trim())) {
             msg = "商品工期不能为负！";
             isit = false;
         }
@@ -346,9 +348,6 @@ public class PublishShopActivity extends BaseActivity {
                     httpShop();
                     bundle.putInt("what", 1);
                     break;
-                case 2:
-                    bundle.putInt("what", 2);
-                    break;
             }
             return bundle;
         }
@@ -359,10 +358,10 @@ public class PublishShopActivity extends BaseActivity {
             removeLoading();
             switch (what) {
                 case 1:
-
-                    break;
-                case 2:
-
+                    if (error == 0) {
+                        Toast.makeText(context, "提交成功！", Toast.LENGTH_SHORT).show();
+                        destroyActitity();
+                    }
                     break;
             }
 
@@ -395,11 +394,7 @@ public class PublishShopActivity extends BaseActivity {
             String json = HttpConnectTool.post(map, file);
             if (!json.equals("")) {
                 JSONObject jsonObject = new JSONObject(json);
-                if (jsonObject.getInt("error") == 0) {
-                    Toast.makeText(context, "提交成功！", Toast.LENGTH_SHORT).show();
-                    destroyActitity();
-                }
-//            xmlComm(json);
+                error = jsonObject.getInt("error");
             }
         } catch (Exception e) {
             e.printStackTrace();

@@ -14,7 +14,7 @@ public final class Ini {
     // 正则-整数匹配格式(包含0)
     public static final String _REG_INTNEW = "^[-+]{0,1}[0-9]\\d*$";
     // 正则-价格匹配格式
-    public static final String _REG_PRICE = "^(0|([1-9]{1}\\d{0,8}))(\\.\\d{1,2}){0,1}$";
+    public static final String _REG_PRICE = "^(([1-9]{1}\\d{0,8}))(\\.\\d{1,2}){0,1}$";
     // 正则-价格匹配格式
     public static final String _REG_PRICE_TWO = "^[-+]{0,1}(0|([1-9]{1}\\d{0,8}))(\\.\\d{1,2}){0,1}$";
     // 正则-价格匹配格式

@@ -497,15 +497,15 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:divider="@color/bg"
-                        android:dividerHeight="3dp"
-                        android:focusable="false"
-                        android:padding="5dp"></ListView>
+                        android:dividerHeight="1dp"
+                        android:focusable="false"></ListView>
 
                     <TextView
                         android:id="@+id/video_details_tip"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
+                        android:visibility="gone"
                         android:text="没有相关商品" />
 
                 </LinearLayout>
@@ -551,6 +551,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
+                        android:visibility="gone"
                         android:text="没有相关评论" />
 
 

@@ -30,6 +30,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+
 import com.yshstudio.originalproduct.R;
 import com.yshstudio.originalproduct.chat.activity.ChatActivity;
 import com.yshstudio.originalproduct.chat.util.ObjectSaveUtils;
@@ -376,11 +377,11 @@ public class UserInfoActivity extends BaseActivity {
                     dynamicAdapter();
                     goodsAdapter();
                     if (isCancal == false) {
-                        userAttention.setVisibility(View.VISIBLE);
-                        userAttentionNo.setVisibility(View.GONE);
-                    } else {
                         userAttention.setVisibility(View.GONE);
                         userAttentionNo.setVisibility(View.VISIBLE);
+                    } else {
+                        userAttention.setVisibility(View.VISIBLE);
+                        userAttentionNo.setVisibility(View.GONE);
                     }
                     break;
                 case 2:

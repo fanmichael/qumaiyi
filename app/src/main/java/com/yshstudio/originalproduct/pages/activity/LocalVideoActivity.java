@@ -413,34 +413,11 @@ public class LocalVideoActivity extends BaseActivity implements CommentAdapter.s
 
 
     /**
-     * 提示隐藏
-     */
-    private void goodTip() {
-        if (goodsList.size() > 0) {
-            videoGroupTip.setVisibility(View.GONE);
-            videDetailsGoods.setVisibility(View.VISIBLE);
-        } else {
-            videoGroupTip.setVisibility(View.VISIBLE);
-            videDetailsGoods.setVisibility(View.GONE);
-        }
-
-        if (shopList.size() > 0) {
-            videoDetailsTip.setVisibility(View.GONE);
-            videoDetailsComment.setVisibility(View.VISIBLE);
-        } else {
-            videoDetailsTip.setVisibility(View.VISIBLE);
-            videoDetailsComment.setVisibility(View.GONE);
-        }
-
-
-    }
-
-    /**
      * 回复
      */
     @Override
     public void content(int posit, int nid, int uid, int parent) {
-        videoContectText.setText("");
+//        videoContectText.setText("");
         coid = nid;
         parentnum = parent;
         left();
@@ -450,7 +427,6 @@ public class LocalVideoActivity extends BaseActivity implements CommentAdapter.s
      * 加载评论
      */
     private void commAdapter() {
-        goodTip();
         commentAdapter = new CommentAdapter(context, list, lists, this);
         videoDetailsComment.setAdapter(commentAdapter);
         ListTools.setListViewHeightBasedOnChildren(videoDetailsComment);
@@ -472,6 +448,29 @@ public class LocalVideoActivity extends BaseActivity implements CommentAdapter.s
         conGoodsAdapter = new ConGoodsAdapter(shopList, context);
         videDetailsGoods.setAdapter(conGoodsAdapter);
         ListTools.setListViewHeightBasedOnChildren(videDetailsGoods);
+    }
+
+    /**
+     * 提示隐藏
+     */
+    private void goodTip() {
+        if (list.size() > 0) {
+            videoGroupTip.setVisibility(View.GONE);
+            videoDetailsComment.setVisibility(View.VISIBLE);
+        } else {
+            videoGroupTip.setVisibility(View.VISIBLE);
+            videoDetailsComment.setVisibility(View.GONE);
+        }
+
+        if (shopList.size() > 0) {
+            videoDetailsTip.setVisibility(View.GONE);
+            videDetailsGoods.setVisibility(View.VISIBLE);
+        } else {
+            videoDetailsTip.setVisibility(View.VISIBLE);
+            videDetailsGoods.setVisibility(View.GONE);
+        }
+
+
     }
 
 
@@ -654,6 +653,7 @@ public class LocalVideoActivity extends BaseActivity implements CommentAdapter.s
                     imgsList();
                     conAdapter();
                     commAdapter();
+                    goodTip();
                     (new Handler()).post(new Runnable() {
                         @Override
                         public void run() {
@@ -665,6 +665,8 @@ public class LocalVideoActivity extends BaseActivity implements CommentAdapter.s
                     isColl();
                     break;
                 case 6:
+                    videoContectText.setText("");
+                    goodTip();
                     new asyncTask().execute(7);
                     break;
                 case 7:
