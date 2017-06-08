@@ -95,8 +95,8 @@ public class PayTool {
                 .add("action", "Orderid.payChannel")
                 .add("uid", AppContext.cv.getAsString("id"))
                 .add("channel", channel)
-//                .add("money", goods.containsKey("price") ? goods.getAsString("price") : goods.getAsString("money"))
-                .add("money", "0.01")
+                .add("money", goods.containsKey("price") ? goods.getAsString("price") : goods.getAsString("money"))
+//                .add("money", "0.01")
                 .add("trade_name", goods.containsKey("good_name") ? goods.getAsString("good_name") : goods.getAsString("trade_name"))
                 .add("num", goods.getAsInteger("num") + "")
                 .add("shid", String.valueOf(goods.getAsInteger("uid")))
@@ -203,7 +203,7 @@ public class PayTool {
         if (goods.containsKey("price")) {
             allPrice = "" + ((Double.valueOf(goods.getAsString("price")) * goods.getAsInteger("num")) + Double.valueOf(goods.getAsString("ship")));
         } else {
-            allPrice = 1+goods.getAsInteger("totalmoney")+"";
+            allPrice = goods.getAsInteger("totalmoney")+"";
         }
         OkHttpClient client = new OkHttpClient();
         String url = Ini.RequestPay_Weixin + "?price=" + allPrice +

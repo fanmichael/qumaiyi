@@ -183,7 +183,8 @@ public class BuyItemDetailsActivity extends BaseActivity {
                 switch (msg.what) {
                     //支付宝支付回调
                     case Ini.SDK_PAY_FLAG:
-                        Toast.makeText(getApplicationContext(), "支付成功", Toast.LENGTH_LONG).show();
+//                        Toast.makeText(getApplicationContext(), "支付成功", Toast.LENGTH_LONG).show();
+                        setResult(1);
                         finish();
                         break;
                     case Ini.SDK_PAY_FLAG2:
@@ -407,6 +408,9 @@ public class BuyItemDetailsActivity extends BaseActivity {
             buyDaddressName.setText(orderAddress);
             buyDaddressPhone.setVisibility(View.GONE);
             buyDaddressDetails.setVisibility(View.GONE);
+        }
+        if(order.getAsString("icon").equals("")){
+            return;
         }
         Uri imageUri = Uri.parse(order.getAsString("icon"));
         Uri image = Uri.parse(order.getAsString("good_image"));

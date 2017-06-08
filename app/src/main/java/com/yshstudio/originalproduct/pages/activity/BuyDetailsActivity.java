@@ -541,7 +541,7 @@ public class BuyDetailsActivity extends BaseActivity implements SwipeRefreshLayo
             bundle.putString("ddid", ddid);
             bundle.putInt("id", buyLists.get(posit).getAsInteger("id"));
             intent.putExtras(bundle);
-            context.startActivity(intent);
+          startActivityForResult(intent,1);
         }
         if (buyLists.get(posit).getAsInteger("state") == 1 && buyLists.get(posit).getAsInteger("status") == 1) {
             //确认收货
