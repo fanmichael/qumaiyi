@@ -529,6 +529,9 @@ public class LocalVideoActivity extends BaseActivity implements CommentAdapter.s
                     case R.id.video_chat:
                         //加入群聊
                         Intent intent = new Intent(context, ElcyGroupDeActivity.class);
+                        Bundle bundle=new Bundle();
+                        bundle.putString("uid",values.getAsInteger("uid")+"");
+                        intent.putExtras(bundle);
                         context.startActivity(intent);
                         videoChat.setChecked(false);
                         break;
@@ -563,12 +566,18 @@ public class LocalVideoActivity extends BaseActivity implements CommentAdapter.s
                 return;
             }
         }
+        String mobile=values.getAsString("mobile");
+        if(values.getAsString("mobile").equals("")){
+            mobile= values.getAsString("openid");
+        }else{
+            mobile =values.getAsString("mobile");
+        }
         Intent intent = new Intent(LocalVideoActivity.this, ChatActivity.class);
-        intent.putExtra(EaseConstant.EXTRA_USER_ID, values.getAsString("mobile")).putExtra(EaseConstant.EXTRA_CHAT_TYPE, EaseConstant.CHATTYPE_SINGLE).putExtra("NICK", values.getAsString("nick"));
-        if (UserInfo.getInstance().getInfo() == null || UserInfo.getInstance().getInfo().get(values.getAsString("mobile")) == null) {
-            UserInfo.getInstance().addInfo(new UserInfo.User().setUid(values.getAsString("mobile")).setNick(values.getAsString("nick")).setIcon(values.getAsString("icon")));
+        intent.putExtra(EaseConstant.EXTRA_USER_ID, mobile).putExtra(EaseConstant.EXTRA_CHAT_TYPE, EaseConstant.CHATTYPE_SINGLE).putExtra("NICK", values.getAsString("nick"));
+        if (UserInfo.getInstance().getInfo() == null || UserInfo.getInstance().getInfo().get(mobile) == null) {
+            UserInfo.getInstance().addInfo(new UserInfo.User().setUid(mobile).setNick(values.getAsString("nick")).setIcon(values.getAsString("icon")));
         } else {
-            UserInfo.getInstance().getInfo().get(values.getAsString("mobile")).setNick(values.getAsString("nick")).setIcon(values.getAsString("icon"));
+            UserInfo.getInstance().getInfo().get(mobile).setNick(values.getAsString("nick")).setIcon(values.getAsString("icon"));
         }
         new Thread() {
             @Override

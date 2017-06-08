@@ -296,12 +296,18 @@ public class UserInfoActivity extends BaseActivity {
                 return;
             }
         }
+        String mobile=cvUser.getAsString("mobile");
+        if(cvUser.getAsString("mobile").equals("")){
+            mobile= cvUser.getAsString("openid");
+        }else{
+            mobile =cvUser.getAsString("mobile");
+        }
         Intent intent = new Intent(UserInfoActivity.this, ChatActivity.class);
-        intent.putExtra(EaseConstant.EXTRA_USER_ID, cvUser.getAsString("mobile")).putExtra(EaseConstant.EXTRA_CHAT_TYPE, EaseConstant.CHATTYPE_SINGLE).putExtra("NICK", cvUser.getAsString("nick"));
-        if (UserInfo.getInstance().getInfo() == null || UserInfo.getInstance().getInfo().get(cvUser.getAsString("mobile")) == null) {
-            UserInfo.getInstance().addInfo(new UserInfo.User().setUid(cvUser.getAsString("mobile")).setNick(cvUser.getAsString("nick")).setIcon(cvUser.getAsString("icon")));
+        intent.putExtra(EaseConstant.EXTRA_USER_ID, mobile).putExtra(EaseConstant.EXTRA_CHAT_TYPE, EaseConstant.CHATTYPE_SINGLE).putExtra("NICK", cvUser.getAsString("nick"));
+        if (UserInfo.getInstance().getInfo() == null || UserInfo.getInstance().getInfo().get(mobile) == null) {
+            UserInfo.getInstance().addInfo(new UserInfo.User().setUid(mobile).setNick(cvUser.getAsString("nick")).setIcon(cvUser.getAsString("icon")));
         } else {
-            UserInfo.getInstance().getInfo().get(cvUser.getAsString("mobile")).setNick(cvUser.getAsString("nick")).setIcon(cvUser.getAsString("icon"));
+            UserInfo.getInstance().getInfo().get(mobile).setNick(cvUser.getAsString("nick")).setIcon(cvUser.getAsString("icon"));
         }
         new Thread() {
             @Override

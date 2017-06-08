@@ -210,7 +210,7 @@ public class PublishShopActivity extends BaseActivity {
             isit = false;
         }
         if (!ValidData.validPrice(publishShopTime.getText().toString().trim())) {
-            msg = "商品工期不能为负！";
+            msg = "商品工期不能小于零！";
             isit = false;
         }
         if (publishShopTile.getText().toString().trim().equals("")) {

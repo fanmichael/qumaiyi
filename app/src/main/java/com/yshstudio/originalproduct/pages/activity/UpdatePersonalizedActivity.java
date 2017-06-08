@@ -9,6 +9,7 @@ import android.widget.TextView;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.net.URLEncoder;
 import java.util.HashMap;
 
 import butterknife.BindView;
@@ -91,14 +92,18 @@ public class UpdatePersonalizedActivity extends BaseActivity {
 
 
     private void httpNick() {
-        HashMap<String, String> map = new HashMap<>();
-        map.put("action", "User.update");
-        map.put("uid", AppContext.cv.getAsInteger("id") + "");
-        map.put("personalized", strPer);
-        map.put("name", "personalized");
-        String json = HttpConnectTool.post(map);
-        if (!json.equals("")) {
-            xmlComm(json);
+        try {
+            HashMap<String, String> map = new HashMap<>();
+            map.put("action", "User.update");
+            map.put("uid", AppContext.cv.getAsInteger("id") + "");
+            map.put("personalized",  URLEncoder.encode(strPer, "UTF-8") + "");
+            map.put("name", "personalized");
+            String json = HttpConnectTool.post(map);
+            if (!json.equals("")) {
+                xmlComm(json);
+            }
+        }catch (Exception e){
+            e.printStackTrace();
         }
     }
 
