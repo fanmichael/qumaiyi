@@ -215,11 +215,12 @@ public class BuyItemDetailsActivity extends BaseActivity {
             } else {
                 Toast.makeText(context, "请选择支付方式", Toast.LENGTH_LONG).show();
             }
-
+            return;
         }
         if (state == 1 && status == 1) {
             //确认收货
             new asyncTask().execute(2);
+            return;
         }
         if (state == 2 && status == 1) {
             //评价

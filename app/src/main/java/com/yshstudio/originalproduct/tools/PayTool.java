@@ -5,6 +5,7 @@ import android.content.ContentValues;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.alipay.sdk.app.PayTask;
 import com.tencent.mm.opensdk.modelpay.PayReq;
@@ -27,6 +28,8 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 
+import static android.R.attr.type;
+
 /**
  * 版 权：方直科技
  * 作 者：陈景坤
@@ -37,7 +40,50 @@ import okhttp3.Response;
 
 public class PayTool {
 
-    public static void pay(final Activity activity, final ContentValues goods, ContentValues addr, final int type, final Handler mHandler) {
+    public static void pay(final Activity activity, final ContentValues goods, final ContentValues addr, final int type, final Handler mHandler  ) {
+
+       if (goods.getAsString("ddid")!=null&&!"".equals(goods.getAsString("ddid"))){
+           OkHttpClient client = new OkHttpClient();
+           RequestBody requestBody = new FormBody.Builder()
+                   .add("action", "Orderid.updateOrderCode")
+                   .add("id", goods.getAsString("id")).build();
+           Request request = new Request.Builder()
+                   .url(Ini.Url)
+                   .post(requestBody)
+                   .build();
+           client.newCall(request).enqueue(new Callback() {
+               @Override
+               public void onFailure(Call call, IOException e) {
+                       Log.e("pay",e.toString());
+               }
+
+               @Override
+               public void onResponse(Call call, Response response) throws IOException {
+                   try {
+                       JSONObject jsonObject = new JSONObject(response.body().string());
+                       if (0 == jsonObject.getInt("error")) {
+                           SharedPreferenceUtil.insert("orderid", jsonObject.get("data").toString());
+                           if (type == Ini.PAY_TYPE_WEIXIN) {
+                               PayForWeixin(activity, goods);
+                           } else if (type == Ini.PAY_TYPE_ZFB) {
+                               PayForZFB(activity, goods, mHandler);
+                           }
+                       }else {
+                           Log.e("pay","error");
+                       }
+                   } catch (JSONException e) {
+                       e.printStackTrace();
+                   }
+               }
+           });
+       }else {
+           getUUID(activity,goods,addr,type,mHandler);
+       }
+
+
+    }
+
+    private static void getUUID(final Activity activity, final ContentValues goods, ContentValues addr, final int type, final Handler mHandler) {
         OkHttpClient client = new OkHttpClient();
         String channel = "0";
         if (type == Ini.PAY_TYPE_WEIXIN) {
@@ -89,6 +135,8 @@ public class PayTool {
         });
 
     }
+
+
 
     /**
      * 支付宝支付
@@ -155,12 +203,12 @@ public class PayTool {
         if (goods.containsKey("price")) {
             allPrice = "" + ((Double.valueOf(goods.getAsString("price")) * goods.getAsInteger("num")) + Double.valueOf(goods.getAsString("ship")));
         } else {
-            allPrice = "" + goods.getAsInteger("totalmoney");
+            allPrice = 1+goods.getAsInteger("totalmoney")+"";
         }
         OkHttpClient client = new OkHttpClient();
         String url = Ini.RequestPay_Weixin + "?price=" + allPrice +
                 "&orderid=" + SharedPreferenceUtil.read("orderid", "") +
-                "&trade_name=" + goods.getAsString("good_name");
+                "&trade_name=" + goods.getAsString("trade_name");
         Request request = new Request.Builder().url(url).build();
         client.newCall(request).enqueue(new Callback() {
             @Override
