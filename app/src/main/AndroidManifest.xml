@@ -44,16 +44,15 @@
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
-
     <application
-        android:name="com.yshstudio.originalproduct.pages.config.AppContext"
+        android:name=".pages.config.AppContext"
         android:allowBackup="true"
         android:icon="@drawable/logo"
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@android:style/Theme.NoTitleBar">
         <activity
-            android:name="com.yshstudio.originalproduct.pages.activity.AppStartActivity"
+            android:name=".pages.activity.AppStartActivity"
             android:configChanges="keyboardHidden|orientation"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppStartLoadTranslucent">
@@ -64,174 +63,174 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.yshstudio.originalproduct.pages.activity.LoginActivity"
+            android:name=".pages.activity.LoginActivity"
             android:configChanges="keyboardHidden|orientation"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.NoTitleBar" />
         <activity
-            android:name="com.yshstudio.originalproduct.pages.activity.RegisterActivity"
+            android:name=".pages.activity.RegisterActivity"
             android:configChanges="keyboardHidden|orientation"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.NoTitleBar" />
         <activity
-            android:name="com.yshstudio.originalproduct.pages.activity.BaseActivity"
+            android:name=".pages.activity.BaseActivity"
             android:configChanges="keyboardHidden|orientation"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.NoTitleBar" />
         <activity
-            android:name="com.yshstudio.originalproduct.pages.activity.MainActivity"
+            android:name=".pages.activity.MainActivity"
             android:configChanges="keyboardHidden|orientation"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.NoTitleBar" />
         <activity
-            android:name="com.yshstudio.originalproduct.pages.activity.PublishActivity"
+            android:name=".pages.activity.PublishActivity"
             android:configChanges="keyboardHidden|orientation"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:theme="@style/publish" />
         <activity
-            android:name="com.yshstudio.originalproduct.pages.activity.MaterialDetailsActivity"
+            android:name=".pages.activity.MaterialDetailsActivity"
             android:configChanges="keyboardHidden|orientation"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.NoTitleBar" />
         <activity
-            android:name="com.yshstudio.originalproduct.pages.activity.SellerlDetailsActivity"
+            android:name=".pages.activity.SellerlDetailsActivity"
             android:configChanges="keyboardHidden|orientation"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.NoTitleBar" />
         <activity
-            android:name="com.yshstudio.originalproduct.pages.activity.BuyDetailsActivity"
+            android:name=".pages.activity.BuyDetailsActivity"
             android:configChanges="keyboardHidden|orientation"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.NoTitleBar" />
         <activity
-            android:name="com.yshstudio.originalproduct.pages.activity.PublishDetailsActivity"
+            android:name=".pages.activity.PublishDetailsActivity"
             android:configChanges="keyboardHidden|orientation"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.NoTitleBar" />
         <activity
-            android:name="com.yshstudio.originalproduct.pages.activity.CollectDetailsActivity"
+            android:name=".pages.activity.CollectDetailsActivity"
             android:configChanges="keyboardHidden|orientation"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.NoTitleBar" />
         <activity
-            android:name="com.yshstudio.originalproduct.pages.activity.SiteDetailsActivity"
+            android:name=".pages.activity.SiteDetailsActivity"
             android:configChanges="keyboardHidden|orientation"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.NoTitleBar" />
         <activity
-            android:name="com.yshstudio.originalproduct.pages.activity.InstallDetailsActivity"
+            android:name=".pages.activity.InstallDetailsActivity"
             android:configChanges="keyboardHidden|orientation"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.NoTitleBar" />
         <activity
-            android:name="com.yshstudio.originalproduct.pages.activity.UpdateNickActivity"
+            android:name=".pages.activity.UpdateNickActivity"
             android:configChanges="keyboardHidden|orientation"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.NoTitleBar" />
         <activity
-            android:name="com.yshstudio.originalproduct.pages.activity.UpdatePersonalizedActivity"
+            android:name=".pages.activity.UpdatePersonalizedActivity"
             android:configChanges="keyboardHidden|orientation"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.NoTitleBar" />
         <activity
-            android:name="com.yshstudio.originalproduct.pages.activity.SpecialNoteActivity"
+            android:name=".pages.activity.SpecialNoteActivity"
             android:configChanges="keyboardHidden|orientation"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.NoTitleBar" />
         <activity
-            android:name="com.yshstudio.originalproduct.pages.activity.MoreActivity"
+            android:name=".pages.activity.MoreActivity"
             android:configChanges="keyboardHidden|orientation"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.NoTitleBar" />
         <activity
-            android:name="com.yshstudio.originalproduct.pages.activity.AllCateActivity"
+            android:name=".pages.activity.AllCateActivity"
             android:configChanges="keyboardHidden|orientation"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.NoTitleBar" />
         <activity
-            android:name="com.yshstudio.originalproduct.pages.activity.ChoseNewsActivity"
+            android:name=".pages.activity.ChoseNewsActivity"
             android:configChanges="keyboardHidden|orientation"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.NoTitleBar" />
         <activity
-            android:name="com.yshstudio.originalproduct.pages.activity.UserInfoActivity"
+            android:name=".pages.activity.UserInfoActivity"
             android:configChanges="keyboardHidden|orientation"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.NoTitleBar" />
         <activity
-            android:name="com.yshstudio.originalproduct.pages.activity.AllCateDetailsActivity"
+            android:name=".pages.activity.AllCateDetailsActivity"
             android:configChanges="keyboardHidden|orientation"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.NoTitleBar" />
         <activity
-            android:name="com.yshstudio.originalproduct.pages.activity.FansActivity"
+            android:name=".pages.activity.FansActivity"
             android:configChanges="keyboardHidden|orientation"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.NoTitleBar" />
         <activity
-            android:name="com.yshstudio.originalproduct.pages.activity.ShopListActivity"
+            android:name=".pages.activity.ShopListActivity"
             android:configChanges="keyboardHidden|orientation"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.NoTitleBar" />
         <activity
-            android:name="com.yshstudio.originalproduct.pages.activity.ShopDetailsActivity"
+            android:name=".pages.activity.ShopDetailsActivity"
             android:configChanges="keyboardHidden|orientation"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.NoTitleBar" />
         <activity
-            android:name="com.yshstudio.originalproduct.pages.activity.NewSiteActivity"
+            android:name=".pages.activity.NewSiteActivity"
             android:configChanges="keyboardHidden|orientation"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.NoTitleBar" />
         <activity
-            android:name="com.yshstudio.originalproduct.pages.activity.UsActivity"
+            android:name=".pages.activity.UsActivity"
             android:configChanges="keyboardHidden|orientation"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.NoTitleBar" />
         <activity
-            android:name="com.yshstudio.originalproduct.pages.activity.FeedActivity"
+            android:name=".pages.activity.FeedActivity"
             android:configChanges="keyboardHidden|orientation"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.NoTitleBar" />
         <activity
-            android:name="com.yshstudio.originalproduct.pages.activity.ShareActivity"
+            android:name=".pages.activity.ShareActivity"
             android:configChanges="keyboardHidden|orientation"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.NoTitleBar" />
         <activity
-            android:name="com.yshstudio.originalproduct.pages.activity.ContentFileDetailsActivity"
+            android:name=".pages.activity.ContentFileDetailsActivity"
             android:configChanges="keyboardHidden|orientation"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.NoTitleBar" />
-        <activity android:name="com.yshstudio.originalproduct.pages.activity.LocalVideoActivity" />
+        <activity android:name=".pages.activity.LocalVideoActivity" />
         <activity
             android:name="com.tencent.tauth.AuthActivity"
             android:launchMode="singleTask"
@@ -249,38 +248,38 @@
             android:name="com.tencent.connect.common.AssistActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" />
-        <!--<activity-->
-        <!--android:name="com.sina.weibo.sdk.share.WbShareTransActivity"-->
-        <!--android:configChanges="keyboardHidden|orientation"-->
-        <!--android:screenOrientation="portrait"-->
-        <!--android:windowSoftInputMode="adjustResize" />-->
+        <!-- <activity -->
+        <!-- android:name="com.sina.weibo.sdk.share.WbShareTransActivity" -->
+        <!-- android:configChanges="keyboardHidden|orientation" -->
+        <!-- android:screenOrientation="portrait" -->
+        <!-- android:windowSoftInputMode="adjustResize" /> -->
         <activity
-            android:name="com.yshstudio.originalproduct.pages.activity.ShareAllActivity"
+            android:name=".pages.activity.ShareAllActivity"
             android:configChanges="keyboardHidden|orientation"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:theme="@style/publish" />
         <activity
-            android:name="com.yshstudio.originalproduct.pages.activity.IndentActivity"
+            android:name=".pages.activity.IndentActivity"
             android:configChanges="keyboardHidden|orientation"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.NoTitleBar" />
         <activity
-            android:name="com.yshstudio.originalproduct.pages.activity.SellerDetailsActivity"
+            android:name=".pages.activity.SellerDetailsActivity"
             android:configChanges="keyboardHidden|orientation"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.NoTitleBar" />
         <activity
-            android:name="com.yshstudio.originalproduct.pages.adapter.SellerDaetailsActivity"
+            android:name=".pages.adapter.SellerDaetailsActivity"
             android:configChanges="keyboardHidden|orientation"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.NoTitleBar" />
-        <!-- 友盟 登录与分享起点-->
+        <!-- 友盟 登录与分享起点 -->
         <activity
-            android:name="com.yshstudio.originalproduct.wxapi.WXEntryActivity"
+            android:name=".wxapi.WXEntryActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:exported="true"
             android:screenOrientation="portrait"
@@ -308,168 +307,166 @@
             android:excludeFromRecents="true"
             android:theme="@style/Theme.UMDefault" />
         <activity
-            android:name="com.yshstudio.originalproduct.WBShareActivity"
+            android:name=".WBShareActivity"
             android:configChanges="keyboardHidden|orientation"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="com.sina.weibo.sdk.action.ACTION_SDK_REQ_ACTIVITY" />
+
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
         <!-- 添加友盟appkey -->
         <meta-data
             android:name="UMENG_APPKEY"
-            android:value="591124d1a40fa30de100128d"></meta-data>
-        <!-- 友盟 登录与分享终点-->
+            android:value="591124d1a40fa30de100128d" />
+        <!-- 友盟 登录与分享终点 -->
         //支付宝支付
         <activity
             android:name="com.alipay.sdk.app.H5PayActivity"
             android:configChanges="orientation|keyboardHidden|navigation"
             android:exported="false"
-            android:screenOrientation="behind"></activity>
+            android:screenOrientation="behind" />
         <activity
             android:name="com.alipay.sdk.auth.AuthActivity"
             android:configChanges="orientation|keyboardHidden|navigation"
             android:exported="false"
-            android:screenOrientation="behind"></activity>
-
-
+            android:screenOrientation="behind" />
         <activity
-            android:name="com.yshstudio.originalproduct.pages.activity.ShopBuyActivity"
+            android:name=".pages.activity.ShopBuyActivity"
             android:configChanges="keyboardHidden|orientation"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.NoTitleBar" />
         <activity
-            android:name="com.yshstudio.originalproduct.pages.activity.BuyItemDetailsActivity"
+            android:name=".pages.activity.BuyItemDetailsActivity"
             android:configChanges="keyboardHidden|orientation"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.NoTitleBar" />
         <activity
-            android:name="com.yshstudio.originalproduct.pages.activity.AppraiseActivity"
+            android:name=".pages.activity.AppraiseActivity"
             android:configChanges="keyboardHidden|orientation"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.NoTitleBar" />
         <activity
-            android:name="com.yshstudio.originalproduct.pages.activity.EstimateActivity"
+            android:name=".pages.activity.EstimateActivity"
             android:configChanges="keyboardHidden|orientation"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.NoTitleBar" />
         <activity
-            android:name="com.yshstudio.originalproduct.pages.activity.LogisticsActivity"
+            android:name=".pages.activity.LogisticsActivity"
             android:configChanges="keyboardHidden|orientation"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.NoTitleBar" />
         <activity
-            android:name="com.yshstudio.originalproduct.pages.activity.ExpActivity"
+            android:name=".pages.activity.ExpActivity"
             android:configChanges="keyboardHidden|orientation"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.NoTitleBar" />
         <activity
-            android:name="com.yshstudio.originalproduct.pages.activity.ShopBuyDetailActivity"
+            android:name=".pages.activity.ShopBuyDetailActivity"
             android:configChanges="keyboardHidden|orientation"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.NoTitleBar" />
         <activity
-            android:name="com.yshstudio.originalproduct.pages.activity.VideoContentActivity"
+            android:name=".pages.activity.VideoContentActivity"
             android:configChanges="keyboardHidden|orientation"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.NoTitleBar" />
         <activity
-            android:name="com.yshstudio.originalproduct.pages.activity.PublishShopActivity"
+            android:name=".pages.activity.PublishShopActivity"
             android:configChanges="keyboardHidden|orientation"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.NoTitleBar" />
         <activity
-            android:name="com.yshstudio.originalproduct.pages.activity.ElevancyShopActivity"
+            android:name=".pages.activity.ElevancyShopActivity"
             android:configChanges="keyboardHidden|orientation"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.NoTitleBar" />
         <activity
-            android:name="com.yshstudio.originalproduct.pages.activity.ElcyGroupActivity"
+            android:name=".pages.activity.ElcyGroupActivity"
             android:configChanges="keyboardHidden|orientation"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.NoTitleBar" />
         <activity
-            android:name="com.yshstudio.originalproduct.pages.activity.TagsActivity"
+            android:name=".pages.activity.TagsActivity"
             android:configChanges="keyboardHidden|orientation"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.NoTitleBar" />
         <activity
-            android:name="com.yshstudio.originalproduct.pages.activity.TagsItemActivity"
+            android:name=".pages.activity.TagsItemActivity"
             android:configChanges="keyboardHidden|orientation"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:theme="@style/publish" />
         <activity
-            android:name="com.yshstudio.originalproduct.pages.activity.TagDetailsActivity"
+            android:name=".pages.activity.TagDetailsActivity"
             android:configChanges="keyboardHidden|orientation"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:theme="@style/publish" />
         <activity
-            android:name="com.yshstudio.originalproduct.pages.activity.InfromActivity"
+            android:name=".pages.activity.InfromActivity"
             android:configChanges="keyboardHidden|orientation"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.NoTitleBar" />
         <activity
-            android:name="com.yshstudio.originalproduct.pages.activity.FristAdvActivity"
+            android:name=".pages.activity.FristAdvActivity"
             android:configChanges="keyboardHidden|orientation"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppStartLoadTranslucent" />
         <activity
-            android:name="com.yshstudio.originalproduct.pages.activity.WalletActivity"
+            android:name=".pages.activity.WalletActivity"
             android:configChanges="keyboardHidden|orientation"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.NoTitleBar" />
         <activity
-            android:name="com.yshstudio.originalproduct.pages.activity.WalletPriceActivity"
+            android:name=".pages.activity.WalletPriceActivity"
             android:configChanges="keyboardHidden|orientation"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.NoTitleBar"></activity>
-        <activity android:name="com.yshstudio.originalproduct.chat.activity.PersonDetailsActivity"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar"
-            ></activity>
-        <activity android:name="com.yshstudio.originalproduct.chat.activity.GroupDetailsAcitivity"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar"
-            ></activity>
-        <activity android:name="com.yshstudio.originalproduct.chat.activity.GroupDeleteMember"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar"
-            ></activity>
+            android:theme="@android:style/Theme.NoTitleBar" />
         <activity
-            android:name="com.yshstudio.originalproduct.chat.activity.ChatActivity"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar"></activity>
+            android:name=".chat.activity.PersonDetailsActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity
-            android:name="com.yshstudio.originalproduct.chat.activity.CreateGroupActivity"
+            android:name=".chat.activity.GroupDetailsAcitivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity
+            android:name=".chat.activity.GroupDeleteMember"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity
+            android:name=".chat.activity.ChatActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity
+            android:name=".chat.activity.CreateGroupActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar">
             <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-
         </activity>
         <activity
-            android:name="com.yshstudio.originalproduct.chat.activity.GroupAddMemberActivity"
+            android:name=".chat.activity.GroupAddMemberActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar"
-            android:windowSoftInputMode="adjustPan|stateHidden"></activity>
+            android:windowSoftInputMode="adjustPan|stateHidden" />
         <activity
-            android:name="com.yshstudio.originalproduct.chat.activity.GroupListActivity"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar"></activity>
+            android:name=".chat.activity.GroupListActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity
-            android:name="com.yshstudio.originalproduct.chat.activity.AdminActivity"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar"></activity>
+            android:name=".chat.activity.AdminActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity
             android:name="com.hyphenate.easeui.ui.EaseBaiduMapActivity"
             android:screenOrientation="portrait"
@@ -545,7 +542,6 @@
                 android:value="successRateAnalytics" />
         </receiver>
 
-
         <!-- PushSDK:PushSDK接收外部请求事件入口 -->
         <receiver
             android:name="com.huawei.android.pushagent.PushEventReceiver"
@@ -569,7 +565,6 @@
             android:name="com.hyphenate.chat.EMChatService"
             android:exported="true"
             tools:ignore="ExportedService" />
-
         <service
             android:name="com.hyphenate.chat.EMJobService"
             android:exported="true"
@@ -586,29 +581,30 @@
             </intent-filter>
         </receiver>
         android:theme="@android:style/Theme.NoTitleBar" />
-        <activity android:name="com.yshstudio.originalproduct.pages.activity.ElcyGroupDeActivity" />
-        <activity android:name="com.yshstudio.originalproduct.pages.activity.DeclareActivity" />
-        <activity android:name="com.yshstudio.originalproduct.pages.activity.PictureDisplayActivity"></activity>
+        <activity android:name=".pages.activity.ElcyGroupDeActivity" />
+        <activity android:name=".pages.activity.DeclareActivity" />
+        <activity android:name=".pages.activity.PictureDisplayActivity" />
         <activity
             android:name="io.vov.vitamio.activity.InitActivity"
             android:configChanges="orientation|screenSize|smallestScreenSize|keyboard|keyboardHidden|navigation"
             android:launchMode="singleTop"
             android:theme="@android:style/Theme.NoTitleBar"
             android:windowSoftInputMode="stateAlwaysHidden" />
+
         <receiver
             android:name=".wxapi.AppRegister"
-            android:permission="com.tencent.mm.plugin.permission.SEND" >
+            android:permission="com.tencent.mm.plugin.permission.SEND">
             <intent-filter>
                 <action android:name="com.tencent.mm.plugin.openapi.Intent.ACTION_REFRESH_WXAPP" />
             </intent-filter>
         </receiver>
+
         <activity
             android:name=".wxapi.WXPayEntryActivity"
+            android:configChanges="keyboardHidden|orientation"
             android:exported="true"
             android:launchMode="singleTop"
-            android:configChanges="keyboardHidden|orientation"
-            android:screenOrientation="portrait"
-            ><!--设置为 singleTop 你懂得 -->
+            android:screenOrientation="portrait"> <!-- 设置为 singleTop 你懂得 -->
         </activity>
     </application>
 

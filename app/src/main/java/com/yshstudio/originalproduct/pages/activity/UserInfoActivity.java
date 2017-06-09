@@ -383,11 +383,11 @@ public class UserInfoActivity extends BaseActivity {
                     dynamicAdapter();
                     goodsAdapter();
                     if (isCancal == false) {
-                        userAttention.setVisibility(View.GONE);
-                        userAttentionNo.setVisibility(View.VISIBLE);
-                    } else {
                         userAttention.setVisibility(View.VISIBLE);
                         userAttentionNo.setVisibility(View.GONE);
+                    } else {
+                        userAttention.setVisibility(View.GONE);
+                        userAttentionNo.setVisibility(View.VISIBLE);
                     }
                     break;
                 case 2:

@@ -396,11 +396,11 @@ public class ShopDetailsActivity extends BaseActivity implements UserGoodsShopAd
 
     private void isColl() {
         if (isCancal == false) {
-            shopDetailsAttention.setVisibility(View.GONE);
-            shopDetailsAttentionNo.setVisibility(View.VISIBLE);
-        } else {
             shopDetailsAttention.setVisibility(View.VISIBLE);
             shopDetailsAttentionNo.setVisibility(View.GONE);
+        } else {
+            shopDetailsAttention.setVisibility(View.GONE);
+            shopDetailsAttentionNo.setVisibility(View.VISIBLE);
         }
 
         if (isSoll == false) {

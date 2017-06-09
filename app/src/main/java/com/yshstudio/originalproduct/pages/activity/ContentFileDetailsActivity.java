@@ -611,11 +611,11 @@ public class ContentFileDetailsActivity extends BaseActivity implements CommentA
     //判断隐藏
     private void isColl() {
         if (isCancal == false) {
-            fileDetailsAttention.setVisibility(View.GONE);
-            fileDetailsAttentionNo.setVisibility(View.VISIBLE);
-        } else if (isCancal == true) {
             fileDetailsAttention.setVisibility(View.VISIBLE);
             fileDetailsAttentionNo.setVisibility(View.GONE);
+        } else if (isCancal == true) {
+            fileDetailsAttention.setVisibility(View.GONE);
+            fileDetailsAttentionNo.setVisibility(View.VISIBLE);
         }
 
         if (isSoll == false) {

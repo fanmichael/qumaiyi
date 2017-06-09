@@ -238,9 +238,7 @@ public class DynamicFragment extends BasicFragment implements SwipeRefreshLayout
             removeLoadings();
             switch (what) {
                 case 1:
-                    if (swipeRefreshLayout == null) {
-                        return;
-                    }
+                    viewIsNull();
                     if (cache.size() <= 0) {
                         Toast.makeText(context, "没有数据", Toast.LENGTH_SHORT).show();
                     }
@@ -263,6 +261,18 @@ public class DynamicFragment extends BasicFragment implements SwipeRefreshLayout
 
             }
 
+        }
+    }
+
+    private void viewIsNull(){
+        if (swipeRefreshLayout == null) {
+            return;
+        }
+        if(listView==null){
+            return;
+        }
+        if(dynamicAdapter==null){
+            return;
         }
     }
 

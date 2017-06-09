@@ -8,12 +8,15 @@ allprojects {
         maven { url "https://dl.bintray.com/thelasterstar/maven/" }
     }
 }
+dependencies {
+    compile 'com.android.support.constraint:constraint-layout:+'
+}
 android {
     lintOptions {
-        checkReleaseBuilds  false
-    abortOnError false
+        checkReleaseBuilds false
+        abortOnError false
 
-}
+    }
 
     signingConfigs {
         release {

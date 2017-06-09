@@ -53,7 +53,7 @@ public class PayTool {
            OkHttpClient client = new OkHttpClient();
            RequestBody requestBody = new FormBody.Builder()
                    .add("action", "Orderid.updateOrderCode")
-                   .add("id", goods.getAsString("id")).build();
+                   .add("id",  String.valueOf(goods.getAsInteger("id"))).build();
            Request request = new Request.Builder()
                    .url(Ini.Url)
                    .post(requestBody)
@@ -106,7 +106,7 @@ public class PayTool {
         }
         RequestBody requestBody = new FormBody.Builder()
                 .add("action", "Orderid.payChannel")
-                .add("uid", AppContext.cv.getAsString("id"))
+                .add("uid",  String.valueOf(AppContext.cv.getAsInteger("id")))
                 .add("channel", channel)
                 .add("money", goods.containsKey("price") ? goods.getAsString("price") : goods.getAsString("money"))
 //                .add("money", "0.01")
@@ -114,7 +114,7 @@ public class PayTool {
                 .add("num", goods.getAsInteger("num") + "")
                 .add("shid", String.valueOf(goods.getAsInteger("uid")))
                 .add("address", String.valueOf(addr.getAsInteger("id")))
-                .add("goodsid", goods.getAsString("id")).build();
+                .add("goodsid", String.valueOf(goods.getAsInteger("id"))).build();
         Request request = new Request.Builder()
                 .url(Ini.Url)
                 .post(requestBody)
