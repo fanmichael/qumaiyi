@@ -195,7 +195,7 @@ public class IndentActivity extends BaseActivity {
      */
     @OnClick(R.id.indent_btn)
     void btnPay() {
-        if(addr.containsKey("id")){
+        if(!addr.containsKey("id")){
             Toast.makeText(context, "请选择地址！", Toast.LENGTH_LONG).show();
             return;
         }

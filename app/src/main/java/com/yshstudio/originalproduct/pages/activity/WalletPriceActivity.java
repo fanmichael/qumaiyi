@@ -11,6 +11,7 @@ import android.widget.Toast;
 
 import org.json.JSONObject;
 
+import java.net.URLEncoder;
 import java.util.HashMap;
 
 import butterknife.BindView;
@@ -113,7 +114,7 @@ public class WalletPriceActivity extends BaseActivity {
             HashMap<String, String> hashMap = new HashMap<>();
             hashMap.put("action", "User.Enchashment");
             hashMap.put("uid", AppContext.cv.getAsInteger("id") + "");
-            hashMap.put("name", walletName.getText().toString().trim());
+            hashMap.put("name", URLEncoder.encode(walletName.getText().toString().trim(), "UTF-8") + "");
             hashMap.put("mobile", walletPhone.getText().toString().trim());
             hashMap.put("money", walletPriceNumber.getText().toString().trim());
             hashMap.put("account", walletNumber.getText().toString().trim());
