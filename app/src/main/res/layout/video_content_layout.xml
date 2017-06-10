@@ -44,7 +44,7 @@
                         android:layout_marginRight="10dp"
                         android:background="@drawable/login_btn"
                         android:padding="5dp"
-                        android:text="选择视频"
+                        android:text="请选择视频上传"
                         android:textColor="@color/white"
                         android:visibility="visible" />
 

@@ -8,6 +8,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -21,10 +22,12 @@ import com.facebook.drawee.view.SimpleDraweeView;
 import org.json.JSONObject;
 
 import java.util.HashMap;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+
 import com.yshstudio.originalproduct.R;
 import com.yshstudio.originalproduct.inc.Ini;
 import com.yshstudio.originalproduct.pages.http.HttpConnectTool;
@@ -183,7 +186,19 @@ public class BuyItemDetailsActivity extends BaseActivity {
                 switch (msg.what) {
                     //支付宝支付回调
                     case Ini.SDK_PAY_FLAG:
-//                        Toast.makeText(getApplicationContext(), "支付成功", Toast.LENGTH_LONG).show();
+                        Bundle bundle = msg.getData();
+                        String status = bundle.getString("resultStatus");
+                        if (status.equals("9000")) {
+                            Toast.makeText(getApplicationContext(), "支付成功", Toast.LENGTH_LONG).show();
+                        } else if (status.equals("6001")) {
+                            Toast.makeText(getApplicationContext(), "用户中途取消", Toast.LENGTH_LONG).show();
+                        } else if (status.equals("8000")) {
+                            Toast.makeText(getApplicationContext(), "正在处理中", Toast.LENGTH_LONG).show();
+                        } else if (status.equals("6002")) {
+                            Toast.makeText(getApplicationContext(), "网络连接出错", Toast.LENGTH_LONG).show();
+                        } else if (status.equals("4000")) {
+                            Toast.makeText(getApplicationContext(), "订单支付失败", Toast.LENGTH_LONG).show();
+                        }
                         setResult(1);
                         finish();
                         break;
@@ -208,6 +223,11 @@ public class BuyItemDetailsActivity extends BaseActivity {
 
         if (state == 0 && status == 0
                 || state == 6 && status == 0) {
+            if (order.getAsInteger("totalmoney") <= 0) {
+                Toast.makeText(context, "总计金额必须大于0！", Toast.LENGTH_LONG).show();
+                return;
+            }
+
             //付款
             if (indentWeixinDetails.isChecked()) {
                 PayTool.pay(BuyItemDetailsActivity.this, order, addr, Ini.PAY_TYPE_WEIXIN, mHandler);
@@ -409,7 +429,7 @@ public class BuyItemDetailsActivity extends BaseActivity {
             buyDaddressPhone.setVisibility(View.GONE);
             buyDaddressDetails.setVisibility(View.GONE);
         }
-        if(order.getAsString("icon").equals("")){
+        if (!order.containsKey("icon")) {
             return;
         }
         Uri imageUri = Uri.parse(order.getAsString("icon"));

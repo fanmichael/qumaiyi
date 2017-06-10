@@ -2,6 +2,7 @@ package com.yshstudio.originalproduct.tools;
 
 import android.app.Activity;
 import android.content.ContentValues;
+import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
@@ -42,53 +43,64 @@ import static android.R.attr.type;
 
 public class PayTool {
 
-    public static void pay(final Activity activity, final ContentValues goods, final ContentValues addr, final int type, final Handler mHandler  ) {
+    public static void pay(final Activity activity, final ContentValues goods, final ContentValues addr, final int type, final Handler mHandler) {
+         // 生成新的订单号（price ==0 失败）
+        if (goods.containsKey("ddid") && goods.getAsString("ddid") != null && !"".equals(goods.getAsString("ddid"))) {
+            final LoadingDialog mDialog = new LoadingDialog(activity);
+            mDialog.setText("正在加载");
+            mDialog.show();
 
-       if (goods.getAsString("ddid")!=null&&!"".equals(goods.getAsString("ddid"))){
+            OkHttpClient client = new OkHttpClient();
+            RequestBody requestBody = new FormBody.Builder()
+                    .add("action", "Orderid.updateOrderCode")
+                    .add("id", String.valueOf(goods.getAsInteger("id"))).build();
+            Request request = new Request.Builder()
+                    .url(Ini.Url)
+                    .post(requestBody)
+                    .build();
+            client.newCall(request).enqueue(new Callback() {
+                @Override
+                public void onFailure(Call call, IOException e) {
+                    mDialog.dismiss();
+                    Log.e("pay", e.toString());
+                }
 
-           final LoadingDialog mDialog = new LoadingDialog(activity);
-           mDialog.setText("正在加载");
-           mDialog.show();
+                @Override
+                public void onResponse(Call call, Response response) throws IOException {
+                    mDialog.dismiss();
+                    try {
+                        JSONObject jsonObject = new JSONObject(response.body().string());
+                        if (0 == jsonObject.getInt("error")) {
+                            Log.e("ddid:::::::", "" + jsonObject.get("data").toString());
+                            SharedPreferenceUtil.insert("orderid", jsonObject.get("data").toString());
+                            if (type == Ini.PAY_TYPE_WEIXIN) {
+                                PayForWeixin(activity, goods);
+                            } else if (type == Ini.PAY_TYPE_ZFB) {
+                                PayForZFB(activity, goods, mHandler);
+                            }
+                        } else {
+                            Log.e("pay", "error");
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
+        } else {
+            getUUID(activity, goods, addr, type, mHandler);
+        }
 
-           OkHttpClient client = new OkHttpClient();
-           RequestBody requestBody = new FormBody.Builder()
-                   .add("action", "Orderid.updateOrderCode")
-                   .add("id",  String.valueOf(goods.getAsInteger("id"))).build();
-           Request request = new Request.Builder()
-                   .url(Ini.Url)
-                   .post(requestBody)
-                   .build();
-           client.newCall(request).enqueue(new Callback() {
-               @Override
-               public void onFailure(Call call, IOException e) {
-                   mDialog.dismiss();
-                   Log.e("pay",e.toString());
-               }
-
-               @Override
-               public void onResponse(Call call, Response response) throws IOException {
-                   mDialog.dismiss();
-                   try {
-                       JSONObject jsonObject = new JSONObject(response.body().string());
-                       if (0 == jsonObject.getInt("error")) {
-                           SharedPreferenceUtil.insert("orderid", jsonObject.get("data").toString());
-                           if (type == Ini.PAY_TYPE_WEIXIN) {
-                               PayForWeixin(activity, goods);
-                           } else if (type == Ini.PAY_TYPE_ZFB) {
-                               PayForZFB(activity, goods, mHandler);
-                           }
-                       }else {
-                           Log.e("pay","error");
-                       }
-                   } catch (JSONException e) {
-                       e.printStackTrace();
-                   }
-               }
-           });
-       }else {
-           getUUID(activity,goods,addr,type,mHandler);
-       }
-
+        //不生产新的订单号
+//        if (goods.containsKey("ddid") && goods.getAsString("ddid") != null && !"".equals(goods.getAsString("ddid"))) {
+//            SharedPreferenceUtil.insert("orderid", goods.getAsString("ddid").trim());
+//            if (type == Ini.PAY_TYPE_WEIXIN) {
+//                PayForWeixin(activity, goods);
+//            } else if (type == Ini.PAY_TYPE_ZFB) {
+//                PayForZFB(activity, goods, mHandler);
+//            }
+//        }else{
+//            getUUID(activity, goods, addr, type, mHandler);
+//        }
 
     }
 
@@ -106,12 +118,12 @@ public class PayTool {
         }
         RequestBody requestBody = new FormBody.Builder()
                 .add("action", "Orderid.payChannel")
-                .add("uid",  String.valueOf(AppContext.cv.getAsInteger("id")))
+                .add("uid", String.valueOf(AppContext.cv.getAsInteger("id")))
                 .add("channel", channel)
                 .add("money", goods.containsKey("price") ? goods.getAsString("price") : goods.getAsString("money"))
 //                .add("money", "0.01")
                 .add("trade_name", goods.containsKey("good_name") ? goods.getAsString("good_name") : goods.getAsString("trade_name"))
-                .add("num", goods.getAsInteger("num") + "")
+                .add("num", String.valueOf(goods.getAsInteger("num")))
                 .add("shid", String.valueOf(goods.getAsInteger("uid")))
                 .add("address", String.valueOf(addr.getAsInteger("id")))
                 .add("goodsid", String.valueOf(goods.getAsInteger("id"))).build();
@@ -122,18 +134,20 @@ public class PayTool {
         client.newCall(request).enqueue(new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
-                    mDialog.dismiss();
+                mDialog.dismiss();
             }
 
             @Override
             public void onResponse(Call call, Response response) throws IOException {
-                 mDialog.dismiss();
+                mDialog.dismiss();
                 try {
                     JSONObject jsonObject = new JSONObject(response.body().string());
                     if (0 == jsonObject.getInt("error")) {
+                        Log.e("sdsdsdsd:",""+jsonObject.get("data").toString());
+
                         //微信支付
                         JSONObject jsonobject = new JSONObject(jsonObject.get("data").toString());
-                        SharedPreferenceUtil.insert("orderid", jsonobject.get("ddid"));
+                        SharedPreferenceUtil.insert("orderid", jsonobject.getString("ddid"));
                         if (type == Ini.PAY_TYPE_WEIXIN) {
                             PayForWeixin(activity, goods);
                         } else if (type == Ini.PAY_TYPE_ZFB) {
@@ -151,7 +165,6 @@ public class PayTool {
     }
 
 
-
     /**
      * 支付宝支付
      *
@@ -160,12 +173,9 @@ public class PayTool {
      * @param mHandler
      */
     private static void PayForZFB(final Activity activity, final ContentValues goods, final Handler mHandler) {
-        final LoadingDialog mDialog = new LoadingDialog(activity);
-        mDialog.setText("正在加载");
-        mDialog.show();
         String allPrice = "";
         if (goods.containsKey("price")) {
-            allPrice = "" + (Double.valueOf(goods.getAsString("price")) * goods.getAsInteger("num")) + Double.valueOf(goods.getAsString("ship"));
+            allPrice = "" + ((Double.valueOf(goods.getAsString("price")) * goods.getAsInteger("num")) + Double.valueOf(goods.getAsString("ship")));
         } else {
             allPrice = "" + goods.getAsInteger("totalmoney");
         }
@@ -178,13 +188,11 @@ public class PayTool {
         client.newCall(request).enqueue(new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
-                mDialog.dismiss();
                 Log.e("erro", e.toString());
             }
 
             @Override
             public void onResponse(Call call, Response response) throws IOException {
-                mDialog.dismiss();
                 final String orderInfo = response.body().string();   // 订单信息
                 Message msg = new Message();
                 msg.what = Ini.SDK_PAY_FLAG2;
@@ -201,9 +209,12 @@ public class PayTool {
             public void run() {
                 PayTask alipay = new PayTask(activity);
                 Map<String, String> result = alipay.payV2(orderInfo, true);
+                Bundle bundle =new Bundle();
+                bundle.putString("resultStatus",result.get("resultStatus"));
                 Message msg = new Message();
                 msg.what = Ini.SDK_PAY_FLAG;
                 msg.obj = result;
+                msg.setData(bundle);
                 mHandler.sendMessage(msg);
             }
         };
@@ -218,14 +229,11 @@ public class PayTool {
      * @param goods
      */
     private static void PayForWeixin(final Activity activity, ContentValues goods) {
-        final LoadingDialog mDialog = new LoadingDialog(activity);
-        mDialog.setText("正在加载");
-        mDialog.show();
         String allPrice = "";
         if (goods.containsKey("price")) {
             allPrice = "" + ((Double.valueOf(goods.getAsString("price")) * goods.getAsInteger("num")) + Double.valueOf(goods.getAsString("ship")));
         } else {
-            allPrice = goods.getAsInteger("totalmoney")+"";
+            allPrice = goods.getAsInteger("totalmoney") + "";
         }
         OkHttpClient client = new OkHttpClient();
         String url = Ini.RequestPay_Weixin + "?price=" + allPrice +
@@ -235,15 +243,14 @@ public class PayTool {
         client.newCall(request).enqueue(new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
-                mDialog.dismiss();
                 Log.e("erro", e.toString());
             }
 
             @Override
             public void onResponse(Call call, Response response) throws IOException {
-                mDialog.dismiss();
                 try {
                     String test = response.body().string();
+                    Log.e("sssss:::::",""+test);
                     JSONObject object = new JSONObject(test);
                     final IWXAPI msgApi = WXAPIFactory.createWXAPI(activity, null);
                     // 将该app注册到微信
@@ -260,11 +267,8 @@ public class PayTool {
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-
-
             }
         });
     }
-
 
 }
