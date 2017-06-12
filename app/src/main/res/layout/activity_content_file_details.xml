@@ -316,7 +316,9 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:gravity="center"
+                                android:background="@drawable/lin_bg_shap"
                                 android:orientation="horizontal"
+                                android:padding="5dp"
                                 android:visibility="gone">
 
                                 <ImageView
@@ -340,6 +342,8 @@
                                 android:layout_height="wrap_content"
                                 android:orientation="horizontal"
                                 android:gravity="center"
+                                android:background="@drawable/lin_bg_shap_t"
+                                android:padding="5dp"
                                 android:visibility="gone">
 
                                 <ImageView

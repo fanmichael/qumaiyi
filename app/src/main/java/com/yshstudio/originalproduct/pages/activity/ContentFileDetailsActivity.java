@@ -367,7 +367,7 @@ public class ContentFileDetailsActivity extends BaseActivity implements CommentA
      * 相关的商品
      * */
     private void conAdapter() {
-        if (shopList.size() < 0) {
+        if (shopList.size() <=0) {
             fileShopSpek.setVisibility(View.VISIBLE);
             fileDetailsGoods.setVisibility(View.GONE);
         } else {

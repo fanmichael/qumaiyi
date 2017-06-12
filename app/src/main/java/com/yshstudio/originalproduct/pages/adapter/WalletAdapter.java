@@ -67,13 +67,13 @@ public class WalletAdapter extends BaseAdapter {
         }
         ContentValues cv = contentValues.get(position);
         if (cv.getAsInteger("type") == 0) {
-            if (cv.getAsInteger("state ") == 0) {
+            if (cv.getAsInteger("state") == 0) {
                 holder.wallName.setText("提现--未处理");
-            } else if (cv.getAsInteger("state ") == 1) {
+            } else if (cv.getAsInteger("state") == 1) {
                 holder.wallName.setText("提现--审核通过");
-            } else if (cv.getAsInteger("state ") == 2) {
+            } else if (cv.getAsInteger("state") == 2) {
                 holder.wallName.setText("提现--审核未通过");
-            } else if (cv.getAsInteger("state ") == 2) {
+            } else if (cv.getAsInteger("state") == 3) {
                 holder.wallName.setText("提现--支付宝报错");
             }
         } else if (cv.getAsInteger("type") == 1) {
