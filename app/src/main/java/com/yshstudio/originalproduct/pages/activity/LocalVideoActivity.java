@@ -12,10 +12,10 @@ import android.os.Message;
 import android.support.annotation.IdRes;
 import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.AnimationUtils;
-import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
@@ -26,7 +26,6 @@ import android.widget.MediaController;
 import android.widget.ProgressBar;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
-import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -34,13 +33,13 @@ import android.widget.Toast;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.hyphenate.easeui.EaseConstant;
 import com.hyphenate.easeui.model.UserInfo;
+import com.nostra13.universalimageloader.core.ImageLoader;
 import com.yshstudio.originalproduct.R;
 import com.yshstudio.originalproduct.chat.activity.ChatActivity;
 import com.yshstudio.originalproduct.chat.util.ObjectSaveUtils;
 import com.yshstudio.originalproduct.inc.Ini;
 import com.yshstudio.originalproduct.pages.adapter.CommentAdapter;
 import com.yshstudio.originalproduct.pages.adapter.ConGoodsAdapter;
-import com.yshstudio.originalproduct.pages.adapter.ShopImagesAdapter;
 import com.yshstudio.originalproduct.pages.config.AppContext;
 import com.yshstudio.originalproduct.pages.http.HttpConnectTool;
 import com.yshstudio.originalproduct.pages.prompt.Loading;
@@ -133,7 +132,7 @@ public class LocalVideoActivity extends BaseActivity implements CommentAdapter.s
     @BindView(R.id.video_name)
     TextView videoName;
     @BindView(R.id.video_details_images)
-    ListView videoDetailsImages;
+    LinearLayout videoDetailsImages;
     @BindView(R.id.video_details_info_from)
     LinearLayout videoDetailsInfoFrom;
     @BindView(R.id.video_ln)
@@ -168,7 +167,6 @@ public class LocalVideoActivity extends BaseActivity implements CommentAdapter.s
     private boolean isSoll;
     //评论
     private CommentAdapter commentAdapter;
-    private ShopImagesAdapter shopImagesAdapter;//图片介绍
     private ConGoodsAdapter conGoodsAdapter;
 
     /**
@@ -205,19 +203,6 @@ public class LocalVideoActivity extends BaseActivity implements CommentAdapter.s
             videoCollConNo.setVisibility(View.GONE);
         }
         setDelayMessage(1, 100);
-        videoDetailsImages.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                ArrayList<String> imgUrl = new ArrayList<String>();
-                for (int i = 0; i < imgs.size(); i++) {
-                    imgUrl.add(imgs.get(i).getAsString("imgs"));
-                }
-                Intent intent1 = new Intent(context, PictureDisplayActivity.class);
-                intent1.putExtra("position", imgUrl.size());
-                intent1.putStringArrayListExtra("enlargeImage", imgUrl);
-                startActivity(intent1);
-            }
-        });
         videoLnPlay.setVisibility(View.GONE);
     }
 
@@ -357,7 +342,7 @@ public class LocalVideoActivity extends BaseActivity implements CommentAdapter.s
         videoTags.setText(values.getAsString("tags"));
         videoTitle.setText(values.getAsString("title"));
         Uri videoImage = Uri.parse(values.getAsString("video_img"));
-        ValidData.load(videoImage, videoTest, width, 150);
+        ValidData.load(videoImage, videoTest, width, 200);
         videoName.setText(values.getAsString("content"));
         videoImagesPlay.setVisibility(View.VISIBLE);
     }
@@ -436,9 +421,26 @@ public class LocalVideoActivity extends BaseActivity implements CommentAdapter.s
      * 添加介绍
      */
     private void imgsList() {
-        shopImagesAdapter = new ShopImagesAdapter(context, imgs);
-        videoDetailsImages.setAdapter(shopImagesAdapter);
-        ListTools.setListViewHeightBasedOnChildren(videoDetailsImages);
+        for (int i = 0; i < imgs.size(); i++) {
+            View view = LayoutInflater.from(context).inflate(R.layout.shop_item_imagse, null);
+            LinearLayout lin = (LinearLayout) view.findViewById(R.id.lin_shop_imgs);
+            ImageView ima = (ImageView) view.findViewById(R.id.imagse_shop_item);
+            ImageLoader.getInstance().displayImage(imgs.get(i).getAsString("imgs"), ima);
+            lin.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    ArrayList<String> imgUrl = new ArrayList<String>();
+                    for (int i = 0; i < imgs.size(); i++) {
+                        imgUrl.add(imgs.get(i).getAsString("imgs"));
+                    }
+                    Intent intent1 = new Intent(context, PictureDisplayActivity.class);
+                    intent1.putExtra("position", imgUrl.size());
+                    intent1.putStringArrayListExtra("enlargeImage", imgUrl);
+                    startActivity(intent1);
+                }
+            });
+            videoDetailsImages.addView(view);
+        }
     }
 
     /**
@@ -529,8 +531,8 @@ public class LocalVideoActivity extends BaseActivity implements CommentAdapter.s
                     case R.id.video_chat:
                         //加入群聊
                         Intent intent = new Intent(context, ElcyGroupDeActivity.class);
-                        Bundle bundle=new Bundle();
-                        bundle.putString("uid",values.getAsInteger("uid")+"");
+                        Bundle bundle = new Bundle();
+                        bundle.putString("uid", values.getAsInteger("uid") + "");
                         intent.putExtras(bundle);
                         context.startActivity(intent);
                         videoChat.setChecked(false);
@@ -566,11 +568,11 @@ public class LocalVideoActivity extends BaseActivity implements CommentAdapter.s
                 return;
             }
         }
-        String mobile=values.getAsString("mobile");
-        if(values.getAsString("mobile").equals("")){
-            mobile= values.getAsString("openid");
-        }else{
-            mobile =values.getAsString("mobile");
+        String mobile = values.getAsString("mobile");
+        if (values.getAsString("mobile").equals("")) {
+            mobile = values.getAsString("openid");
+        } else {
+            mobile = values.getAsString("mobile");
         }
         Intent intent = new Intent(LocalVideoActivity.this, ChatActivity.class);
         intent.putExtra(EaseConstant.EXTRA_USER_ID, mobile).putExtra(EaseConstant.EXTRA_CHAT_TYPE, EaseConstant.CHATTYPE_SINGLE).putExtra("NICK", values.getAsString("nick"));

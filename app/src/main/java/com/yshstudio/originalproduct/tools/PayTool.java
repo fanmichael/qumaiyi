@@ -177,7 +177,7 @@ public class PayTool {
         if (goods.containsKey("price")) {
             allPrice = "" + ((Double.valueOf(goods.getAsString("price")) * goods.getAsInteger("num")) + Double.valueOf(goods.getAsString("ship")));
         } else {
-            allPrice = "" + goods.getAsInteger("totalmoney");
+            allPrice =""+ goods.getAsDouble("totalmoney");
         }
 
         final OkHttpClient client = new OkHttpClient();
@@ -233,7 +233,7 @@ public class PayTool {
         if (goods.containsKey("price")) {
             allPrice = "" + ((Double.valueOf(goods.getAsString("price")) * goods.getAsInteger("num")) + Double.valueOf(goods.getAsString("ship")));
         } else {
-            allPrice = goods.getAsInteger("totalmoney") + "";
+            allPrice = ""+ goods.getAsDouble("totalmoney");
         }
         OkHttpClient client = new OkHttpClient();
         String url = Ini.RequestPay_Weixin + "?price=" + allPrice +

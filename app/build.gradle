@@ -9,7 +9,7 @@ allprojects {
     }
 }
 dependencies {
-    compile 'com.android.support.constraint:constraint-layout:+'
+    compile 'com.android.support.constraint:constraint-layout:1.0.2'
 }
 android {
     lintOptions {
@@ -48,8 +48,8 @@ android {
             applicationId "com.yshstudio.originalproduct"
             minSdkVersion 15
             targetSdkVersion 21
-            versionCode 35
-            versionName "35.0.7"
+            versionCode 100
+            versionName "100"
             testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         }
         buildTypes {

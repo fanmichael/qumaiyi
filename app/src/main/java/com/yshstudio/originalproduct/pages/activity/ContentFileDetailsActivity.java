@@ -10,9 +10,9 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.IdRes;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.animation.AnimationUtils;
-import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ExpandableListView;
@@ -26,11 +26,27 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.facebook.drawee.view.SimpleDraweeView;
+import com.hyphenate.easeui.EaseConstant;
+import com.hyphenate.easeui.model.UserInfo;
+import com.nostra13.universalimageloader.core.ImageLoader;
 import com.umeng.socialize.UMAuthListener;
 import com.umeng.socialize.UMShareAPI;
 import com.umeng.socialize.bean.SHARE_MEDIA;
-import com.hyphenate.easeui.EaseConstant;
-import com.hyphenate.easeui.model.UserInfo;
+import com.yshstudio.originalproduct.R;
+import com.yshstudio.originalproduct.chat.activity.ChatActivity;
+import com.yshstudio.originalproduct.chat.util.ObjectSaveUtils;
+import com.yshstudio.originalproduct.inc.Ini;
+import com.yshstudio.originalproduct.pages.adapter.CommentAdapter;
+import com.yshstudio.originalproduct.pages.adapter.ConGoodsAdapter;
+import com.yshstudio.originalproduct.pages.adapter.ContentFileDetailsAdapter;
+import com.yshstudio.originalproduct.pages.config.AppContext;
+import com.yshstudio.originalproduct.pages.http.HttpConnectTool;
+import com.yshstudio.originalproduct.pages.prompt.Loading;
+import com.yshstudio.originalproduct.tools.ImageToools;
+import com.yshstudio.originalproduct.tools.ListTools;
+import com.yshstudio.originalproduct.tools.SharedPreferenceUtil;
+import com.yshstudio.originalproduct.tools.UtilsUmeng;
+import com.yshstudio.originalproduct.tools.ValidData;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -45,22 +61,6 @@ import java.util.Map;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import com.yshstudio.originalproduct.R;
-import com.yshstudio.originalproduct.inc.Ini;
-import com.yshstudio.originalproduct.chat.activity.ChatActivity;
-import com.yshstudio.originalproduct.chat.util.ObjectSaveUtils;
-import com.yshstudio.originalproduct.pages.adapter.CommentAdapter;
-import com.yshstudio.originalproduct.pages.adapter.ConGoodsAdapter;
-import com.yshstudio.originalproduct.pages.adapter.ContentFileDetailsAdapter;
-import com.yshstudio.originalproduct.pages.adapter.ShopImagesAdapter;
-import com.yshstudio.originalproduct.pages.config.AppContext;
-import com.yshstudio.originalproduct.pages.http.HttpConnectTool;
-import com.yshstudio.originalproduct.pages.prompt.Loading;
-import com.yshstudio.originalproduct.tools.ImageToools;
-import com.yshstudio.originalproduct.tools.ListTools;
-import com.yshstudio.originalproduct.tools.SharedPreferenceUtil;
-import com.yshstudio.originalproduct.tools.UtilsUmeng;
-import com.yshstudio.originalproduct.tools.ValidData;
 
 
 /**
@@ -94,7 +94,7 @@ public class ContentFileDetailsActivity extends BaseActivity implements CommentA
     @BindView(R.id.lan)
     LinearLayout lan;
     @BindView(R.id.file_details_sim_title)
-    SimpleDraweeView fileDetailsSimTitle;
+    ImageView fileDetailsSimTitle;
     @BindView(R.id.file_details_text_content)
     TextView fileDetailsTextContent;
     @BindView(R.id.file_title)
@@ -112,7 +112,7 @@ public class ContentFileDetailsActivity extends BaseActivity implements CommentA
     @BindView(R.id.file_details_attention_no)
     LinearLayout fileDetailsAttentionNo;
     @BindView(R.id.file_details_images)
-    ListView fileDetailsImages;
+    LinearLayout fileDetailsImages;
     @BindView(R.id.scrollview)
     ScrollView scrollview;
     @BindView(R.id.file_name)
@@ -157,7 +157,6 @@ public class ContentFileDetailsActivity extends BaseActivity implements CommentA
     private List<ContentValues> list = new ArrayList<>();
     private List<List<ContentValues>> lists = new ArrayList<>();
     private List<ContentValues> shopList = new ArrayList<>();
-    private ShopImagesAdapter shopImagesAdapter;//图片介绍
     private CommentAdapter commentAdapter;/////////////////////
     private ConGoodsAdapter conGoodsAdapter;
     private Handler handlers;
@@ -222,20 +221,6 @@ public class ContentFileDetailsActivity extends BaseActivity implements CommentA
             }
         });
 
-
-        fileDetailsImages.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                ArrayList<String> imgUrl = new ArrayList<String>();
-                for (int i = 0; i < imgs.size(); i++) {
-                    imgUrl.add(imgs.get(i).getAsString("imgs"));
-                }
-                Intent intent1 = new Intent(context, PictureDisplayActivity.class);
-                intent1.putExtra("position", imgUrl.size());
-                intent1.putStringArrayListExtra("enlargeImage", imgUrl);
-                startActivity(intent1);
-            }
-        });
 
     }
 
@@ -337,8 +322,7 @@ public class ContentFileDetailsActivity extends BaseActivity implements CommentA
 
     private void initData() {
         try {
-            Uri imageUri = Uri.parse(values.getAsString("subject"));
-            ValidData.load(imageUri, fileDetailsSimTitle, 300, 150);
+            ImageLoader.getInstance().displayImage(values.getAsString("subject"), fileDetailsSimTitle);
             Uri image = Uri.parse(values.getAsString("icon"));
             ValidData.load(image, fileUserInfoIcon, 60, 60);
             fileDetailsTextContent.setText(values.getAsString("title"));
@@ -356,9 +340,26 @@ public class ContentFileDetailsActivity extends BaseActivity implements CommentA
      * 添加介绍
      */
     private void imgsList() {
-        shopImagesAdapter = new ShopImagesAdapter(context, imgs);
-        fileDetailsImages.setAdapter(shopImagesAdapter);
-        ListTools.setListViewHeightBasedOnChildren(fileDetailsImages);
+        for (int i = 0; i < imgs.size(); i++) {
+            View view = LayoutInflater.from(context).inflate(R.layout.shop_item_imagse, null);
+            LinearLayout lin = (LinearLayout) view.findViewById(R.id.lin_shop_imgs);
+            ImageView ima = (ImageView) view.findViewById(R.id.imagse_shop_item);
+            ImageLoader.getInstance().displayImage(imgs.get(i).getAsString("imgs"), ima);
+            lin.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    ArrayList<String> imgUrl = new ArrayList<String>();
+                    for (int i = 0; i < imgs.size(); i++) {
+                        imgUrl.add(imgs.get(i).getAsString("imgs"));
+                    }
+                    Intent intent1 = new Intent(context, PictureDisplayActivity.class);
+                    intent1.putExtra("position", imgUrl.size());
+                    intent1.putStringArrayListExtra("enlargeImage", imgUrl);
+                    startActivity(intent1);
+                }
+            });
+            fileDetailsImages.addView(view);
+        }
     }
 
 
@@ -412,8 +413,8 @@ public class ContentFileDetailsActivity extends BaseActivity implements CommentA
                     case R.id.chat:
                         //加入群聊
                         Intent intent = new Intent(context, ElcyGroupDeActivity.class);
-                        Bundle bundle=new Bundle();
-                        bundle.putString("uid",values.getAsInteger("uid")+"");
+                        Bundle bundle = new Bundle();
+                        bundle.putString("uid", values.getAsInteger("uid") + "");
                         intent.putExtras(bundle);
                         context.startActivity(intent);
                         chat.setChecked(false);
@@ -426,7 +427,7 @@ public class ContentFileDetailsActivity extends BaseActivity implements CommentA
                     case R.id.dis:
                         contectText.setText("");
                         parentnum = 0;
-                        coid=id;
+                        coid = id;
                         left();
                         dis.setChecked(false);
                         break;
@@ -448,11 +449,11 @@ public class ContentFileDetailsActivity extends BaseActivity implements CommentA
                 return;
             }
         }
-        String mobile=values.getAsString("mobile");
-        if(values.getAsString("mobile").equals("")){
-            mobile= values.getAsString("openid");
-        }else{
-            mobile =values.getAsString("mobile");
+        String mobile = values.getAsString("mobile");
+        if (values.getAsString("mobile").equals("")) {
+            mobile = values.getAsString("openid");
+        } else {
+            mobile = values.getAsString("mobile");
         }
 
         Intent intent = new Intent(ContentFileDetailsActivity.this, ChatActivity.class);
@@ -573,7 +574,7 @@ public class ContentFileDetailsActivity extends BaseActivity implements CommentA
                     (new Handler()).post(new Runnable() {
                         @Override
                         public void run() {
-                            scrollview.scrollTo(10, 10) ;
+                            scrollview.scrollTo(10, 10);
                         }
                     });
                     break;

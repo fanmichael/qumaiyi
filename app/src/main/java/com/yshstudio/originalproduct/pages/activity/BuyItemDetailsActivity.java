@@ -191,7 +191,7 @@ public class BuyItemDetailsActivity extends BaseActivity {
                         if (status.equals("9000")) {
                             Toast.makeText(getApplicationContext(), "支付成功", Toast.LENGTH_LONG).show();
                         } else if (status.equals("6001")) {
-                            Toast.makeText(getApplicationContext(), "用户中途取消", Toast.LENGTH_LONG).show();
+                            Toast.makeText(getApplicationContext(), "取消支付", Toast.LENGTH_LONG).show();
                         } else if (status.equals("8000")) {
                             Toast.makeText(getApplicationContext(), "正在处理中", Toast.LENGTH_LONG).show();
                         } else if (status.equals("6002")) {
@@ -223,11 +223,6 @@ public class BuyItemDetailsActivity extends BaseActivity {
 
         if (state == 0 && status == 0
                 || state == 6 && status == 0) {
-            if (order.getAsInteger("totalmoney") <= 0) {
-                Toast.makeText(context, "总计金额必须大于0！", Toast.LENGTH_LONG).show();
-                return;
-            }
-
             //付款
             if (indentWeixinDetails.isChecked()) {
                 PayTool.pay(BuyItemDetailsActivity.this, order, addr, Ini.PAY_TYPE_WEIXIN, mHandler);
@@ -404,7 +399,7 @@ public class BuyItemDetailsActivity extends BaseActivity {
             order.put("shid", jsonOrder.getInt("shid"));
             order.put("address", jsonOrder.getInt("address"));
             order.put("goodsid", jsonOrder.getInt("goodsid"));
-            order.put("totalmoney", jsonOrder.getInt("totalmoney"));
+            order.put("totalmoney", jsonOrder.getDouble("totalmoney"));
             order.put("ddid", jsonOrder.getString("ddid"));
             order.put("money", jsonOrder.getString("money"));
             order.put("trade_name", jsonOrder.getString("trade_name"));
@@ -441,6 +436,6 @@ public class BuyItemDetailsActivity extends BaseActivity {
         buyDetailsGrd.setText("工期：" + order.getAsInteger("maf_time") + "天");
         buyDetailsPrice.setText("￥" + order.getAsString("money"));
         buyDetailsTime.setText("x" + order.getAsInteger("num"));
-        buyOrderPrice.setText("合计：" + order.getAsInteger("totalmoney"));
+        buyOrderPrice.setText("合计：" + order.getAsDouble("totalmoney"));
     }
 }

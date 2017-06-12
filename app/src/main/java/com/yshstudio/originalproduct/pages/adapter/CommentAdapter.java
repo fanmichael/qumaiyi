@@ -86,15 +86,21 @@ public class CommentAdapter extends BaseAdapter {
                 setOnClickLoction.content(position,cv.getAsInteger("nid"), AppContext.cv.getAsInteger("id"),cv.getAsInteger("id"));
             }
         });
-        if (lists.get(position).size() > 0) {
-            for (int i = 0; i < lists.get(position).size(); i++) {
-                View view = LayoutInflater.from(context).inflate(R.layout.text_comm_item, null);
-                TextView textView = (TextView) view.findViewById(R.id.text_name);
-                TextView textContent = (TextView) view.findViewById(R.id.text_content);
-                textView.setText(lists.get(position).get(i).getAsString("nick")+": ");
-                textContent.setText(lists.get(position).get(i).getAsString("content"));
-                holder.comContent.addView(view);
+
+        if(lists.get(position).size()>0){
+            holder.comContent.setVisibility(View.VISIBLE);
+            if (lists.get(position).size() > 0) {
+                for (int i = 0; i < lists.get(position).size(); i++) {
+                    View view = LayoutInflater.from(context).inflate(R.layout.text_comm_item, null);
+                    TextView textView = (TextView) view.findViewById(R.id.text_name);
+                    TextView textContent = (TextView) view.findViewById(R.id.text_content);
+                    textView.setText(lists.get(position).get(i).getAsString("nick")+": ");
+                    textContent.setText(lists.get(position).get(i).getAsString("content"));
+                    holder.comContent.addView(view);
+                }
             }
+        }else{
+            holder.comContent.setVisibility(View.GONE);
         }
         return convertView;
     }

@@ -11,10 +11,11 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
 import com.yshstudio.originalproduct.R;
 import com.yshstudio.originalproduct.tools.SharedPreferenceUtil;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 /**
  * 启动页
@@ -43,6 +44,7 @@ public class AppStartActivity extends BaseActivity implements ViewPager.OnPageCh
 
     private int currentItem;
     private Context context;
+    private String val = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,35 +53,7 @@ public class AppStartActivity extends BaseActivity implements ViewPager.OnPageCh
         setContentView(view);
         ButterKnife.bind(this);
         context = this;
-
-//        //渐变动画
-//        AlphaAnimation animation = new AlphaAnimation(0.6f, 1.0f);
-//        animation.setDuration(1000);
-//        view.setAnimation(animation);
-//        animation.setAnimationListener(new Animation.AnimationListener() {
-//            @Override
-//            public void onAnimationStart(Animation animation) {
-//
-//            }
-//
-//            @Override
-//            public void onAnimationEnd(Animation animation) {
-//                redirectTo();
-//            }
-//
-//            @Override
-//            public void onAnimationRepeat(Animation animation) {
-//
-//            }
-//        });
-
-        if (SharedPreferenceUtil.hasKey("is")) {
-            Intent intent = new Intent(AppStartActivity.this, FristAdvActivity.class);
-            startActivity(intent);
-            destroyActitity();
-        } else {
-            initView();
-        }
+        initView();
     }
 
 

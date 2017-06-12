@@ -59,6 +59,7 @@
             android:numColumns="4"
             android:scrollbarSize="1px"
             android:stretchMode="columnWidth"
+            android:listSelector="@android:color/transparent"
             android:verticalSpacing="10dp"></GridView>
 
 
@@ -88,6 +89,7 @@
             android:numColumns="4"
             android:scrollbarSize="1px"
             android:stretchMode="columnWidth"
+            android:listSelector="@android:color/transparent"
             android:verticalSpacing="10dp"></GridView>
 
 

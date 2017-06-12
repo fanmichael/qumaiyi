@@ -67,6 +67,7 @@
             android:layout_alignParentBottom="true"
             android:layout_gravity="center"
             android:background="@color/white"
+            android:padding="5dp"
             android:orientation="horizontal"
             android:visibility="visible">
 
@@ -79,7 +80,9 @@
                 android:button="@null"
                 android:drawableLeft="@drawable/coll_con_no"
                 android:text="收藏"
-                android:textColor="@color/col_bg" />
+                android:gravity="left|center"
+                android:textSize="16dp"
+                android:textColor="@color/bd_top" />
 
             <RadioButton
                 android:id="@+id/video_coll_con"
@@ -90,7 +93,9 @@
                 android:button="@null"
                 android:drawableLeft="@drawable/coll_con"
                 android:text="已收藏"
-                android:textColor="@color/col_bg"
+                android:gravity="left|center"
+                android:textSize="16dp"
+                android:textColor="@color/bd_top"
                 android:visibility="gone" />
 
             <RadioButton
@@ -103,7 +108,8 @@
                 android:drawableLeft="@drawable/chat"
                 android:gravity="left|center"
                 android:text="加入群聊"
-                android:textColor="@color/col_bg" />
+                android:textSize="16dp"
+                android:textColor="@color/bd_top" />
 
             <RadioButton
                 android:id="@+id/video_faith"
@@ -114,7 +120,9 @@
                 android:button="@null"
                 android:drawableLeft="@drawable/faith"
                 android:text="私聊群主"
-                android:textColor="@color/col_bg" />
+                android:gravity="left|center"
+                android:textSize="16dp"
+                android:textColor="@color/bd_top" />
 
             <RadioButton
                 android:id="@+id/video_dis"
@@ -126,7 +134,8 @@
                 android:drawableLeft="@drawable/dis"
                 android:gravity="left|center"
                 android:text="评论"
-                android:textColor="@color/col_bg" />
+                android:textSize="16dp"
+                android:textColor="@color/bd_top" />
         </RadioGroup>
 
 
@@ -153,14 +162,14 @@
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="200dp"
+                    android:layout_height="wrap_content"
                     android:orientation="horizontal">
 
 
                     <FrameLayout
                         android:id="@+id/video_ln_Play"
                         android:layout_width="match_parent"
-                        android:layout_height="150dp"
+                        android:layout_height="wrap_content"
                         android:visibility="gone">
 
                         <com.yshstudio.originalproduct.pages.view.MyVideoView
@@ -181,7 +190,7 @@
                     <FrameLayout
                         android:id="@+id/video_ln"
                         android:layout_width="match_parent"
-                        android:layout_height="150dp">
+                        android:layout_height="wrap_content">
 
                         <com.facebook.drawee.view.SimpleDraweeView
                             android:id="@+id/video_test"
@@ -349,6 +358,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:orientation="horizontal"
+                                android:gravity="center"
                                 android:visibility="gone">
 
                                 <ImageView
@@ -371,6 +381,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:orientation="horizontal"
+                                android:gravity="center"
                                 android:visibility="gone">
 
                                 <ImageView
@@ -408,13 +419,14 @@
                         android:text="海口风景"
                         android:textColor="@color/col_bg" />
 
-                    <ListView
+                    <LinearLayout
                         android:id="@+id/video_details_images"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:divider="@color/bg"
-                        android:dividerHeight="1dp"
-                        android:focusable="false"></ListView>
+                        android:orientation="vertical"
+                        />
+
 
                 </LinearLayout>
 

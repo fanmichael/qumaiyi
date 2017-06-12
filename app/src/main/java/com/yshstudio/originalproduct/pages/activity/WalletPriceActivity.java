@@ -80,6 +80,12 @@ public class WalletPriceActivity extends BaseActivity {
             msg = "请输入金额";
             it = false;
         }
+      double mon=Double.valueOf(walletPriceNumber.getText().toString().trim());
+        if(mon<=0){
+            msg = "金额必须大于0";
+            it = false;
+        }
+
         if (walletNumber.getText().toString().trim().equals("")) {
             msg = "请输入账号";
             it = false;

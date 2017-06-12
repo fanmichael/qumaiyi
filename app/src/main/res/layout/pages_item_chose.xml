@@ -44,6 +44,9 @@
                     android:layout_marginLeft="5dp"
                     android:gravity="center"
                     android:text=""
+                    android:maxEms="10"
+                    android:singleLine="true"
+                    android:ellipsize="end"
                     android:textColor="@color/col_bg"
                     android:textSize="14dp" />
 
@@ -88,6 +91,9 @@
                     android:gravity="center"
                     android:lines="1"
                     android:text=""
+                    android:maxEms="10"
+                    android:singleLine="true"
+                    android:ellipsize="end"
                     android:textColor="@color/col_bg"
                     android:textSize="14dp" />
             </LinearLayout>
@@ -113,6 +119,9 @@
                     android:gravity="center"
                     android:lines="1"
                     android:text=""
+                    android:maxEms="10"
+                    android:singleLine="true"
+                    android:ellipsize="end"
                     android:textColor="@color/col_bg"
                     android:textSize="14dp" />
             </LinearLayout>

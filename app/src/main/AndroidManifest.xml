@@ -56,6 +56,12 @@
             android:configChanges="keyboardHidden|orientation"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppStartLoadTranslucent">
+        </activity>
+        <activity android:name=".pages.activity.AppOpenActivity"
+            android:configChanges="keyboardHidden|orientation"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppStartLoadTranslucent"
+            >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -67,7 +73,14 @@
             android:configChanges="keyboardHidden|orientation"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.NoTitleBar" />
+            android:theme="@android:style/Theme.NoTitleBar" >
+            <!--<intent-filter>-->
+                <!--<action android:name="android.intent.action.MAIN" />-->
+
+                <!--<category android:name="android.intent.category.LAUNCHER" />-->
+            <!--</intent-filter>-->
+
+        </activity>
         <activity
             android:name=".pages.activity.RegisterActivity"
             android:configChanges="keyboardHidden|orientation"
@@ -584,12 +597,12 @@
         <activity android:name=".pages.activity.ElcyGroupDeActivity" />
         <activity android:name=".pages.activity.DeclareActivity" />
         <activity android:name=".pages.activity.PictureDisplayActivity" />
-        <activity
-            android:name="io.vov.vitamio.activity.InitActivity"
-            android:configChanges="orientation|screenSize|smallestScreenSize|keyboard|keyboardHidden|navigation"
-            android:launchMode="singleTop"
-            android:theme="@android:style/Theme.NoTitleBar"
-            android:windowSoftInputMode="stateAlwaysHidden" />
+        <!--<activity-->
+            <!--android:name="io.vov.vitamio.activity.InitActivity"-->
+            <!--android:configChanges="orientation|screenSize|smallestScreenSize|keyboard|keyboardHidden|navigation"-->
+            <!--android:launchMode="singleTop"-->
+            <!--android:theme="@android:style/Theme.NoTitleBar"-->
+            <!--android:windowSoftInputMode="stateAlwaysHidden" />-->
 
         <receiver
             android:name=".wxapi.AppRegister"
@@ -606,6 +619,7 @@
             android:launchMode="singleTop"
             android:screenOrientation="portrait"> <!-- 设置为 singleTop 你懂得 -->
         </activity>
+
     </application>
 
 </manifest>

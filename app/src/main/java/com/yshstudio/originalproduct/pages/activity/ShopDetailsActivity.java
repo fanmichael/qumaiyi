@@ -8,8 +8,8 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -18,6 +18,17 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.facebook.drawee.view.SimpleDraweeView;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.yshstudio.originalproduct.R;
+import com.yshstudio.originalproduct.inc.Ini;
+import com.yshstudio.originalproduct.pages.adapter.UserGoodsShopAdapter;
+import com.yshstudio.originalproduct.pages.config.AppContext;
+import com.yshstudio.originalproduct.pages.http.HttpConnectTool;
+import com.yshstudio.originalproduct.pages.prompt.Loading;
+import com.yshstudio.originalproduct.tools.ImageToools;
+import com.yshstudio.originalproduct.tools.ListTools;
+import com.yshstudio.originalproduct.tools.UtilsUmeng;
+import com.yshstudio.originalproduct.tools.ValidData;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -30,18 +41,6 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-
-import com.yshstudio.originalproduct.R;
-import com.yshstudio.originalproduct.inc.Ini;
-import com.yshstudio.originalproduct.pages.adapter.ShopImagesAdapter;
-import com.yshstudio.originalproduct.pages.adapter.UserGoodsShopAdapter;
-import com.yshstudio.originalproduct.pages.config.AppContext;
-import com.yshstudio.originalproduct.pages.http.HttpConnectTool;
-import com.yshstudio.originalproduct.pages.prompt.Loading;
-import com.yshstudio.originalproduct.tools.ImageToools;
-import com.yshstudio.originalproduct.tools.ListTools;
-import com.yshstudio.originalproduct.tools.UtilsUmeng;
-import com.yshstudio.originalproduct.tools.ValidData;
 
 
 /**
@@ -64,7 +63,7 @@ public class ShopDetailsActivity extends BaseActivity implements UserGoodsShopAd
     @BindView(R.id.lan)
     LinearLayout lan;
     @BindView(R.id.shop_details_sim_title)
-    SimpleDraweeView shopDetailsSimTitle;
+    ImageView shopDetailsSimTitle;
     @BindView(R.id.shop_details_text_content)
     TextView shopDetailsTextContent;
     @BindView(R.id.shop_details_price)
@@ -92,7 +91,7 @@ public class ShopDetailsActivity extends BaseActivity implements UserGoodsShopAd
     @BindView(R.id.shop_details_parameter)
     TextView shopDetailsParameter;
     @BindView(R.id.shop_details_images)
-    ListView shopDetailsImages;
+    LinearLayout shopDetailsImages;
     @BindView(R.id.shop_details_like)
     ListView shopDetailsLike;
     @BindView(R.id.scrollview)
@@ -113,7 +112,6 @@ public class ShopDetailsActivity extends BaseActivity implements UserGoodsShopAd
     private boolean isSoll;//是否收藏
 
     private UserGoodsShopAdapter goodsAdapter;//喜欢的商品
-    private ShopImagesAdapter shopImagesAdapter;//图片介绍
 
 
     @Override
@@ -137,20 +135,6 @@ public class ShopDetailsActivity extends BaseActivity implements UserGoodsShopAd
         topTitleColl.setText("商品详情");
         initDelay();
         setDelayMessage(1, 100);
-        shopDetailsImages.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                ArrayList<String> imgUrl = new ArrayList<String>();
-                for (int i = 0; i < imagesList.size(); i++) {
-                    imgUrl.add(imagesList.get(i).getAsString("imgs"));
-                }
-                Intent intent1 = new Intent(context, PictureDisplayActivity.class);
-                intent1.putExtra("position", imgUrl.size());
-                intent1.putStringArrayListExtra("enlargeImage", imgUrl);
-                startActivity(intent1);
-            }
-        });
-
     }
 
     /**
@@ -187,9 +171,26 @@ public class ShopDetailsActivity extends BaseActivity implements UserGoodsShopAd
     }
 
     private void initImages() {
-        shopImagesAdapter = new ShopImagesAdapter(context, imagesList);
-        shopDetailsImages.setAdapter(shopImagesAdapter);
-        ListTools.setListViewHeightBasedOnChildren(shopDetailsImages);
+        for (int i = 0; i < imagesList.size(); i++) {
+            View view = LayoutInflater.from(context).inflate(R.layout.shop_item_imagse, null);
+            LinearLayout lin = (LinearLayout) view.findViewById(R.id.lin_shop_imgs);
+            ImageView ima = (ImageView) view.findViewById(R.id.imagse_shop_item);
+            ImageLoader.getInstance().displayImage(imagesList.get(i).getAsString("imgs"), ima);
+            lin.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    ArrayList<String> imgUrl = new ArrayList<String>();
+                    for (int i = 0; i < imagesList.size(); i++) {
+                        imgUrl.add(imagesList.get(i).getAsString("imgs"));
+                    }
+                    Intent intent1 = new Intent(context, PictureDisplayActivity.class);
+                    intent1.putExtra("position", imgUrl.size());
+                    intent1.putStringArrayListExtra("enlargeImage", imgUrl);
+                    startActivity(intent1);
+                }
+            });
+            shopDetailsImages.addView(view);
+        }
     }
 
 
@@ -234,24 +235,20 @@ public class ShopDetailsActivity extends BaseActivity implements UserGoodsShopAd
         }
     }
 
+    /**
+     * 收藏
+     */
     @OnClick(R.id.collect)
     void imagseColl() {
-        //收藏
-//        mLoading = new Loading(
-//                context, collect);
-//        mLoading.setText("正在加载......");
-//        mLoading.show();
         typeatt = 2;
         setDelayMessage(2, 100);
     }
 
+    /**
+     * 取消收藏
+     */
     @OnClick(R.id.collect_re)
     void cillRe() {
-        //取消收藏
-//        mLoading = new Loading(
-//                context, collectRe);
-//        mLoading.setText("正在加载......");
-//        mLoading.show();
         typeatt = 3;
         setDelayMessage(3, 100);
     }
@@ -318,6 +315,9 @@ public class ShopDetailsActivity extends BaseActivity implements UserGoodsShopAd
         };
     }
 
+    /**
+     * 切换商品详情
+     */
     @Override
     public void shopDetails(int posit, int id, int uid) {
         destroyActitity();
@@ -370,7 +370,7 @@ public class ShopDetailsActivity extends BaseActivity implements UserGoodsShopAd
             switch (what) {
                 case 1:
                     initView();
-                    if (!String.valueOf(uid).equals(String.valueOf(AppContext.cv.getAsInteger("id"))))  {
+                    if (!String.valueOf(uid).equals(String.valueOf(AppContext.cv.getAsInteger("id")))) {
                         isColl();
                     }
                     initGoods();
@@ -412,7 +412,8 @@ public class ShopDetailsActivity extends BaseActivity implements UserGoodsShopAd
         }
     }
 
-    private void httpFollowStatusfollow() {//判断关注状态Community.follow
+    //判断关注状态Community.follow
+    private void httpFollowStatusfollow() {
         try {
             HashMap<String, String> map = new HashMap<>();
             map.put("action", "Community.follow");
@@ -530,8 +531,10 @@ public class ShopDetailsActivity extends BaseActivity implements UserGoodsShopAd
 
 
     private void initView() {
-        Uri imageUri = Uri.parse(values.getAsString("good_image"));
-        ValidData.load(imageUri, shopDetailsSimTitle, 300, 150);
+        ImageLoader.getInstance().displayImage(values.getAsString("good_image"), shopDetailsSimTitle);
+
+//        Uri imageUri = Uri.parse(values.getAsString("good_image"));
+//        ValidData.load(imageUri, shopDetailsSimTitle, 300, 150);
         shopDetailsTextContent.setText(values.getAsString("good_name"));
         shopDetailsPrice.setText("￥" + values.getAsString("price"));
         shopDetailsFamTime.setText("工期：" + values.getAsInteger("maf_time"));

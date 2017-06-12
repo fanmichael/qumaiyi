@@ -6,11 +6,13 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.CountDownTimer;
-import android.os.Handler;
 import android.util.DisplayMetrics;
 import android.widget.Button;
 
 import com.facebook.drawee.view.SimpleDraweeView;
+import com.yshstudio.originalproduct.R;
+import com.yshstudio.originalproduct.pages.http.HttpConnectTool;
+import com.yshstudio.originalproduct.tools.ValidData;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -21,10 +23,6 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-import com.yshstudio.originalproduct.R;
-import com.yshstudio.originalproduct.pages.http.HttpConnectTool;
-import com.yshstudio.originalproduct.tools.ValidData;
-
 public class FristAdvActivity extends BaseActivity {
 
     @BindView(R.id.sim_adv)
@@ -34,7 +32,8 @@ public class FristAdvActivity extends BaseActivity {
     private Context context;
     private String imag;
     private MyCountDownTimer mc;
-    private boolean isGo=true;
+    private boolean isGo = true;
+    private String val = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,7 +48,7 @@ public class FristAdvActivity extends BaseActivity {
 
     @OnClick(R.id.adv_go)
     void goLogin() {
-        isGo=false;
+        isGo = false;
         Intent intent = new Intent(context, LoginActivity.class);
         startActivity(intent);
         destroyActitity();
@@ -133,7 +132,7 @@ public class FristAdvActivity extends BaseActivity {
         @Override
         public void onFinish() {
             advGo.setText("正在跳转");
-            if(isGo){
+            if (isGo) {
                 Intent intent = new Intent(context, LoginActivity.class);
                 startActivity(intent);
                 destroyActitity();

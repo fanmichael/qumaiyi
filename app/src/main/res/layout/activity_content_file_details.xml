@@ -66,6 +66,7 @@
             android:background="@color/white"
             android:orientation="horizontal"
             android:layout_gravity="center"
+            android:padding="5dp"
             android:visibility="visible">
 
             <RadioButton
@@ -77,7 +78,9 @@
                 android:button="@null"
                 android:drawableLeft="@drawable/coll_con_no"
                 android:text="收藏"
-                android:textColor="@color/col_bg" />
+                android:gravity="left|center"
+                android:textSize="16dp"
+                android:textColor="@color/bd_top" />
 
             <RadioButton
                 android:id="@+id/coll_con"
@@ -88,7 +91,9 @@
                 android:button="@null"
                 android:drawableLeft="@drawable/coll_con"
                 android:text="已收藏"
-                android:textColor="@color/col_bg"
+                android:textSize="16dp"
+                android:gravity="left|center"
+                android:textColor="@color/bd_top"
                 android:visibility="gone" />
 
             <RadioButton
@@ -101,7 +106,8 @@
                 android:gravity="left|center"
                 android:drawableLeft="@drawable/chat"
                 android:text="加入群聊"
-                android:textColor="@color/col_bg" />
+                android:textSize="16dp"
+                android:textColor="@color/bd_top" />
 
             <RadioButton
                 android:id="@+id/faith"
@@ -110,9 +116,11 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:button="@null"
+                android:gravity="left|center"
                 android:drawableLeft="@drawable/faith"
                 android:text="私聊群主"
-                android:textColor="@color/col_bg" />
+                android:textSize="16dp"
+                android:textColor="@color/bd_top" />
 
             <RadioButton
                 android:id="@+id/dis"
@@ -124,7 +132,8 @@
                 android:gravity="left|center"
                 android:drawableLeft="@drawable/dis"
                 android:text="评论"
-                android:textColor="@color/col_bg" />
+                android:textSize="16dp"
+                android:textColor="@color/bd_top" />
         </RadioGroup>
 
         <View
@@ -152,11 +161,19 @@
                 android:orientation="vertical"
                 android:padding="10dp">
 
-                <com.facebook.drawee.view.SimpleDraweeView
+                <!--<com.facebook.drawee.view.SimpleDraweeView-->
+                    <!--android:id="@+id/file_details_sim_title"-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="150dp"-->
+                    <!--android:layout_margin="10dp" />-->
+                <!---->
+                <ImageView
                     android:id="@+id/file_details_sim_title"
                     android:layout_width="match_parent"
-                    android:layout_height="150dp"
-                    android:layout_margin="10dp" />
+                    android:layout_height="wrap_content"
+                    android:scaleType="fitXY"
+                    />
+
 
                 <View
                     android:layout_width="match_parent"
@@ -298,6 +315,7 @@
                                 android:id="@+id/file_details_attention"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
+                                android:gravity="center"
                                 android:orientation="horizontal"
                                 android:visibility="gone">
 
@@ -321,6 +339,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:orientation="horizontal"
+                                android:gravity="center"
                                 android:visibility="gone">
 
                                 <ImageView
@@ -360,13 +379,13 @@
                         android:text="海口风景"
                         android:textColor="@color/col_bg" />
 
-                    <ListView
+                    <LinearLayout
                         android:id="@+id/file_details_images"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:divider="@color/bg"
-                        android:dividerHeight="1dp"
-                        android:focusable="false"></ListView>
+                        android:orientation="vertical"
+                        />
 
                 </LinearLayout>
 

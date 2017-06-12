@@ -49,11 +49,19 @@
                 android:orientation="vertical"
                 android:padding="10dp">
 
-                <com.facebook.drawee.view.SimpleDraweeView
+                <!--<com.facebook.drawee.view.SimpleDraweeView-->
+                    <!--android:id="@+id/shop_details_sim_title"-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="150dp"-->
+                    <!--android:layout_margin="10dp" />-->
+
+                <ImageView
                     android:id="@+id/shop_details_sim_title"
                     android:layout_width="match_parent"
-                    android:layout_height="150dp"
-                    android:layout_margin="10dp" />
+                    android:layout_height="wrap_content"
+                    android:scaleType="fitXY"
+                    />
+
 
                 <TextView
                     android:id="@+id/shop_details_text_content"
@@ -236,6 +244,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:orientation="horizontal"
+                                android:gravity="center"
                                 android:visibility="gone">
 
                                 <ImageView
@@ -258,6 +267,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:orientation="horizontal"
+                                android:gravity="center"
                                 android:visibility="gone">
 
                                 <ImageView
@@ -343,13 +353,14 @@
                         android:layout_gravity="center"
                         android:text="图文详情"
                         android:textColor="@color/col_bg" />
-
-                    <ListView
+                    <LinearLayout
                         android:id="@+id/shop_details_images"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:divider="#b5b5b5"
-                        android:dividerHeight="1dp"></ListView>
+                        android:divider="@color/bg"
+                        android:orientation="vertical"
+                        />
+
 
                 </LinearLayout>
 

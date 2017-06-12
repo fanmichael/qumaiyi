@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/lin_shop_imgs"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
-
-    <com.facebook.drawee.view.SimpleDraweeView
-        android:id="@+id/shop_itme_image"
+    <ImageView
+        android:id="@+id/imagse_shop_item"
         android:layout_width="match_parent"
-        android:layout_height="200dp" />
+        android:scaleType="fitXY"
+        android:layout_height="wrap_content" />
 
 </LinearLayout>
