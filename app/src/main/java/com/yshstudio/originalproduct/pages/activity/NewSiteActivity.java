@@ -226,13 +226,12 @@ public class NewSiteActivity extends BaseActivity {
     private void initViewData() {
         String mess = "";
         Boolean is = true;
-
-        if (sitePop.getText().toString().trim().equals("")) {
-            mess = "收货人不能为空";
-            is = false;
-        }
         if (!ValidData.validMobile(sitePhone.getText().toString().trim())) {
             mess = "请填写正确手机号";
+            is = false;
+        }
+        if (sitePop.getText().toString().trim().equals("")) {
+            mess = "收货人不能为空";
             is = false;
         }
         if (siteAddress.getText().toString().trim().equals("")) {

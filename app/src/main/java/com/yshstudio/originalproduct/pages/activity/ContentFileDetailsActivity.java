@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -252,7 +253,9 @@ public class ContentFileDetailsActivity extends BaseActivity implements CommentA
     @OnClick(R.id.share_coll)
     void share() {
         //分享
-        ImageToools.requestCameraPermission(context);
+        if (Build.VERSION.SDK_INT >= 26) {
+            ImageToools.requestCameraPermission(context);
+        }
         UtilsUmeng.share(ContentFileDetailsActivity.this, Ini.ShareCommunity_Url + id, values.getAsString("content"));
     }
 

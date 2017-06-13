@@ -163,6 +163,15 @@
                     android:textColor="@color/col_bg"
                     android:textSize="16dp" />
 
+                <TextView
+                    android:id="@+id/indent__commodity_number"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="10dp"
+                    android:textColor="@color/col_bg"
+                    android:textSize="16dp" />
+
             </LinearLayout>
 
             <LinearLayout
@@ -219,7 +228,7 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    app:maxValue="100"
+                    app:maxValue="1000"
                     app:minValue="1"
                     app:value="1" />
 

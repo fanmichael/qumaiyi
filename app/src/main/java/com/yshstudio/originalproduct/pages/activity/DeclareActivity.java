@@ -58,7 +58,11 @@ public class DeclareActivity extends BaseActivity {
     void sumbit() {
         if (groupApply.getText().toString().trim().equals("")) {
             Toast.makeText(context, "请输入申请内容！", Toast.LENGTH_SHORT).show();
+            rightTitle.setClickable(true);
+            rightTitle.setFocusable(true);
         } else {
+            rightTitle.setClickable(false);
+            rightTitle.setFocusable(false);
             new asyncTask().execute(1);
         }
     }
@@ -87,10 +91,11 @@ public class DeclareActivity extends BaseActivity {
             switch (what) {
                 case 1:
                     if (error == 0) {
-                        Toast.makeText(context, "提交成功！", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(context, "验证成功！", Toast.LENGTH_SHORT).show();
                         destroyActitity();
                     } else {
-                        Toast.makeText(context, "提交失败！", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(context, "验证失败！", Toast.LENGTH_SHORT).show();
+                        destroyActitity();
                     }
 
                     break;

@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -1054,7 +1055,9 @@ public class LocalVideoActivity extends BaseActivity implements CommentAdapter.s
 
     @OnClick(R.id.share_coll)
     void shareColl() {
-        ImageToools.requestCameraPermission(context);
+        if (Build.VERSION.SDK_INT >= 26) {
+            ImageToools.requestCameraPermission(context);
+        }
         UtilsUmeng.share(LocalVideoActivity.this, Ini.ShareCommunity_Url + id, values.getAsString("content"));
     }
 

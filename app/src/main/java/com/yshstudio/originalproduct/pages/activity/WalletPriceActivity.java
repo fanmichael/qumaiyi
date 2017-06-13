@@ -80,7 +80,7 @@ public class WalletPriceActivity extends BaseActivity {
             msg = "请输入金额";
             it = false;
         }
-      double mon=Double.valueOf(walletPriceNumber.getText().toString().trim());
+        double mon=Double.valueOf(!walletPriceNumber.getText().toString().trim().equals("")?walletPriceNumber.getText().toString().trim() : "0");
         if(mon<=0){
             msg = "金额必须大于0";
             it = false;
@@ -91,8 +91,7 @@ public class WalletPriceActivity extends BaseActivity {
             it = false;
         }
         double money = Double.parseDouble(allPrice);
-        double price = Double.parseDouble(walletPriceNumber.getText().toString().trim());
-        if (price > money) {
+        if (mon > money) {
             msg = "输入金额不能大于余额！";
             it = false;
         }
@@ -111,6 +110,8 @@ public class WalletPriceActivity extends BaseActivity {
     //提交
     @OnClick(R.id.wallet_sumbit)
     void sumit() {
+        walletSumbit.setFocusable(false);
+        walletSumbit.setClickable(false);
         initView();
     }
 
@@ -162,6 +163,8 @@ public class WalletPriceActivity extends BaseActivity {
                         destroyActitity();
                     } else {
                         Toast.makeText(context, "输入金额大于余额！", Toast.LENGTH_SHORT).show();
+                        walletSumbit.setFocusable(true);
+                        walletSumbit.setClickable(true);
                     }
                     break;
 

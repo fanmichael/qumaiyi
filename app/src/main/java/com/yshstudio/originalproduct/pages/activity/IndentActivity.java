@@ -78,6 +78,8 @@ public class IndentActivity extends BaseActivity {
     CheckBox weixinPay;
     @BindView(R.id.indent_ship)
     TextView indentShip;
+    @BindView(R.id.indent__commodity_number)
+    TextView indentNumber;
     @BindView(R.id.indent_zhibao)
     CheckBox baoPay;
     @BindView(R.id.indent_btn)
@@ -133,7 +135,7 @@ public class IndentActivity extends BaseActivity {
 
 
     private String allMoneyStr(){
-        String allPrices = "" + ((Double.valueOf(goods.getAsString("price")) * goods.getAsInteger("num")) + Double.valueOf(goods.getAsString("ship")));
+        String allPrices = "" + ((Float.valueOf(goods.getAsString("price")) * goods.getAsInteger("num")) + Double.valueOf(goods.getAsString("ship")));
         return allPrices;
     }
 
@@ -182,6 +184,8 @@ public class IndentActivity extends BaseActivity {
         indentGrd.setText("工期：" + goods.getAsInteger("maf_time") + "天");
         indentPrice.setText("￥" + goods.getAsString("price"));
         allPrice.setText(allMoneyStr()+"元");
+        indentNumber.setText("库存："+goods.getAsInteger("good_num"));
+        numberAddSubView.setMaxValue(goods.getAsInteger("good_num"));
     }
 
 
@@ -197,6 +201,10 @@ public class IndentActivity extends BaseActivity {
     void btnPay() {
         if(!addr.containsKey("id")){
             Toast.makeText(context, "请选择地址！", Toast.LENGTH_LONG).show();
+            return;
+        }
+        if(goods.getAsInteger("good_num") < goods.getAsInteger("num")){
+            Toast.makeText(context, "购买数量不能大于库存！", Toast.LENGTH_LONG).show();
             return;
         }
         if (weixinPay.isChecked()) {
@@ -300,6 +308,7 @@ public class IndentActivity extends BaseActivity {
                 goods.put("good_name", goodsObject.getString("good_name"));
                 goods.put("good_intro", goodsObject.getString("good_intro"));
                 goods.put("good_image", goodsObject.getString("good_image"));
+                goods.put("good_num", goodsObject.has("good_num")?goodsObject.getInt("good_num"):1);
                 goods.put("price", goodsObject.getString("price"));
                 goods.put("num", 1);
             }

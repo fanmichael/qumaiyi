@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -204,7 +205,9 @@ public class ShopDetailsActivity extends BaseActivity implements UserGoodsShopAd
      */
     @OnClick(R.id.share_coll)
     void shareColl() {
-        ImageToools.requestCameraPermission(context);
+        if (Build.VERSION.SDK_INT >= 26) {
+            ImageToools.requestCameraPermission(context);
+        }
         UtilsUmeng.share(ShopDetailsActivity.this, Ini.ShareGood_Url + id, values.getAsString("content"));
     }
 

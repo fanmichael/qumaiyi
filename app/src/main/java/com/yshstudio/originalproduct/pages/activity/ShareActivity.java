@@ -1,6 +1,7 @@
 package com.yshstudio.originalproduct.pages.activity;
 
 import android.content.Context;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -56,7 +57,9 @@ public class ShareActivity extends BaseActivity {
 //        bundle.putString("type","ShareActivity");
 //        intent.putExtras(bundle);
 //        context.startActivity(intent);
-        ImageToools.requestCameraPermission(context);
+        if (Build.VERSION.SDK_INT >= 26) {
+            ImageToools.requestCameraPermission(context);
+        }
         UtilsUmeng.share(ShareActivity.this,"https://fir.im/qmy01","去卖艺APP");
 
     }

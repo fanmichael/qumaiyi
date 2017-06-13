@@ -307,7 +307,8 @@ public class MainActivity extends FragmentActivity {
                                     e.printStackTrace();
                                 }
                             }
-                            if (message.getChatType() == EMMessage.ChatType.Chat && !message.getFrom().equals("system")) {
+                            /*message.getChatType() == EMMessage.ChatType.Chat &&*/
+                            if (!message.getFrom().equals("system")) {
                                 if (UserInfo.getInstance().getInfo().get(message.getFrom()) == null) {
                                     UserInfo.getInstance().addInfo(new UserInfo.User().setUid(message.getFrom()).setNick(UserInfo.getNick(message)).setIcon(UserInfo.getIcon(message)));
                                 } else {

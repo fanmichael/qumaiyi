@@ -106,6 +106,9 @@ public class WalletActivity extends BaseActivity {
      * 解析数据
      */
     private void listXml(String data) {
+        if(contentValues !=null && contentValues.size()>0){
+            contentValues.clear();
+        }
         try {
             JSONObject obj = new JSONObject(data);
             JSONObject jsonArrNote = new JSONObject(obj.getString("data"));

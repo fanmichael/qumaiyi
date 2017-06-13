@@ -289,9 +289,25 @@ public class MoreActivity extends BaseActivity implements SwipeRefreshLayout.OnR
                         }
                         mPullToRefreshListView.onRefreshComplete();
                     } else {
-                        mPullToRefreshListView.onRefreshComplete();
-                        mPullToRefreshListView.setMode(PullToRefreshBase.Mode.DISABLED);
-                        Toast.makeText(context, "没有更多数据了！", Toast.LENGTH_SHORT).show();
+                        if(newList!= null && newList.size() > 0){
+                            newListData.addAll(newList);
+                            if (hot.equals("0")) {
+                                moreAdapter.notifyDataSetChanged();
+                            } else if (hot.equals("1")) {
+                                moreAdapter.notifyDataSetChanged();
+                            } else if (hot.equals("2")) {
+                                goodsAdapter.notifyDataSetChanged();
+                            } else if (hot.equals("3")) {
+                                goodsAdapter.notifyDataSetChanged();
+                            } else if (hot.equals("4")) {
+                                goodsAdapter.notifyDataSetChanged();
+                            }
+                            mPullToRefreshListView.onRefreshComplete();
+                        }else{
+                            mPullToRefreshListView.onRefreshComplete();
+                            mPullToRefreshListView.setMode(PullToRefreshBase.Mode.DISABLED);
+                            Toast.makeText(context, "没有更多数据了！", Toast.LENGTH_SHORT).show();
+                        }
                     }
                     break;
 
@@ -322,7 +338,9 @@ public class MoreActivity extends BaseActivity implements SwipeRefreshLayout.OnR
         if (cahe.size() > 0) {
             cahe.clear();
         }
-
+        if (newList.size() > 0) {
+            newList.clear();
+        }
         try {
             JSONObject obj = new JSONObject(data);
             JSONObject objData = new JSONObject(obj.getString("data"));
@@ -382,6 +400,9 @@ public class MoreActivity extends BaseActivity implements SwipeRefreshLayout.OnR
     private void xmlComm(String data) {
         if (newList.size() > 0) {
             newList.clear();
+        }
+        if (cahe.size() > 0) {
+            cahe.clear();
         }
         try {
             JSONObject obj = new JSONObject(data);

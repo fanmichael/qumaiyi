@@ -123,6 +123,7 @@ public class PayTool {
                 .add("money", goods.containsKey("price") ? goods.getAsString("price") : goods.getAsString("money"))
 //                .add("money", "0.01")
                 .add("trade_name", goods.containsKey("good_name") ? goods.getAsString("good_name") : goods.getAsString("trade_name"))
+                .add("ship",goods.getAsString("ship"))
                 .add("num", String.valueOf(goods.getAsInteger("num")))
                 .add("shid", String.valueOf(goods.getAsInteger("uid")))
                 .add("address", String.valueOf(addr.getAsInteger("id")))
@@ -175,7 +176,7 @@ public class PayTool {
     private static void PayForZFB(final Activity activity, final ContentValues goods, final Handler mHandler) {
         String allPrice = "";
         if (goods.containsKey("price")) {
-            allPrice = "" + ((Double.valueOf(goods.getAsString("price")) * goods.getAsInteger("num")) + Double.valueOf(goods.getAsString("ship")));
+            allPrice = "" + ((Float.valueOf(goods.getAsString("price")) * goods.getAsInteger("num")) + Double.valueOf(goods.getAsString("ship")));
         } else {
             allPrice =""+ goods.getAsDouble("totalmoney");
         }
@@ -231,7 +232,7 @@ public class PayTool {
     private static void PayForWeixin(final Activity activity, ContentValues goods) {
         String allPrice = "";
         if (goods.containsKey("price")) {
-            allPrice = "" + ((Double.valueOf(goods.getAsString("price")) * goods.getAsInteger("num")) + Double.valueOf(goods.getAsString("ship")));
+            allPrice = "" + ((Float.valueOf(goods.getAsString("price")) * goods.getAsInteger("num")) + Double.valueOf(goods.getAsString("ship")));
         } else {
             allPrice = ""+ goods.getAsDouble("totalmoney");
         }

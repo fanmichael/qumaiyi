@@ -28,6 +28,15 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.facebook.drawee.view.SimpleDraweeView;
+import com.yshstudio.originalproduct.R;
+import com.yshstudio.originalproduct.pages.adapter.AppraiesimgeAdapter;
+import com.yshstudio.originalproduct.pages.config.AppContext;
+import com.yshstudio.originalproduct.pages.http.HttpConnectTool;
+import com.yshstudio.originalproduct.pages.prompt.Loading;
+import com.yshstudio.originalproduct.pages.view.MyGridView;
+import com.yshstudio.originalproduct.tools.ImageToools;
+import com.yshstudio.originalproduct.tools.TextContent;
+import com.yshstudio.originalproduct.tools.ValidData;
 
 import org.json.JSONObject;
 
@@ -40,16 +49,6 @@ import java.util.Map;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-
-import com.yshstudio.originalproduct.R;
-import com.yshstudio.originalproduct.pages.adapter.AppraiesimgeAdapter;
-import com.yshstudio.originalproduct.pages.config.AppContext;
-import com.yshstudio.originalproduct.pages.http.HttpConnectTool;
-import com.yshstudio.originalproduct.pages.prompt.Loading;
-import com.yshstudio.originalproduct.pages.view.MyGridView;
-import com.yshstudio.originalproduct.tools.ImageToools;
-import com.yshstudio.originalproduct.tools.TextContent;
-import com.yshstudio.originalproduct.tools.ValidData;
 
 /**
  * 发布商品
@@ -94,6 +93,8 @@ public class PublishShopActivity extends BaseActivity {
     TextView publishShopXi;
     @BindView(R.id.publish_shop_sumit)
     Button publishShopSumit;
+    @BindView(R.id.publish_shop_number)
+    EditText publishShopNumber;
     private String tagsId = "";
     private Context context;
     /**
@@ -205,6 +206,14 @@ public class PublishShopActivity extends BaseActivity {
             msg = "商品运费要大于零！";
             isit = false;
         }
+        if(publishShopNumber.getText().toString().trim().equals("")){
+            msg = "商品库存不能为空！";
+            isit = false;
+        }
+        if(Integer.valueOf(publishShopNumber.getText().toString().trim())<=0){
+            msg = "商品库存必须大于零！";
+            isit = false;
+        }
         if (publishShopTime.getText().toString().trim().equals("")) {
             msg = "商品工期不能为空！";
             isit = false;
@@ -225,6 +234,7 @@ public class PublishShopActivity extends BaseActivity {
             msg = "请添加商品展示图片！";
             isit = false;
         }
+
         if (isit) {
             mLoading = new Loading(context, publishShopSumit);
             mLoading.setText("正在提交......");
@@ -381,6 +391,7 @@ public class PublishShopActivity extends BaseActivity {
             map.put("good_name", publishShopName.getText().toString().trim());
             map.put("good_intro", publishShopContent.getText().toString().trim());
             map.put("price", publishShopPrice.getText().toString().trim());
+            map.put("good_num",publishShopNumber.getText().toString().trim());
             map.put("ship", publishShopExpPrice.getText().toString().trim());
             map.put("maf_time", publishShopTime.getText().toString().trim());
             map.put("description", publishShopTile.getText().toString().trim());

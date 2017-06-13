@@ -33,20 +33,21 @@
                 android:id="@+id/comm_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="77"
+                android:text=""
                 android:textColor="@color/bd_top" />
 
             <TextView
                 android:id="@+id/comm_time"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="77" />
+                android:textColor="@color/gray"
+                android:text="" />
 
             <TextView
                 android:id="@+id/comm_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="77"
+                android:text=""
                 android:textColor="@color/col_bg" />
 
         </LinearLayout>

@@ -41,7 +41,9 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
+import com.hyphenate.easeui.model.UserLodingInFo;
 import com.yshstudio.originalproduct.R;
+import com.yshstudio.originalproduct.chat.util.ObjectSaveUtils;
 import com.yshstudio.originalproduct.pages.config.AppContext;
 import com.yshstudio.originalproduct.pages.http.HttpConnectTool;
 import com.yshstudio.originalproduct.tools.ImageToools;
@@ -87,7 +89,7 @@ public class MaterialDetailsActivity extends BaseActivity {
     private Uri imageUri;
     private File file;
     private Uri jsonImage;
-
+    private String im="";
     private OptionsPickerView pvOptions;
     private OptionsPickerView pvOptionsAddress;
     private List<String> grend = new ArrayList<>();
@@ -398,6 +400,7 @@ public class MaterialDetailsActivity extends BaseActivity {
         switch (resultCode) {
             case 1:
                 textMaterialNick.setText(AppContext.cv.getAsString("nick"));
+                updateNick(AppContext.cv.getAsString("nick"));
                 break;
             case 2:
                 textMaterialPersonalized.setText(AppContext.cv.getAsString("personalized"));
@@ -490,6 +493,7 @@ public class MaterialDetailsActivity extends BaseActivity {
                         Uri imageUri = Uri.parse(AppContext.cv.getAsString("icon"));
                         ValidData.load(imageUri, materialIconImage, 60, 60);
                     }
+                    updateIcon(im);
                     break;
 
 
@@ -555,11 +559,12 @@ public class MaterialDetailsActivity extends BaseActivity {
         }
     }
 
+
     private void xmlChose(String data) {
         try {
             JSONObject jsonObject = new JSONObject(data);
-            String img = jsonObject.getString("data");
-            if (!img.equals("") && img != null) {
+            im= jsonObject.getString("data");
+            if (!im.equals("") && im != null) {
                 Toast.makeText(context, "提交成功", Toast.LENGTH_SHORT).show();
             }
         } catch (JSONException e) {
@@ -568,4 +573,17 @@ public class MaterialDetailsActivity extends BaseActivity {
             ee.printStackTrace();
         }
     }
+
+    private void updateIcon(String icon){
+        UserLodingInFo.getInstance().setIcon(icon);
+        ObjectSaveUtils.saveObject(context, "USERINFO", UserLodingInFo.getInstance());
+
+    }
+
+    private void updateNick(String nick){
+        UserLodingInFo.getInstance().setNick(nick);
+        ObjectSaveUtils.saveObject(context, "USERINFO", UserLodingInFo.getInstance());
+    }
+
+
 }

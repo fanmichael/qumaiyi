@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -136,10 +137,10 @@ public class TagDetailsActivity extends BaseActivity {
                             tag.add(contentValues.get(i));
                         }
                     }
-                    List<ContentValues> values = new ArrayList<>();
                     for (int i = 0; i < tag.size(); i++) {
+                        List<ContentValues> values = new ArrayList<>();
                         for (int j = 0; j < contentValues.size(); j++) {
-                            if ((i + 1) == contentValues.get(j).getAsInteger("parent")) {
+                            if ((tag.get(i).getAsInteger("id")) == contentValues.get(j).getAsInteger("parent")) {
                                 values.add(contentValues.get(j));
                             }
                         }
@@ -287,7 +288,7 @@ public class TagDetailsActivity extends BaseActivity {
             } else {
                 itemHolder = (ItemHolder) convertView.getTag();
             }
-            if (lists == null || lists.get(groupPosition).size() < 0) {
+            if (lists == null || lists.get(groupPosition).get(childPosition).size() < 0) {
                 return convertView;
             }
             itemHolder.txt.setText(lists.get(groupPosition).get(childPosition).getAsString("name"));

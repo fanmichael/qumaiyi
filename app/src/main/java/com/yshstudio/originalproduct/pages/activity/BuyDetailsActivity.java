@@ -521,9 +521,21 @@ public class BuyDetailsActivity extends BaseActivity implements SwipeRefreshLayo
      */
     @Override
     public void cal(int posit, int id, String ddid) {
-        appendLoading();
-        shopId = buyLists.get(posit).getAsInteger("id");
-        new asyncTask().execute(3);//待付款取消订单
+        if (buyLists.get(posit).getAsInteger("state") == 0 && buyLists.get(posit).getAsInteger("status") == 0 ||
+                buyLists.get(posit).getAsInteger("state") == 6 && buyLists.get(posit).getAsInteger("status") == 0) {
+            appendLoading();
+            shopId = buyLists.get(posit).getAsInteger("id");
+            new asyncTask().execute(3);//待付款取消订单
+        }
+        if (buyLists.get(posit).getAsInteger("state") == 1 && buyLists.get(posit).getAsInteger("status") == 1) {
+            Intent intent = new Intent(context, LogisticsActivity.class);
+            Bundle bundle = new Bundle();
+            bundle.putString("com", buyLists.get(posit).getAsString("logistics"));
+            bundle.putString("no", buyLists.get(posit).getAsString("logistics_num"));
+            intent.putExtras(bundle);
+            context.startActivity(intent);
+        }
+
     }
 
     /**
