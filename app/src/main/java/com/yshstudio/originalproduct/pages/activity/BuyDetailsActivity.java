@@ -467,7 +467,7 @@ public class BuyDetailsActivity extends BaseActivity implements SwipeRefreshLayo
                         note.put("num", jsonObj.getInt("num"));
                         note.put("status", jsonObj.getInt("status"));
                         note.put("state", jsonObj.getInt("state"));
-                        note.put("ordermoney", jsonObj.getInt("ordermoney"));
+                        note.put("ordermoney", jsonObj.getDouble("ordermoney"));
                         note.put("ddid", jsonObj.getString("ddid"));
                         note.put("trade_name", jsonObj.getString("trade_name"));
                         note.put("money", jsonObj.getString("money"));
@@ -480,7 +480,7 @@ public class BuyDetailsActivity extends BaseActivity implements SwipeRefreshLayo
                     }
                 }
             } else {
-
+                return;
             }
         } catch (Exception e) {
             e.printStackTrace();

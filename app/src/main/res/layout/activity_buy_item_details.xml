@@ -196,6 +196,9 @@
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="5dp"
                             android:textColor="@color/col_bg"
+                            android:maxEms="10"
+                            android:singleLine="true"
+                            android:ellipsize="end"
                             android:textSize="16dp" />
                     </LinearLayout>
 

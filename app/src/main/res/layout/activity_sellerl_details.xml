@@ -11,10 +11,13 @@
     <include layout="@layout/top_title"></include>
 
     <ScrollView
+        android:id="@+id/scor_seller"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:fadingEdge="vertical"
-        android:scrollbars="vertical">
+        android:scrollbars="vertical"
+        android:visibility="gone"
+        >
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -312,6 +315,34 @@
 
         </LinearLayout>
     </ScrollView>
+
+
+
+    <LinearLayout
+        android:id="@+id/lin_seller_hide"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="30dp"
+        android:visibility="gone"
+        >
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/shenhe"
+            android:layout_gravity="center"
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="您的申请已经提交，管理员正在审核中，请耐心等待"
+            android:textColor="@color/gray"
+            android:textSize="17dp"
+            />
+    </LinearLayout>
+
 
 
 </LinearLayout>

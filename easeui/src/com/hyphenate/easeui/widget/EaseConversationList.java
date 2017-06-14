@@ -33,6 +33,12 @@ public class EaseConversationList extends ListView {
     protected final int MSG_REFRESH_ADAPTER_DATA = 0;
     
     protected Context context;
+
+    @Override
+    public EaseConversationAdapter getAdapter() {
+        return adapter;
+    }
+
     protected EaseConversationAdapter adapter;
     protected List<EMConversation> conversations = new ArrayList<EMConversation>();
     protected List<EMConversation> passedListRef = null;

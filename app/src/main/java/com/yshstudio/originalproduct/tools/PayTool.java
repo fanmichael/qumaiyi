@@ -176,15 +176,15 @@ public class PayTool {
     private static void PayForZFB(final Activity activity, final ContentValues goods, final Handler mHandler) {
         String allPrice = "";
         if (goods.containsKey("price")) {
-            allPrice = "" + ((Float.valueOf(goods.getAsString("price")) * goods.getAsInteger("num")) + Double.valueOf(goods.getAsString("ship")));
+            allPrice = ValidData.formatDouble4(((Double.valueOf(goods.getAsString("price")) * goods.getAsInteger("num")) + Double.valueOf(goods.getAsString("ship"))));
         } else {
-            allPrice =""+ goods.getAsDouble("totalmoney");
+            allPrice =ValidData.formatDouble4(goods.getAsDouble("totalmoney"));
         }
-
+        String orderName=goods.containsKey("good_name") ? goods.getAsString("good_name") : goods.getAsString("trade_name");
         final OkHttpClient client = new OkHttpClient();
         String url = Ini.RequestPay_Alipay + "?price=" + allPrice +
                 "&orderid=" + SharedPreferenceUtil.read("orderid", "") +
-                "&trade_name=" + goods.getAsString("good_name");
+                "&trade_name=" + orderName;
         Request request = new Request.Builder().url(url).build();
         client.newCall(request).enqueue(new Callback() {
             @Override
@@ -232,14 +232,16 @@ public class PayTool {
     private static void PayForWeixin(final Activity activity, ContentValues goods) {
         String allPrice = "";
         if (goods.containsKey("price")) {
-            allPrice = "" + ((Float.valueOf(goods.getAsString("price")) * goods.getAsInteger("num")) + Double.valueOf(goods.getAsString("ship")));
+            allPrice = ValidData.formatDouble4(((Double.valueOf(goods.getAsString("price")) * goods.getAsInteger("num")) + Double.valueOf(goods.getAsString("ship"))));
         } else {
-            allPrice = ""+ goods.getAsDouble("totalmoney");
+            allPrice =ValidData.formatDouble4(goods.getAsDouble("totalmoney"));
         }
+        String orderName=goods.containsKey("good_name") ? goods.getAsString("good_name") : goods.getAsString("trade_name");
+
         OkHttpClient client = new OkHttpClient();
         String url = Ini.RequestPay_Weixin + "?price=" + allPrice +
                 "&orderid=" + SharedPreferenceUtil.read("orderid", "") +
-                "&trade_name=" + goods.getAsString("trade_name");
+                "&trade_name=" + orderName;
         Request request = new Request.Builder().url(url).build();
         client.newCall(request).enqueue(new Callback() {
             @Override

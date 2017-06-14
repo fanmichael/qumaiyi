@@ -587,17 +587,20 @@
                 <action android:name="android.intent.action.USER_PRESENT" />
             </intent-filter>
         </receiver>
-        android:theme="@android:style/Theme.NoTitleBar" />
+        <service
+            android:name="com.baidu.location.f"
+            android:enabled="true"
+            android:process=":remote" /> <!-- umeng appkey，可忽略 -->
+        <meta-data
+            android:name="com.baidu.lbsapi.API_KEY"
+            android:value="3ecea51f560650b1ed8a4b99808f52e8" />
+        <meta-data
+            android:name="io.fabric.ApiKey"
+            android:value="6b54bd4edc63eba3ef59d69f8e0a5070bea384e2" />
+        <!-- fabric end -->
         <activity android:name=".pages.activity.ElcyGroupDeActivity" />
         <activity android:name=".pages.activity.DeclareActivity" />
         <activity android:name=".pages.activity.PictureDisplayActivity" />
-        <!--<activity-->
-            <!--android:name="io.vov.vitamio.activity.InitActivity"-->
-            <!--android:configChanges="orientation|screenSize|smallestScreenSize|keyboard|keyboardHidden|navigation"-->
-            <!--android:launchMode="singleTop"-->
-            <!--android:theme="@android:style/Theme.NoTitleBar"-->
-            <!--android:windowSoftInputMode="stateAlwaysHidden" />-->
-
         <receiver
             android:name=".wxapi.AppRegister"
             android:permission="com.tencent.mm.plugin.permission.SEND">

@@ -40,7 +40,7 @@ public class AppContext extends Application implements UncaughtExceptionHandler 
         mContext = this.getApplicationContext();
         Fresco.initialize(this);
         EaseUI.getInstance().init(this, null);
-        EMClient.getInstance().setDebugMode(true);
+//        EMClient.getInstance().setDebugMode(false);
         // 获取系统默认的UncaughtException处理
         mDefaultHandler = Thread.getDefaultUncaughtExceptionHandler();
         //友盟配置三方平台的appkey

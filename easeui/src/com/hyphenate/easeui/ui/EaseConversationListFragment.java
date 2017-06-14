@@ -344,6 +344,7 @@ public class EaseConversationListFragment extends EaseBaseFragment {
     @Override
     public void onDestroy() {
         super.onDestroy();
+        conversationListView.getAdapter().clear();
         EMClient.getInstance().removeConnectionListener(connectionListener);
     }
 

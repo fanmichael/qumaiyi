@@ -17,6 +17,7 @@ import com.facebook.imagepipeline.request.ImageRequestBuilder;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.text.DecimalFormat;
 import java.util.regex.Pattern;
 
 import com.yshstudio.originalproduct.inc.Ini;
@@ -133,5 +134,17 @@ public class ValidData {
         }
         return true;
     }
+
+
+    /**
+     * 价格保留两位
+     * */
+    public static String formatDouble4(double d) {
+//        DecimalFormat df = new DecimalFormat("#.00");
+        return String.format("%.2f", d);
+    }
+
+
+
 
 }

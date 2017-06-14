@@ -272,12 +272,12 @@
         "source": "E:\\huayi\\qumaiyi\\ShequNew\\easeui\\build\\intermediates\\bundles\\debug\\res\\drawable-hdpi-v4\\ease_mm_listitem_grey_normal.9.png"
     },
     {
-        "merged": "E:\\huayi\\qumaiyi\\ShequNew\\easeui\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable-hdpi-v4\\ease_input_bar_bg_active.9.png",
-        "source": "E:\\huayi\\qumaiyi\\ShequNew\\easeui\\build\\intermediates\\bundles\\debug\\res\\drawable-hdpi-v4\\ease_input_bar_bg_active.9.png"
-    },
-    {
         "merged": "E:\\huayi\\qumaiyi\\ShequNew\\easeui\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable-hdpi-v4\\ease_type_select_btn_pressed.png",
         "source": "E:\\huayi\\qumaiyi\\ShequNew\\easeui\\build\\intermediates\\bundles\\debug\\res\\drawable-hdpi-v4\\ease_type_select_btn_pressed.png"
+    },
+    {
+        "merged": "E:\\huayi\\qumaiyi\\ShequNew\\easeui\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable-hdpi-v4\\ease_input_bar_bg_active.9.png",
+        "source": "E:\\huayi\\qumaiyi\\ShequNew\\easeui\\build\\intermediates\\bundles\\debug\\res\\drawable-hdpi-v4\\ease_input_bar_bg_active.9.png"
     },
     {
         "merged": "E:\\huayi\\qumaiyi\\ShequNew\\easeui\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable-hdpi-v4\\ease_record_animate_13.png",

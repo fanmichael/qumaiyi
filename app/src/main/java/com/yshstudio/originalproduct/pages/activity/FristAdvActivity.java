@@ -30,7 +30,7 @@ public class FristAdvActivity extends BaseActivity {
     @BindView(R.id.adv_go)
     Button advGo;
     private Context context;
-    private String imag;
+    private String imag="";
     private MyCountDownTimer mc;
     private boolean isGo = true;
     private String val = "";

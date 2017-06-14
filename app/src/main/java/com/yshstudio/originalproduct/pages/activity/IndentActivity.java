@@ -135,8 +135,8 @@ public class IndentActivity extends BaseActivity {
 
 
     private String allMoneyStr(){
-        String allPrices = "" + ((Float.valueOf(goods.getAsString("price")) * goods.getAsInteger("num")) + Double.valueOf(goods.getAsString("ship")));
-        return allPrices;
+        double allPrices = ((Double.valueOf(goods.getAsString("price")) * goods.getAsInteger("num")) + Double.valueOf(goods.getAsString("ship")));
+        return  ValidData.formatDouble4(allPrices);
     }
 
 
@@ -183,6 +183,7 @@ public class IndentActivity extends BaseActivity {
         indntTitle.setText(goods.getAsString("good_name"));
         indentGrd.setText("工期：" + goods.getAsInteger("maf_time") + "天");
         indentPrice.setText("￥" + goods.getAsString("price"));
+
         allPrice.setText(allMoneyStr()+"元");
         indentNumber.setText("库存："+goods.getAsInteger("good_num"));
         numberAddSubView.setMaxValue(goods.getAsInteger("good_num"));

@@ -788,7 +788,7 @@ public class EaseChatFragment extends EaseBaseFragment implements EMMessageListe
         } else if (chatType == EaseConstant.CHATTYPE_CHATROOM) {
             message.setChatType(ChatType.ChatRoom);
         } else if (chatType == EaseConstant.CHATTYPE_SINGLE) {
-            message.setChatType(ChatType.Chat);
+             message.setChatType(ChatType.Chat);
             message.setAttribute("userheader", UserLodingInFo.getInstance().getIcon());
             message.setAttribute("username", UserLodingInFo.getInstance().getNick());
             message.setAttribute("from", UserLodingInFo.getInstance().getMobile());

@@ -21,10 +21,21 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.facebook.drawee.view.SimpleDraweeView;
+import com.yshstudio.originalproduct.R;
+import com.yshstudio.originalproduct.pages.adapter.AppraiesimgeAdapter;
+import com.yshstudio.originalproduct.pages.config.AppContext;
+import com.yshstudio.originalproduct.pages.http.HttpConnectTool;
+import com.yshstudio.originalproduct.pages.prompt.Loading;
+import com.yshstudio.originalproduct.pages.view.MyGridView;
+import com.yshstudio.originalproduct.tools.ImageToools;
+import com.yshstudio.originalproduct.tools.TextContent;
+import com.yshstudio.originalproduct.tools.ValidData;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -38,16 +49,6 @@ import java.util.Map;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-
-import com.yshstudio.originalproduct.R;
-import com.yshstudio.originalproduct.pages.adapter.AppraiesimgeAdapter;
-import com.yshstudio.originalproduct.pages.config.AppContext;
-import com.yshstudio.originalproduct.pages.http.HttpConnectTool;
-import com.yshstudio.originalproduct.pages.prompt.Loading;
-import com.yshstudio.originalproduct.pages.view.MyGridView;
-import com.yshstudio.originalproduct.tools.ImageToools;
-import com.yshstudio.originalproduct.tools.TextContent;
-import com.yshstudio.originalproduct.tools.ValidData;
 
 /**
  * 申请买主
@@ -80,6 +81,10 @@ public class SellerlDetailsActivity extends BaseActivity {
     TextView sellNewsDetails;
     @BindView(R.id.sell_card_gridView)
     MyGridView sellCardGridView;
+    @BindView(R.id.scor_seller)
+    ScrollView scorSeller;
+    @BindView(R.id.lin_seller_hide)
+    LinearLayout linSellerHide;
 
     private File sellImagesFile;
     private File sellCardZFile;
@@ -92,6 +97,7 @@ public class SellerlDetailsActivity extends BaseActivity {
     private int type = 1;
     private boolean choseBtn = false;
     private int error;
+    private int isSeller;
 
 
     /**
@@ -109,6 +115,7 @@ public class SellerlDetailsActivity extends BaseActivity {
         setContentView(R.layout.activity_sellerl_details);
         ButterKnife.bind(this);
         context = this;
+        new asyncTask().execute(2);
         initView();
         ImageToools.verifyStoragePermissions(SellerlDetailsActivity.this);
     }
@@ -393,6 +400,10 @@ public class SellerlDetailsActivity extends BaseActivity {
                     httpApply();
                     bundle.putInt("what", 1);
                     break;
+                case 2:
+                    httpSellIs();
+                    bundle.putInt("what", 2);
+                    break;
             }
             return bundle;
         }
@@ -413,6 +424,19 @@ public class SellerlDetailsActivity extends BaseActivity {
                     }
                     break;
                 case 2:
+                    if(isSeller==1){
+                        return;
+                    }else if(isSeller==0){
+                        Toast.makeText(context, "申请已提交，请等待。。。", Toast.LENGTH_LONG).show();
+                        scorSeller.setVisibility(View.GONE);
+                        linSellerHide.setVisibility(View.VISIBLE);
+                        topRegitTitle.setVisibility(View.GONE);
+                    }else if(isSeller==2){
+                        Toast.makeText(context, "您还不是卖主，快去申请吧", Toast.LENGTH_LONG).show();
+                        scorSeller.setVisibility(View.VISIBLE);
+                        linSellerHide.setVisibility(View.GONE);
+                        topRegitTitle.setVisibility(View.VISIBLE);
+                    }
                     break;
             }
 
@@ -471,6 +495,35 @@ public class SellerlDetailsActivity extends BaseActivity {
 
         return isIt;
     }
+
+
+    /**
+     * 验证卖主
+     * */
+    private void httpSellIs(){
+        HashMap<String, String> map = new HashMap<>();
+        map.put("action", "Merchant.checkMerchantStatus");
+        map.put("uid", AppContext.cv.getAsInteger("id") + "");
+        String json = HttpConnectTool.post(map);
+            if(!json.equals("")){
+                xmlSellIS(json);
+            }
+    }
+
+
+
+    private void xmlSellIS(String data) {
+        try {
+            JSONObject jsonObject = new JSONObject(data);
+            JSONObject jsData=new JSONObject(jsonObject.getString("data"));
+            isSeller=jsData.getInt("auditing");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        } catch (Exception ee) {
+            ee.printStackTrace();
+        }
+    }
+
 
     /**
      * 申请卖主
