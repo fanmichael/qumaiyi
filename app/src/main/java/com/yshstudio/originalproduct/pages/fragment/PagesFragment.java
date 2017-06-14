@@ -331,7 +331,6 @@ public class PagesFragment extends BasicFragment implements SwipeRefreshLayout.O
             setDelayMessage(4, 100);
         }
         appendLoading();
-        swipeRefreshLayout.setRefreshing(false);//刷新完成
     }
 
 

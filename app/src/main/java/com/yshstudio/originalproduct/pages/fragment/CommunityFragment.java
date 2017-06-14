@@ -195,11 +195,9 @@ public class CommunityFragment extends BasicFragment implements SwipeRefreshLayo
             removeLoading();
             switch (what) {
                 case 1:
+                    initClearLin();
                     commend();
                     allcate();
-                    if(swDeal==null){
-                        return;
-                    }
                     swDeal.setRefreshing(false);//刷新完成
                     break;
             }
@@ -207,12 +205,43 @@ public class CommunityFragment extends BasicFragment implements SwipeRefreshLayo
         }
     }
 
+    /**
+     * 清楚View
+     * */
+    private void initClearLin(){
+        if(swDeal==null){
+            return;
+        }
+        if(sliDeal == null){
+            return;
+        }
+        if(moreRecommend==null){
+            return;
+        }
 
+        if(linAllCate!=null){
+            linAllCate.removeAllViews();
+        }
+        if(recommedDeal!=null){
+            recommedDeal.removeAllViews();
+        }
+        if(newDeal!=null){
+            newDeal.removeAllViews();
+        }
+        if(hotDeal!=null){
+            hotDeal.removeAllViews();
+        }
+
+
+    }
+
+    /**
+     * 加载专题
+     * */
     private void allcate() {
         if(linAllCate==null){
             return;
         }
-
         if (allcateList.size() > 0) {
             for (int i = 0; i < 5; i++) {
                 View view = LayoutInflater.from(context).inflate(R.layout.chose_allcate, null);
@@ -237,11 +266,11 @@ public class CommunityFragment extends BasicFragment implements SwipeRefreshLayo
         }
     }
 
-
+    /**
+     * 加载视图
+     * */
     private void commend() {
-        if(moreRecommend==null){
-            return;
-        }
+
         if (recommendList.size() > 8) {
             moreRecommend.setVisibility(View.VISIBLE);
         } else {
@@ -535,7 +564,7 @@ public class CommunityFragment extends BasicFragment implements SwipeRefreshLayo
     @Override
     public void onRefresh() {
 //        setDelayMessage(1, 100);
-        swDeal.setRefreshing(false);//刷新完成
+        new asyncTask().execute(1);
     }
 
     @Override
