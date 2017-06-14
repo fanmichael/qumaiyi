@@ -574,12 +574,18 @@ public class MaterialDetailsActivity extends BaseActivity {
         }
     }
 
+    /**
+     * 聊天修改头像
+     * */
     private void updateIcon(String icon){
         UserLodingInFo.getInstance().setIcon(icon);
         ObjectSaveUtils.saveObject(context, "USERINFO", UserLodingInFo.getInstance());
 
     }
 
+    /**
+     * 聊天修改昵称
+     * */
     private void updateNick(String nick){
         UserLodingInFo.getInstance().setNick(nick);
         ObjectSaveUtils.saveObject(context, "USERINFO", UserLodingInFo.getInstance());

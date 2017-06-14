@@ -103,6 +103,7 @@ public class BuyGoodsAdapter extends BaseAdapter {
                     good.getAsInteger("state") == 6 && good.getAsInteger("status") == 0) {
                 holder.cal.setVisibility(View.VISIBLE);
                 holder.buy.setText("付款");
+                holder.cal.setText("取消订单");
                 holder.buy.setBackgroundColor(context.getResources().getColor(R.color.bd_top));
                 holder.buy.setTextColor(context.getResources().getColor(R.color.white));
                 holder.buy.setClickable(true);
