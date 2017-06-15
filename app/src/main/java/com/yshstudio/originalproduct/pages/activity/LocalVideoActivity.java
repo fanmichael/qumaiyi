@@ -335,7 +335,7 @@ public class LocalVideoActivity extends BaseActivity implements CommentAdapter.s
         getWindowManager().getDefaultDisplay().getMetrics(dm);
         int height = dm.heightPixels;
         int width = dm.widthPixels;
-        videoDetailsPrice.setText(values.getAsInteger("follow") + "");
+        videoDetailsPrice.setText(values.getAsInteger("collection") + "");
         Uri imageUri = Uri.parse(values.getAsString("icon"));
         ValidData.load(imageUri, videoUserInfoIcon, 60, 60);
         videoDetailsNick.setText(values.getAsString("nick"));
@@ -931,6 +931,7 @@ public class LocalVideoActivity extends BaseActivity implements CommentAdapter.s
             values.put("cid", objnote.getInt("cid"));
             values.put("follow", objnote.getInt("follow"));
             values.put("status", objnote.getInt("status"));
+            values.put("collection", objnote.getInt("collection"));
             values.put("subject", objnote.getString("subject"));
             if (objnote.has("video_img")) {
                 values.put("video_img", objnote.getString("video_img"));

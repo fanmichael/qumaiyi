@@ -113,6 +113,7 @@ public class ShopDetailsActivity extends BaseActivity implements UserGoodsShopAd
     private boolean isSoll;//是否收藏
 
     private UserGoodsShopAdapter goodsAdapter;//喜欢的商品
+    private int h;
 
 
     @Override
@@ -362,6 +363,10 @@ public class ShopDetailsActivity extends BaseActivity implements UserGoodsShopAd
                     httpFollowStatusfollow();
                     bundle.putInt("what", 5);
                     break;
+                case 6:
+                    h=ImageToools.loadImageFromNetwork(values.getAsString("good_image"));
+                    bundle.putInt("what",6);
+                    break;
             }
             return bundle;
         }
@@ -372,13 +377,7 @@ public class ShopDetailsActivity extends BaseActivity implements UserGoodsShopAd
             removeLoading();
             switch (what) {
                 case 1:
-                    initView();
-                    if (!String.valueOf(uid).equals(String.valueOf(AppContext.cv.getAsInteger("id")))) {
-                        isColl();
-                    }
-                    initGoods();
-                    initImages();
-                    scrollview.smoothScrollTo(0, 0);
+                  new asyncTask().execute(6);
                     break;
                 case 2:
                     isColl();
@@ -391,6 +390,15 @@ public class ShopDetailsActivity extends BaseActivity implements UserGoodsShopAd
                     break;
                 case 5:
                     isColl();
+                    break;
+                case 6:
+                    initView();
+                    if (!String.valueOf(uid).equals(String.valueOf(AppContext.cv.getAsInteger("id")))) {
+                        isColl();
+                    }
+                    initGoods();
+                    initImages();
+                    scrollview.smoothScrollTo(0, 0);
                     break;
             }
         }
@@ -534,21 +542,20 @@ public class ShopDetailsActivity extends BaseActivity implements UserGoodsShopAd
 
 
     private void initView() {
-        ImageLoader.getInstance().displayImage(values.getAsString("good_image"), shopDetailsSimTitle);
-
-//        Uri imageUri = Uri.parse(values.getAsString("good_image"));
-//        ValidData.load(imageUri, shopDetailsSimTitle, 300, 150);
-        shopDetailsTextContent.setText(values.getAsString("good_name"));
-        shopDetailsPrice.setText("￥" + values.getAsString("price"));
-        shopDetailsFamTime.setText("工期：" + values.getAsInteger("maf_time"));
-
         try {
+            if(h<500){
+                ImageLoader.getInstance().displayImage(values.getAsString("good_image"), shopDetailsSimTitle,ImageToools.IM_IMAGE_OPTIONS);
+            }else{
+                ImageLoader.getInstance().displayImage(values.getAsString("good_image"), shopDetailsSimTitle);
+            }
             Uri image = Uri.parse(values.getAsString("icon"));
             ValidData.load(image, shopUserInfoIcon, 60, 60);
         } catch (Exception e) {
             e.printStackTrace();
         }
-
+        shopDetailsTextContent.setText(values.getAsString("good_name"));
+        shopDetailsPrice.setText("￥" + values.getAsString("price"));
+        shopDetailsFamTime.setText("工期：" + values.getAsInteger("maf_time"));
 
         shopDetailsNick.setText(values.getAsString("nick"));
         shopDetailsTags.setText(values.getAsString("personalized"));

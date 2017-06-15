@@ -9,6 +9,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.yshstudio.originalproduct.R;
+import com.yshstudio.originalproduct.pages.config.AppContext;
+import com.yshstudio.originalproduct.pages.http.HttpConnectTool;
+
 import org.json.JSONObject;
 
 import java.net.URLEncoder;
@@ -17,9 +21,6 @@ import java.util.HashMap;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import com.yshstudio.originalproduct.R;
-import com.yshstudio.originalproduct.pages.config.AppContext;
-import com.yshstudio.originalproduct.pages.http.HttpConnectTool;
 
 /**
  * 提现
@@ -44,6 +45,8 @@ public class WalletPriceActivity extends BaseActivity {
     EditText walletName;
     @BindView(R.id.wallet_phone)
     EditText walletPhone;
+    @BindView(R.id.walle_pert)
+    TextView wallePert;
     private Context context;
     private String allPrice;
     private int error;
@@ -57,6 +60,8 @@ public class WalletPriceActivity extends BaseActivity {
         topTitle.setText("提现");
         Bundle bundle = this.getIntent().getExtras();
         allPrice = bundle.getString("allPrice");
+        String p=bundle.getString("p");
+        wallePert.setText("提示：请核实支付宝账号(收取佣金%"+p+")");
     }
 
     @OnClick(R.id.image_back)
@@ -80,8 +85,8 @@ public class WalletPriceActivity extends BaseActivity {
             msg = "请输入金额";
             it = false;
         }
-        double mon=Double.valueOf(!walletPriceNumber.getText().toString().trim().equals("")?walletPriceNumber.getText().toString().trim() : "0");
-        if(mon<=0){
+        double mon = Double.valueOf(!walletPriceNumber.getText().toString().trim().equals("") ? walletPriceNumber.getText().toString().trim() : "0");
+        if (mon <= 0) {
             msg = "金额必须大于0";
             it = false;
         }
@@ -167,7 +172,6 @@ public class WalletPriceActivity extends BaseActivity {
                         walletSumbit.setClickable(true);
                     }
                     break;
-
             }
 
         }

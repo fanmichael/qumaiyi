@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.yshstudio.originalproduct.R;
+import com.yshstudio.originalproduct.tools.ImageToools;
 
 import java.util.List;
 
@@ -69,7 +70,7 @@ public class SpecialAdapter extends BaseAdapter {
             return convertView;
         }
         ContentValues cv = contentValues.get(position);
-        ImageLoader.getInstance().displayImage(cv.getAsString("img"), holder.imagseTets);
+        ImageLoader.getInstance().displayImage(cv.getAsString("img"), holder.imagseTets,ImageToools.IM_IMAGE_OPTIONS);//,ImageToools.IM_IMAGE_OPTIONS
 //        holder.draweeView.setAspectRatio(0.5F);
 //        Uri image = Uri.parse(cv.getAsString("img"));
 //        ValidData.load(image,holder.draweeView,200,100);

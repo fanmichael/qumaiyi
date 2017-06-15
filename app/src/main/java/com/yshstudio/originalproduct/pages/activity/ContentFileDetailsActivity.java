@@ -161,6 +161,7 @@ public class ContentFileDetailsActivity extends BaseActivity implements CommentA
     private CommentAdapter commentAdapter;/////////////////////
     private ConGoodsAdapter conGoodsAdapter;
     private Handler handlers;
+    private int h;
 
     /**
      * 双层list
@@ -323,9 +324,15 @@ public class ContentFileDetailsActivity extends BaseActivity implements CommentA
     }
 
 
+
     private void initData() {
         try {
-            ImageLoader.getInstance().displayImage(values.getAsString("subject"), fileDetailsSimTitle);
+            if(h<500){
+                ImageLoader.getInstance().displayImage(values.getAsString("subject"), fileDetailsSimTitle,ImageToools.IM_IMAGE_OPTIONS);
+            }else{
+                ImageLoader.getInstance().displayImage(values.getAsString("subject"), fileDetailsSimTitle);
+            }
+
             Uri image = Uri.parse(values.getAsString("icon"));
             ValidData.load(image, fileUserInfoIcon, 60, 60);
             fileDetailsTextContent.setText(values.getAsString("title"));
@@ -505,7 +512,6 @@ public class ContentFileDetailsActivity extends BaseActivity implements CommentA
     @Override
     public void content(int posit, int nid, int uid, int parent) {
         //回复
-//        contectText.setText("");
         coid = nid;
         parentnum = parent;
         left();
@@ -557,6 +563,10 @@ public class ContentFileDetailsActivity extends BaseActivity implements CommentA
                     httpS();
                     bundle.putInt("what", 7);
                     break;
+                case 8:
+                    h=ImageToools.loadImageFromNetwork(values.getAsString("subject"));
+                    bundle.putInt("what", 8);
+                    break;
             }
             return bundle;
         }
@@ -567,6 +577,19 @@ public class ContentFileDetailsActivity extends BaseActivity implements CommentA
             removeLoading();
             switch (what) {
                 case 1:
+                    new asyncTask().execute(8);
+                    break;
+                case 2:
+                    isColl();
+                    break;
+                case 6:
+                    contectText.setText("");
+                    new asyncTask().execute(7);
+                    break;
+                case 7:
+                    commAdapter();
+                    break;
+                case 8:
                     initData();
                     if (!String.valueOf(uid).equals(String.valueOf(AppContext.cv.getAsInteger("id")))) {
                         isColl();
@@ -580,22 +603,6 @@ public class ContentFileDetailsActivity extends BaseActivity implements CommentA
                             scrollview.scrollTo(10, 10);
                         }
                     });
-                    break;
-                case 2:
-                    isColl();
-                    break;
-                case 6:
-                    contectText.setText("");
-                    new asyncTask().execute(7);
-                    break;
-                case 7:
-                    commAdapter();
-//                    (new Handler()).post(new Runnable() {
-//                        @Override
-//                        public void run() {
-//                            scrollview.fullScroll(ScrollView.FOCUS_DOWN);
-//                        }
-//                    });
                     break;
 
 

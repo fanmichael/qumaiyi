@@ -259,6 +259,12 @@ public class PublishDetailsContentFragment extends BasicFragment implements  IXL
                 case 2:
                     if (contentValues != null && contentValues.size() > 0) {
                         contentValuesCon.addAll(contentValues);
+                    }else{
+                        if(error==101){
+                            Toast.makeText(context, "没有更多数据了", Toast.LENGTH_SHORT).show();
+                            collectListContent.setPullLoadEnable(false);
+                            collectListContent.stopLoadMore();
+                        }
                     }
                     contentApapter.notifyDataSetChanged();
                     break;

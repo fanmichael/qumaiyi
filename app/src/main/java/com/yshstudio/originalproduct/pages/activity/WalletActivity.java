@@ -47,6 +47,7 @@ public class WalletActivity extends BaseActivity {
     private WalletAdapter adapter;
     private List<ContentValues> contentValues = new ArrayList<>();
     private String allMoney = "";
+    private int percent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,6 +74,7 @@ public class WalletActivity extends BaseActivity {
         Intent intent = new Intent(context, WalletPriceActivity.class);
         Bundle bundle = new Bundle();
         bundle.putString("allPrice", allMoney);
+        bundle.putString("p", percent+"");
         intent.putExtras(bundle);
         startActivityForResult(intent,1);
 
@@ -114,6 +116,7 @@ public class WalletActivity extends BaseActivity {
             JSONObject jsonArrNote = new JSONObject(obj.getString("data"));
             JSONObject jsonMoney = new JSONObject(jsonArrNote.getString("user_info"));
             allMoney = jsonMoney.getString("balance");
+            percent =jsonMoney.getInt("percent");
             JSONArray jsonArray = new JSONArray(jsonArrNote.getString("money_info"));
             if (jsonArray.length() <= 0) {
                 return;

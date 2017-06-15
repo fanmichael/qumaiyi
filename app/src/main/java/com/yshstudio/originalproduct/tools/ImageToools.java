@@ -4,7 +4,21 @@ import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.support.v4.app.ActivityCompat;
+
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
+import com.nostra13.universalimageloader.core.assist.ImageScaleType;
+
+import java.io.BufferedInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLConnection;
 
 /**
  * Created by Administrator on 2017/5/15 0015.
@@ -41,6 +55,31 @@ public class ImageToools {
             }
         });
     }
-
+    public static DisplayImageOptions IM_IMAGE_OPTIONS = new DisplayImageOptions.Builder()
+            .bitmapConfig(Bitmap.Config.RGB_565)
+            .imageScaleType(ImageScaleType.EXACTLY_STRETCHED)
+//			.displayer(new RoundedBitmapDisplayer(5)) // default
+            // 可以设置动画，比如圆角或者渐�?
+            .cacheInMemory(true).cacheOnDisc(true)// 是否缓存在SD卡
+            .build();
+public static int loadImageFromNetwork(String url)
+{
+    try {
+        URL m_url=new URL(url);
+        HttpURLConnection con=(HttpURLConnection)m_url.openConnection();
+        InputStream in=con.getInputStream();
+        BitmapFactory.Options options=new BitmapFactory.Options();
+        options.inJustDecodeBounds=true;
+        BitmapFactory.decodeStream(in,null,options);
+        int height=options.outHeight;
+        int width=options.outWidth;
+        Integer s=height;
+        return s;
+    } catch (Exception e)
+    {
+        e.printStackTrace();
+        return 0;
+    }
+}
 
 }

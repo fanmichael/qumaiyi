@@ -28,25 +28,23 @@
         android:layout_weight="5"/>
 
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_marginTop="12dp"
-        android:layout_weight="0.5"
         android:orientation="horizontal">
 
         <TextView
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_weight="1"
             android:text="群名称"/>
 
         <TextView
             android:id="@+id/group_name"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_weight="1"
+            android:layout_marginLeft="20dp"
             android:gravity="right"
-            android:text="123"/>
+            android:text=""/>
     </LinearLayout>
 
     <LinearLayout

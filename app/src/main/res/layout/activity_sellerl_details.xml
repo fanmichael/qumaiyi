@@ -124,7 +124,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
                     android:background="@color/white"
-                    android:text="收款方式（银行卡号）"
+                    android:text="收款方式（支付宝账号）"
                     android:textColor="@color/col_bg"
                     android:textSize="@dimen/text_title" />
 
@@ -289,6 +289,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/white"
+                android:layout_marginBottom="20dp"
                 android:orientation="horizontal">
 
                 <TextView

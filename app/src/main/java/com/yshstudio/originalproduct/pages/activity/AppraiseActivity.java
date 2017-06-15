@@ -28,6 +28,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -413,7 +414,7 @@ public class AppraiseActivity extends BaseActivity {
             hashMap.put("action", "Orderid.orderpl");
             hashMap.put("ddid", ddid);
             hashMap.put("star", ster + "");
-            hashMap.put("cont", content);
+            hashMap.put("cont", URLEncoder.encode("content", "UTF-8")+"");
             for (int i = 0; i < listImgPath.size(); i++) {
                 hashMap.put("img", listImgPath.get(i));
             }
