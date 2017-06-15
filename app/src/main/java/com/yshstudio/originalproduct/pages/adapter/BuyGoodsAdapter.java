@@ -95,7 +95,7 @@ public class BuyGoodsAdapter extends BaseAdapter {
         holder.goodTime.setText("工期：" + good.getAsInteger("maf_time") + "天");
         holder.goodPrice.setText("￥" + good.getAsString("money"));
         holder.number.setText("x" + good.getAsInteger("num"));
-        holder.allPrice.setText("合计：" + good.getAsInteger("ordermoney"));
+        holder.allPrice.setText("合计：" + good.getAsDouble("ordermoney"));
 
         if (type == 1) {
 

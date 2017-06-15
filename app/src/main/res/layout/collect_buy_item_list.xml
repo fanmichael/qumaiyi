@@ -179,7 +179,7 @@
                 android:layout_marginLeft="5dp"
                 android:layout_weight="1"
                 android:padding="10dp"
-                android:text="444"
+                android:text=""
                 android:textColor="@color/col_bg"
                 android:textSize="16dp" />
 
