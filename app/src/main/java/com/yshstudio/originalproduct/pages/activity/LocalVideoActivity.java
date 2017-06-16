@@ -533,7 +533,7 @@ public class LocalVideoActivity extends BaseActivity implements CommentAdapter.s
                         //加入群聊
                         Intent intent = new Intent(context, ElcyGroupDeActivity.class);
                         Bundle bundle = new Bundle();
-                        bundle.putString("uid", values.getAsInteger("uid") + "");
+                        bundle.putString("groupid", values.getAsString("groupid"));
                         intent.putExtras(bundle);
                         context.startActivity(intent);
                         videoChat.setChecked(false);
@@ -941,6 +941,7 @@ public class LocalVideoActivity extends BaseActivity implements CommentAdapter.s
             values.put("tags", objnote.getString("tags"));
             values.put("personalized", objnote.getString("personalized"));
             values.put("nick", objnote.getString("nick"));
+            values.put("groupid", objnote.getString("groupid"));
             values.put("icon", objnote.getString("icon"));
             values.put("mobile", objnote.getString("mobile"));
             JSONArray imagesJson = new JSONArray(objnote.getString("content_imgs"));//图片介绍

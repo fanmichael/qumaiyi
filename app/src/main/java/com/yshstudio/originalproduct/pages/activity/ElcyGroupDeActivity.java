@@ -61,7 +61,7 @@ public class ElcyGroupDeActivity extends BaseActivity implements UserGroupAdapte
         userGroupAdapter = new UserGroupAdapter(context, contentValues, this);
         groupListDe.setAdapter(userGroupAdapter);
         Bundle bundle=this.getIntent().getExtras();
-        uid=bundle.getString("uid");
+        uid=bundle.getString("groupid");
         new asyncTask().execute(1);
     }
 
@@ -144,7 +144,7 @@ public class ElcyGroupDeActivity extends BaseActivity implements UserGroupAdapte
         try {
             HashMap<String, String> map = new HashMap<>();
             map.put("action", "Group.groupData");
-            map.put("uid", uid);
+            map.put("groupid", uid);
             String json = HttpConnectTool.post(map);
             if (!json.equals("")) {
                 listXml(json);
@@ -164,7 +164,7 @@ public class ElcyGroupDeActivity extends BaseActivity implements UserGroupAdapte
                     ContentValues cv = new ContentValues();
                     cv.put("group_name", jsonObj.getString("group_name"));
                     cv.put("id", jsonObj.getInt("id"));
-                    cv.put("group_id", jsonObj.getInt("group_id"));
+                    cv.put("group_id", jsonObj.getLong("group_id"));
                     cv.put("uid", jsonObj.getInt("uid"));
                     cv.put("group_public", jsonObj.getString("group_public"));
                     cv.put("icon", jsonObj.getString("icon"));

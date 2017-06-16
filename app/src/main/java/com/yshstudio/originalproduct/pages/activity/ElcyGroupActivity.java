@@ -111,7 +111,7 @@ public class ElcyGroupActivity extends BaseActivity implements UserGroupAdapter.
     @Override
     public void onClick(int pos, boolean is) {
         if (is) {
-            strings.add(contentValues.get(pos).getAsInteger("group_id") + "");
+            strings.add(contentValues.get(pos).getAsLong("group_id") + "");
         } else {
             if (strings.size() == 1) {
                 strings.clear();
@@ -187,7 +187,7 @@ public class ElcyGroupActivity extends BaseActivity implements UserGroupAdapter.
                     ContentValues cv = new ContentValues();
                     cv.put("group_name", jsonObj.getString("group_name"));
                     cv.put("id", jsonObj.getInt("id"));
-                    cv.put("group_id", jsonObj.getInt("group_id"));
+                    cv.put("group_id", jsonObj.getLong("group_id"));
                     cv.put("uid", jsonObj.getInt("uid"));
                     cv.put("group_public", jsonObj.getString("group_public"));
                     cv.put("icon", jsonObj.getString("icon"));

@@ -424,7 +424,7 @@ public class ContentFileDetailsActivity extends BaseActivity implements CommentA
                         //加入群聊
                         Intent intent = new Intent(context, ElcyGroupDeActivity.class);
                         Bundle bundle = new Bundle();
-                        bundle.putString("uid", values.getAsInteger("uid") + "");
+                        bundle.putString("groupid", values.getAsString("groupid") + "");
                         intent.putExtras(bundle);
                         context.startActivity(intent);
                         chat.setChecked(false);
@@ -881,6 +881,7 @@ public class ContentFileDetailsActivity extends BaseActivity implements CommentA
             values.put("personalized", objnote.getString("personalized"));
             values.put("nick", objnote.getString("nick"));
             values.put("icon", objnote.getString("icon"));
+            values.put("groupid", objnote.getString("groupid"));
             values.put("mobile", objnote.getString("mobile"));
             values.put("openid", objnote.getString("openid"));
             JSONArray imagesJson = new JSONArray(objnote.getString("content_imgs"));//图片介绍
