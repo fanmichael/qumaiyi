@@ -98,12 +98,19 @@ public class BuyGoodsAdapter extends BaseAdapter {
         holder.allPrice.setText("合计：" + good.getAsDouble("ordermoney"));
 
         if (type == 1) {
-
             if (good.getAsInteger("state") == 0 && good.getAsInteger("status") == 0 ||
                     good.getAsInteger("state") == 6 && good.getAsInteger("status") == 0) {
                 holder.cal.setVisibility(View.VISIBLE);
                 holder.buy.setText("付款");
                 holder.cal.setText("取消订单");
+                holder.buy.setBackgroundColor(context.getResources().getColor(R.color.bd_top));
+                holder.buy.setTextColor(context.getResources().getColor(R.color.white));
+                holder.buy.setClickable(true);
+                holder.buy.setEnabled(true);
+            }
+            if (good.getAsInteger("state") == 0 && good.getAsInteger("status") == 1) {
+                holder.cal.setVisibility(View.INVISIBLE);
+                holder.buy.setText("申请退款");
                 holder.buy.setBackgroundColor(context.getResources().getColor(R.color.bd_top));
                 holder.buy.setTextColor(context.getResources().getColor(R.color.white));
                 holder.buy.setClickable(true);
@@ -135,21 +142,30 @@ public class BuyGoodsAdapter extends BaseAdapter {
                 holder.buy.setEnabled(false);
             }
             if ((good.getAsInteger("state") == 4 ) && good.getAsInteger("status") == 1) {
-                holder.buy.setText("已完成");
+                holder.buy.setText("退款成功");
                 holder.cal.setVisibility(View.INVISIBLE);
                 holder.buy.setTextColor(context.getResources().getColor(R.color.col_bg));
                 holder.buy.setBackgroundColor(context.getResources().getColor(R.color.white));
                 holder.buy.setClickable(false);
                 holder.buy.setEnabled(false);
             }
-            if (good.getAsInteger("state") == 0 && good.getAsInteger("status") == 1) {
+            if ((good.getAsInteger("state") == 5 ) && good.getAsInteger("status") == 1) {
+                holder.buy.setText("退款失败");
                 holder.cal.setVisibility(View.INVISIBLE);
-                holder.buy.setText("申请退款");
-                holder.buy.setBackgroundColor(context.getResources().getColor(R.color.bd_top));
-                holder.buy.setTextColor(context.getResources().getColor(R.color.white));
-                holder.buy.setClickable(true);
-                holder.buy.setEnabled(true);
+                holder.buy.setTextColor(context.getResources().getColor(R.color.col_bg));
+                holder.buy.setBackgroundColor(context.getResources().getColor(R.color.white));
+                holder.buy.setClickable(false);
+                holder.buy.setEnabled(false);
             }
+            if ((good.getAsInteger("state") == 10 ) && good.getAsInteger("status") == 1) {
+                holder.buy.setText("订单完成");
+                holder.cal.setVisibility(View.INVISIBLE);
+                holder.buy.setTextColor(context.getResources().getColor(R.color.col_bg));
+                holder.buy.setBackgroundColor(context.getResources().getColor(R.color.white));
+                holder.buy.setClickable(false);
+                holder.buy.setEnabled(false);
+            }
+
         }
 
 

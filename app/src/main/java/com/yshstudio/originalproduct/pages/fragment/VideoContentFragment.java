@@ -203,7 +203,8 @@ public class VideoContentFragment extends BasicFragment {
         if (requestCode == 1) {
             if (resultCode == getActivity().RESULT_OK) {
                 Uri uri = data.getData();
-                file = uri2File(uri);
+//                file = uri2File(uri);
+                file=new File(GetPathVideo.getPath(context, uri));
                 files.add(file);
                 ContentValues cv = new ContentValues();
                 cv.put("image", uri.toString());
@@ -219,8 +220,9 @@ public class VideoContentFragment extends BasicFragment {
                     /**
                      * 该uri就是照片文件夹对应的uri
                      */
-                    String path = imageUri.getPath();
-                    file = new File(path);
+//                    String path = imageUri.getPath();
+//                    file = new File(path);
+                    file=new File(GetPathVideo.getPath(context, imageUri));
                     files.add(file);
                     ContentValues cv = new ContentValues();
                     cv.put("image", imageUri.toString());

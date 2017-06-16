@@ -57,6 +57,7 @@ public class SiteDetailsAdapter extends BaseAdapter {
         if (convertView == null) {
             holder = new ViewHolder();
             convertView = mInflater.inflate(R.layout.site_item_address, null);
+            holder.lin_address=(LinearLayout)convertView.findViewById(R.id.lin_address);
             holder.name = (TextView) convertView.findViewById(R.id.address_name);
             holder.phone = (TextView) convertView.findViewById(R.id.address_phone);
             holder.address = (TextView) convertView.findViewById(R.id.address_details);
@@ -102,6 +103,13 @@ public class SiteDetailsAdapter extends BaseAdapter {
             }
         });
 
+        holder.lin_address.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                setOnClickLoction.linCh(position);
+            }
+        });
+
         return convertView;
     }
 
@@ -112,6 +120,7 @@ public class SiteDetailsAdapter extends BaseAdapter {
         public CheckBox choseAddress;
         public LinearLayout edit;
         public LinearLayout delete;
+        private LinearLayout lin_address;
     }
 
     public interface setOnClickLoction {
@@ -120,6 +129,7 @@ public class SiteDetailsAdapter extends BaseAdapter {
         public void delete(int posit, int id);
 
         public void update(int posit, int id, int uid, String name, String mobile, String address);
+        public void linCh(int posit);
 
     }
 

@@ -270,7 +270,9 @@ public class CommunityFragment extends BasicFragment implements SwipeRefreshLayo
      * 加载视图
      * */
     private void commend() {
-
+        if(moreRecommend==null){
+            return;
+        }
         if (recommendList.size() > 8) {
             moreRecommend.setVisibility(View.VISIBLE);
         } else {

@@ -351,6 +351,10 @@ public class ShopBuyActivity extends BaseActivity implements SwipeRefreshLayout.
 //            holder.buy.setText("提现失败");
             return;
         }
+        if (contentValues.get(posit).getAsInteger("state") == 10 && contentValues.get(posit).getAsInteger("status") == 1) {
+//            holder.buy.setText("提现失败");
+            return;
+        }
         /**
          * 查看物流
          * */

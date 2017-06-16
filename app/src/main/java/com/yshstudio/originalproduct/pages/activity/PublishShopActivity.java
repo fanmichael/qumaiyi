@@ -34,6 +34,7 @@ import com.yshstudio.originalproduct.pages.config.AppContext;
 import com.yshstudio.originalproduct.pages.http.HttpConnectTool;
 import com.yshstudio.originalproduct.pages.prompt.Loading;
 import com.yshstudio.originalproduct.pages.view.MyGridView;
+import com.yshstudio.originalproduct.tools.GetPathVideo;
 import com.yshstudio.originalproduct.tools.ImageToools;
 import com.yshstudio.originalproduct.tools.TextContent;
 import com.yshstudio.originalproduct.tools.ValidData;
@@ -190,7 +191,7 @@ public class PublishShopActivity extends BaseActivity {
             msg = "商品价格不能为空！";
             isit = false;
         }
-        if (!ValidData.validPrice(publishShopPrice.getText().toString().trim())) {
+        if (Double.valueOf(publishShopPrice.getText().toString().trim())<=0) {
             msg = "商品价格要大于零！";
             isit = false;
         }
@@ -202,7 +203,7 @@ public class PublishShopActivity extends BaseActivity {
             msg = "商品运费不能为空！";
             isit = false;
         }
-        if (!ValidData.validPrice(publishShopExpPrice.getText().toString().trim())) {
+        if (Double.valueOf(publishShopExpPrice.getText().toString().trim())<=0) {
             msg = "商品运费要大于零！";
             isit = false;
         }
@@ -230,7 +231,7 @@ public class PublishShopActivity extends BaseActivity {
             msg = "请添加商品封面！";
             isit = false;
         }
-        if (files.size() < 0) {
+        if (files.size() <= 0) {
             msg = "请添加商品展示图片！";
             isit = false;
         }
@@ -428,10 +429,12 @@ public class PublishShopActivity extends BaseActivity {
                 switch (type) {
                     case 1:
                         ValidData.load(uri, publishShop, 90, 90);
-                        sellImagesFile = uri2File(uri);
+//                        sellImagesFile = uri2File(uri);
+                        sellImagesFile=new File(GetPathVideo.getPath(context, uri));
                         break;
                     case 2:
-                        file = uri2File(uri);
+//                        file = uri2File(uri);
+                        file=new File(GetPathVideo.getPath(context, uri));
                         files.add(file);
                         ContentValues cv = new ContentValues();
                         cv.put("image", uri.toString());
@@ -451,11 +454,13 @@ public class PublishShopActivity extends BaseActivity {
                     String path = imageUri.getPath();
                     switch (type) {
                         case 1:
-                            sellImagesFile = new File(path);
+//                            sellImagesFile = new File(path);
+                            sellImagesFile=new File(GetPathVideo.getPath(context, imageUri));
                             ValidData.load(imageUri, publishShop, 70, 70);
                             break;
                         case 2:
-                            file = new File(path);
+//                            file = new File(path);
+                            file=new File(GetPathVideo.getPath(context, imageUri));
                             files.add(file);
                             ContentValues cv = new ContentValues();
                             cv.put("image", imageUri.toString());

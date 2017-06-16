@@ -169,7 +169,23 @@ public class BuyItemDetailsActivity extends BaseActivity {
         }
         if (state == 4 && status == 1) {
             //已完成
-            buyGoBtn.setText("已完成");
+            buyGoBtn.setText("退款成功");
+            buyGoBtn.setBackgroundColor(context.getResources().getColor(R.color.white));
+            buyGoBtn.setTextColor(context.getResources().getColor(R.color.col_bg));
+            buyGoBtn.setClickable(false);
+            buyGoBtn.setEnabled(false);
+        }
+        if (state == 5 && status == 1) {
+            //已完成
+            buyGoBtn.setText("退款失败");
+            buyGoBtn.setBackgroundColor(context.getResources().getColor(R.color.white));
+            buyGoBtn.setTextColor(context.getResources().getColor(R.color.col_bg));
+            buyGoBtn.setClickable(false);
+            buyGoBtn.setEnabled(false);
+        }
+        if (state == 10 && status == 1) {
+            //已完成
+            buyGoBtn.setText("订单已完成");
             buyGoBtn.setBackgroundColor(context.getResources().getColor(R.color.white));
             buyGoBtn.setTextColor(context.getResources().getColor(R.color.col_bg));
             buyGoBtn.setClickable(false);
@@ -252,6 +268,12 @@ public class BuyItemDetailsActivity extends BaseActivity {
         }
         if (state == 4 && status == 1) {
             //已完成
+            return;
+        }
+        if (state == 5 && status == 1) {
+            return;
+        }
+        if (state == 10 && status == 1) {
             return;
         }
         if (state == 0 && status == 1) {

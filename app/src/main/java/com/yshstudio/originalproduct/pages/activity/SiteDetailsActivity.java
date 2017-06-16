@@ -14,6 +14,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -45,6 +46,7 @@ public class SiteDetailsActivity extends BaseActivity implements SiteDetailsAdap
     private SiteDetailsAdapter adapter;
     private int updaid;
     private int deleteid;
+    private String type="";
 
 
     @Override
@@ -68,6 +70,12 @@ public class SiteDetailsActivity extends BaseActivity implements SiteDetailsAdap
         topTitle.setText("我的地址");
         topRegitTitle.setText("新建");
         topRegitTitle.setVisibility(View.VISIBLE);
+
+        Bundle bundle=this.getIntent().getExtras();
+        if(bundle.containsKey("type")){
+            type=bundle.getString("type");
+        }
+
     }
 
     @OnClick(R.id.top_regit_title)
@@ -89,7 +97,6 @@ public class SiteDetailsActivity extends BaseActivity implements SiteDetailsAdap
 
     @OnClick(R.id.image_back)
     void back() {
-        setResult(1);
         destroyActitity();
     }
 
@@ -117,6 +124,25 @@ public class SiteDetailsActivity extends BaseActivity implements SiteDetailsAdap
         bundle.putString("address", address);
         intent.putExtras(bundle);
         startActivityForResult(intent, 1);
+    }
+
+    @Override
+    public void linCh(int posit) {
+        if(type.equals("pay")){
+            Bundle bundle=new Bundle();
+            bundle.putInt("id",address.get(posit).getAsInteger("id"));
+            bundle.putInt("uid",address.get(posit).getAsInteger("uid"));
+            bundle.putString("name",address.get(posit).getAsString("name"));
+            bundle.putString("mobile",address.get(posit).getAsString("mobile"));
+            bundle.putString("address",address.get(posit).getAsString("address"));
+            Intent intent=new Intent(SiteDetailsActivity.this,IndentActivity.class);
+            intent.putExtras(bundle);
+            setResult(1,intent);
+            destroyActitity();
+        }else{
+            return;
+        }
+
     }
 
 

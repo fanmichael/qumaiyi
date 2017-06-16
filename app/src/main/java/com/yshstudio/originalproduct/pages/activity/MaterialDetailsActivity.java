@@ -46,6 +46,8 @@ import com.yshstudio.originalproduct.R;
 import com.yshstudio.originalproduct.chat.util.ObjectSaveUtils;
 import com.yshstudio.originalproduct.pages.config.AppContext;
 import com.yshstudio.originalproduct.pages.http.HttpConnectTool;
+import com.yshstudio.originalproduct.pages.view.LoadingDialog;
+import com.yshstudio.originalproduct.tools.GetPathVideo;
 import com.yshstudio.originalproduct.tools.ImageToools;
 import com.yshstudio.originalproduct.tools.ValidData;
 
@@ -95,7 +97,7 @@ public class MaterialDetailsActivity extends BaseActivity {
     private List<String> grend = new ArrayList<>();
     private List<String> province = new ArrayList<>();
     private List<List<String>> city = new ArrayList<>();
-
+    private LoadingDialog mDialog = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -284,20 +286,6 @@ public class MaterialDetailsActivity extends BaseActivity {
         startActivityForResult(intent, 8);
     }
 
-
-    private File uri2File(Uri uri) {
-        File file = null;
-        String[] proj = {MediaStore.Images.Media.DATA};
-        Cursor actualimagecursor = MaterialDetailsActivity.this.managedQuery(uri, proj, null, null, null);
-        int actual_image_column_index = actualimagecursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
-        actualimagecursor.moveToFirst();
-        String img_path = actualimagecursor
-                .getString(actual_image_column_index);
-        file = new File(img_path);
-        return file;
-    }
-
-
     /**
      * 昵称
      */
@@ -305,6 +293,20 @@ public class MaterialDetailsActivity extends BaseActivity {
     void nickLayout() {
         Intent nickIntent = new Intent(context, UpdateNickActivity.class);
         startActivityForResult(nickIntent, 1);
+    }
+
+    private void appendLoading() {
+        mDialog = new LoadingDialog(context);
+        mDialog.setText("头像上传中");
+        mDialog.show();
+    }
+
+    // 关闭loading
+    private void removeLoadings() {
+        if (mDialog != null) {
+            mDialog.dismiss();
+            mDialog = null;
+        }
     }
 
     /**
@@ -373,7 +375,8 @@ public class MaterialDetailsActivity extends BaseActivity {
             if (resultCode == RESULT_OK) {
                 Uri uri = data.getData();
                 jsonImage = uri;
-                file = uri2File(uri);
+                 file=new File(GetPathVideo.getPath(context, uri));
+                appendLoading();
                 new asyncTask().execute(3);
             }
         }
@@ -384,8 +387,8 @@ public class MaterialDetailsActivity extends BaseActivity {
                      * 该uri就是照片文件夹对应的uri
                      */
                     jsonImage = imageUri;
-                    String path = imageUri.getPath();
-                    file = new File(path);
+                    file=new File(GetPathVideo.getPath(context, imageUri));
+                    appendLoading();
                     new asyncTask().execute(3);
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -469,7 +472,7 @@ public class MaterialDetailsActivity extends BaseActivity {
         @Override
         protected void onPostExecute(Bundle bundle) {
             int what = bundle.containsKey("what") ? bundle.getInt("what") : -1;
-            removeLoading();
+            removeLoadings();
             switch (what) {
                 case 1:
                     if (error == 0) {

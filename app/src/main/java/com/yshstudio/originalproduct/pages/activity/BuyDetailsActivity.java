@@ -576,6 +576,14 @@ public class BuyDetailsActivity extends BaseActivity implements SwipeRefreshLayo
             //已完成
             return;
         }
+        if (buyLists.get(posit).getAsInteger("state") == 5 && buyLists.get(posit).getAsInteger("status") == 1) {
+            //退款失败
+            return;
+        }
+        if (buyLists.get(posit).getAsInteger("state") == 10 && buyLists.get(posit).getAsInteger("status") == 1) {
+            //订单完成
+            return;
+        }
         if (buyLists.get(posit).getAsInteger("state") == 0 && buyLists.get(posit).getAsInteger("status") == 1) {
             //申请退款
             shopId = buyLists.get(posit).getAsInteger("id");

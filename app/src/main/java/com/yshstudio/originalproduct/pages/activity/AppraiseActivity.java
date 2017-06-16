@@ -41,6 +41,7 @@ import com.yshstudio.originalproduct.R;
 import com.yshstudio.originalproduct.pages.adapter.AppraiesimgeAdapter;
 import com.yshstudio.originalproduct.pages.http.HttpConnectTool;
 import com.yshstudio.originalproduct.pages.prompt.Loading;
+import com.yshstudio.originalproduct.tools.GetPathVideo;
 import com.yshstudio.originalproduct.tools.ImageToools;
 
 /**
@@ -83,6 +84,7 @@ public class AppraiseActivity extends BaseActivity {
     private List<ContentValues> contentValues = new ArrayList<>();
     private ArrayList<String> listImgPath = new ArrayList<String>();
     private AppraiesimgeAdapter appraiesimgeAdapter;
+    private String ima="";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -228,7 +230,8 @@ public class AppraiseActivity extends BaseActivity {
         if (requestCode == 1) {
             if (resultCode == RESULT_OK) {
                 Uri uri = data.getData();
-                file = uri2File(uri);
+//                file = uri2File(uri);
+                file=new File(GetPathVideo.getPath(context, uri));
                 ContentValues cv = new ContentValues();
                 cv.put("image", uri.toString());
                 contentValues.add(i, cv);
@@ -244,8 +247,9 @@ public class AppraiseActivity extends BaseActivity {
                     /**
                      * 该uri就是照片文件夹对应的uri
                      */
-                    String path = imageUri.getPath();
-                    file = new File(path);
+//                    String path = imageUri.getPath();
+//                    file = new File(path);
+                    file=new File(GetPathVideo.getPath(context, imageUri));
                     ContentValues cv = new ContentValues();
                     cv.put("image", imageUri.toString());
                     contentValues.add(i, cv);
@@ -326,7 +330,23 @@ public class AppraiseActivity extends BaseActivity {
             Toast.makeText(context, "请输入内容", Toast.LENGTH_SHORT).show();
             isit = false;
         }
+        if(listImgPath.size()<0){
+            Toast.makeText(context, "请上传图片", Toast.LENGTH_SHORT).show();
+            isit = false;
+        }
+
         if (isit) {
+            StringBuffer stringBufferPop = new StringBuffer();
+            if (listImgPath.size() > 0) {
+                for (int i = 0; i < listImgPath.size(); i++) {
+                    if (listImgPath.size() == (i + 1)) {
+                        stringBufferPop.append(listImgPath.get(i));
+                    } else {
+                        stringBufferPop.append(listImgPath.get(i) + ",");
+                    }
+                }
+            }
+            ima=stringBufferPop.toString();
             mLoading = new Loading(context, topRegitTitle);
             mLoading.setText("正在提交......");
             mLoading.show();
@@ -414,10 +434,8 @@ public class AppraiseActivity extends BaseActivity {
             hashMap.put("action", "Orderid.orderpl");
             hashMap.put("ddid", ddid);
             hashMap.put("star", ster + "");
-            hashMap.put("cont", URLEncoder.encode("content", "UTF-8")+"");
-            for (int i = 0; i < listImgPath.size(); i++) {
-                hashMap.put("img", listImgPath.get(i));
-            }
+            hashMap.put("cont", URLEncoder.encode(content, "UTF-8")+"");
+            hashMap.put("img", ima);
             String json = HttpConnectTool.post(hashMap);
             if (!json.equals("")) {
             }

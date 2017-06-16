@@ -33,6 +33,7 @@ import com.yshstudio.originalproduct.pages.config.AppContext;
 import com.yshstudio.originalproduct.pages.http.HttpConnectTool;
 import com.yshstudio.originalproduct.pages.prompt.Loading;
 import com.yshstudio.originalproduct.pages.view.MyGridView;
+import com.yshstudio.originalproduct.tools.GetPathVideo;
 import com.yshstudio.originalproduct.tools.ImageToools;
 import com.yshstudio.originalproduct.tools.TextContent;
 import com.yshstudio.originalproduct.tools.ValidData;
@@ -326,18 +327,22 @@ public class SellerlDetailsActivity extends BaseActivity {
                 switch (type) {
                     case 1:
                         ValidData.load(uri, sellImages, 70, 70);
-                        sellImagesFile = uri2File(uri);
+//                        sellImagesFile = uri2File(uri);
+                        sellImagesFile=new File(GetPathVideo.getPath(context, uri));
                         break;
                     case 2:
                         ValidData.load(uri, sellCardZ, 70, 70);
-                        sellCardZFile = uri2File(uri);
+//                        sellCardZFile = uri2File(uri);
+                        sellCardZFile=new File(GetPathVideo.getPath(context, uri));
                         break;
                     case 3:
                         ValidData.load(uri, sellCardF, 70, 70);
-                        sellCardFFile = uri2File(uri);
+//                        sellCardFFile = uri2File(uri);
+                        sellCardFFile=new File(GetPathVideo.getPath(context, uri));
                         break;
                     case 4:
-                        file = uri2File(uri);
+//                        file = uri2File(uri);
+                        file=new File(GetPathVideo.getPath(context, uri));
                         files.add(file);
                         ContentValues cv = new ContentValues();
                         cv.put("image", uri.toString());
@@ -354,22 +359,26 @@ public class SellerlDetailsActivity extends BaseActivity {
                     /**
                      * 该uri就是照片文件夹对应的uri
                      */
-                    String path = imageUri.getPath();
+//                    String path = imageUri.getPath();
                     switch (type) {
                         case 1:
-                            sellImagesFile = new File(path);
+//                            sellImagesFile = new File(path);
+                            sellImagesFile=new File(GetPathVideo.getPath(context, imageUri));
                             ValidData.load(imageUri, sellImages, 70, 70);
                             break;
                         case 2:
-                            sellCardZFile = new File(path);
+//                            sellCardZFile = new File(path);
+                            sellCardZFile=new File(GetPathVideo.getPath(context, imageUri));
                             ValidData.load(imageUri, sellCardZ, 70, 70);
                             break;
                         case 3:
-                            sellCardFFile = new File(path);
+//                            sellCardFFile = new File(path);
+                            sellCardFFile=new File(GetPathVideo.getPath(context, imageUri));
                             ValidData.load(imageUri, sellCardF, 70, 70);
                             break;
                         case 4:
-                            file = new File(path);
+//                            file = new File(path);
+                            file=new File(GetPathVideo.getPath(context, imageUri));
                             files.add(file);
                             ContentValues cv = new ContentValues();
                             cv.put("image", imageUri.toString());

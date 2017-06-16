@@ -211,6 +211,9 @@ public class NewsFragment extends BasicFragment {
     @OnClick(R.id.my_site_layout)
     void site() {
         Intent siteIntent = new Intent();
+        Bundle bundle=new Bundle();
+        bundle.putString("type","new");
+        siteIntent.putExtras(bundle);
         siteIntent.setClass(mContext, SiteDetailsActivity.class);
         mContext.startActivity(siteIntent);
 

@@ -12,7 +12,9 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.facebook.drawee.view.SimpleDraweeView;
+import com.nostra13.universalimageloader.core.ImageLoader;
 import com.yshstudio.originalproduct.R;
+import com.yshstudio.originalproduct.tools.ImageToools;
 import com.yshstudio.originalproduct.tools.ValidData;
 
 import java.util.List;
@@ -93,9 +95,11 @@ public class EstimateAdapter extends BaseAdapter {
         if (lists.get(position).size() > 0) {
             for (int i = 0; i < lists.get(position).size(); i++) {
                 View view = LayoutInflater.from(context).inflate(R.layout.estimate_image_item, null);
-                SimpleDraweeView img = (SimpleDraweeView) view.findViewById(R.id.estimes_itme_images);
-                Uri image = Uri.parse(lists.get(position).get(i).getAsString("image"));
-                ValidData.load(image, img, 80, 80);
+                ImageView ima=(ImageView)view.findViewById(R.id.estimes_itme_im);
+//                SimpleDraweeView img = (SimpleDraweeView) view.findViewById(R.id.estimes_itme_images);
+//                Uri image = Uri.parse(lists.get(position).get(i).getAsString("image"));
+                ImageLoader.getInstance().displayImage(lists.get(position).get(i).getAsString("image"), ima,ImageToools.IM_IMAGE_OPTIONS);
+//                ValidData.load(image, img, 80, 80);
                 holder.images.addView(view);
             }
         }

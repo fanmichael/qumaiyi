@@ -100,14 +100,17 @@ public class WXPayEntryActivity extends Activity implements IWXAPIEventHandler {
             Toast.makeText(getApplicationContext(),"支付成功",Toast.LENGTH_LONG).show();
             Intent buyIntent = new Intent(WXPayEntryActivity.this, BuyDetailsActivity.class);
             startActivity(buyIntent);
+            finish();
         }else if(baseResp.errCode==-1){
             Toast.makeText(getApplicationContext(),"支付失败",Toast.LENGTH_LONG).show();
             Intent buyIntent = new Intent(WXPayEntryActivity.this, BuyDetailsActivity.class);
             startActivity(buyIntent);
+            finish();
         }else if(baseResp.errCode==-2){
             Toast.makeText(getApplicationContext(),"取消支付",Toast.LENGTH_LONG).show();
             Intent buyIntent = new Intent(WXPayEntryActivity.this, BuyDetailsActivity.class);
             startActivity(buyIntent);
+            finish();
         }
 
     }

@@ -152,6 +152,7 @@ public class IndentActivity extends BaseActivity {
                     case Ini.SDK_PAY_FLAG:
                         Intent buyIntent = new Intent(context, BuyDetailsActivity.class);
                         context.startActivity(buyIntent);
+                        destroyActitity();
                         break;
                     case Ini.SDK_PAY_FLAG2:
                         PayTool.payZFB(IndentActivity.this, msg.obj.toString(), mHandler);
@@ -225,13 +226,22 @@ public class IndentActivity extends BaseActivity {
     @OnClick(R.id.indent_go_address_details)
     void goLinAddressDetails() {
         Intent intent = new Intent(context, SiteDetailsActivity.class);
+        Bundle bundle=new Bundle();
+        bundle.putString("type","pay");
+        intent.putExtras(bundle);
         startActivityForResult(intent, 1);
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if(resultCode==1){
-            new asyncTask().execute(1);
+            Bundle bundle=data.getExtras();
+            addr.put("id", bundle.getInt("id"));
+            addr.put("uid", bundle.getInt("uid"));
+            addr.put("name", bundle.getString("name"));
+            addr.put("mobile", bundle.getString("mobile"));
+            addr.put("address", bundle.getString("address"));
+            initData();
         }
     }
 

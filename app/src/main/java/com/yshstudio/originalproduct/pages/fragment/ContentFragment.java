@@ -51,6 +51,7 @@ import com.yshstudio.originalproduct.pages.config.AppContext;
 import com.yshstudio.originalproduct.pages.http.HttpConnectTool;
 import com.yshstudio.originalproduct.pages.prompt.Loading;
 import com.yshstudio.originalproduct.pages.view.MyGridView;
+import com.yshstudio.originalproduct.tools.GetPathVideo;
 import com.yshstudio.originalproduct.tools.ImageToools;
 import com.yshstudio.originalproduct.tools.TextContent;
 import com.yshstudio.originalproduct.tools.ValidData;
@@ -279,10 +280,12 @@ public class ContentFragment extends BasicFragment {
                 switch (type) {
                     case 1:
                         ValidData.load(uri, contentImag, 90, 90);
-                        sellImagesFile = uri2File(uri);
+                        sellImagesFile=new File(GetPathVideo.getPath(context, uri));
+//                        sellImagesFile = uri2File(uri);
                         break;
                     case 2:
-                        file = uri2File(uri);
+//                        file = uri2File(uri);
+                        file=new File(GetPathVideo.getPath(context, uri));
                         files.add(file);
                         ContentValues cv = new ContentValues();
                         cv.put("image", uri.toString());
@@ -303,11 +306,13 @@ public class ContentFragment extends BasicFragment {
                     String path = imageUri.getPath();
                     switch (type) {
                         case 1:
-                            sellImagesFile = new File(path);
+//                            sellImagesFile = new File(path);
+                            sellImagesFile=new File(GetPathVideo.getPath(context, imageUri));
                             ValidData.load(imageUri, contentImag, 70, 70);
                             break;
                         case 2:
-                            file = new File(path);
+//                            file = new File(path);
+                            file=new File(GetPathVideo.getPath(context, imageUri));
                             files.add(file);
                             ContentValues cv = new ContentValues();
                             cv.put("image", imageUri.toString());

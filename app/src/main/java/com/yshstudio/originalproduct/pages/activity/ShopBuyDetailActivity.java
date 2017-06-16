@@ -115,6 +115,12 @@ public class ShopBuyDetailActivity extends BaseActivity {
             btnShopDetail.setEnabled(false);
         }
 
+        if (state == 10 && status == 1) {
+            btnShopDetail.setText("订单已完成");
+            btnShopDetail.setClickable(false);
+            btnShopDetail.setEnabled(false);
+        }
+
         if (state == 5 && status == 1) {
             btnShopDetail.setText("退款失败...");
             btnShopDetail.setClickable(false);
