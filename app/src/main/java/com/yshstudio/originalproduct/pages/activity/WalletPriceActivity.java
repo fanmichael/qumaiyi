@@ -61,7 +61,7 @@ public class WalletPriceActivity extends BaseActivity {
         Bundle bundle = this.getIntent().getExtras();
         allPrice = bundle.getString("allPrice");
         String p=bundle.getString("p");
-        wallePert.setText("提示：请核实支付宝账号(收取佣金%"+p+")");
+        wallePert.setText("提示：请核实支付宝账号(收取佣金"+p+"%)");
     }
 
     @OnClick(R.id.image_back)
@@ -86,8 +86,8 @@ public class WalletPriceActivity extends BaseActivity {
             it = false;
         }
         double mon = Double.valueOf(!walletPriceNumber.getText().toString().trim().equals("") ? walletPriceNumber.getText().toString().trim() : "0");
-        if (mon <= 0) {
-            msg = "金额必须大于0";
+        if (mon <= 0.09) {
+            msg = "金额必须大于,等于0.1";
             it = false;
         }
 

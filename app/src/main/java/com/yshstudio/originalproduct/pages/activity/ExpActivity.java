@@ -15,6 +15,7 @@ import android.widget.Toast;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -103,7 +104,7 @@ public class ExpActivity extends BaseActivity implements ExpAdapter.setonClick {
 
     @Override
     public void onClick(int pos, String com, String no) {
-        comName = com;
+        comName = no;
         expAdapter.changeSelected(pos);
     }
 
@@ -170,8 +171,8 @@ public class ExpActivity extends BaseActivity implements ExpAdapter.setonClick {
             HashMap<String, String> hashMap = new HashMap<>();
             hashMap.put("action", "Logistics.deliverGoods");
             hashMap.put("ddid", ddid);
-            hashMap.put("logistics", comName);
-            hashMap.put("logistics_num", no);
+            hashMap.put("logistics", URLEncoder.encode(comName, "UTF-8")+"");
+            hashMap.put("logistics_num", URLEncoder.encode(no, "UTF-8")+"");
             String json = HttpConnectTool.post(hashMap);
         } catch (Exception e) {
             e.printStackTrace();

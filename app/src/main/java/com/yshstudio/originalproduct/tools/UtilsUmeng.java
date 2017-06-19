@@ -147,11 +147,20 @@ public class UtilsUmeng {
                             Toast.makeText(activity, "请先安装客户端", Toast.LENGTH_LONG).show();
                             return;
                         }
-                        UMWeb web = new UMWeb(url);
-                        web.setTitle("去卖艺");//标题
-                        web.setThumb(new UMImage(activity, R.drawable.logo));  //缩略图
-                        web.setDescription(content);//描述
-                        new ShareAction(activity).withMedia(web).withText(url).setPlatform(share_media).setCallback(umShareListener).share();
+                        if(share_media== SHARE_MEDIA.WEIXIN_CIRCLE){
+                            UMWeb web = new UMWeb(url);
+                            web.setTitle(content);//标题
+                            web.setThumb(new UMImage(activity, R.drawable.logo));  //缩略图
+                            web.setDescription("");//描述
+                            new ShareAction(activity).withMedia(web).withText(url).setPlatform(share_media).setCallback(umShareListener).share();
+                        }else{
+                            UMWeb web = new UMWeb(url);
+                            web.setTitle("去卖艺");//标题
+                            web.setThumb(new UMImage(activity, R.drawable.logo));  //缩略图
+                            web.setDescription(content);//描述
+                            new ShareAction(activity).withMedia(web).withText(url).setPlatform(share_media).setCallback(umShareListener).share();
+                        }
+
                     }
                 }).open(config);
 //
