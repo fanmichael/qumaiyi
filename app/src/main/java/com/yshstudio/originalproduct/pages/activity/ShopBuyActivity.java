@@ -518,6 +518,7 @@ public class ShopBuyActivity extends BaseActivity implements SwipeRefreshLayout.
                         note.put("logistics_num", jsonObj.getString("logistics_num"));///no////////////
                         note.put("good_image", jsonObj.getString("good_image"));
                         note.put("channel_num", jsonObj.getString("channel_num"));
+                        note.put("totalmoney", jsonObj.getString("totalmoney"));
                         note.put("time", jsonObj.getString("time"));
                         note.put("nick", jsonObj.getString("nick"));
                         note.put("icon", jsonObj.getString("icon"));

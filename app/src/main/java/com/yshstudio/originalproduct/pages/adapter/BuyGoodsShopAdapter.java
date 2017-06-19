@@ -89,11 +89,7 @@ public class BuyGoodsShopAdapter extends BaseAdapter {
         holder.goodTime.setText("工期：" + good.getAsInteger("maf_time") + "天");
         holder.goodPrice.setText("￥" + good.getAsString("money"));
         holder.number.setText("x" + good.getAsInteger("num"));
-        Double price = Double.parseDouble(good.getAsString("money"));
-        Double numAll = good.getAsInteger("num") * price;
-        holder.allPrice.setText("合计：" + numAll);
-
-
+        holder.allPrice.setText("合计：" + good.getAsString("totalmoney"));
 
         if (good.getAsInteger("state") == 0 && good.getAsInteger("status") == 0) {
             holder.buySta.setVisibility(View.GONE);
