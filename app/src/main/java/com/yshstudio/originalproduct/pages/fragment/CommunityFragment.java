@@ -194,7 +194,9 @@ public class CommunityFragment extends BasicFragment implements SwipeRefreshLayo
                     initClearLin();
                     commend();
                     allcate();
-                    swDeal.setRefreshing(false);//刷新完成
+                    if(swDeal!=null){
+                        swDeal.setRefreshing(false);//刷新完成
+                    }
                     break;
             }
 

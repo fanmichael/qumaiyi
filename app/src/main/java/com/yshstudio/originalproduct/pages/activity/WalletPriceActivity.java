@@ -95,7 +95,7 @@ public class WalletPriceActivity extends BaseActivity {
             msg = "请输入账号";
             it = false;
         }
-        double money = Double.parseDouble(allPrice);
+        double money = Double.parseDouble(!allPrice.equals("") ? allPrice:"0");
         if (mon > money) {
             msg = "输入金额不能大于余额！";
             it = false;

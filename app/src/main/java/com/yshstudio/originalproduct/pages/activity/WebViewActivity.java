@@ -3,6 +3,7 @@ package com.yshstudio.originalproduct.pages.activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.View;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
@@ -85,4 +86,13 @@ public class WebViewActivity extends BaseActivity {
 
     }
 
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if(keyCode==KeyEvent.KEYCODE_BACK){
+            Intent intent = new Intent(WebViewActivity.this, LoginActivity.class);
+            startActivity(intent);
+            destroyActitity();
+        }
+        return super.onKeyDown(keyCode, event);
+    }
 }

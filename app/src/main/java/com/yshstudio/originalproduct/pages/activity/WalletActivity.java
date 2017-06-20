@@ -46,7 +46,7 @@ public class WalletActivity extends BaseActivity {
 
     private WalletAdapter adapter;
     private List<ContentValues> contentValues = new ArrayList<>();
-    private String allMoney = "";
+    private String allMoney = "0";
     private String percent="0";
 
     @Override
@@ -161,6 +161,9 @@ public class WalletActivity extends BaseActivity {
             // removeLoading();
             switch (what) {
                 case 1:
+                    if(walletPrice==null){
+                        return;
+                    }
                     walletPrice.setText(allMoney);
                     adapter.notifyDataSetChanged();
                     break;

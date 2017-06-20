@@ -177,7 +177,8 @@ public class ShopDetailsActivity extends BaseActivity implements UserGoodsShopAd
             View view = LayoutInflater.from(context).inflate(R.layout.shop_item_imagse, null);
             LinearLayout lin = (LinearLayout) view.findViewById(R.id.lin_shop_imgs);
             ImageView ima = (ImageView) view.findViewById(R.id.imagse_shop_item);
-            ImageLoader.getInstance().displayImage(imagesList.get(i).getAsString("imgs"), ima);
+            if(imagesList.get(i).getAsString("imgs")!=null && !imagesList.get(i).getAsString("imgs").equals("")){
+                ImageLoader.getInstance().displayImage(imagesList.get(i).getAsString("imgs"), ima);
             lin.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -192,7 +193,7 @@ public class ShopDetailsActivity extends BaseActivity implements UserGoodsShopAd
                 }
             });
             shopDetailsImages.addView(view);
-        }
+        } }
     }
 
 
