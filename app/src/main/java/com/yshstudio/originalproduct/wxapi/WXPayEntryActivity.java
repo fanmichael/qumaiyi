@@ -16,7 +16,9 @@ import java.io.IOException;
 
 import com.tencent.mm.opensdk.openapi.WXAPIFactory;
 import com.yshstudio.originalproduct.inc.Ini;
+import com.yshstudio.originalproduct.pages.activity.AppOpenActivity;
 import com.yshstudio.originalproduct.pages.activity.BuyDetailsActivity;
+import com.yshstudio.originalproduct.pages.config.AppContext;
 import com.yshstudio.originalproduct.tools.Constants;
 import com.yshstudio.originalproduct.tools.SharedPreferenceUtil;
 
@@ -41,6 +43,7 @@ import okhttp3.Response;
 
 public class WXPayEntryActivity extends Activity implements IWXAPIEventHandler {
     private IWXAPI api;
+    private String wxId;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -80,9 +83,42 @@ public class WXPayEntryActivity extends Activity implements IWXAPIEventHandler {
                 //根据这个result结果做你们需求的操作，result实际就是支付的结果json数据
                 try {
                     JSONObject jsonObject = new JSONObject(result);
+                    Log.e("jsonObject: ",""+jsonObject);
+                    if(jsonObject.getString("result_code").equals("SUCCESS") && jsonObject.getString("return_code").equals("SUCCESS")){
+                        if(jsonObject.getString("trade_state").equals("SUCCESS")){
+                            wxId=jsonObject.getString("transaction_id");
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    addOrderId();
+                                }
+                            });
+                        }
+                    }
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
+            }
+        });
+    }
+    private void addOrderId() {
+        OkHttpClient client = new OkHttpClient();
+        RequestBody requestBody = new FormBody.Builder()
+                .add("action","Orderid.orderCallback")
+                .add("orderid", SharedPreferenceUtil.read("orderid", ""))
+                .add("prepayid", wxId).build();
+        Request request = new Request.Builder()
+                .url(Ini.Url)
+                .post(requestBody)
+                .build();
+        client.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                finish();
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
                 finish();
             }
         });
@@ -97,6 +133,7 @@ public class WXPayEntryActivity extends Activity implements IWXAPIEventHandler {
     public void onResp(BaseResp baseResp) {
         finish();
         if (baseResp.errCode==0){
+            chaxunjieguo();
             Toast.makeText(getApplicationContext(),"支付成功",Toast.LENGTH_LONG).show();
             Intent buyIntent = new Intent(WXPayEntryActivity.this, BuyDetailsActivity.class);
             startActivity(buyIntent);
