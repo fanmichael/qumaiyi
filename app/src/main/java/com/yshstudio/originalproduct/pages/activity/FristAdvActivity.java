@@ -31,6 +31,8 @@ public class FristAdvActivity extends BaseActivity {
     Button advGo;
     private Context context;
     private String imag="";
+    private String url="";
+    private String name="";
     private MyCountDownTimer mc;
     private boolean isGo = true;
     private String val = "";
@@ -53,6 +55,21 @@ public class FristAdvActivity extends BaseActivity {
         startActivity(intent);
         destroyActitity();
     }
+
+    @OnClick(R.id.sim_adv)
+    void goToViewWeb(){
+        if(!url.equals("")){
+            isGo = false;
+             Intent intent=new Intent(FristAdvActivity.this,WebViewActivity.class);
+            Bundle bundle=new Bundle();
+            bundle.putString("url",url);
+            bundle.putString("name",name);
+            intent.putExtras(bundle);
+            context.startActivity(intent);
+            destroyActitity();
+        }
+    }
+
 
     /**
      * 异步请求
@@ -110,7 +127,8 @@ public class FristAdvActivity extends BaseActivity {
             JSONObject obj = new JSONObject(data);
             JSONObject objData = new JSONObject(obj.getString("data"));
             imag = objData.getString("img");
-
+            url= objData.getString("url");
+            name=objData.getString("com_name");
         } catch (JSONException e) {
             e.printStackTrace();
         } catch (NullPointerException e) {

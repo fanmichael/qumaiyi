@@ -9,13 +9,13 @@ allprojects {
     }
 }
 dependencies {
-    compile 'com.android.support.constraint:constraint-layout:1.0.2'
     compile files('libs/geolocation-baidu.jar')
     compile files('libs/geolocation-amap.jar')
     compile files('libs/geolocation-system.jar')
     compile files('libs/map-amap.jar')
     compile files('libs/map-baidu.jar')
     compile files('libs/MapApiLocation_1.3.3.jar')
+    compile 'com.android.support.constraint:constraint-layout:1.0.2'
 }
 android {
     lintOptions {

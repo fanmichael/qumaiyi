@@ -8,6 +8,10 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.yshstudio.originalproduct.R;
+import com.yshstudio.originalproduct.pages.adapter.LogisticsAdapter;
+import com.yshstudio.originalproduct.pages.http.HttpConnectTool;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -18,9 +22,6 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import com.yshstudio.originalproduct.R;
-import com.yshstudio.originalproduct.pages.adapter.LogisticsAdapter;
-import com.yshstudio.originalproduct.pages.http.HttpConnectTool;
 
 /**
  * 物流信息
@@ -35,11 +36,18 @@ public class LogisticsActivity extends BaseActivity {
     TextView topRegitTitle;
     @BindView(R.id.list_logistics)
     ListView listLogistics;
+    @BindView(R.id.logistics_no)
+    TextView logisticsNo;
+    @BindView(R.id.top_all)
+    TextView topAll;
+    @BindView(R.id.logistics_name)
+    TextView logisticsName;
     private Context context;
 
 
-    private String com;
-    private String no;
+    private String com="";
+    private String no="";
+    private String gName="";
     private LogisticsAdapter logisticsAdapter;
     private List<ContentValues> values = new ArrayList<>();
 
@@ -71,6 +79,7 @@ public class LogisticsActivity extends BaseActivity {
             Bundle bundle = new Bundle();
             switch (params[0]) {
                 case 1:
+                    htttpAName();
                     htttpAll();
                     bundle.putInt("what", 1);
                     break;
@@ -84,11 +93,32 @@ public class LogisticsActivity extends BaseActivity {
 //            removeLoading();
             switch (what) {
                 case 1:
+                    logisticsNo.setText(no);
+                    logisticsName.setText(gName);
                     logisticsAdapter = new LogisticsAdapter(context, values);
                     listLogistics.setAdapter(logisticsAdapter);
                     break;
             }
 
+        }
+    }
+
+    /**
+     * 公司名称
+     */
+    private void htttpAName() {
+        try {
+            HashMap<String, String> hashMap = new HashMap<>();
+            hashMap.put("action", "Orderid.getExp");
+            hashMap.put("logistics", com);
+            String json = HttpConnectTool.post(hashMap);
+            if (!json.equals("")) {
+                JSONObject obj = new JSONObject(json);
+                JSONObject jsonObject = new JSONObject(obj.getString("data"));
+                gName=jsonObject.getString("com");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
