@@ -144,10 +144,6 @@ public class CommunityFragment extends BasicFragment implements SwipeRefreshLayo
             public void handleMessage(Message msg) {
                 switch (msg.what) {
                     case 1:
-//                        mLoading = new Loading(
-//                                getActivity(), commNew);
-//                        mLoading.setText("正在加载......");
-//                        mLoading.show();
                         new asyncTask().execute(1);
                         break;
                 }

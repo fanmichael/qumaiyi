@@ -147,7 +147,7 @@ public class UtilsUmeng {
                             Toast.makeText(activity, "请先安装客户端", Toast.LENGTH_LONG).show();
                             return;
                         }
-                        if(share_media== SHARE_MEDIA.WEIXIN_CIRCLE){
+                        if(share_media== SHARE_MEDIA.WEIXIN_CIRCLE || share_media.equals(SHARE_MEDIA.WEIXIN_CIRCLE)){
                             UMWeb web = new UMWeb(url);
                             web.setTitle(content);//标题
                             web.setThumb(new UMImage(activity, R.drawable.logo));  //缩略图
