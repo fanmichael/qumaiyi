@@ -66,6 +66,7 @@ import butterknife.OnClick;
 import butterknife.Unbinder;
 
 import com.yshstudio.originalproduct.R;
+import com.yshstudio.originalproduct.pages.activity.CaActivity;
 import com.yshstudio.originalproduct.pages.activity.ElcyGroupActivity;
 import com.yshstudio.originalproduct.pages.activity.ElevancyShopActivity;
 import com.yshstudio.originalproduct.pages.activity.TagsActivity;
@@ -179,6 +180,20 @@ public class VideoContentFragment extends BasicFragment {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if(resultCode==10001){
+            /**
+             * 视频录制
+             * */
+            String textVideoFile=data.getStringExtra("text");
+            videoImage(textVideoFile);
+            videoFile = new File(textVideoFile);
+            pd = new MyProgressDialog(context);
+            pd.setProgressStyle(MyProgressDialog.STYLE_HORIZONTAL);
+            pd.setMessage("上传视频中。。。");
+            pd.setCancelable(false);
+            pd.show();
+            uploadVideo(videoFile);
+        }
         if (resultCode == 11) {
             goods = data.getStringExtra("goods");
             String num = data.getStringExtra("num");
@@ -501,20 +516,25 @@ public class VideoContentFragment extends BasicFragment {
 
     /**
      * 上传视频文件
+     *
+     * 录制视频
      */
     @OnClick(R.id.voide_pu)
     void videoPu() {
-        if (videoFile==null) {
-            Toast.makeText(context, "请选择视频！", Toast.LENGTH_LONG).show();
-            return;
-        } else {
-            pd = new MyProgressDialog(context);
-            pd.setProgressStyle(MyProgressDialog.STYLE_HORIZONTAL);
-            pd.setMessage("上传视频中。。。");
-            pd.setCancelable(false);
-            pd.show();
-            uploadVideo(videoFile);
-        }
+        Intent intent=new Intent();
+        intent.setClass(context,CaActivity.class);
+        startActivityForResult(intent,10001);
+//        if (videoFile==null) {
+//            Toast.makeText(context, "请选择视频！", Toast.LENGTH_LONG).show();
+//            return;
+//        } else {
+//            pd = new MyProgressDialog(context);
+//            pd.setProgressStyle(MyProgressDialog.STYLE_HORIZONTAL);
+//            pd.setMessage("上传视频中。。。");
+//            pd.setCancelable(false);
+//            pd.show();
+//            uploadVideo(videoFile);
+//        }
     }
 
     /**

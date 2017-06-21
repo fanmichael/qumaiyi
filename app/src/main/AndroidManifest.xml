@@ -55,7 +55,7 @@
             android:name=".pages.activity.AppStartActivity"
             android:configChanges="keyboardHidden|orientation"
             android:screenOrientation="portrait"
-            android:theme="@style/Theme.AppStartLoadTranslucent"></activity>
+            android:theme="@style/Theme.AppStartLoadTranslucent" />
         <activity
             android:name=".pages.activity.AppOpenActivity"
             android:configChanges="keyboardHidden|orientation"
@@ -72,7 +72,7 @@
             android:configChanges="keyboardHidden|orientation"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.NoTitleBar"></activity>
+            android:theme="@android:style/Theme.NoTitleBar" />
         <activity
             android:name=".pages.activity.RegisterActivity"
             android:configChanges="keyboardHidden|orientation"
@@ -616,7 +616,18 @@
             android:launchMode="singleTop"
             android:screenOrientation="portrait"> <!-- 设置为 singleTop 你懂得 -->
         </activity>
-        <activity android:name=".pages.activity.WebViewActivity"></activity>
+        <activity android:name=".pages.activity.WebViewActivity"
+            android:configChanges="keyboardHidden|orientation"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.NoTitleBar"
+            />
+        <activity android:name=".pages.activity.CaActivity"
+            android:configChanges="keyboardHidden|orientation"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.NoTitleBar"
+            ></activity>
     </application>
 
 </manifest>

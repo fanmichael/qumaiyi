@@ -191,8 +191,8 @@ public class PublishShopActivity extends BaseActivity {
             msg = "商品价格不能为空！";
             isit = false;
         }
-        if (Double.valueOf(publishShopPrice.getText().toString().trim())<=0) {
-            msg = "商品价格要大于零！";
+        if (Double.valueOf(publishShopPrice.getText().toString().trim().equals("") ? "0":publishShopPrice.getText().toString().trim())<0.01) {
+            msg = "商品价格要大于1分钱！";
             isit = false;
         }
         if (tagsId.equals("")) {
@@ -203,15 +203,15 @@ public class PublishShopActivity extends BaseActivity {
             msg = "商品运费不能为空！";
             isit = false;
         }
-        if (Double.valueOf(publishShopExpPrice.getText().toString().trim())<=0) {
-            msg = "商品运费要大于零！";
+        if (Double.valueOf(publishShopExpPrice.getText().toString().trim().equals("") ? "0":publishShopExpPrice.getText().toString().trim())<0.01) {
+            msg = "商品运费要大于1分钱！";
             isit = false;
         }
         if(publishShopNumber.getText().toString().trim().equals("")){
             msg = "商品库存不能为空！";
             isit = false;
         }
-        if(Integer.valueOf(publishShopNumber.getText().toString().trim())<=0){
+        if(Integer.valueOf(publishShopNumber.getText().toString().trim().equals("") ? "0":publishShopNumber.getText().toString().trim())<=0){
             msg = "商品库存必须大于零！";
             isit = false;
         }

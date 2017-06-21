@@ -121,7 +121,10 @@ public class FeedActivity extends BaseActivity {
                     if (error == 0) {
                         Toast.makeText(context,"提交成功！",Toast.LENGTH_LONG).show();
                         destroyActitity();
-                    } else {
+                    } else if(error==102) {
+                        Toast.makeText(context,"您的操作太频繁！",Toast.LENGTH_LONG).show();
+                        destroyActitity();
+                    }else{
                         return;
                     }
                     break;
