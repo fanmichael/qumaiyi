@@ -12,6 +12,7 @@ import android.widget.Toast;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.net.URLEncoder;
 import java.util.HashMap;
 
 import butterknife.BindView;
@@ -70,14 +71,19 @@ public class FeedActivity extends BaseActivity {
 
 
     private void httpNick() {
-        HashMap<String, String> map = new HashMap<>();
-        map.put("action", "Feedback.putFeedback");
-        map.put("uid", AppContext.cv.getAsInteger("id") + "");
-        map.put("content", content);
-        String json = HttpConnectTool.post(map);
-        if (!json.equals("")) {
-            xmlComm(json);
+        try {
+            HashMap<String, String> map = new HashMap<>();
+            map.put("action", "Feedback.putFeedback");
+            map.put("uid", AppContext.cv.getAsInteger("id") + "");
+            map.put("content", URLEncoder.encode(content, "UTF-8")+"");
+            String json = HttpConnectTool.post(map);
+            if (!json.equals("")) {
+                xmlComm(json);
+            }
+        }catch (Exception e){
+            e.printStackTrace();
         }
+
     }
 
     private void xmlComm(String data) {
@@ -113,6 +119,7 @@ public class FeedActivity extends BaseActivity {
             switch (what) {
                 case 1:
                     if (error == 0) {
+                        Toast.makeText(context,"提交成功！",Toast.LENGTH_LONG).show();
                         destroyActitity();
                     } else {
                         return;

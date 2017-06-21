@@ -19,6 +19,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="广告合作"
+        android:textColor="@color/grays"
         android:layout_marginTop="10dp"
         android:textSize="14dp" />
 

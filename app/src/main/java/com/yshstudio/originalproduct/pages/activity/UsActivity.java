@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.view.LayoutInflater;
@@ -17,10 +18,22 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.yshstudio.originalproduct.R;
+import com.yshstudio.originalproduct.pages.config.AppContext;
+import com.yshstudio.originalproduct.pages.http.HttpConnectTool;
 import com.yshstudio.originalproduct.tools.ListTools;
 import com.yshstudio.originalproduct.tools.TextContent;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.net.URLEncoder;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -59,8 +72,10 @@ public class UsActivity extends BaseActivity {
     ListView list;
 
     private Context context;
-    private TextContent textContent = new TextContent();
     private Content content;
+    private List<ContentValues> contentValues=new ArrayList<>();
+    private ContentValues aboutUsValues=new ContentValues();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,32 +85,18 @@ public class UsActivity extends BaseActivity {
         context = this;
         initView();
     }
-
-    private void intData() {
-
-        contect.setText(textContent.content);
-        liCon.setText(textContent.qontect_li);
-        phone.setText(textContent.qontect_phone);
-        emi.setText(textContent.qontect_emi);
-        web.setText(textContent.qontect_web);
-    }
-
-
-    private void initViewData() {
-        content = new Content(context);
-        list.setAdapter(content);
-        ListTools.setListViewHeightBasedOnChildren(list);
-    }
-
     @OnClick(R.id.image_back)
     void back() {
         destroyActitity();
     }
 
+    /**
+     * 打电话
+     * */
     @OnClick(R.id.us_phone)
     void usPhone() {
         try {
-            String number = "400-12345678";
+            String number = aboutUsValues.getAsString("tel");
             Intent intent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + number));
             if (ActivityCompat.checkSelfPermission(context, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
                 return;
@@ -107,6 +108,9 @@ public class UsActivity extends BaseActivity {
     }
 
 
+    /**
+     * 加载判断视图
+     * */
     private void initView() {
         topRegitTitle.setVisibility(View.GONE);
         Bundle bundle = this.getIntent().getExtras();
@@ -116,13 +120,13 @@ public class UsActivity extends BaseActivity {
             us.setVisibility(View.VISIBLE);
             version.setVisibility(View.GONE);
             list.setVisibility(View.GONE);
-            intData();
+            new asyncTask().execute(2);
         } else if (tyep.equals("contact")) {
             topTitle.setText("联系我们");
             version.setVisibility(View.GONE);
             us.setVisibility(View.GONE);
             list.setVisibility(View.VISIBLE);
-            initViewData();
+            new asyncTask().execute(1);
         } else if (tyep.equals("version")) {
             topTitle.setText("当前版本");
             us.setVisibility(View.GONE);
@@ -150,7 +154,9 @@ public class UsActivity extends BaseActivity {
         }
     }
 
-
+    /**
+     * 联系我们Adapter
+     * */
     private class Content extends BaseAdapter {
 
         private Context context;
@@ -161,7 +167,7 @@ public class UsActivity extends BaseActivity {
 
         @Override
         public int getCount() {
-            return textContent.setData().size();
+            return contentValues.size();
         }
 
         @Override
@@ -188,25 +194,25 @@ public class UsActivity extends BaseActivity {
             } else {
                 holder = (ViewHolder) convertView.getTag();
             }
-            ContentValues cv = textContent.setData().get(position);
+            ContentValues cv = contentValues.get(position);
 
-            if (cv.getAsString("a").equals("")) {
+            if (cv.getAsString("title").equals("")) {
                 holder.adv.setVisibility(View.GONE);
             } else {
                 holder.adv.setVisibility(View.VISIBLE);
-                holder.adv.setText(cv.getAsString("a"));
+                holder.adv.setText(cv.getAsString("title"));
             }
-            if (cv.getAsString("c").equals("")) {
+            if (cv.getAsString("content").equals("")) {
                 holder.adv_s.setVisibility(View.GONE);
             } else {
                 holder.adv_s.setVisibility(View.VISIBLE);
-                holder.adv_s.setText(cv.getAsString("c"));
+                holder.adv_s.setText(cv.getAsString("content"));
             }
-            if (cv.getAsString("b").equals("")) {
+            if (cv.getAsString("contact_way").equals("")) {
                 holder.adv_e.setVisibility(View.GONE);
             } else {
                 holder.adv_e.setVisibility(View.VISIBLE);
-                holder.adv_e.setText(cv.getAsString("b"));
+                holder.adv_e.setText(cv.getAsString("contact_way"));
             }
             return convertView;
         }
@@ -218,6 +224,138 @@ public class UsActivity extends BaseActivity {
         }
 
     }
+
+    private class asyncTask extends AsyncTask<Integer, Integer, Bundle> {
+
+        @Override
+        protected Bundle doInBackground(Integer... params) {
+            Bundle bundle = new Bundle();
+            switch (params[0]) {
+                case 1:
+                    httpLinkUs();
+                    bundle.putInt("what", 1);
+                    break;
+                case 2:
+                    httpAboutUs();
+                    bundle.putInt("what", 2);
+                    break;
+            }
+            return bundle;
+        }
+
+        @Override
+        protected void onPostExecute(Bundle bundle) {
+            int what = bundle.containsKey("what") ? bundle.getInt("what") : -1;
+            removeLoading();
+            switch (what) {
+                case 1:
+                    content = new Content(context);
+                    list.setAdapter(content);
+                    ListTools.setListViewHeightBasedOnChildren(list);
+                    break;
+                case 2:
+                    intData();
+                    break;
+            }
+        }
+    }
+
+    private void httpLinkUs() {
+        try {
+            HashMap<String, String> map = new HashMap<>();
+            map.put("action", "Contactus.linkUs");
+            String json = HttpConnectTool.post(map);
+            if (!json.equals("")) {
+                xmlLinkUs(json);
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
+    }
+
+    private void xmlLinkUs(String data) {
+        try {
+            JSONObject obj = new JSONObject(data);
+            JSONArray objData=new JSONArray(obj.getString("data"));
+            if(objData.length()>0){
+                for (int i=0;i<objData.length();i++){
+                    JSONObject jsdata = objData.getJSONObject(i);
+                   ContentValues values=new ContentValues();
+                    values.put("title",jsdata.getString("title"));
+                    values.put("content",jsdata.getString("content"));
+                    values.put("contact_way",jsdata.getString("contact_way"));
+                    contentValues.add(values);
+                }
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void httpAboutUs() {
+        try {
+            HashMap<String, String> map = new HashMap<>();
+            map.put("action", "Aboutus.aboutUs");
+            String json = HttpConnectTool.post(map);
+            if (!json.equals("")) {
+                xmlAboutUs(json);
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
+    }
+
+
+    private void xmlAboutUs(String data) {
+        try {
+            JSONObject obj = new JSONObject(data);
+            JSONArray objData=new JSONArray(obj.getString("data"));
+            if(objData.length()>0){
+                for (int i=0;i<objData.length();i++){
+                    JSONObject jsdata = objData.getJSONObject(i);
+                    aboutUsValues.put("synopsis",jsdata.getString("synopsis"));
+                    aboutUsValues.put("idea",jsdata.getString("idea"));
+                    aboutUsValues.put("tel",jsdata.getString("tel"));
+                    aboutUsValues.put("email",jsdata.getString("email"));
+                    aboutUsValues.put("url",jsdata.getString("url"));
+                }
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * 加载关于我们
+     * */
+    private void intData() {
+        contect.setText(aboutUsValues.getAsString("synopsis"));
+        liCon.setText(aboutUsValues.getAsString("idea"));
+        phone.setText("客服热线："+aboutUsValues.getAsString("tel"));
+        emi.setText("邮箱："+aboutUsValues.getAsString("email"));
+        web.setText("公司网址："+aboutUsValues.getAsString("url"));
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 }

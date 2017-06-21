@@ -112,15 +112,14 @@ public class InfromActivity extends BaseActivity {
                     if (error == 0) {
                         Toast.makeText(context, "提交成功！", Toast.LENGTH_SHORT).show();
                         destroyActitity();
-                    } else {
+                    } else if(error==122){
+                        Toast.makeText(context, "您已举报过，请等待系统审核！", Toast.LENGTH_SHORT).show();
+                        destroyActitity();
+                    }else {
                         Toast.makeText(context, "参数提交有误！", Toast.LENGTH_SHORT).show();
                     }
                     break;
-
             }
-
         }
     }
-
-
 }
