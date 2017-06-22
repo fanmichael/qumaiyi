@@ -18,14 +18,27 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Observable;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import rx.Subscriber;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Func1;
+import rx.schedulers.Schedulers;
+
+import com.trello.rxlifecycle.android.ActivityEvent;
+import com.umeng.socialize.utils.Log;
 import com.yshstudio.originalproduct.R;
+import com.yshstudio.originalproduct.inc.Ini;
 import com.yshstudio.originalproduct.pages.adapter.SiteDetailsAdapter;
 import com.yshstudio.originalproduct.pages.config.AppContext;
+import com.yshstudio.originalproduct.pages.http.APIService;
 import com.yshstudio.originalproduct.pages.http.HttpConnectTool;
+import com.yshstudio.originalproduct.pages.http.RetrofitUtils;
+import com.yshstudio.originalproduct.tools.LogUtils;
 
 /**
  * 我的地址
@@ -267,6 +280,69 @@ public class SiteDetailsActivity extends BaseActivity implements SiteDetailsAdap
         }
 
     }
+
+    /**
+     * 请求方式
+     * */
+    private void httpAdress(){
+        HashMap<String, String> map = new HashMap<>();
+        map.put("action", "Address.allAddress");
+        map.put("uid", AppContext.cv.getAsInteger("id") + "");
+        APIService apiService = RetrofitUtils.getApiService();
+        rx.Observable<String> observable = apiService.getSalewellPrinterIs(Ini.Url+"?", map);
+        observable.compose(this.<String>bindToLifecycle())
+                .subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<String>() {
+                    @Override
+                    public void onCompleted() {
+                        LogUtils.logD("ss", "onCompleted ");
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        LogUtils.logD("ss", "onCompleted "+e);
+                    }
+
+                    @Override
+                    public void onNext(String s) {
+                        LogUtils.logD("ss", "onCompleted "+s);
+                        try {
+                            JSONObject jsonObject = new JSONObject(s);
+                            JSONArray jsonArray = new JSONArray(jsonObject.getString("data"));
+                            if (jsonArray.length() > 0) {
+                                for (int i = 0; i < jsonArray.length(); i++) {
+                                    JSONObject jsdata = jsonArray.getJSONObject(i);
+                                    ContentValues cv = new ContentValues();
+                                    cv.put("id", jsdata.getInt("id"));
+                                    cv.put("uid", jsdata.getInt("uid"));
+                                    cv.put("state", jsdata.getInt("state"));
+                                    cv.put("name", jsdata.getString("name"));
+                                    cv.put("mobile", jsdata.getString("mobile"));
+                                    cv.put("address", jsdata.getString("address"));
+                                    address.add(cv);
+                                }
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        } catch (Exception er) {
+                            er.printStackTrace();
+                        }
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                adapter.notifyDataSetChanged();
+                            }
+                        });
+
+                    }
+                });
+
+
+    }
+
+
+
+
 
 
 }

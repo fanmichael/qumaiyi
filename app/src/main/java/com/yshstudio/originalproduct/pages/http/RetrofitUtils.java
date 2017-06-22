@@ -30,7 +30,7 @@ public class RetrofitUtils {
                     .readTimeout(Ini._HTTP_READ_TIMEOUT, TimeUnit.MILLISECONDS).build();
             mRetrofit = new Retrofit.Builder()
                     .client(client)//添加一个client,不然retrofit会自己默认添加一个
-                    .baseUrl("http://www.salewell.com/pages/")
+                    .baseUrl(Ini.Url_ROOT)
                     .addConverterFactory(new StringConverterFactory())
                     .addConverterFactory(GsonConverterFactory.create())
                     .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
