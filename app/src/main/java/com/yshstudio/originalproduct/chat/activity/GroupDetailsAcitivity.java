@@ -3,6 +3,8 @@ package com.yshstudio.originalproduct.chat.activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -27,6 +29,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+import com.tencent.mm.opensdk.utils.Log;
 import com.yshstudio.originalproduct.R;
 import com.yshstudio.originalproduct.chat.RXbus.RxBus;
 import com.yshstudio.originalproduct.chat.bean.DeleteGroup;
@@ -34,6 +37,8 @@ import com.yshstudio.originalproduct.chat.bean.GroupMember;
 import com.yshstudio.originalproduct.chat.bean.GroupMemberRequest;
 import com.yshstudio.originalproduct.chat.eventtype.JSEvent;
 import com.yshstudio.originalproduct.chat.net.ComUnityRequest;
+import com.yshstudio.originalproduct.pages.view.LoadingDialog;
+
 import retrofit2.http.Body;
 import rx.Observer;
 import rx.android.schedulers.AndroidSchedulers;
@@ -55,6 +60,7 @@ public class GroupDetailsAcitivity extends AppCompatActivity {
     LinearLayout activityGroupDetailsAcitivity;
     String groupid;
     RecyclerViewAdapter adapter;
+    private LoadingDialog mDialog = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,7 +79,7 @@ public class GroupDetailsAcitivity extends AppCompatActivity {
             @Override
             public void add() {
                 EMGroup group = EMClient.getInstance().groupManager().getGroup(groupid);
-                if (group.getOwner().equals(UserLodingInFo.getInstance().getMobile())) {
+                if (group.getOwner().equals(UserLodingInFo.getInstance().getMobile().toLowerCase())) {
                     startActivity(new Intent(GroupDetailsAcitivity.this, GroupAddMemberActivity.class).putExtra("GROUPID", groupid));
                 } else {
                     Toast.makeText(GroupDetailsAcitivity.this, "无此权限", Toast.LENGTH_SHORT).show();
@@ -83,7 +89,7 @@ public class GroupDetailsAcitivity extends AppCompatActivity {
             @Override
             public void delete() {
                 EMGroup group = EMClient.getInstance().groupManager().getGroup(groupid);
-                if (group.getOwner().equals(UserLodingInFo.getInstance().getMobile())) {
+                if (group.getOwner().equals(UserLodingInFo.getInstance().getMobile().toLowerCase())) {
                     startActivity(new Intent(GroupDetailsAcitivity.this, GroupDeleteMember.class).putExtra("GROUPID", groupid));
                 } else {
                     Toast.makeText(GroupDetailsAcitivity.this, "无此权限", Toast.LENGTH_SHORT).show();
@@ -99,12 +105,13 @@ public class GroupDetailsAcitivity extends AppCompatActivity {
             public void onClick(View v) {
                 try {
                     delete.setClickable(false);
-                    EMGroup group = EMClient.getInstance().groupManager().getGroup(groupid);
-                    if (group.getOwner().equals(UserLodingInFo.getInstance().getMobile())) {
-                        EMClient.getInstance().groupManager().destroyGroup(groupid);
-                    } else {
-                        EMClient.getInstance().groupManager().leaveGroup(groupid);
-                    }
+//                    EMGroup group = EMClient.getInstance().groupManager().getGroup(groupid);
+//                    if (group.getOwner().equals(UserLodingInFo.getInstance().getMobile().toLowerCase())) {
+//                        EMClient.getInstance().groupManager().destroyGroup(groupid);
+//                    } else {
+//                        EMClient.getInstance().groupManager().leaveGroup(groupid);
+//                    }
+                    appendLoading();
                     ComUnityRequest.getAPI().deleteGroup(new DeleteGroup().setUid(UserLodingInFo.getInstance().getId()).setGroupid(groupid)).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Observer<Body>() {
                         @Override
                         public void onCompleted() {
@@ -118,18 +125,40 @@ public class GroupDetailsAcitivity extends AppCompatActivity {
 
                         @Override
                         public void onNext(Body body) {
-
                         }
                     });
-                    Toast.makeText(GroupDetailsAcitivity.this, "退出成功", Toast.LENGTH_SHORT).show();
-                    finish();
-                    RxBus.getDefault().post(new JSEvent().setEventType("FINISH"));
-                } catch (HyphenateException e) {
+                    handler.sendEmptyMessageDelayed(0, 3000);
+                } catch (Exception e) {
                     e.printStackTrace();
                     delete.setClickable(true);
                 }
             }
         });
+    }
+
+    private Handler handler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            removeLoadings();
+            Toast.makeText(GroupDetailsAcitivity.this, "退出成功", Toast.LENGTH_SHORT).show();
+            finish();
+            RxBus.getDefault().post(new JSEvent().setEventType("FINISH"));
+            super.handleMessage(msg);
+        }
+    };
+
+    private void appendLoading() {
+        mDialog = new LoadingDialog(GroupDetailsAcitivity.this);
+        mDialog.setText("正在删除");
+        mDialog.show();
+    }
+
+    // 关闭loading
+    private void removeLoadings() {
+        if (mDialog != null) {
+            mDialog.dismiss();
+            mDialog = null;
+        }
     }
 
     @Override

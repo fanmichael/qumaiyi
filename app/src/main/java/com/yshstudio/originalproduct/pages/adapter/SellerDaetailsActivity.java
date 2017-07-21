@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import com.yshstudio.originalproduct.R;
+import com.yshstudio.originalproduct.tools.SharedPreferenceUtil;
 import com.yshstudio.originalproduct.tools.ValidData;
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -106,7 +107,7 @@ public class SellerDaetailsActivity extends BaseActivity {
         try {
             HashMap<String, String> hashMap = new HashMap<>();
             hashMap.put("action", "Merchant.checkMerchantStatus");
-            hashMap.put("uid", AppContext.cv.getAsInteger("id") + "");
+            hashMap.put("uid", SharedPreferenceUtil.read("id","") + "");
             hashMap.put("page", "1");
             String json = HttpConnectTool.post(hashMap);
             if (!json.equals("")) {

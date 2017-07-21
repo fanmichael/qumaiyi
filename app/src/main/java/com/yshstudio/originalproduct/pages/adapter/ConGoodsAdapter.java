@@ -16,6 +16,7 @@ import com.facebook.drawee.view.SimpleDraweeView;
 
 import java.util.List;
 import com.yshstudio.originalproduct.R;
+import com.yshstudio.originalproduct.tools.SharedPreferenceUtil;
 import com.yshstudio.originalproduct.tools.ValidData;
 import com.yshstudio.originalproduct.pages.activity.ShopDetailsActivity;
 import com.yshstudio.originalproduct.pages.config.AppContext;
@@ -83,7 +84,7 @@ public class ConGoodsAdapter extends BaseAdapter {
                 Intent intent = new Intent(context, ShopDetailsActivity.class);
                 Bundle bundle = new Bundle();
                 bundle.putInt("id", cv.getAsInteger("id"));
-                bundle.putInt("uid", AppContext.cv.getAsInteger("id"));
+                bundle.putInt("uid", Integer.valueOf(SharedPreferenceUtil.read("id","")));
                 intent.putExtras(bundle);
                 context.startActivity(intent);
             }

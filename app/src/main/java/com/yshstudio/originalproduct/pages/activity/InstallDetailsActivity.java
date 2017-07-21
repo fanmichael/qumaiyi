@@ -216,15 +216,13 @@ public class InstallDetailsActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 if (SharedPreferenceUtil.hasKey("mobile") && SharedPreferenceUtil.hasKey("password")) {
-                    SharedPreferenceUtil.remove("mobile");
-                    SharedPreferenceUtil.remove("password");
+                    SharedPreferenceUtil.clear();
+                    SharedPreferenceUtil.insert("is", true);
                     AppContext.cv.clear();
                 }
                 if (SharedPreferenceUtil.hasKey("id")) {
-                    SharedPreferenceUtil.remove("type");
-                    SharedPreferenceUtil.remove("id");
-                    SharedPreferenceUtil.remove("nick");
-                    SharedPreferenceUtil.remove("icon");
+                    SharedPreferenceUtil.clear();
+                    SharedPreferenceUtil.insert("is", true);
                     AppContext.cv.clear();
                 }
                 if (EMClient.getInstance().isLoggedInBefore())

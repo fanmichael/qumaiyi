@@ -44,6 +44,7 @@ import com.yshstudio.originalproduct.pages.view.swipemenu.bean.SwipeMenu;
 import com.yshstudio.originalproduct.pages.view.swipemenu.bean.SwipeMenuItem;
 import com.yshstudio.originalproduct.pages.view.swipemenu.interfaces.OnMenuItemClickListener;
 import com.yshstudio.originalproduct.pages.view.swipemenu.interfaces.SwipeMenuCreator;
+import com.yshstudio.originalproduct.tools.SharedPreferenceUtil;
 
 /**
  * Created by Administrator on 2017/5/9 0009.SwipeRefreshLayout.OnRefreshListener,
@@ -241,7 +242,7 @@ public class PublishDetailsShopBuyFragment extends BasicFragment implements  IXL
         try {
             HashMap<String, String> hashMap = new HashMap<>();
             hashMap.put("action", "Trade.mygoodsupdate");
-            hashMap.put("uid", AppContext.cv.getAsInteger("id") + "");
+            hashMap.put("uid", SharedPreferenceUtil.read("id","") + "");
             hashMap.put("id", id + "");
             hashMap.put("status", "0");
             String json = HttpConnectTool.post(hashMap);
@@ -257,7 +258,7 @@ public class PublishDetailsShopBuyFragment extends BasicFragment implements  IXL
         try {
             HashMap<String, String> hashMap = new HashMap<>();
             hashMap.put("action", "Trade.myGoods");
-            hashMap.put("uid", AppContext.cv.getAsInteger("id") + "");
+            hashMap.put("uid", SharedPreferenceUtil.read("id","") + "");
             hashMap.put("page", page + "");
             String json = HttpConnectTool.post(hashMap);
             if (!json.equals("")) {

@@ -32,6 +32,7 @@ import com.yshstudio.originalproduct.R;
 import com.yshstudio.originalproduct.pages.adapter.BuyGoodsShopAdapter;
 import com.yshstudio.originalproduct.pages.config.AppContext;
 import com.yshstudio.originalproduct.pages.http.HttpConnectTool;
+import com.yshstudio.originalproduct.tools.SharedPreferenceUtil;
 
 
 public class ShopBuyActivity extends BaseActivity implements SwipeRefreshLayout.OnRefreshListener, BuyGoodsShopAdapter.setOnClickLoction {
@@ -469,7 +470,7 @@ public class ShopBuyActivity extends BaseActivity implements SwipeRefreshLayout.
         try {
             HashMap<String, String> hashMap = new HashMap<>();
             hashMap.put("action", "User.getOrderInfo");
-            hashMap.put("uid", AppContext.cv.getAsInteger("id") + "");
+            hashMap.put("uid", SharedPreferenceUtil.read("id","") + "");
             hashMap.put("state", satrt);
             hashMap.put("type", "1");
             hashMap.put("page", page + "");

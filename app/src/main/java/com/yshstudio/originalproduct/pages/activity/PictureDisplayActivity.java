@@ -3,16 +3,22 @@ package com.yshstudio.originalproduct.pages.activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
+import android.graphics.PointF;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.util.FloatMath;
 import android.util.Log;
 import android.util.LruCache;
 import android.view.MotionEvent;
+import android.view.View;
 import android.view.animation.AlphaAnimation;
 import android.widget.TextView;
 
 import com.facebook.drawee.view.SimpleDraweeView;
+import com.yshstudio.originalproduct.R;
+
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -22,7 +28,6 @@ import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import com.yshstudio.originalproduct.R;
 
 
 public class PictureDisplayActivity extends BaseActivity {
@@ -48,8 +53,154 @@ public class PictureDisplayActivity extends BaseActivity {
         setContentView(R.layout.activity_picture_display);
         ButterKnife.bind(this);
         new Thread(runa).start();
+
+        /**
+         * 图片放大，缩小，拖坠，处理
+         * */
+//        imageView.setOnTouchListener(new TouchListener());
     }
 
+    /**
+     *  图片放大处理
+     *  -----------无用----------
+     * */
+    private final class TouchListener implements View.OnTouchListener{
+        /** 记录是拖拉照片模式还是放大缩小照片模式 */
+        private int mode = 0;// 初始状态
+        /** 拖拉照片模式 */
+        private static final int MODE_DRAG = 1;
+        /** 放大缩小照片模式 */
+        private static final int MODE_ZOOM = 2;
+
+        /** 用于记录开始时候的坐标位置 */
+        private PointF startPoint = new PointF();
+        /** 用于记录拖拉图片移动的坐标位置 */
+        private Matrix matrix = new Matrix();
+        /** 用于记录图片要进行拖拉时候的坐标位置 */
+        private Matrix currentMatrix = new Matrix();
+
+        /** 两个手指的开始距离 */
+        private float startDis;
+        /** 两个手指的中间点 */
+        private PointF midPoint;
+
+        @Override
+        public boolean onTouch(View v, MotionEvent event) {
+            switch (event.getAction() & MotionEvent.ACTION_MASK) {
+                // 手指压下屏幕
+                case MotionEvent.ACTION_DOWN:
+                    mode = MODE_DRAG;
+                    // 记录ImageView当前的移动位置
+                    currentMatrix.set(imageView.getImageMatrix());
+                    startPoint.set(event.getX(), event.getY());
+
+
+                    downX = (int) event.getRawX();
+                    break;
+                // 手指在屏幕上移动，改事件会被不断触发
+                case MotionEvent.ACTION_MOVE:
+
+                    moveX = (int) event.getRawX();
+
+                    // 拖拉图片
+                    if (mode == MODE_DRAG) {
+                        float dx = event.getX() - startPoint.x; // 得到x轴的移动距离
+                        float dy = event.getY() - startPoint.y; // 得到x轴的移动距离
+                        // 在没有移动之前的位置上进行移动
+                        matrix.set(currentMatrix);
+                        matrix.postTranslate(dx, dy);
+                    }
+                    // 放大缩小图片
+                    else if (mode == MODE_ZOOM) {
+                        float endDis = distance(event);// 结束距离
+                        if (endDis > 10f) { // 两个手指并拢在一起的时候像素大于10
+                            float scale = endDis / startDis;// 得到缩放倍数
+                            matrix.set(currentMatrix);
+                            matrix.postScale(scale, scale,midPoint.x,midPoint.y);
+                        }
+                    }
+                    break;
+                // 手指离开屏幕
+                case MotionEvent.ACTION_UP:
+                    // 当触点离开屏幕，但是屏幕上还有触点(手指)
+
+                    upX = (int) event.getRawX();
+                    int pValue = upX - downX;//滑动的距离差
+                    if (upX - downX > 120) {//右滑的时候
+                        if (a <= mMemoryCache.size()) {
+                            a++;
+                            if (a > mMemoryCache.size()) {
+                                a = 1;
+                            }
+                            AlphaAnimation animation = new AlphaAnimation(0.6f, 1.0f);
+                            imageView.setAnimation(animation);
+                            imageView.setImageBitmap(mMemoryCache.get("imageKey" + a));
+                            pictureDisplayText.setText((Integer.valueOf(a)) + "/" + Integer.valueOf(mMemoryCache.size()));
+//                        a++;
+//                        if (a > mMemoryCache.size()) {
+//                            a = 1;
+//                        }
+                        }
+
+                    } else if (upX - downX < -120) {//左滑
+                        if (a > 0) {
+                            a--;
+                            if (a == 0) {
+                                a = mMemoryCache.size();
+                            }
+                            AlphaAnimation animation = new AlphaAnimation(0.6f, 1.0f);
+                            imageView.setAnimation(animation);
+                            imageView.setImageBitmap(mMemoryCache.get("imageKey" + a));
+                            pictureDisplayText.setText((Integer.valueOf(a)) + "/" + Integer.valueOf(mMemoryCache.size()));
+//                        a--;
+//                        if (a == 0) {
+//                            a = mMemoryCache.size();
+//                        }
+                        }
+
+                    }
+
+                    if (pValue == 0) {//点击触摸就关闭窗口
+                        finish();
+                    }
+
+                        break;
+                case MotionEvent.ACTION_POINTER_UP:
+                    mode = 0;
+                    break;
+                // 当屏幕上已经有触点(手指)，再有一个触点压下屏幕
+                case MotionEvent.ACTION_POINTER_DOWN:
+                    mode = MODE_ZOOM;
+                    /** 计算两个手指间的距离 */
+                    startDis = distance(event);
+                    /** 计算两个手指间的中间点 */
+                    if (startDis > 10f) { // 两个手指并拢在一起的时候像素大于10
+                        midPoint = mid(event);
+                        //记录当前ImageView的缩放倍数
+                        currentMatrix.set(imageView.getImageMatrix());
+                    }
+                    break;
+            }
+            imageView.setImageMatrix(matrix);
+            return true;
+        }
+        /** 计算两个手指间的距离 */
+        private float distance(MotionEvent event) {
+            float dx = event.getX(1) - event.getX(0);
+            float dy = event.getY(1) - event.getY(0);
+            float dd=dx * dx + dy * dy;
+            /** 使用勾股定理返回两点之间的距离 */
+            return (float)Math.sqrt(dd);
+        }
+
+        /** 计算两个手指间的中间点 */
+        private PointF mid(MotionEvent event) {
+            float midX = (event.getX(1) + event.getX(0)) / 2;
+            float midY = (event.getY(1) + event.getY(0)) / 2;
+            return new PointF(midX, midY);
+        }
+
+    }
 
     /**
      * 显示下载图片
@@ -78,12 +229,11 @@ public class PictureDisplayActivity extends BaseActivity {
         @Override
         public void run() {
             Intent intent = getIntent();
-            int position = intent.getIntExtra("position", -1);
+            int position = intent.getIntExtra("position",0);
             ArrayList<String> url = intent.getStringArrayListExtra("enlargeImage");
             Log.e(TAG, "a==" + position);
-            a = position;
+//            a = position;
             pictureDisplayText.setText((Integer.valueOf(a)) + "/" + Integer.valueOf(url.size()));
-//            bit("http://qmy.51edn.com/upload/icons/20170509/049939874ca7289dbbfeabea355f947f.jpg");//先显示传进来的第一张
             for (int i = 0; i < url.size(); i++) {
                 bit(url.get(i).toString());
             }
@@ -95,8 +245,6 @@ public class PictureDisplayActivity extends BaseActivity {
         try {
             data = getImage(url);
             bitmap = BitmapFactory.decodeByteArray(data, 0, data.length);  //生成位图
-
-//            Looper.prepare();// 必须调用此方法，要不然会报错
             Message msg = new Message();
             msg.what = 0;
             msg.obj = bitmap;
@@ -136,45 +284,34 @@ public class PictureDisplayActivity extends BaseActivity {
             case MotionEvent.ACTION_DOWN://获取点击的时候屏幕位置
                 downX = (int) event.getRawX();
                 break;
-
             case MotionEvent.ACTION_MOVE:
                 moveX = (int) event.getRawX();
                 break;
-
             case MotionEvent.ACTION_UP://手离开的时候位置
                 upX = (int) event.getRawX();
                 int pValue = upX - downX;//滑动的距离差
-
-                Log.e("NSC", "upX-downX = " + (upX - downX));
                 if (upX - downX > 120) {//右滑的时候
-                    Log.e("NSC", "a = " + a + ":" + mMemoryCache.size());
                     if (a <= mMemoryCache.size()) {
-                        // LogUtil.e(TAG, mMemoryCache.get("imageKey"+a).getWidth()+":"+mMemoryCache.get("imageKey"+a).getHeight());
-                        //mMemoryCache.get("imageKey"+a).getWidth();
-                        AlphaAnimation animation = new AlphaAnimation(0.6f, 1.0f);
-//                        Animation rInAnimIn = AnimationUtils.loadAnimation(this, R.anim.push_right_in);
-                        imageView.setAnimation(animation);
-                        imageView.setImageBitmap(mMemoryCache.get("imageKey" + a));
-                        pictureDisplayText.setText((Integer.valueOf(a)) + "/" + Integer.valueOf(mMemoryCache.size()));
-
                         a++;
                         if (a > mMemoryCache.size()) {
                             a = 1;
                         }
-                    }
-
-                } else if (upX - downX < -120) {//左滑
-                    Log.e("NSC", "aaaa = " + a + ":" + mMemoryCache.size());
-                    if (a > 0) {
                         AlphaAnimation animation = new AlphaAnimation(0.6f, 1.0f);
-//                        Animation lInAnim = AnimationUtils.loadAnimation(this, R.anim.push_left_in);       // 向左滑动左侧进入的渐变效果（alpha 0.1  -> 1.0）
                         imageView.setAnimation(animation);
                         imageView.setImageBitmap(mMemoryCache.get("imageKey" + a));
                         pictureDisplayText.setText((Integer.valueOf(a)) + "/" + Integer.valueOf(mMemoryCache.size()));
+                    }
+
+                } else if (upX - downX < -120) {//左滑
+                    if (a > 0) {
                         a--;
                         if (a == 0) {
                             a = mMemoryCache.size();
                         }
+                        AlphaAnimation animation = new AlphaAnimation(0.6f, 1.0f);
+                        imageView.setAnimation(animation);
+                        imageView.setImageBitmap(mMemoryCache.get("imageKey" + a));
+                        pictureDisplayText.setText((Integer.valueOf(a)) + "/" + Integer.valueOf(mMemoryCache.size()));
                     }
 
                 }

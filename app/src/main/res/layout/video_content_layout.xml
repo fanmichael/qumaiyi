@@ -26,13 +26,14 @@
                     android:id="@+id/video_images"
                     android:layout_width="100dp"
                     android:layout_height="80dp"
+                    android:layout_marginTop="10dp"
                     android:background="@drawable/addimages" />
 
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="10dp"
-                    android:layout_marginTop="5dp"
+                    android:layout_marginTop="15dp"
                     android:gravity="center"
                     android:orientation="horizontal">
 
@@ -56,10 +57,9 @@
                         android:layout_marginLeft="10dp"
                         android:background="@drawable/login_btn"
                         android:padding="5dp"
-                        android:text="   录制   "
+                        android:text="录制视频上传"
                         android:textColor="@color/white"
-                        android:visibility="gone"
-                        />
+                        android:visibility="visible" />
 
                 </LinearLayout>
 
@@ -331,8 +331,8 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center_horizontal"
                 android:layout_marginBottom="30dp"
+                android:gravity="center_horizontal"
                 android:orientation="horizontal">
 
                 <Button

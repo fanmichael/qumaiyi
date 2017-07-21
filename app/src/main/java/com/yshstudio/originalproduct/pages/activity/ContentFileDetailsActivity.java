@@ -182,9 +182,7 @@ public class ContentFileDetailsActivity extends BaseActivity implements CommentA
         Bundle bundle = this.getIntent().getExtras();
         id = bundle.getInt("id");
         uid = bundle.getInt("uid");
-//        if (uid == AppContext.cv.getAsInteger("id")) {
-        if (String.valueOf(uid).equals(String.valueOf(AppContext.cv.getAsInteger("id")))) {
-//            lan.setVisibility(View.GONE);
+        if (String.valueOf(uid).equals(SharedPreferenceUtil.read("id",""))) {
             radioPagesFile.setVisibility(View.GONE);
             fileDetailsAttention.setVisibility(View.GONE);
             fileDetailsAttentionNo.setVisibility(View.GONE);
@@ -193,8 +191,6 @@ public class ContentFileDetailsActivity extends BaseActivity implements CommentA
             collCon.setVisibility(View.GONE);
             collConNo.setVisibility(View.GONE);
         }
-//        commentAdapter = new CommentAdapter(context, list, lists, this);
-//        contentFileDetailsAdapter=new ContentFileDetailsAdapter(context,list,lists,this);
         setDelayMessage(1, 100);
 
         //对于的低端手机可能会有如下问题，
@@ -450,12 +446,12 @@ public class ContentFileDetailsActivity extends BaseActivity implements CommentA
     }
 
     private void sendMessage() {
-        if (SharedPreferenceUtil.hasKey("id")) {
-            if (SharedPreferenceUtil.read("id", "").isEmpty()) {
+        if (SharedPreferenceUtil.hasKey("openid")) {
+            if (SharedPreferenceUtil.read("openid", "").isEmpty()) {
                 return;
             }
         } else {
-            if (AppContext.cv.getAsString("mobile").trim().isEmpty()) {
+            if (SharedPreferenceUtil.read("mobile","").trim().isEmpty()) {
                 return;
             }
         }
@@ -523,7 +519,7 @@ public class ContentFileDetailsActivity extends BaseActivity implements CommentA
             HashMap<String, String> map = new HashMap<>();
             map.put("action", "Community.content");
             map.put("id", coid + "");
-            map.put("uid", AppContext.cv.getAsInteger("id") + "");
+            map.put("uid", SharedPreferenceUtil.read("id","") + "");
             map.put("content", URLEncoder.encode(contentDetails, "UTF-8") + "");
             map.put("parent", parentnum + "");
             String json = HttpConnectTool.post(map);
@@ -591,7 +587,7 @@ public class ContentFileDetailsActivity extends BaseActivity implements CommentA
                     break;
                 case 8:
                     initData();
-                    if (!String.valueOf(uid).equals(String.valueOf(AppContext.cv.getAsInteger("id")))) {
+                    if (!String.valueOf(uid).equals(SharedPreferenceUtil.read("id",""))) {
                         isColl();
                     }
                     imgsList();
@@ -643,7 +639,7 @@ public class ContentFileDetailsActivity extends BaseActivity implements CommentA
         try {
             HashMap<String, String> map = new HashMap<>();
             map.put("action", "Community.follow");
-            map.put("uid", AppContext.cv.getAsInteger("id") + "");
+            map.put("uid", SharedPreferenceUtil.read("id","") + "");
             map.put("type", "2");
             map.put("type_id", uid + "");
             String json = HttpConnectTool.post(map);
@@ -669,7 +665,7 @@ public class ContentFileDetailsActivity extends BaseActivity implements CommentA
         try {
             HashMap<String, String> map = new HashMap<>();
             map.put("action", "Community.checkFollowStatus");
-            map.put("uid", AppContext.cv.getAsInteger("id") + "");
+            map.put("uid", SharedPreferenceUtil.read("id","") + "");
             map.put("type", "2");
             map.put("type_id", uid + "");
             String json = HttpConnectTool.post(map);
@@ -693,7 +689,7 @@ public class ContentFileDetailsActivity extends BaseActivity implements CommentA
         try {
             HashMap<String, String> map = new HashMap<>();
             map.put("action", "Community.collection");
-            map.put("uid", AppContext.cv.getAsInteger("id") + "");
+            map.put("uid", SharedPreferenceUtil.read("id","") + "");
             map.put("type", "0");
             map.put("type_id", id + "");
             String json = HttpConnectTool.post(map);
@@ -719,7 +715,7 @@ public class ContentFileDetailsActivity extends BaseActivity implements CommentA
         try {
             HashMap<String, String> map = new HashMap<>();
             map.put("action", "Community.checkCollectStatus");
-            map.put("uid", AppContext.cv.getAsInteger("id") + "");
+            map.put("uid", SharedPreferenceUtil.read("id","") + "");
             map.put("type", "0");
             map.put("type_id", id + "");
             String json = HttpConnectTool.post(map);
@@ -759,7 +755,7 @@ public class ContentFileDetailsActivity extends BaseActivity implements CommentA
             HashMap<String, String> map = new HashMap<>();
             map.put("action", "Community.details");
             map.put("id", id + "");
-            map.put("uid", AppContext.cv.getAsInteger("id") + "");
+            map.put("uid", SharedPreferenceUtil.read("id","") + "");
             String json = HttpConnectTool.post(map);
             if (!json.equals("")) {
                 xmlS(json);
@@ -850,7 +846,7 @@ public class ContentFileDetailsActivity extends BaseActivity implements CommentA
             HashMap<String, String> map = new HashMap<>();
             map.put("action", "Community.details");
             map.put("id", id + "");
-            map.put("uid", AppContext.cv.getAsInteger("id") + "");
+            map.put("uid", SharedPreferenceUtil.read("id","") + "");
             String json = HttpConnectTool.post(map);
             if (!json.equals("")) {
                 xmlShop(json);

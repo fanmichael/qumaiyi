@@ -39,6 +39,7 @@ import com.yshstudio.originalproduct.pages.http.APIService;
 import com.yshstudio.originalproduct.pages.http.HttpConnectTool;
 import com.yshstudio.originalproduct.pages.http.RetrofitUtils;
 import com.yshstudio.originalproduct.tools.LogUtils;
+import com.yshstudio.originalproduct.tools.SharedPreferenceUtil;
 
 /**
  * 我的地址
@@ -213,7 +214,7 @@ public class SiteDetailsActivity extends BaseActivity implements SiteDetailsAdap
         try {
             HashMap<String, String> map = new HashMap<>();
             map.put("action", "Address.action");
-            map.put("uid", AppContext.cv.getAsInteger("id") + "");
+            map.put("uid", SharedPreferenceUtil.read("id","") + "");
             map.put("id", updaid + "");
             map.put("type", "setdefault");
             String json = HttpConnectTool.post(map);
@@ -231,7 +232,7 @@ public class SiteDetailsActivity extends BaseActivity implements SiteDetailsAdap
         try {
             HashMap<String, String> map = new HashMap<>();
             map.put("action", "Address.action");
-            map.put("uid", AppContext.cv.getAsInteger("id") + "");
+            map.put("uid", SharedPreferenceUtil.read("id","") + "");
             map.put("id", "" + deleteid);
             map.put("type", "del");
             String json = HttpConnectTool.post(map);
@@ -245,7 +246,7 @@ public class SiteDetailsActivity extends BaseActivity implements SiteDetailsAdap
         try {
             HashMap<String, String> map = new HashMap<>();
             map.put("action", "Address.allAddress");
-            map.put("uid", AppContext.cv.getAsInteger("id") + "");
+            map.put("uid", SharedPreferenceUtil.read("id","") + "");
             String json = HttpConnectTool.post(map);
             if (!json.equals("")) {
                 xmlAddress(json);
@@ -287,7 +288,7 @@ public class SiteDetailsActivity extends BaseActivity implements SiteDetailsAdap
     private void httpAdress(){
         HashMap<String, String> map = new HashMap<>();
         map.put("action", "Address.allAddress");
-        map.put("uid", AppContext.cv.getAsInteger("id") + "");
+        map.put("uid", SharedPreferenceUtil.read("id","") + "");
         APIService apiService = RetrofitUtils.getApiService();
         rx.Observable<String> observable = apiService.getSalewellPrinterIs(Ini.Url+"?", map);
         observable.compose(this.<String>bindToLifecycle())

@@ -52,6 +52,7 @@ public class WebViewActivity extends BaseActivity {
         Bundle bundle = this.getIntent().getExtras();
         String name = bundle.getString("name");
         String url = bundle.getString("url");
+//        String url="http://www.iqiyi.com/v_19rrhol5i8.html?vfm=2008_aldbd";
         topTitle.setText(name);
         webView.loadUrl(url);
         WebSettings webSettings = webView.getSettings();
@@ -59,6 +60,8 @@ public class WebViewActivity extends BaseActivity {
         webSettings.setUseWideViewPort(true); //将图片调整到适合webview的大小
         webSettings.setLoadWithOverviewMode(true); // 缩放至屏幕的大小
         //缩放操作
+        webSettings.setJavaScriptCanOpenWindowsAutomatically(true);
+        webSettings.setJavaScriptEnabled(true);
         webSettings.setSupportZoom(true); //支持缩放，默认为true。是下面那个的前提。
         webSettings.setBuiltInZoomControls(true); //设置内置的缩放控件。若为false，则该WebView不可缩放
         webSettings.setDisplayZoomControls(false); //隐藏原生的缩放控件

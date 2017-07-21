@@ -83,7 +83,7 @@ public class GroupDeleteMember extends AppCompatActivity {
         getGroupMember();
     }
 
-    private String              groupid;
+    private String groupid;
     private RecyclerViewAdapter adapter;
 
 

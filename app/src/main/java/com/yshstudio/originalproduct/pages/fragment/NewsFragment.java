@@ -29,6 +29,7 @@ import com.yshstudio.originalproduct.pages.activity.ShopBuyActivity;
 import com.yshstudio.originalproduct.pages.activity.SiteDetailsActivity;
 import com.yshstudio.originalproduct.pages.activity.WalletActivity;
 import com.yshstudio.originalproduct.pages.config.AppContext;
+import com.yshstudio.originalproduct.tools.SharedPreferenceUtil;
 import com.yshstudio.originalproduct.tools.ValidData;
 
 /**
@@ -90,14 +91,14 @@ public class NewsFragment extends BasicFragment {
      * 加载数据
      */
     private void initView() {
-        if (!AppContext.cv.containsKey("icon")) {
+        if (!SharedPreferenceUtil.hasKey("icon")) {
             return;
         }
-        Uri imageUri = Uri.parse(AppContext.cv.getAsString("icon"));
+        Uri imageUri = Uri.parse(SharedPreferenceUtil.read("icon",""));
         ValidData.load(imageUri, myIcon, 60, 60);
         ValidData.load(imageUri, myImageIcon, 250, 250);
-        myNice.setText(AppContext.cv.getAsString("nick"));
-        if ("0".equals(AppContext.cv.getAsString("merchant"))) {
+        myNice.setText(SharedPreferenceUtil.read("nick",""));
+        if ("0".equals(SharedPreferenceUtil.read("merchant",""))) {
             mySellerlLayoutDetails.setVisibility(View.GONE);
             mySellerlLayoutShopBuy.setVisibility(View.GONE);
             mySellerlLayout.setVisibility(View.VISIBLE);
@@ -114,7 +115,7 @@ public class NewsFragment extends BasicFragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == 101) {
-            Uri imageUri = Uri.parse(AppContext.cv.getAsString("icon"));
+            Uri imageUri = Uri.parse(SharedPreferenceUtil.read("icon",""));
             ValidData.load(imageUri, myIcon, 60, 60);
             ValidData.load(imageUri, myImageIcon, 250, 250);
         }

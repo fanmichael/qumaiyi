@@ -27,6 +27,7 @@ import com.yshstudio.originalproduct.R;
 import com.yshstudio.originalproduct.pages.adapter.UserGoodsElcyAdapter;
 import com.yshstudio.originalproduct.pages.config.AppContext;
 import com.yshstudio.originalproduct.pages.http.HttpConnectTool;
+import com.yshstudio.originalproduct.tools.SharedPreferenceUtil;
 
 /**
  * 关联的商品
@@ -148,7 +149,7 @@ public class ElevancyShopActivity extends BaseActivity implements UserGoodsElcyA
         try {
             HashMap<String, String> map = new HashMap<>();
             map.put("action", "Trade.goodsInfo");
-            map.put("uid", AppContext.cv.getAsInteger("id") + "");
+            map.put("uid", SharedPreferenceUtil.read("id","") + "");
             String json = HttpConnectTool.post(map);
             if (!json.equals("")) {
                 listXml(json);

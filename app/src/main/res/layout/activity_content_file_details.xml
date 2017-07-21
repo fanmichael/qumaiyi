@@ -21,10 +21,11 @@
         <LinearLayout
             android:id="@+id/content_lin"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="48dp"
             android:layout_alignParentBottom="true"
             android:background="@color/white"
             android:gravity="center"
+            android:padding="5dp"
             android:orientation="horizontal"
             android:visibility="gone">
 
@@ -34,13 +35,27 @@
                 android:layout_height="wrap_content"
                 android:background="@drawable/shouqi" />
 
-            <EditText
-                android:id="@+id/contect_text"
+
+            <LinearLayout
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
                 android:layout_weight="1"
-                android:hint="请输入评语" />
+                android:orientation="horizontal"
+                android:background="@color/bd_top"
+                android:layout_marginLeft="10dp"
+                android:layout_height="match_parent">
+                <EditText
+                    android:id="@+id/contect_text"
+                    android:layout_width="0dp"
+                    android:layout_margin="1dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:padding="2dp"
+                    android:background="@color/white"
+                    android:textCursorDrawable="@null"
+                    android:hint="请输入评语" />
+
+            </LinearLayout>
+
 
             <Button
                 android:id="@+id/content_sumbit"

@@ -32,6 +32,7 @@ import com.yshstudio.originalproduct.pages.config.AppContext;
 import com.yshstudio.originalproduct.pages.http.HttpConnectTool;
 import com.yshstudio.originalproduct.pages.view.NumberAddSub;
 import com.yshstudio.originalproduct.tools.PayTool;
+import com.yshstudio.originalproduct.tools.SharedPreferenceUtil;
 import com.yshstudio.originalproduct.tools.ValidData;
 
 /***
@@ -290,7 +291,7 @@ public class IndentActivity extends BaseActivity {
         try {
             HashMap<String, String> map = new HashMap<>();
             map.put("action", "Orderid.initial");
-            map.put("uid", AppContext.cv.getAsInteger("id") + "");
+            map.put("uid", SharedPreferenceUtil.read("id","") + "");
             map.put("id", id + "");
             String json = HttpConnectTool.post(map);
             if (!json.equals("")) {

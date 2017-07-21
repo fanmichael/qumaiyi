@@ -1,5 +1,6 @@
 package com.yshstudio.originalproduct.pages.view;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
@@ -15,14 +16,19 @@ import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import com.nostra13.universalimageloader.cache.disc.naming.Md5FileNameGenerator;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
+import com.umeng.socialize.utils.Log;
 import com.yshstudio.originalproduct.R;
+import com.yshstudio.originalproduct.pages.activity.ContentFileDetailsActivity;
+import com.yshstudio.originalproduct.pages.activity.LocalVideoActivity;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Executors;
@@ -40,14 +46,15 @@ public class SlideShowView extends FrameLayout implements View.OnClickListener {
     private ImageLoader imageLoader = ImageLoader.getInstance();
 
     //轮播图图片数量
-    private final static int IMAGE_COUNT = 5;
+    private final static int IMAGE_COUNT = 10;
     //自动轮播的时间间隔
     private final static int TIME_INTERVAL = 5;
     //自动轮播启用开关
     private final static boolean isAutoPlay = true;
 
     //自定义轮播图的资源
-    private List<Map<String, String>> imageUrls;
+    private List<Map<String, String>> imageUrls=new ArrayList<>();
+    private List<ContentValues> contentValues=new ArrayList<>();
     //放轮播图片的ImageView 的list
     private List<ImageView> imageViewsList;
     /* 放圆点的View的list */
@@ -116,6 +123,14 @@ public class SlideShowView extends FrameLayout implements View.OnClickListener {
     private void initData() {
         imageViewsList = new ArrayList<ImageView>();
         dotViewsList = new ArrayList<View>();
+        if(contentValues.size()>0){
+            for (int i = 0; i < contentValues.size(); i++) {
+                Map<String, String> image_uri = new HashMap<String, String>();
+                image_uri.put("imageUrls", contentValues.get(i).getAsString("img_add"));
+                image_uri.put("imageUris", contentValues.get(i).getAsString("img_add"));
+                imageUrls.add(image_uri);
+            }
+        }
         initUI(context);
     }
 
@@ -124,42 +139,53 @@ public class SlideShowView extends FrameLayout implements View.OnClickListener {
         initData();
     }
 
+    public void setImageData(List<ContentValues> imagesUrls) {
+        if(contentValues.size()>0 && contentValues!=null){
+            contentValues.clear();
+            imageUrls.clear();
+        }
+        this.contentValues.addAll(imagesUrls) ;
+        initData();
+    }
+
     @Override
     public void onClick(View v) {
         // TODO Auto-generated method stub
-        Intent intent = null;
-        Bundle bundle = null;
-        switch (v.getId()) {
-            case 0:
-//                intent = new Intent(context,WebViewActivity.class);
-//                bundle = new Bundle();
-//                bundle.putString("url", imageUrls.get(0).get("imageUris"));
-//                intent.putExtras(bundle);
-//                context.startActivity(intent);
-                break;
-            case 1:
-//                intent = new Intent(context,WebViewActivity.class);
-//                bundle = new Bundle();
-//                bundle.putString("url", imageUrls.get(1).get("imageUris"));
-//                intent.putExtras(bundle);
-//                context.startActivity(intent);
-                break;
-            case 2:
-//                intent = new Intent(context,WebViewActivity.class);
-//                bundle = new Bundle();
-//                bundle.putString("url", imageUrls.get(2).get("imageUris"));
-//                intent.putExtras(bundle);
-//                context.startActivity(intent);
-                break;
-            case 3:
-//                intent = new Intent(context,WebViewActivity.class);
-//                bundle = new Bundle();
-//                bundle.putString("url", imageUrls.get(3).get("imageUris"));
-//                intent.putExtras(bundle);
-//                context.startActivity(intent);
-                break;
+        initView(v.getId());
+    }
+
+    private void initView(int type){
+        if(contentValues.size()<=0){
+            return;
+        }
+
+        for (int i=0;i<contentValues.size();i++){
+            if(!contentValues.get(i).containsKey("file_type")){
+                return;
+            }
+            if(i==type){
+                Intent intent = null;
+                Bundle bundle = null;
+                if(contentValues.get(i).getAsInteger("file_type")==0){
+                    intent = new Intent(context,ContentFileDetailsActivity.class);
+                    bundle = new Bundle();
+                    bundle.putInt("id", contentValues.get(i).getAsInteger("nid"));
+                    bundle.putInt("uid",  contentValues.get(i).getAsInteger("uid"));
+                    intent.putExtras(bundle);
+                    context.startActivity(intent);
+                }else if (contentValues.get(i).getAsInteger("file_type")==1){
+                    intent = new Intent(context,LocalVideoActivity.class);
+                    bundle = new Bundle();
+                    bundle.putInt("id", contentValues.get(i).getAsInteger("nid"));
+                    bundle.putInt("uid",  contentValues.get(i).getAsInteger("uid"));
+                    intent.putExtras(bundle);
+                    context.startActivity(intent);
+                }
+            }
         }
     }
+
+
 
     /**
      * 初始化Views等UI
@@ -177,17 +203,15 @@ public class SlideShowView extends FrameLayout implements View.OnClickListener {
         for (int i = 0; i < imageUrls.size(); i++) {
             ImageView view = new ImageView(context);
             view.setId(i);
+            view.setScaleType(ImageView.ScaleType.FIT_XY);
             view.setTag(imageUrls.get(i).get("imageUrls"));
-            if (i == 0)//给一个默认图
-                // view.setBackgroundResource(R.drawable.logo);
-                view.setScaleType(ImageView.ScaleType.FIT_XY);
             view.setOnClickListener(this);
             imageViewsList.add(view);
 
             ImageView dotView = new ImageView(context);
             LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
-            params.leftMargin = 4;
-            params.rightMargin = 4;
+            params.leftMargin = 10;
+            params.rightMargin = 10;
             dotLayout.addView(dotView, params);
             dotViewsList.add(dotView);
         }
@@ -207,7 +231,6 @@ public class SlideShowView extends FrameLayout implements View.OnClickListener {
         @Override
         public void destroyItem(View container, int position, Object object) {
             // TODO Auto-generated method stub
-//            imageViewsList.clear();
             ((ViewPager) container).removeView((View) object);
 //            ((ViewPager) container).removeView(imageViewsList.get(position));
         }
@@ -334,7 +357,7 @@ public class SlideShowView extends FrameLayout implements View.OnClickListener {
      */
     private void destoryBitmaps() {
 
-        for (int i = 0; i < IMAGE_COUNT; i++) {
+        for (int i = 0; i < contentValues.size(); i++) {
             ImageView imageView = imageViewsList.get(i);
             Drawable drawable = imageView.getDrawable();
             if (drawable != null) {

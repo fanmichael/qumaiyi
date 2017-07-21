@@ -33,6 +33,7 @@ import com.yshstudio.originalproduct.pages.adapter.BuyGoodsAdapter;
 import com.yshstudio.originalproduct.pages.config.AppContext;
 import com.yshstudio.originalproduct.pages.http.HttpConnectTool;
 import com.yshstudio.originalproduct.pages.view.LoadingDialog;
+import com.yshstudio.originalproduct.tools.SharedPreferenceUtil;
 
 /**
  * 购买记录--我的订单
@@ -429,7 +430,7 @@ public class BuyDetailsActivity extends BaseActivity implements SwipeRefreshLayo
         try {
             HashMap<String, String> hashMap = new HashMap<>();
             hashMap.put("action", "Orderid.orderidQuery");
-            hashMap.put("id", AppContext.cv.getAsInteger("id") + "");
+            hashMap.put("id", SharedPreferenceUtil.read("id","") + "");
             hashMap.put("page", page + "");
             hashMap.put("state", state);
             String json = HttpConnectTool.post(hashMap);

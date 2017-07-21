@@ -24,6 +24,7 @@ import com.yshstudio.originalproduct.R;
 import com.yshstudio.originalproduct.pages.adapter.WalletAdapter;
 import com.yshstudio.originalproduct.pages.config.AppContext;
 import com.yshstudio.originalproduct.pages.http.HttpConnectTool;
+import com.yshstudio.originalproduct.tools.SharedPreferenceUtil;
 
 /**
  * 提现
@@ -94,7 +95,7 @@ public class WalletActivity extends BaseActivity {
         try {
             HashMap<String, String> hashMap = new HashMap<>();
             hashMap.put("action", "User.userBalance");
-            hashMap.put("uid", AppContext.cv.getAsInteger("id") + "");
+            hashMap.put("uid", SharedPreferenceUtil.read("id","") + "");
             String json = HttpConnectTool.post(hashMap);
             if (!json.equals("")) {
                 listXml(json);

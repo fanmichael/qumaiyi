@@ -12,6 +12,7 @@ import android.widget.Toast;
 import com.yshstudio.originalproduct.R;
 import com.yshstudio.originalproduct.pages.config.AppContext;
 import com.yshstudio.originalproduct.pages.http.HttpConnectTool;
+import com.yshstudio.originalproduct.tools.SharedPreferenceUtil;
 
 import org.json.JSONObject;
 
@@ -125,7 +126,7 @@ public class WalletPriceActivity extends BaseActivity {
         try {
             HashMap<String, String> hashMap = new HashMap<>();
             hashMap.put("action", "User.Enchashment");
-            hashMap.put("uid", AppContext.cv.getAsInteger("id") + "");
+            hashMap.put("uid", SharedPreferenceUtil.read("id","") + "");
             hashMap.put("name", URLEncoder.encode(walletName.getText().toString().trim(), "UTF-8") + "");
             hashMap.put("mobile", walletPhone.getText().toString().trim());
             hashMap.put("money", walletPriceNumber.getText().toString().trim());

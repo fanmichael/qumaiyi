@@ -12,7 +12,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.yshstudio.originalproduct.R;
-import com.yshstudio.originalproduct.pages.fragment.VideoContentFragment;
 import com.yshstudio.originalproduct.pages.view.MovieRecorderView;
 
 import butterknife.BindView;
@@ -53,7 +52,7 @@ public class CaActivity extends BaseActivity {
 
                         @Override
                         public void onRecordFinish() {
-                            if (!success && mRecorderView.getTimeCount() < 10) {//判断用户按下时间是否大于10秒
+                            if (!success && mRecorderView.getTimeCount() < 300) {//判断用户按下时间是否大于10秒
                                 success = true;
                                 handler.sendEmptyMessage(1);
                             }

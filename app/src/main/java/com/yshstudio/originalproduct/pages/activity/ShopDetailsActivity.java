@@ -28,6 +28,7 @@ import com.yshstudio.originalproduct.pages.http.HttpConnectTool;
 import com.yshstudio.originalproduct.pages.prompt.Loading;
 import com.yshstudio.originalproduct.tools.ImageToools;
 import com.yshstudio.originalproduct.tools.ListTools;
+import com.yshstudio.originalproduct.tools.SharedPreferenceUtil;
 import com.yshstudio.originalproduct.tools.UtilsUmeng;
 import com.yshstudio.originalproduct.tools.ValidData;
 
@@ -125,8 +126,7 @@ public class ShopDetailsActivity extends BaseActivity implements UserGoodsShopAd
         Bundle bundle = this.getIntent().getExtras();
         id = bundle.getInt("id");
         uid = bundle.getInt("uid");
-//        if (uid == AppContext.cv.getAsInteger("id")) {
-        if (String.valueOf(uid).equals(String.valueOf(AppContext.cv.getAsInteger("id")))) {
+        if (String.valueOf(uid).equals(SharedPreferenceUtil.read("id",""))) {
             lan.setVisibility(View.GONE);
             shopDetailsAttention.setVisibility(View.GONE);
             shopDetailsAttentionNo.setVisibility(View.GONE);
@@ -394,7 +394,7 @@ public class ShopDetailsActivity extends BaseActivity implements UserGoodsShopAd
                     break;
                 case 6:
                     initView();
-                    if (!String.valueOf(uid).equals(String.valueOf(AppContext.cv.getAsInteger("id")))) {
+                    if (!String.valueOf(uid).equals(SharedPreferenceUtil.read("id",""))) {
                         isColl();
                     }
                     initGoods();
@@ -429,7 +429,7 @@ public class ShopDetailsActivity extends BaseActivity implements UserGoodsShopAd
         try {
             HashMap<String, String> map = new HashMap<>();
             map.put("action", "Community.follow");
-            map.put("uid", AppContext.cv.getAsInteger("id") + "");
+            map.put("uid", SharedPreferenceUtil.read("id","") + "");
             map.put("type", "2");
             map.put("type_id", uid + "");
             String json = HttpConnectTool.post(map);
@@ -455,7 +455,7 @@ public class ShopDetailsActivity extends BaseActivity implements UserGoodsShopAd
         try {
             HashMap<String, String> map = new HashMap<>();
             map.put("action", "Community.collection");
-            map.put("uid", AppContext.cv.getAsInteger("id") + "");
+            map.put("uid", SharedPreferenceUtil.read("id","") + "");
             map.put("type", "1");
             map.put("type_id", id + "");
             String json = HttpConnectTool.post(map);
@@ -483,7 +483,7 @@ public class ShopDetailsActivity extends BaseActivity implements UserGoodsShopAd
         try {
             HashMap<String, String> map = new HashMap<>();
             map.put("action", "Community.checkFollowStatus");
-            map.put("uid", AppContext.cv.getAsInteger("id") + "");
+            map.put("uid", SharedPreferenceUtil.read("id","") + "");
             map.put("type", "2");
             map.put("type_id", uid + "");
             String json = HttpConnectTool.post(map);
@@ -507,7 +507,7 @@ public class ShopDetailsActivity extends BaseActivity implements UserGoodsShopAd
         try {
             HashMap<String, String> map = new HashMap<>();
             map.put("action", "Community.checkCollectStatus");
-            map.put("uid", AppContext.cv.getAsInteger("id") + "");
+            map.put("uid", SharedPreferenceUtil.read("id","") + "");
             map.put("type", "1");
             map.put("type_id", id + "");
             String json = HttpConnectTool.post(map);

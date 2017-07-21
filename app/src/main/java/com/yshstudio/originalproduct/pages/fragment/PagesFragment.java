@@ -408,21 +408,10 @@ public class PagesFragment extends BasicFragment implements SwipeRefreshLayout.O
                     } else {
                         slideshowView.setVisibility(View.GONE);
                     }
-
-                    imageUrls = new String[imagesUrls.size()];
-                    for (int j = 0; j < imagesUrls.size(); j++) {
-                        imageUrls[j] = imagesUrls.get(j).getAsString("img_add");
-                    }
-                    for (int i = 0; i < imageUrls.length; i++) {
-                        Map<String, String> image_uri = new HashMap<String, String>();
-                        image_uri.put("imageUrls", imageUrls[i]);
-                        image_uri.put("imageUris", imageUris[i]);
-                        imageList.add(image_uri);
-                    }
                     if (swipeRefreshLayout == null) {
                         return;
                     }
-                    slideshowView.setImageUrls(imageList);
+                    slideshowView.setImageData(imagesUrls);
                     swipeRefreshLayout.setRefreshing(false);//刷新完成
                     break;
                 case 2:
@@ -434,17 +423,7 @@ public class PagesFragment extends BasicFragment implements SwipeRefreshLayout.O
                     } else {
                         slideshowView.setVisibility(View.GONE);
                     }
-                    imageUrls = new String[imagesUrls.size()];
-                    for (int j = 0; j < imagesUrls.size(); j++) {
-                        imageUrls[j] = imagesUrls.get(j).getAsString("img_add");
-                    }
-                    for (int i = 0; i < imagesUrls.size(); i++) {
-                        Map<String, String> image_uri = new HashMap<String, String>();
-                        image_uri.put("imageUrls", imageUrls[i]);
-                        image_uri.put("imageUris", imageUris[i]);
-                        imageList.add(image_uri);
-                    }
-                    slideshowView.setImageUrls(imageList);
+                    slideshowView.setImageData(imagesUrls);
                     swipeRefreshLayout.setRefreshing(false);//刷新完成
                     break;
                 case 3:
@@ -456,17 +435,7 @@ public class PagesFragment extends BasicFragment implements SwipeRefreshLayout.O
                     } else {
                         slideshowView.setVisibility(View.GONE);
                     }
-                    imageUrls = new String[imagesUrls.size()];
-                    for (int j = 0; j < imagesUrls.size(); j++) {
-                        imageUrls[j] = imagesUrls.get(j).getAsString("img_add");
-                    }
-                    for (int i = 0; i < imagesUrls.size(); i++) {
-                        Map<String, String> image_uri = new HashMap<String, String>();
-                        image_uri.put("imageUrls", imageUrls[i]);
-                        image_uri.put("imageUris", imageUris[i]);
-                        imageList.add(image_uri);
-                    }
-                    slideshowView.setImageUrls(imageList);
+                    slideshowView.setImageData(imagesUrls);
                     swipeRefreshLayout.setRefreshing(false);//刷新完成
                     break;
                 case 4:
@@ -478,17 +447,7 @@ public class PagesFragment extends BasicFragment implements SwipeRefreshLayout.O
                     } else {
                         slideshowView.setVisibility(View.GONE);
                     }
-                    imageUrls = new String[imagesUrls.size()];
-                    for (int j = 0; j < imagesUrls.size(); j++) {
-                        imageUrls[j] = imagesUrls.get(j).getAsString("img_add");
-                    }
-                    for (int i = 0; i < imagesUrls.size(); i++) {
-                        Map<String, String> image_uri = new HashMap<String, String>();
-                        image_uri.put("imageUrls", imageUrls[i]);
-                        image_uri.put("imageUris", imageUris[i]);
-                        imageList.add(image_uri);
-                    }
-                    slideshowView.setImageUrls(imageList);
+                    slideshowView.setImageData(imagesUrls);
                     swipeRefreshLayout.setRefreshing(false);//刷新完成
                     break;
 
@@ -569,6 +528,10 @@ public class PagesFragment extends BasicFragment implements SwipeRefreshLayout.O
 
 
     public void listXml(String data) {
+        if(imagesUrls.size()>0 && imagesUrls!=null){
+            imagesUrls.clear();
+        }
+
         try {
             JSONObject obj = new JSONObject(data);
             JSONObject objData = new JSONObject(obj.getString("data"));
@@ -596,6 +559,9 @@ public class PagesFragment extends BasicFragment implements SwipeRefreshLayout.O
                     cv.put("id", jsonObj.getInt("id"));
                     cv.put("cid", jsonObj.getInt("cid"));
                     cv.put("img_add", jsonObj.getString("img_add"));
+                    cv.put("nid",jsonObj.getInt("nid"));
+                    cv.put("uid",jsonObj.getInt("uid"));
+                    cv.put("file_type",jsonObj.getInt("file_type"));
                     imagesUrls.add(cv);
                 }
             }

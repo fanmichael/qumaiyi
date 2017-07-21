@@ -21,6 +21,7 @@ import butterknife.OnClick;
 import com.yshstudio.originalproduct.R;
 import com.yshstudio.originalproduct.pages.config.AppContext;
 import com.yshstudio.originalproduct.pages.http.HttpConnectTool;
+import com.yshstudio.originalproduct.tools.SharedPreferenceUtil;
 
 /**
  * 反馈意见
@@ -74,7 +75,7 @@ public class FeedActivity extends BaseActivity {
         try {
             HashMap<String, String> map = new HashMap<>();
             map.put("action", "Feedback.putFeedback");
-            map.put("uid", AppContext.cv.getAsInteger("id") + "");
+            map.put("uid", SharedPreferenceUtil.read("id","") + "");
             map.put("content", URLEncoder.encode(content, "UTF-8")+"");
             String json = HttpConnectTool.post(map);
             if (!json.equals("")) {

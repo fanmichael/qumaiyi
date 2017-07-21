@@ -32,6 +32,7 @@ import com.yshstudio.originalproduct.pages.adapter.UserDynamicAdapter;
 import com.yshstudio.originalproduct.pages.adapter.UserGoodsAdapter;
 import com.yshstudio.originalproduct.pages.config.AppContext;
 import com.yshstudio.originalproduct.pages.http.HttpConnectTool;
+import com.yshstudio.originalproduct.tools.SharedPreferenceUtil;
 
 /**
  * 我的收藏
@@ -310,7 +311,7 @@ public class CollectDetailsActivity extends BaseActivity implements SwipeRefresh
         try {
             HashMap<String, String> hashMap = new HashMap<>();
             hashMap.put("action", "Community.myCollection");
-            hashMap.put("uid", AppContext.cv.getAsInteger("id") + "");
+            hashMap.put("uid", SharedPreferenceUtil.read("id","") + "");
             hashMap.put("page", page + "");
             String json = HttpConnectTool.post(hashMap);
             if (!json.equals("")) {

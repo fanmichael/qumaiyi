@@ -38,7 +38,7 @@ public final class Ini {
     public static final int SDK_PAY_FLAG2 = 0x00004;
     public static final int SDK_PAY_FLAG3 = 0x00005;
 
-    public static String Url_ROOT="http://qumai.51edn.com/";
+    public static String Url_ROOT="http://qmy.51edn.com/";
     public static String Url=Url_ROOT + "index.php/app";
     public static String ShareGood_Url=Url_ROOT + "app/Trade/good_detail/id/";
     public static String ShareCommunity_Url=Url_ROOT + "app/Community/node_detail/id/";

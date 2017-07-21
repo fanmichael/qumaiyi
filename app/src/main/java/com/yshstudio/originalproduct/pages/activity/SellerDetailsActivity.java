@@ -34,6 +34,7 @@ import com.yshstudio.originalproduct.pages.adapter.SellerDaetailsActivity;
 import com.yshstudio.originalproduct.pages.adapter.SellerGoodsAdapter;
 import com.yshstudio.originalproduct.pages.config.AppContext;
 import com.yshstudio.originalproduct.pages.http.HttpConnectTool;
+import com.yshstudio.originalproduct.tools.SharedPreferenceUtil;
 import com.yshstudio.originalproduct.tools.ValidData;
 
 
@@ -253,7 +254,7 @@ public class SellerDetailsActivity extends BaseActivity implements SwipeRefreshL
         try {
             HashMap<String, String> hashMap = new HashMap<>();
             hashMap.put("action", "Merchant.checkMerchantStatus");
-            hashMap.put("uid", AppContext.cv.getAsInteger("id") + "");
+            hashMap.put("uid", SharedPreferenceUtil.read("id","") + "");
             hashMap.put("page", page + "");
             String json = HttpConnectTool.post(hashMap);
             if (!json.equals("")) {
@@ -271,7 +272,7 @@ public class SellerDetailsActivity extends BaseActivity implements SwipeRefreshL
         try {
             HashMap<String, String> hashMap = new HashMap<>();
             hashMap.put("action", "Goods.getSomeoneGoods");
-            hashMap.put("uid", AppContext.cv.getAsInteger("id") + "");
+            hashMap.put("uid", SharedPreferenceUtil.read("id","") + "");
             hashMap.put("page", page + "");
             String json = HttpConnectTool.post(hashMap);
             if (!json.equals("")) {

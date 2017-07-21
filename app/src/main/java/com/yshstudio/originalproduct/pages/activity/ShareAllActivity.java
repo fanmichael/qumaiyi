@@ -37,6 +37,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import com.yshstudio.originalproduct.R;
 import com.yshstudio.originalproduct.pages.config.AppContext;
+import com.yshstudio.originalproduct.tools.SharedPreferenceUtil;
 
 
 /**
@@ -136,7 +137,7 @@ public class ShareAllActivity extends BaseActivity   {
             params.putString(QQShare.SHARE_TO_QQ_TITLE, "去卖艺APP");
             // params.putString(QQShare.SHARE_TO_QQ_SUMMARY, "要分享的摘要");
             params.putString(QQShare.SHARE_TO_QQ_TARGET_URL, "http://fir.im/qmy01");
-            params.putString(QQShare.SHARE_TO_QQ_IMAGE_URL, AppContext.cv.getAsString("icon"));
+            params.putString(QQShare.SHARE_TO_QQ_IMAGE_URL, SharedPreferenceUtil.read("icon",""));
 //            params.putString(QQShare.SHARE_TO_QQ_APP_NAME, "测试应用222222");
         }
 //        params.putInt(QQShare.SHARE_TO_QQ_KEY_TYPE, QQShare.SHARE_TO_QQ_TYPE_DEFAULT);

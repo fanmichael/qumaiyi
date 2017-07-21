@@ -61,10 +61,10 @@ public class UtilsUmeng {
                 SharedPreferenceUtil.insert("nick", data.get("name"));
                 if (platform.equals(SHARE_MEDIA.QQ) || platform.equals(SHARE_MEDIA.SINA)) {
 //                    AppContext.cv.put("id", data.get("uid"));//标记id
-                    SharedPreferenceUtil.insert("id", data.get("uid"));
+                    SharedPreferenceUtil.insert("openid", data.get("uid"));
                 } else if (platform.equals(SHARE_MEDIA.WEIXIN)) {
 //                    AppContext.cv.put("id", data.get("id"));//标记id
-                    SharedPreferenceUtil.insert("id", data.get("openid"));
+                    SharedPreferenceUtil.insert("openid", data.get("openid"));
                 }
                 if ("女".equals(data.get("gender"))) {
                     AppContext.cv.put("gender", 0);//性别

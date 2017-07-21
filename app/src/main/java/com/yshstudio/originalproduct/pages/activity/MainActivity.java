@@ -2,6 +2,7 @@ package com.yshstudio.originalproduct.pages.activity;
 
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -83,6 +84,10 @@ public class MainActivity extends FragmentActivity {
         setDefaultFragment();
         setFragmentChange();
         initChatSet();
+        if( AppContext.cv==null){
+            AppContext.cv=new ContentValues();
+        }
+        AppContext.cv.put("id", Integer.valueOf(SharedPreferenceUtil.read("id","")));//标记
         //异地登录，强制下线
         EMClient.getInstance().addConnectionListener(new EMConnectionListener() {
             @Override
@@ -100,15 +105,13 @@ public class MainActivity extends FragmentActivity {
                                 public void run() {
                                     //执行强制退出
                                     if (SharedPreferenceUtil.hasKey("mobile") && SharedPreferenceUtil.hasKey("password")) {
-                                        SharedPreferenceUtil.remove("mobile");
-                                        SharedPreferenceUtil.remove("password");
+                                        SharedPreferenceUtil.clear();
+                                        SharedPreferenceUtil.insert("is",true);
                                         AppContext.cv.clear();
                                     }
                                     if (SharedPreferenceUtil.hasKey("id")) {
-                                        SharedPreferenceUtil.remove("type");
-                                        SharedPreferenceUtil.remove("id");
-                                        SharedPreferenceUtil.remove("nick");
-                                        SharedPreferenceUtil.remove("icon");
+                                        SharedPreferenceUtil.clear();
+                                        SharedPreferenceUtil.insert("is", true);
                                         AppContext.cv.clear();
                                     }
                                     if (EMClient.getInstance().isLoggedInBefore()) {
@@ -286,7 +289,7 @@ public class MainActivity extends FragmentActivity {
                                                     @Override
                                                     public void run() {
                                                         //改变用户申请状态
-                                                        AppContext.cv.put("merchant", "1");
+                                                        SharedPreferenceUtil.insert("merchant", "1");
 //                                                    if (SDK.obatinFirstPage(SDK.obtainCurrentApp()) != null) {
 //                                                        SDK.obatinFirstPage(SDK.obtainCurrentApp()).evalJS("check_merchant(0);");
 //                                                    }
@@ -298,7 +301,7 @@ public class MainActivity extends FragmentActivity {
                                                     @Override
                                                     public void run() {
                                                         //改变用户的申请状态
-                                                        AppContext.cv.put("merchant", "0");
+                                                        SharedPreferenceUtil.insert("merchant", "0");
                                                     }
                                                 });
                                                 break;

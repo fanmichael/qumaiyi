@@ -35,6 +35,7 @@ import com.yshstudio.originalproduct.pages.prompt.Loading;
 import com.yshstudio.originalproduct.pages.view.MyGridView;
 import com.yshstudio.originalproduct.tools.GetPathVideo;
 import com.yshstudio.originalproduct.tools.ImageToools;
+import com.yshstudio.originalproduct.tools.SharedPreferenceUtil;
 import com.yshstudio.originalproduct.tools.TextContent;
 import com.yshstudio.originalproduct.tools.ValidData;
 
@@ -54,7 +55,7 @@ import butterknife.OnClick;
 /**
  * 申请买主
  */
-public class SellerlDetailsActivity extends BaseActivity {
+public class SellerlDetailsActivity extends BaseActivity implements AppraiesimgeAdapter.deleteFile{
 
     @BindView(R.id.image_back)
     ImageView imageBack;
@@ -181,7 +182,7 @@ public class SellerlDetailsActivity extends BaseActivity {
         topRegitTitle.setVisibility(View.VISIBLE);
         topRegitTitle.setTextColor(getResources().getColor(R.color.bd_top_chose));
         contentValues.add(0, null);
-        appraiesimgeAdapter = new AppraiesimgeAdapter(contentValues, context, 2, true);
+        appraiesimgeAdapter = new AppraiesimgeAdapter(contentValues, context, 2, true,this);
         sellCardGridView.setAdapter(appraiesimgeAdapter);
         sellCardGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -396,6 +397,13 @@ public class SellerlDetailsActivity extends BaseActivity {
         }
     }
 
+    @Override
+    public void deleteFile(int pos) {
+        if(files != null && files.size()>0){
+            files.remove(pos);
+        }
+    }
+
     /**
      * 异步请求
      */
@@ -512,7 +520,7 @@ public class SellerlDetailsActivity extends BaseActivity {
     private void httpSellIs(){
         HashMap<String, String> map = new HashMap<>();
         map.put("action", "Merchant.checkMerchantStatus");
-        map.put("uid", AppContext.cv.getAsInteger("id") + "");
+        map.put("uid", SharedPreferenceUtil.read("id","") + "");
         String json = HttpConnectTool.post(map);
             if(!json.equals("")){
                 xmlSellIS(json);
@@ -541,7 +549,7 @@ public class SellerlDetailsActivity extends BaseActivity {
         try {
             HashMap<String, String> map = new HashMap<>();
             map.put("action", "Merchant.apply");
-            map.put("uid", AppContext.cv.getAsInteger("id") + "");
+            map.put("uid", SharedPreferenceUtil.read("id","") + "");
             map.put("mobile", sellPhone.getText().toString().trim());
             map.put("card", sellCard.getText().toString().trim());
             map.put("number", sellCardNum.getText().toString().trim());

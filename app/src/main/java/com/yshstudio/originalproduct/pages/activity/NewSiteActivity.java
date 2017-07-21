@@ -30,6 +30,7 @@ import butterknife.OnClick;
 import com.yshstudio.originalproduct.R;
 import com.yshstudio.originalproduct.pages.config.AppContext;
 import com.yshstudio.originalproduct.pages.http.HttpConnectTool;
+import com.yshstudio.originalproduct.tools.SharedPreferenceUtil;
 import com.yshstudio.originalproduct.tools.ValidData;
 
 /**
@@ -261,7 +262,7 @@ public class NewSiteActivity extends BaseActivity {
             String addrRess = siteAddress.getText().toString().trim() + siteDailesAddress.getText().toString().trim();
             HashMap<String, String> map = new HashMap<>();
             map.put("action", "Address.action");
-            map.put("uid", AppContext.cv.getAsInteger("id") + "");
+            map.put("uid", SharedPreferenceUtil.read("id","") + "");
             map.put("name",  URLEncoder.encode(sitePop.getText().toString().trim(), "UTF-8") + "");
             map.put("type", "add");
             map.put("mobile", sitePhone.getText().toString().trim());
@@ -280,7 +281,7 @@ public class NewSiteActivity extends BaseActivity {
             String addrRess = siteAddress.getText().toString().trim() + siteDailesAddress.getText().toString().trim();
             HashMap<String, String> map = new HashMap<>();
             map.put("action", "Address.action");
-            map.put("uid", AppContext.cv.getAsInteger("id") + "");
+            map.put("uid", SharedPreferenceUtil.read("id","") + "");
             map.put("name",  URLEncoder.encode(sitePop.getText().toString().trim(), "UTF-8") + "");
             map.put("type", "edit");
             map.put("id", id + "");

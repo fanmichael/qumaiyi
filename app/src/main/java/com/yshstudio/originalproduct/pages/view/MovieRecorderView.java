@@ -69,7 +69,7 @@ public class MovieRecorderView extends LinearLayout implements OnErrorListener {
 		isOpenCamera = a.getBoolean(
 				R.styleable.MovieRecorderView_is_open_camera, true);// 默认打开
 		mRecordMaxTime = a.getInteger(
-				R.styleable.MovieRecorderView_record_max_time, 10);// 默认为10
+				R.styleable.MovieRecorderView_record_max_time, 300);// 默认为10
 
 		LayoutInflater.from(context)
 				.inflate(R.layout.movie_recorder_view, this);
@@ -195,11 +195,11 @@ public class MovieRecorderView extends LinearLayout implements OnErrorListener {
 		mMediaRecorder.setOutputFormat(OutputFormat.MPEG_4);// 视频输出格式
 		mMediaRecorder.setAudioEncoder(AudioEncoder.AMR_NB);// 音频格式
 		mMediaRecorder.setVideoSize(mWidth, mHeight);// 设置分辨率：
-		// mMediaRecorder.setVideoFrameRate(16);// 这个我把它去掉了，感觉没什么用
-		mMediaRecorder.setVideoEncodingBitRate(1 * 1024 * 1024 * 100);// 设置帧频率，然后就清晰了
+		 mMediaRecorder.setVideoFrameRate(10);// 这个我把它去掉了，感觉没什么用
+		mMediaRecorder.setVideoEncodingBitRate(1 * 1024 * 1024);// 设置帧频率，然后就清晰了
 		mMediaRecorder.setOrientationHint(90);// 输出旋转90度，保持竖屏录制
-		mMediaRecorder.setVideoEncoder(VideoEncoder.MPEG_4_SP);// 视频录制格式
-		// mediaRecorder.setMaxDuration(Constant.MAXVEDIOTIME * 1000);
+		mMediaRecorder.setVideoEncoder(VideoEncoder.H264);// 视频录制格式
+//		mMediaRecorder.setMaxDuration(Constant.MAXVEDIOTIME * 1000);
 		mMediaRecorder.setOutputFile(mVecordFile.getAbsolutePath());
 		mMediaRecorder.prepare();
 		try {
@@ -215,7 +215,6 @@ public class MovieRecorderView extends LinearLayout implements OnErrorListener {
 
 	/**
 	 * 开始录制视频
-	 * @param fileName
 	 *            视频储存位置
 	 * @param onRecordFinishListener
 	 *            达到指定时间之后回调接口

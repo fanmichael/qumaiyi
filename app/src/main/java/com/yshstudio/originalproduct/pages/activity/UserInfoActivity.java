@@ -117,7 +117,7 @@ public class UserInfoActivity extends BaseActivity {
         uid = bundle.getInt("uid");
         initDelay();
 
-        if (AppContext.cv.getAsInteger("id") == uid) {
+        if (Integer.valueOf(SharedPreferenceUtil.read("id","")) == uid) {
             lan.setVisibility(View.GONE);
         }
 
@@ -287,12 +287,12 @@ public class UserInfoActivity extends BaseActivity {
     }
 
     private void sendMessage() {
-        if (SharedPreferenceUtil.hasKey("id")) {
-            if (SharedPreferenceUtil.read("id", "").isEmpty()) {
+        if (SharedPreferenceUtil.hasKey("openid")) {
+            if (SharedPreferenceUtil.read("openid", "").isEmpty()) {
                 return;
             }
         } else {
-            if (AppContext.cv.getAsString("mobile").trim().isEmpty()) {
+            if (SharedPreferenceUtil.read("mobile","").trim().isEmpty()) {
                 return;
             }
         }
@@ -406,7 +406,7 @@ public class UserInfoActivity extends BaseActivity {
         try {
             HashMap<String, String> map = new HashMap<>();
             map.put("action", "Community.checkFollowStatus");
-            map.put("uid", AppContext.cv.getAsInteger("id") + "");
+            map.put("uid", SharedPreferenceUtil.read("id","") + "");
             map.put("type", "2");
             map.put("type_id", uid + "");
             String json = HttpConnectTool.post(map);
@@ -431,7 +431,7 @@ public class UserInfoActivity extends BaseActivity {
         try {
             HashMap<String, String> map = new HashMap<>();
             map.put("action", "Community.follow");
-            map.put("uid", AppContext.cv.getAsInteger("id") + "");
+            map.put("uid", SharedPreferenceUtil.read("id","") + "");
             map.put("type", "2");
             map.put("type_id", uid + "");
             String json = HttpConnectTool.post(map);

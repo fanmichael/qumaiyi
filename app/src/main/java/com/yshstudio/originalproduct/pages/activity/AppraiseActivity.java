@@ -47,7 +47,7 @@ import com.yshstudio.originalproduct.tools.ImageToools;
 /**
  * 评价
  */
-public class AppraiseActivity extends BaseActivity {
+public class AppraiseActivity extends BaseActivity implements AppraiesimgeAdapter.deleteFile{
 
     @BindView(R.id.image_back)
     ImageView imageBack;
@@ -143,7 +143,7 @@ public class AppraiseActivity extends BaseActivity {
         Bundle bundle = this.getIntent().getExtras();
         ddid = bundle.getString("ddid");
         contentValues.add(0, null);
-        appraiesimgeAdapter = new AppraiesimgeAdapter(contentValues, context, 1, true);
+        appraiesimgeAdapter = new AppraiesimgeAdapter(contentValues, context, 1, true,this);
         advBoardGridView.setAdapter(appraiesimgeAdapter);
         advBoardGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -358,6 +358,13 @@ public class AppraiseActivity extends BaseActivity {
     @OnClick(R.id.image_back)
     void back() {
         destroyActitity();
+    }
+
+    @Override
+    public void deleteFile(int pos) {
+        if(listImgPath !=null && listImgPath.size()>0){
+            listImgPath.remove(pos-1);
+        }
     }
 
 

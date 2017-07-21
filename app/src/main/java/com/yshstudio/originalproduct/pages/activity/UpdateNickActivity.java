@@ -19,6 +19,7 @@ import butterknife.OnClick;
 import com.yshstudio.originalproduct.R;
 import com.yshstudio.originalproduct.pages.config.AppContext;
 import com.yshstudio.originalproduct.pages.http.HttpConnectTool;
+import com.yshstudio.originalproduct.tools.SharedPreferenceUtil;
 
 public class UpdateNickActivity extends BaseActivity {
 
@@ -76,6 +77,7 @@ public class UpdateNickActivity extends BaseActivity {
             switch (what) {
                 case 1:
                     if (error == 0) {
+                        SharedPreferenceUtil.insert("nick", srtNick+"");
                         AppContext.cv.put("nick", srtNick);
                         setResult(1);
                         destroyActitity();
@@ -95,7 +97,7 @@ public class UpdateNickActivity extends BaseActivity {
         try {
             HashMap<String, String> map = new HashMap<>();
             map.put("action", "User.update");
-            map.put("uid", AppContext.cv.getAsInteger("id") + "");
+            map.put("uid", SharedPreferenceUtil.read("id","") + "");
             map.put("nick", URLEncoder.encode(srtNick, "UTF-8") + "");
             map.put("name", "nick");
             String json = HttpConnectTool.post(map);
@@ -126,7 +128,7 @@ public class UpdateNickActivity extends BaseActivity {
         leftTitle.setText("取消");
         centerTitle.setText("昵称");
         rightTitle.setText("确定");
-        editMaterialNick.setText(AppContext.cv.getAsString("nick"));
+        editMaterialNick.setText(SharedPreferenceUtil.read("nick",""));
     }
 
 

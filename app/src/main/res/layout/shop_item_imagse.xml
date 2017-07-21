@@ -10,7 +10,7 @@
         android:scaleType="fitXY"
         android:layout_gravity="center"
         android:layout_height="wrap_content"
-        android:paddingBottom="25dp"
+        android:paddingBottom="8dp"
         />
 
 </LinearLayout>

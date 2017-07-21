@@ -12,6 +12,8 @@
         android:adjustViewBounds="true"
         android:scaleType="fitXY" />
 
+    <!-- scaleType this is miaxy -->
+
     <TextView
         android:id="@+id/picture_display_text"
         android:layout_width="match_parent"

@@ -24,11 +24,13 @@ public class AppraiesimgeAdapter extends BaseAdapter {
     private Context context;
     private LayoutInflater mInflater;
     private int type;
+    private deleteFile deleteFile;
     private boolean le;
 
-    public AppraiesimgeAdapter(List<ContentValues> contentValues, Context context, int type, boolean le) {
+    public AppraiesimgeAdapter(List<ContentValues> contentValues, Context context, int type, boolean le,deleteFile deleteFile) {
         this.context = context;
         this.contentValues = contentValues;
+        this.deleteFile=deleteFile;
         mInflater = LayoutInflater.from(context);
         this.type = type;
         this.le = le;
@@ -80,6 +82,7 @@ public class AppraiesimgeAdapter extends BaseAdapter {
                     public void onClick(View v) {
                         contentValues.remove(position);
                         notifyDataSetChanged();
+                        deleteFile.deleteFile(position);
                     }
                 });
             }
@@ -97,6 +100,7 @@ public class AppraiesimgeAdapter extends BaseAdapter {
                         public void onClick(View v) {
                             contentValues.remove(position);
                             notifyDataSetChanged();
+                            deleteFile.deleteFile(position);
                         }
                     });
                 }
@@ -110,6 +114,10 @@ public class AppraiesimgeAdapter extends BaseAdapter {
     public final class ViewHolder {
         public SimpleDraweeView icon;
         public ImageView imgDelete;
+    }
+
+    public interface deleteFile{
+        void deleteFile(int pos);
     }
 
 }

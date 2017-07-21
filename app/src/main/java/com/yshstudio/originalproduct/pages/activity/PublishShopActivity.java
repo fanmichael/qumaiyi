@@ -36,6 +36,7 @@ import com.yshstudio.originalproduct.pages.prompt.Loading;
 import com.yshstudio.originalproduct.pages.view.MyGridView;
 import com.yshstudio.originalproduct.tools.GetPathVideo;
 import com.yshstudio.originalproduct.tools.ImageToools;
+import com.yshstudio.originalproduct.tools.SharedPreferenceUtil;
 import com.yshstudio.originalproduct.tools.TextContent;
 import com.yshstudio.originalproduct.tools.ValidData;
 
@@ -50,11 +51,12 @@ import java.util.Map;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import me.nereo.multi_image_selector.MultiImageSelector;
 
 /**
  * 发布商品
  */
-public class PublishShopActivity extends BaseActivity {
+public class PublishShopActivity extends BaseActivity implements AppraiesimgeAdapter.deleteFile{
 
     @BindView(R.id.image_back)
     ImageView imageBack;
@@ -102,6 +104,8 @@ public class PublishShopActivity extends BaseActivity {
      * 添加数据刷新
      */
     private AppraiesimgeAdapter appraiesimgeAdapter;
+    protected static final int REQUEST_STORAGE_READ_ACCESS_PERMISSION = 101;
+    private ArrayList<String> mSelectPath=new ArrayList<>();
     /**
      * 添加图片
      */
@@ -124,7 +128,7 @@ public class PublishShopActivity extends BaseActivity {
         topTitle.setText("发布商品");
         ImageToools.verifyStoragePermissions(PublishShopActivity.this);
         contentValues.add(0, null);
-        appraiesimgeAdapter = new AppraiesimgeAdapter(contentValues, context, 2, true);
+        appraiesimgeAdapter = new AppraiesimgeAdapter(contentValues, context, 2, true,this);
         publishShopImage.setAdapter(appraiesimgeAdapter);
         publishShopImage.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -346,6 +350,13 @@ public class PublishShopActivity extends BaseActivity {
         }
     }
 
+    @Override
+    public void deleteFile(int pos) {
+        if(files != null && files.size()>0){
+            files.remove(pos-1);
+        }
+    }
+
     /**
      * 异步请求
      */
@@ -387,7 +398,7 @@ public class PublishShopActivity extends BaseActivity {
         try {
             HashMap<String, String> map = new HashMap<>();
             map.put("action", "Trade.tradeRelease");
-            map.put("uid", AppContext.cv.getAsInteger("id") + "");
+            map.put("uid", SharedPreferenceUtil.read("id","") + "");
             map.put("cid", tagsId);
             map.put("good_name", publishShopName.getText().toString().trim());
             map.put("good_intro", publishShopContent.getText().toString().trim());
@@ -433,13 +444,23 @@ public class PublishShopActivity extends BaseActivity {
                         sellImagesFile=new File(GetPathVideo.getPath(context, uri));
                         break;
                     case 2:
-//                        file = uri2File(uri);
-                        file=new File(GetPathVideo.getPath(context, uri));
-                        files.add(file);
-                        ContentValues cv = new ContentValues();
-                        cv.put("image", uri.toString());
-                        contentValues.add(cv);
-                        appraiesimgeAdapter.notifyDataSetChanged();
+                        if(contentValues !=null && contentValues.size()>0){
+                            contentValues.clear();
+                            contentValues.add(0, null);
+                        }
+                        if(files!=null && files.size()>0){
+                            files.clear();
+                        }
+                        mSelectPath = data.getStringArrayListExtra(MultiImageSelector.EXTRA_RESULT);
+                        for(String p: mSelectPath) {
+                            Uri  uri1 = Uri.parse("file://"+p);
+                            file = new File(GetPathVideo.getPath(context, uri1));
+                            files.add(file);
+                            ContentValues cv = new ContentValues();
+                            cv.put("image", uri1.toString());
+                            contentValues.add(cv);
+                            appraiesimgeAdapter.notifyDataSetChanged();
+                        }
                         break;
                 }
             }
@@ -618,11 +639,30 @@ public class PublishShopActivity extends BaseActivity {
         photographAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getImageFromAlbum();
+                if(type==2){
+                    choseMoreImage();
+                }else{
+                    getImageFromAlbum();
+                }
                 dialog.dismiss();
             }
         });
     }
+    /** 多图选择上传 */
+    private void choseMoreImage(){
+        boolean showCamera=false;
+        int maxNum = 1000;
+        MultiImageSelector selector = MultiImageSelector.create(context);
+        selector.showCamera(showCamera);
+        selector.count(maxNum);
+        selector.multi();
+        selector.origin(mSelectPath);
+        selector.start(PublishShopActivity.this,1);
+    }
+
+
+
+
 
     //本地相册
     protected void getImageFromAlbum() {

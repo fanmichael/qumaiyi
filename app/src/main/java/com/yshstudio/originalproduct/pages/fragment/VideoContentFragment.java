@@ -64,6 +64,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
+import me.nereo.multi_image_selector.MultiImageSelector;
 
 import com.yshstudio.originalproduct.R;
 import com.yshstudio.originalproduct.pages.activity.CaActivity;
@@ -79,6 +80,7 @@ import com.yshstudio.originalproduct.pages.view.MyGridView;
 import com.yshstudio.originalproduct.pages.view.MyProgressDialog;
 import com.yshstudio.originalproduct.tools.GetPathVideo;
 import com.yshstudio.originalproduct.tools.ImageToools;
+import com.yshstudio.originalproduct.tools.SharedPreferenceUtil;
 import com.yshstudio.originalproduct.tools.TextContent;
 
 import static com.umeng.socialize.utils.Log.TAG;
@@ -86,7 +88,7 @@ import static com.umeng.socialize.utils.Log.TAG;
 /**
  * 视频
  */
-public class VideoContentFragment extends BasicFragment {
+public class VideoContentFragment extends BasicFragment implements AppraiesimgeAdapter.deleteFile {
 
     @BindView(R.id.video_title_name)
     EditText videoTitleName;
@@ -129,6 +131,8 @@ public class VideoContentFragment extends BasicFragment {
      * 添加数据刷新
      */
     private AppraiesimgeAdapter appraiesimgeAdapter;
+    protected static final int REQUEST_STORAGE_READ_ACCESS_PERMISSION = 101;
+    private ArrayList<String> mSelectPath=new ArrayList<>();
     /**
      * 添加图片
      */
@@ -167,7 +171,7 @@ public class VideoContentFragment extends BasicFragment {
         super.onActivityCreated(savedInstanceState);
         context = getActivity();
         ImageToools.verifyStoragePermissions(getActivity());
-        appraiesimgeAdapter = new AppraiesimgeAdapter(contentValues, context, 2, false);
+        appraiesimgeAdapter = new AppraiesimgeAdapter(contentValues, context, 2, false,this);
         videoGridView.setAdapter(appraiesimgeAdapter);
     }
 
@@ -217,16 +221,23 @@ public class VideoContentFragment extends BasicFragment {
 
         if (requestCode == 1) {
             if (resultCode == getActivity().RESULT_OK) {
-                Uri uri = data.getData();
-//                file = uri2File(uri);
-                file=new File(GetPathVideo.getPath(context, uri));
-                files.add(file);
-                ContentValues cv = new ContentValues();
-                cv.put("image", uri.toString());
-                contentValues.add(cv);
-                appraiesimgeAdapter.notifyDataSetChanged();
+                if(contentValues !=null && contentValues.size()>0){
+                    contentValues.clear();
+                }
+                if(files!=null && files.size()>0){
+                    files.clear();
+                }
+                mSelectPath = data.getStringArrayListExtra(MultiImageSelector.EXTRA_RESULT);
+                for(String p: mSelectPath) {
+                    Uri  uri1 = Uri.parse("file://"+p);
+                    file = new File(GetPathVideo.getPath(context, uri1));
+                    files.add(file);
+                    ContentValues cv = new ContentValues();
+                    cv.put("image", uri1.toString());
+                    contentValues.add(cv);
+                    appraiesimgeAdapter.notifyDataSetChanged();
+                }
             }
-
         }
 
         if (requestCode == 2) {
@@ -310,10 +321,18 @@ public class VideoContentFragment extends BasicFragment {
      * 获取视频图
      */
     private void videoImage(String path) {
-        Bitmap bitmap = createVideoThumbnail(path);
-        Bitmap bit = ThumbnailUtils.extractThumbnail(bitmap, 100, 80);
-        videoImages.setImageBitmap(bit);
-        saveBitmapFile(bit);
+        try {
+            Bitmap bitmap = createVideoThumbnail(path);
+            if (bitmap==null){
+                return;
+            }
+            Bitmap bit = ThumbnailUtils.extractThumbnail(bitmap, 100, 80);
+            videoImages.setImageBitmap(bit);
+            saveBitmapFile(bit);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
     }
 
     /**
@@ -524,17 +543,6 @@ public class VideoContentFragment extends BasicFragment {
         Intent intent=new Intent();
         intent.setClass(context,CaActivity.class);
         startActivityForResult(intent,10001);
-//        if (videoFile==null) {
-//            Toast.makeText(context, "请选择视频！", Toast.LENGTH_LONG).show();
-//            return;
-//        } else {
-//            pd = new MyProgressDialog(context);
-//            pd.setProgressStyle(MyProgressDialog.STYLE_HORIZONTAL);
-//            pd.setMessage("上传视频中。。。");
-//            pd.setCancelable(false);
-//            pd.show();
-//            uploadVideo(videoFile);
-//        }
     }
 
     /**
@@ -589,18 +597,25 @@ public class VideoContentFragment extends BasicFragment {
         photographAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getImageFromAlbum();
+                choseMoreImage();
                 dialog.dismiss();
             }
         });
     }
 
-    //本地相册
-    protected void getImageFromAlbum() {
-        Intent intent = new Intent(Intent.ACTION_PICK);
-        intent.setType("image/*");//相片类型
-        startActivityForResult(intent, 1);
+    /** 多图选择上传 */
+    private void choseMoreImage(){
+        boolean showCamera=false;
+        int maxNum = 1000;
+        MultiImageSelector selector = MultiImageSelector.create(getActivity());
+        selector.showCamera(showCamera);
+        selector.count(maxNum);
+        selector.multi();
+        selector.origin(mSelectPath);
+        selector.start(VideoContentFragment.this,1);
     }
+
+
 
     private File uri2File(Uri uri) {
         File file = null;
@@ -650,7 +665,7 @@ public class VideoContentFragment extends BasicFragment {
         try {
             HashMap<String, String> map = new HashMap<>();
             map.put("action", "Community.addNote");
-            map.put("uid", AppContext.cv.getAsInteger("id") + "");
+            map.put("uid", SharedPreferenceUtil.read("id","") + "");
             map.put("cid", tagsId);
             map.put("title", videoTitleName.getText().toString().trim());
             map.put("content", videoContent.getText().toString().trim());
@@ -690,6 +705,13 @@ public class VideoContentFragment extends BasicFragment {
             e.printStackTrace();
         }
 
+    }
+
+    @Override
+    public void deleteFile(int pos) {
+        if(files != null && files.size()>0){
+            files.remove(pos);
+        }
     }
 
 

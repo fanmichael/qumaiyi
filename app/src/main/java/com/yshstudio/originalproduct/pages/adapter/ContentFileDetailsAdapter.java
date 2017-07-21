@@ -14,6 +14,7 @@ import com.facebook.drawee.view.SimpleDraweeView;
 
 import java.util.List;
 import com.yshstudio.originalproduct.R;
+import com.yshstudio.originalproduct.tools.SharedPreferenceUtil;
 import com.yshstudio.originalproduct.tools.ValidData;
 import com.yshstudio.originalproduct.pages.config.AppContext;
 
@@ -103,7 +104,7 @@ public class ContentFileDetailsAdapter extends BaseExpandableListAdapter {
         holder.content.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                setOnClickLoction.content(groupPosition, cv.getAsInteger("nid"), AppContext.cv.getAsInteger("id"), cv.getAsInteger("id"));
+                setOnClickLoction.content(groupPosition, cv.getAsInteger("nid"), Integer.valueOf(SharedPreferenceUtil.read("id","")), cv.getAsInteger("id"));
             }
         });
         return convertView;

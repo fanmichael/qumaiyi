@@ -12,6 +12,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import com.yshstudio.originalproduct.R;
 import com.yshstudio.originalproduct.pages.config.AppContext;
+import com.yshstudio.originalproduct.tools.SharedPreferenceUtil;
 
 /**
  * 发布
@@ -52,7 +53,7 @@ public class PublishActivity extends BaseActivity {
      */
     @OnClick(R.id.publish_shop)
     void publishShop() {
-        if (AppContext.cv.getAsString("merchant").equals("0")) {
+        if (SharedPreferenceUtil.read("merchant","").equals("0")) {
             //申请卖主
             Intent intent = new Intent(context, SellerlDetailsActivity.class);
             context.startActivity(intent);

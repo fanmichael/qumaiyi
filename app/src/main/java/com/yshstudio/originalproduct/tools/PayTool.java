@@ -118,7 +118,7 @@ public class PayTool {
         }
         RequestBody requestBody = new FormBody.Builder()
                 .add("action", "Orderid.payChannel")
-                .add("uid", String.valueOf(AppContext.cv.getAsInteger("id")))
+                .add("uid", SharedPreferenceUtil.read("id",""))
                 .add("channel", channel)
                 .add("money", goods.containsKey("price") ? goods.getAsString("price") : goods.getAsString("money"))
 //                .add("money", "0.01")

@@ -26,6 +26,7 @@ import com.yshstudio.originalproduct.R;
 import com.yshstudio.originalproduct.pages.adapter.UserGroupAdapter;
 import com.yshstudio.originalproduct.pages.config.AppContext;
 import com.yshstudio.originalproduct.pages.http.HttpConnectTool;
+import com.yshstudio.originalproduct.tools.SharedPreferenceUtil;
 
 
 public class ElcyGroupActivity extends BaseActivity implements UserGroupAdapter.setBoolChose {
@@ -167,7 +168,7 @@ public class ElcyGroupActivity extends BaseActivity implements UserGroupAdapter.
         try {
             HashMap<String, String> map = new HashMap<>();
             map.put("action", "Group.groupQuery");
-            map.put("uid", AppContext.cv.getAsInteger("id") + "");
+            map.put("uid", SharedPreferenceUtil.read("id","") + "");
             String json = HttpConnectTool.post(map);
             if (!json.equals("")) {
                 listXml(json);

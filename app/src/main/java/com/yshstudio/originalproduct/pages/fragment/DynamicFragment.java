@@ -37,6 +37,7 @@ import com.yshstudio.originalproduct.pages.adapter.DynamicAdapter;
 import com.yshstudio.originalproduct.pages.config.AppContext;
 import com.yshstudio.originalproduct.pages.http.HttpConnectTool;
 import com.yshstudio.originalproduct.pages.view.LoadingDialog;
+import com.yshstudio.originalproduct.tools.SharedPreferenceUtil;
 
 /**
  * Created by Administrator on 2017/4/15 0015.
@@ -283,7 +284,7 @@ public class DynamicFragment extends BasicFragment implements SwipeRefreshLayout
         try {
             HashMap<String, String> hashMap = new HashMap<>();
             hashMap.put("action", "Dynamic.index");
-            hashMap.put("uid", AppContext.cv.getAsInteger("id") + "");
+            hashMap.put("uid", SharedPreferenceUtil.read("id","") + "");
             hashMap.put("page", page + "");
             String json = HttpConnectTool.post(hashMap);
             if (!json.equals("")) {

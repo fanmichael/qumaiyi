@@ -18,6 +18,7 @@ import butterknife.OnClick;
 import com.yshstudio.originalproduct.R;
 import com.yshstudio.originalproduct.pages.config.AppContext;
 import com.yshstudio.originalproduct.pages.http.HttpConnectTool;
+import com.yshstudio.originalproduct.tools.SharedPreferenceUtil;
 
 
 public class DeclareActivity extends BaseActivity {
@@ -110,7 +111,7 @@ public class DeclareActivity extends BaseActivity {
         try {
             HashMap<String, String> map = new HashMap<>();
             map.put("action", "Group.joinGroup");
-            map.put("uid", AppContext.cv.getAsInteger("id") + "");
+            map.put("uid", SharedPreferenceUtil.read("id","") + "");
             map.put("group_id", groupId);
             String json = HttpConnectTool.post(map);
             if (!json.equals("")) {

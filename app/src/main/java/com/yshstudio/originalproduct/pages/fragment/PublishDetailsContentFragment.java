@@ -50,6 +50,7 @@ import com.yshstudio.originalproduct.pages.view.swipemenu.bean.SwipeMenu;
 import com.yshstudio.originalproduct.pages.view.swipemenu.bean.SwipeMenuItem;
 import com.yshstudio.originalproduct.pages.view.swipemenu.interfaces.OnMenuItemClickListener;
 import com.yshstudio.originalproduct.pages.view.swipemenu.interfaces.SwipeMenuCreator;
+import com.yshstudio.originalproduct.tools.SharedPreferenceUtil;
 
 /**
  * 我的发布-内容SwipeRefreshLayout.OnRefreshListener,
@@ -283,7 +284,7 @@ public class PublishDetailsContentFragment extends BasicFragment implements  IXL
         try {
             HashMap<String, String> hashMap = new HashMap<>();
             hashMap.put("action", "Community.myNote");
-            hashMap.put("uid", AppContext.cv.getAsInteger("id") + "");
+            hashMap.put("uid", SharedPreferenceUtil.read("id","") + "");
             hashMap.put("page", page + "");
             String json = HttpConnectTool.post(hashMap);
             if (!json.equals("")) {
@@ -301,7 +302,7 @@ public class PublishDetailsContentFragment extends BasicFragment implements  IXL
         try {
             HashMap<String, String> hashMap = new HashMap<>();
             hashMap.put("action", "Community.note_updeta");
-            hashMap.put("uid", AppContext.cv.getAsInteger("id") + "");
+            hashMap.put("uid", SharedPreferenceUtil.read("id","") + "");
             hashMap.put("id", id + "");
             String json = HttpConnectTool.post(hashMap);
             if (!json.equals("")) {

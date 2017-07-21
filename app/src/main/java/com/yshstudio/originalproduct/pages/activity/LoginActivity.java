@@ -27,6 +27,7 @@ import com.umeng.socialize.bean.SHARE_MEDIA;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.net.URLEncoder;
 import java.util.HashMap;
 
 import butterknife.BindView;
@@ -262,8 +263,8 @@ public class LoginActivity extends BaseActivity {
         try {
             HashMap<String, String> hashMap = new HashMap<>();
             hashMap.put("action", "User.oAuthLogin");
-            hashMap.put("openid", SharedPreferenceUtil.read("id", ""));
-            hashMap.put("name", SharedPreferenceUtil.read("nick", ""));
+            hashMap.put("openid", SharedPreferenceUtil.read("openid", ""));
+            hashMap.put("name", URLEncoder.encode(SharedPreferenceUtil.read("nick", ""),"UTF-8")+"");
             hashMap.put("avatar", SharedPreferenceUtil.read("icon", ""));
             hashMap.put("oauthtype", SharedPreferenceUtil.read("type", ""));
             String json = HttpConnectTool.post(hashMap);
@@ -294,6 +295,17 @@ public class LoginActivity extends BaseActivity {
                 AppContext.cv.put("personalized", jsonLogin.has("personalized") ? jsonLogin.getString("personalized") : "");//个性签名
                 AppContext.cv.put("sign", jsonLogin.has("sign") ? jsonLogin.getInt("sign") : 0);//是否签约
                 AppContext.cv.put("merchant", jsonLogin.getString("merchant"));//卖家识别'0'否'1'是
+
+                SharedPreferenceUtil.insert("id",  AppContext.cv.getAsInteger("id")+"");
+                SharedPreferenceUtil.insert("mobile", AppContext.cv.getAsString("mobile")+"");
+                SharedPreferenceUtil.insert("nick", AppContext.cv.getAsString("nick")+"");
+                SharedPreferenceUtil.insert("icon", AppContext.cv.getAsString("icon")+"");
+                SharedPreferenceUtil.insert("gender", AppContext.cv.getAsInteger("gender")+"");
+                SharedPreferenceUtil.insert("location", AppContext.cv.getAsString("location")+"");
+                SharedPreferenceUtil.insert("personalized", AppContext.cv.getAsString("personalized")+"");
+                SharedPreferenceUtil.insert("sign", AppContext.cv.getAsInteger("sign")+"");
+                SharedPreferenceUtil.insert("merchant", AppContext.cv.getAsString("merchant")+"");
+
             }
         } catch (JSONException e) {
             e.printStackTrace();
@@ -344,12 +356,16 @@ public class LoginActivity extends BaseActivity {
     }
 
     private void setImLogin() {
-        UserLodingInFo.getInstance().setIcon(AppContext.cv.getAsString("icon")).
-                setId(AppContext.cv.getAsInteger("id") + "").
-                setNick(AppContext.cv.getAsString("nick")).
-                setMobile(AppContext.cv.getAsString("mobile").equals("") ? SharedPreferenceUtil.read("id", "") : AppContext.cv.getAsString("mobile"));
-        ObjectSaveUtils.saveObject(LoginActivity.this, "USERINFO", UserLodingInFo.getInstance());
-        loginIM("");
+        try {
+            UserLodingInFo.getInstance().setIcon(SharedPreferenceUtil.read("icon","")).
+                    setId(SharedPreferenceUtil.read("id","")).
+                    setNick(SharedPreferenceUtil.read("nick","")).
+                    setMobile(SharedPreferenceUtil.read("mobile","").equals("") ? SharedPreferenceUtil.read("openid", "") : SharedPreferenceUtil.read("mobile",""));
+            ObjectSaveUtils.saveObject(LoginActivity.this, "USERINFO", UserLodingInFo.getInstance());
+            loginIM("");
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -389,6 +405,14 @@ public class LoginActivity extends BaseActivity {
                 if (is) {
                     SharedPreferenceUtil.insert("mobile", jsonLogin.getString("mobile"));
                     SharedPreferenceUtil.insert("password", pwd);
+                    SharedPreferenceUtil.insert("id",  AppContext.cv.getAsInteger("id")+"");
+                    SharedPreferenceUtil.insert("nick", AppContext.cv.getAsString("nick")+"");
+                    SharedPreferenceUtil.insert("icon", AppContext.cv.getAsString("icon")+"");
+                    SharedPreferenceUtil.insert("gender", AppContext.cv.getAsInteger("gender")+"");
+                    SharedPreferenceUtil.insert("location", AppContext.cv.getAsString("location")+"");
+                    SharedPreferenceUtil.insert("personalized", AppContext.cv.getAsString("personalized")+"");
+                    SharedPreferenceUtil.insert("sign", AppContext.cv.getAsInteger("sign")+"");
+                    SharedPreferenceUtil.insert("merchant", AppContext.cv.getAsString("merchant")+"");
                 }
 
             }
@@ -427,7 +451,7 @@ public class LoginActivity extends BaseActivity {
             new asyncTask().execute(1);
         }
 
-        if (SharedPreferenceUtil.hasKey("id") && SharedPreferenceUtil.hasKey("type")) {
+        if (SharedPreferenceUtil.hasKey("openid") && SharedPreferenceUtil.hasKey("type")) {
             if (SharedPreferenceUtil.read("type", "").equals("sina")) {
 //                UtilsUmeng.Login(LoginActivity.this, getApplicationContext(), SHARE_MEDIA.SINA, mHandler);
             } else if (SharedPreferenceUtil.read("type", "").equals("qq")) {

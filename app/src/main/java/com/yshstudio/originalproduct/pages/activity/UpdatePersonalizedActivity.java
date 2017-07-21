@@ -19,6 +19,7 @@ import butterknife.OnClick;
 import com.yshstudio.originalproduct.R;
 import com.yshstudio.originalproduct.pages.config.AppContext;
 import com.yshstudio.originalproduct.pages.http.HttpConnectTool;
+import com.yshstudio.originalproduct.tools.SharedPreferenceUtil;
 
 /**
  * 签名
@@ -78,6 +79,7 @@ public class UpdatePersonalizedActivity extends BaseActivity {
             switch (what) {
                 case 1:
                     if (error == 0) {
+                        SharedPreferenceUtil.insert("personalized", strPer+"");
                         AppContext.cv.put("personalized", strPer);
                         setResult(2);
                         destroyActitity();
@@ -95,7 +97,7 @@ public class UpdatePersonalizedActivity extends BaseActivity {
         try {
             HashMap<String, String> map = new HashMap<>();
             map.put("action", "User.update");
-            map.put("uid", AppContext.cv.getAsInteger("id") + "");
+            map.put("uid", SharedPreferenceUtil.read("id","") + "");
             map.put("personalized",  URLEncoder.encode(strPer, "UTF-8") + "");
             map.put("name", "personalized");
             String json = HttpConnectTool.post(map);
@@ -125,7 +127,7 @@ public class UpdatePersonalizedActivity extends BaseActivity {
         leftTitle.setText("取消");
         centerTitle.setText("签名");
         rightTitle.setText("确定");
-        editPersonalized.setText(AppContext.cv.getAsString("personalized"));
+        editPersonalized.setText(SharedPreferenceUtil.read("personalized",""));
     }
 
 }

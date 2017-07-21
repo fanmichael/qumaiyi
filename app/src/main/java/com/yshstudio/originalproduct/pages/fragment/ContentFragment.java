@@ -1,17 +1,25 @@
 package com.yshstudio.originalproduct.pages.fragment;
 
+import android.Manifest;
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.hardware.Camera;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -41,6 +49,9 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
+import me.nereo.multi_image_selector.MultiImageSelector;
+import me.nereo.multi_image_selector.MultiImageSelectorActivity;
+
 import com.yshstudio.originalproduct.R;
 import com.yshstudio.originalproduct.pages.activity.ElcyGroupActivity;
 import com.yshstudio.originalproduct.pages.activity.ElevancyShopActivity;
@@ -53,6 +64,7 @@ import com.yshstudio.originalproduct.pages.prompt.Loading;
 import com.yshstudio.originalproduct.pages.view.MyGridView;
 import com.yshstudio.originalproduct.tools.GetPathVideo;
 import com.yshstudio.originalproduct.tools.ImageToools;
+import com.yshstudio.originalproduct.tools.SharedPreferenceUtil;
 import com.yshstudio.originalproduct.tools.TextContent;
 import com.yshstudio.originalproduct.tools.ValidData;
 
@@ -61,7 +73,7 @@ import com.yshstudio.originalproduct.tools.ValidData;
  * 图片
  */
 
-public class ContentFragment extends BasicFragment {
+public class ContentFragment extends BasicFragment implements AppraiesimgeAdapter.deleteFile{
 
     @BindView(R.id.content_imag)
     SimpleDraweeView contentImag;
@@ -100,6 +112,8 @@ public class ContentFragment extends BasicFragment {
      * 添加数据刷新
      */
     private AppraiesimgeAdapter appraiesimgeAdapter;
+    protected static final int REQUEST_STORAGE_READ_ACCESS_PERMISSION = 101;
+    private ArrayList<String> mSelectPath=new ArrayList<>();
     /**
      * 添加图片
      */
@@ -129,7 +143,7 @@ public class ContentFragment extends BasicFragment {
         super.onActivityCreated(savedInstanceState);
         context = getActivity();
         ImageToools.verifyStoragePermissions(getActivity());
-        appraiesimgeAdapter = new AppraiesimgeAdapter(contentValues, context, 2, false);
+        appraiesimgeAdapter = new AppraiesimgeAdapter(contentValues, context, 2, false,this);
         contectGridView.setAdapter(appraiesimgeAdapter);
     }
 
@@ -275,28 +289,33 @@ public class ContentFragment extends BasicFragment {
 
         if (requestCode == 1) {
             if (resultCode == getActivity().RESULT_OK) {
-                Uri uri = data.getData();
-
                 switch (type) {
                     case 1:
+                        Uri uri = data.getData();
                         ValidData.load(uri, contentImag, 90, 90);
                         sellImagesFile=new File(GetPathVideo.getPath(context, uri));
-//                        sellImagesFile = uri2File(uri);
                         break;
                     case 2:
-//                        file = uri2File(uri);
-                        file=new File(GetPathVideo.getPath(context, uri));
-                        files.add(file);
-                        ContentValues cv = new ContentValues();
-                        cv.put("image", uri.toString());
-                        contentValues.add(cv);
-                        appraiesimgeAdapter.notifyDataSetChanged();
+                        if(contentValues !=null && contentValues.size()>0){
+                            contentValues.clear();
+                        }
+                        if(files!=null && files.size()>0){
+                            files.clear();
+                        }
+                        mSelectPath = data.getStringArrayListExtra(MultiImageSelector.EXTRA_RESULT);
+                        for(String p: mSelectPath) {
+                            Uri  uri1 = Uri.parse("file://"+p);
+                            file = new File(GetPathVideo.getPath(context, uri1));
+                            files.add(file);
+                            ContentValues cv = new ContentValues();
+                            cv.put("image", uri1.toString());
+                            contentValues.add(cv);
+                            appraiesimgeAdapter.notifyDataSetChanged();
+                        }
                         break;
                 }
             }
-
         }
-
         if (requestCode == 2) {
             if (resultCode == getActivity().RESULT_OK) {
                 try {
@@ -306,18 +325,16 @@ public class ContentFragment extends BasicFragment {
                     String path = imageUri.getPath();
                     switch (type) {
                         case 1:
-//                            sellImagesFile = new File(path);
                             sellImagesFile=new File(GetPathVideo.getPath(context, imageUri));
                             ValidData.load(imageUri, contentImag, 70, 70);
                             break;
                         case 2:
-//                            file = new File(path);
-                            file=new File(GetPathVideo.getPath(context, imageUri));
-                            files.add(file);
-                            ContentValues cv = new ContentValues();
-                            cv.put("image", imageUri.toString());
-                            contentValues.add(cv);
-                            appraiesimgeAdapter.notifyDataSetChanged();
+                                file=new File(GetPathVideo.getPath(context, imageUri));
+                                files.add(file);
+                                ContentValues cv = new ContentValues();
+                                cv.put("image", imageUri.toString());
+                                contentValues.add(cv);
+                                appraiesimgeAdapter.notifyDataSetChanged();
                             break;
                     }
                 } catch (Exception e) {
@@ -370,10 +387,26 @@ public class ContentFragment extends BasicFragment {
         photographAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getImageFromAlbum();
+                if(type==2){
+                    choseMoreImage();
+                }else{
+                    getImageFromAlbum();
+                }
                 dialog.dismiss();
             }
         });
+    }
+
+    /** 多图选择上传 */
+    private void choseMoreImage(){
+            boolean showCamera=false;
+            int maxNum = 1000;
+            MultiImageSelector selector = MultiImageSelector.create(getActivity());
+            selector.showCamera(showCamera);
+            selector.count(maxNum);
+            selector.multi();
+            selector.origin(mSelectPath);
+            selector.start(ContentFragment.this,1);
     }
 
     //本地相册
@@ -468,6 +501,13 @@ public class ContentFragment extends BasicFragment {
 
     }
 
+    @Override
+    public void deleteFile(int pos) {
+        if(files != null && files.size()>0){
+        files.remove(pos);
+        }
+    }
+
 
     /**
      * 异步请求
@@ -512,7 +552,7 @@ public class ContentFragment extends BasicFragment {
         try {
             HashMap<String, String> map = new HashMap<>();
             map.put("action", "Community.addNote");
-            map.put("uid", AppContext.cv.getAsInteger("id") + "");
+            map.put("uid", SharedPreferenceUtil.read("id","") + "");
             map.put("cid", tagsId);
             map.put("title", contentName.getText().toString().trim());
             map.put("content", contentImgDetails.getText().toString().trim());
@@ -560,6 +600,4 @@ public class ContentFragment extends BasicFragment {
         super.onDestroyView();
         unbinder.unbind();
     }
-
-
 }

@@ -20,6 +20,7 @@ import butterknife.OnClick;
 import com.yshstudio.originalproduct.R;
 import com.yshstudio.originalproduct.pages.config.AppContext;
 import com.yshstudio.originalproduct.pages.http.HttpConnectTool;
+import com.yshstudio.originalproduct.tools.SharedPreferenceUtil;
 
 /**
  * 举报
@@ -74,7 +75,7 @@ public class InfromActivity extends BaseActivity {
         try {
             HashMap<String, String> hashMap = new HashMap<>();
             hashMap.put("action", "Report.putReport");
-            hashMap.put("uid", AppContext.cv.getAsInteger("id") + "");
+            hashMap.put("uid", SharedPreferenceUtil.read("id","") + "");
             hashMap.put("rid", rid);
             hashMap.put("type", type);
             hashMap.put("content", URLEncoder.encode(infoContent.getText().toString().trim(), "UTF-8") + "");

@@ -44,11 +44,11 @@ import butterknife.OnClick;
 import com.hyphenate.easeui.model.UserLodingInFo;
 import com.yshstudio.originalproduct.R;
 import com.yshstudio.originalproduct.chat.util.ObjectSaveUtils;
-import com.yshstudio.originalproduct.pages.config.AppContext;
 import com.yshstudio.originalproduct.pages.http.HttpConnectTool;
 import com.yshstudio.originalproduct.pages.view.LoadingDialog;
 import com.yshstudio.originalproduct.tools.GetPathVideo;
 import com.yshstudio.originalproduct.tools.ImageToools;
+import com.yshstudio.originalproduct.tools.SharedPreferenceUtil;
 import com.yshstudio.originalproduct.tools.ValidData;
 
 /**
@@ -402,11 +402,11 @@ public class MaterialDetailsActivity extends BaseActivity {
 
         switch (resultCode) {
             case 1:
-                textMaterialNick.setText(AppContext.cv.getAsString("nick"));
-                updateNick(AppContext.cv.getAsString("nick"));
+                textMaterialNick.setText(SharedPreferenceUtil.read("nick",""));
+                updateNick(SharedPreferenceUtil.read("nick",""));
                 break;
             case 2:
-                textMaterialPersonalized.setText(AppContext.cv.getAsString("personalized"));
+                textMaterialPersonalized.setText(SharedPreferenceUtil.read("personalized",""));
                 break;
         }
     }
@@ -418,15 +418,15 @@ public class MaterialDetailsActivity extends BaseActivity {
         topTitle.setText("个人资料");
         topRegitTitle.setText("保存");
         topRegitTitle.setVisibility(View.VISIBLE);
-        if (!AppContext.cv.containsKey("icon")) {
+        if (!SharedPreferenceUtil.hasKey("icon")) {
             return;
         }
-        Uri imageUri = Uri.parse(AppContext.cv.getAsString("icon"));
+        Uri imageUri = Uri.parse(SharedPreferenceUtil.read("icon",""));
         materialIconImage.setImageURI(imageUri);
-        textMaterialNick.setText(AppContext.cv.getAsString("nick"));
+        textMaterialNick.setText(SharedPreferenceUtil.read("nick",""));
         textMaterialGender.setText(six());
-        textMaterialLocation.setText(AppContext.cv.getAsString("location"));
-        textMaterialPersonalized.setText(AppContext.cv.getAsString("personalized"));
+        textMaterialLocation.setText(SharedPreferenceUtil.read("location",""));
+        textMaterialPersonalized.setText(SharedPreferenceUtil.read("personalized",""));
     }
 
     @OnClick(R.id.image_back)
@@ -438,7 +438,7 @@ public class MaterialDetailsActivity extends BaseActivity {
 
     private String six() {
         String six = "";
-        if (AppContext.cv.getAsInteger("gender") == 0) {
+        if (Integer.valueOf(SharedPreferenceUtil.read("gender",""))== 0) {
             six = "女";
         } else {
             six = "男";
@@ -476,7 +476,7 @@ public class MaterialDetailsActivity extends BaseActivity {
             switch (what) {
                 case 1:
                     if (error == 0) {
-                        AppContext.cv.put("gender", grends);
+                        SharedPreferenceUtil.insert("gender", grends+"");
                         textMaterialGender.setText(six());
                     } else {
                         return;
@@ -484,16 +484,16 @@ public class MaterialDetailsActivity extends BaseActivity {
                     break;
                 case 2:
                     if (error == 0) {
-                        AppContext.cv.put("location", address);
-                        textMaterialLocation.setText(AppContext.cv.getAsString("location"));
+                        SharedPreferenceUtil.insert("location", address+"");
+                        textMaterialLocation.setText(SharedPreferenceUtil.read("location",""));
                     } else {
                         return;
                     }
                     break;
                 case 3:
                     if (jsonImage != null && !jsonImage.equals("")) {
-                        AppContext.cv.put("icon", jsonImage.toString());
-                        Uri imageUri = Uri.parse(AppContext.cv.getAsString("icon"));
+                        SharedPreferenceUtil.insert("icon", jsonImage.toString()+"");
+                        Uri imageUri = Uri.parse(SharedPreferenceUtil.read("icon",""));
                         ValidData.load(imageUri, materialIconImage, 60, 60);
                     }
                     updateIcon(im);
@@ -509,7 +509,7 @@ public class MaterialDetailsActivity extends BaseActivity {
         try {
             HashMap<String, String> map = new HashMap<>();
             map.put("action", "User.update");
-            map.put("uid", AppContext.cv.getAsInteger("id") + "");
+            map.put("uid", SharedPreferenceUtil.read("id","") + "");
             map.put("location", URLEncoder.encode(address.trim(), "UTF-8") + "");
             map.put("name", "location");
             String json = HttpConnectTool.post(map);
@@ -525,7 +525,7 @@ public class MaterialDetailsActivity extends BaseActivity {
     private void httpGender(int gender) {
         HashMap<String, String> map = new HashMap<>();
         map.put("action", "User.update");
-        map.put("uid", AppContext.cv.getAsInteger("id") + "");
+        map.put("uid", SharedPreferenceUtil.read("id","") + "");
         map.put("gender", gender + "");
         map.put("name", "gender");
         String json = HttpConnectTool.post(map);
@@ -549,7 +549,7 @@ public class MaterialDetailsActivity extends BaseActivity {
         try {
             HashMap<String, String> hashMap = new HashMap<>();
             hashMap.put("action", "User.update");
-            hashMap.put("uid", AppContext.cv.getAsInteger("id") + "");
+            hashMap.put("uid", SharedPreferenceUtil.read("id","") + "");
             hashMap.put("name", "icon");
             Map<String, File> files = new HashMap<String, File>();
             files.put("icon", file);

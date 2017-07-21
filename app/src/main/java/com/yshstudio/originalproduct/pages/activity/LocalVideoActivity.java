@@ -144,6 +144,8 @@ public class LocalVideoActivity extends BaseActivity implements CommentAdapter.s
     ProgressBar progressBar;
     @BindView(R.id.video_ln_Play)
     FrameLayout videoLnPlay;
+    @BindView(R.id.lin_btn_show)
+    LinearLayout lll;
 
     private Context context;
     //主题
@@ -194,7 +196,7 @@ public class LocalVideoActivity extends BaseActivity implements CommentAdapter.s
         Bundle bundle = this.getIntent().getExtras();
         id = bundle.getInt("id");
         uid = bundle.getInt("uid");
-        if (String.valueOf(uid).equals(String.valueOf(AppContext.cv.getAsInteger("id")))) {
+        if (String.valueOf(uid).equals(SharedPreferenceUtil.read("id",""))) {
             videoRadioPagesFile.setVisibility(View.GONE);
             videoDetailsAttention.setVisibility(View.GONE);
             videoDetailsAttentionNo.setVisibility(View.GONE);
@@ -205,6 +207,17 @@ public class LocalVideoActivity extends BaseActivity implements CommentAdapter.s
         }
         setDelayMessage(1, 100);
         videoLnPlay.setVisibility(View.GONE);
+        videoScrollview.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if(event.getAction()==MotionEvent.ACTION_MOVE) {
+                    if(mediaController!=null){
+                        mediaController.setVisibility(View.INVISIBLE);
+                    }
+                }
+                return false;
+            }
+        });
     }
 
 
@@ -273,8 +286,6 @@ public class LocalVideoActivity extends BaseActivity implements CommentAdapter.s
     public boolean onTouch(View v, MotionEvent event) {
         return false;
     }
-
-
     @Override
     protected void onPause() {
         super.onPause();
@@ -300,6 +311,15 @@ public class LocalVideoActivity extends BaseActivity implements CommentAdapter.s
             videoPlay = null;
         }
 
+    }
+
+    @OnClick(R.id.lin_btn_show)
+    void show(){
+        if(mediaController!=null){
+            mediaController.setVisibility(View.VISIBLE);
+            videoPlay.setMediaController(mediaController);
+            mediaController.show();
+        }
     }
 
     /**
@@ -560,12 +580,12 @@ public class LocalVideoActivity extends BaseActivity implements CommentAdapter.s
     }
 
     private void sendMessage() {
-        if (SharedPreferenceUtil.hasKey("id")) {
-            if (SharedPreferenceUtil.read("id", "").isEmpty()) {
+        if (SharedPreferenceUtil.hasKey("openid")) {
+            if (SharedPreferenceUtil.read("openid", "").isEmpty()) {
                 return;
             }
         } else {
-            if (AppContext.cv.getAsString("mobile").trim().isEmpty()) {
+            if (SharedPreferenceUtil.read("mobile","").trim().isEmpty()) {
                 return;
             }
         }
@@ -659,7 +679,7 @@ public class LocalVideoActivity extends BaseActivity implements CommentAdapter.s
             switch (what) {
                 case 1:
                     initView();
-                    if (!String.valueOf(uid).equals(String.valueOf(AppContext.cv.getAsInteger("id")))) {
+                    if (!String.valueOf(uid).equals(SharedPreferenceUtil.read("id",""))) {
                         isColl();
                     }
                     imgsList();
@@ -697,7 +717,7 @@ public class LocalVideoActivity extends BaseActivity implements CommentAdapter.s
         try {
             HashMap<String, String> map = new HashMap<>();
             map.put("action", "Community.follow");
-            map.put("uid", AppContext.cv.getAsInteger("id") + "");
+            map.put("uid", SharedPreferenceUtil.read("id","") + "");
             map.put("type", "2");
             map.put("type_id", uid + "");
             String json = HttpConnectTool.post(map);
@@ -725,7 +745,7 @@ public class LocalVideoActivity extends BaseActivity implements CommentAdapter.s
         try {
             HashMap<String, String> map = new HashMap<>();
             map.put("action", "Community.checkFollowStatus");
-            map.put("uid", AppContext.cv.getAsInteger("id") + "");
+            map.put("uid",SharedPreferenceUtil.read("id","") + "");
             map.put("type", "2");
             map.put("type_id", uid + "");
             String json = HttpConnectTool.post(map);
@@ -750,7 +770,7 @@ public class LocalVideoActivity extends BaseActivity implements CommentAdapter.s
         try {
             HashMap<String, String> map = new HashMap<>();
             map.put("action", "Community.collection");
-            map.put("uid", AppContext.cv.getAsInteger("id") + "");
+            map.put("uid",SharedPreferenceUtil.read("id","") + "");
             map.put("type", "0");
             map.put("type_id", id + "");
             String json = HttpConnectTool.post(map);
@@ -778,7 +798,7 @@ public class LocalVideoActivity extends BaseActivity implements CommentAdapter.s
         try {
             HashMap<String, String> map = new HashMap<>();
             map.put("action", "Community.checkCollectStatus");
-            map.put("uid", AppContext.cv.getAsInteger("id") + "");
+            map.put("uid",SharedPreferenceUtil.read("id","") + "");
             map.put("type", "0");
             map.put("type_id", id + "");
             String json = HttpConnectTool.post(map);
@@ -817,7 +837,7 @@ public class LocalVideoActivity extends BaseActivity implements CommentAdapter.s
             HashMap<String, String> map = new HashMap<>();
             map.put("action", "Community.details");
             map.put("id", id + "");
-            map.put("uid", AppContext.cv.getAsInteger("id") + "");
+            map.put("uid", SharedPreferenceUtil.read("id","") + "");
             String json = HttpConnectTool.post(map);
             if (!json.equals("")) {
                 xmlS(json);
@@ -908,7 +928,7 @@ public class LocalVideoActivity extends BaseActivity implements CommentAdapter.s
             HashMap<String, String> map = new HashMap<>();
             map.put("action", "Community.details");
             map.put("id", id + "");
-            map.put("uid", AppContext.cv.getAsInteger("id") + "");
+            map.put("uid", SharedPreferenceUtil.read("id","") + "");
             String json = HttpConnectTool.post(map);
             if (!json.equals("")) {
                 xmlShop(json);
@@ -1024,7 +1044,7 @@ public class LocalVideoActivity extends BaseActivity implements CommentAdapter.s
             HashMap<String, String> map = new HashMap<>();
             map.put("action", "Community.content");
             map.put("id", coid + "");
-            map.put("uid", AppContext.cv.getAsInteger("id") + "");
+            map.put("uid", SharedPreferenceUtil.read("id","")+ "");
             map.put("content", URLEncoder.encode(contentDetails, "UTF-8") + "");
             map.put("parent", parentnum + "");
             String json = HttpConnectTool.post(map);
